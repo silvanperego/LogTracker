@@ -1,6 +1,6 @@
 <h1>Log-Tracker</h1>
 
-Log-Tracker is an easy to use tool for monitoring application server access log files. It records execution time, duration, service names and users and displays that data in aconfigurable chart.
+Log-Tracker is an easy to use tool for monitoring application server access log files. It records execution time, duration, service names and users and displays that data in a configurable chart.
 
 Log-Tracker actively monitors the configures log-files and updates the charts and statisticswhenever a new data is added.
 Just type the plus button to add log-files to the monitor, choose an appropriate parser and press "Apply".Log-Tracker will show you basic staistics about the services that have been called. Choose the entities thatyou want to display on the chart and press "Apply" again. The chart will show up immediately.
