@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.sper</groupId>
+	<artifactId>logtracker_mac</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.sper.logtracker.mac.MacMain
+							</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask"
+									classpath="appbundler-1.0ea.jar" />
+								<bundleapp outputdirectory="target" name="LogTracker"
+									displayname="Log-Tracker" identifier="org.sper.logtracker"
+									icon="LogTrackerLogo.icns" signature="sper" executableName="LogTracker"
+									mainclassname="org.sper.logtracker.mac.MacMain">
+									<classpath file="target/logtracker_mac-0.0.1-SNAPSHOT-jar-with-dependencies.jar" />
+									<bundledocument extensions="ltc" icon="LogTrackerLogo.icns"
+										name="LogTracker Config" role="editor">
+									</bundledocument>
+								</bundleapp>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<name>LogTracker Mac App Bundle</name>
+	<description>Erstellt ein Mac Application Bundle für den LogTracker.
+	</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.sper</groupId>
+			<artifactId>logtracker</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.axet</groupId>
+			<artifactId>desktop</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+	</dependencies>
+</project>
