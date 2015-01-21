@@ -18,3 +18,5 @@ This program uses
 JFreeChart from Object Refinery
 Launch4J
 Axet Desktop
+
+Requirements: LogTracker Requires Java 1.6 SE Runtime.
