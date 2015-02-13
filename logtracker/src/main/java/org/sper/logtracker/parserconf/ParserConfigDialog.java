@@ -3,7 +3,6 @@ package org.sper.logtracker.parserconf;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -22,13 +20,10 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -54,7 +49,7 @@ import org.sper.logtracker.logreader.LogParser;
 
 public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	
-	private class VerifyingPart {
+	static class VerifyingPart {
 		private JComponent component;
 		private InputVerifier inputVerifier;
 
@@ -106,14 +101,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private final ButtonGroup inclusionButtonGroup = new ButtonGroup();
 	private final ButtonGroup inclExclButtonGroup = new ButtonGroup();
 	private JTextArea dataExtractionPatField;
-	private JTextField serviceExcludeField;
-	private JTextField conversionFactorField;
 	private ParserConfigModel parserConfigModel;
-	private JComboBox occTimeGroupCombo;
-	private JComboBox serviceComboBox;
-	private JComboBox executionTimeBox;
-	private JComboBox userGroupBox;
-	private JTextField occTimeFormatString;
 	private JRadioButton rdbtnWith;
 	private JRadioButton rdbtnContaining;
 	private JRadioButton rdbtnIncluded;
@@ -131,8 +119,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JButton btnSave;
 	private JButton btnLoadFromFile;
 	private Configuration config;
-	private JTextField occTimeLanguage;
-
+	private ServStatExtractionFields extractionFields;
 	/**
 	 * Create the dialog.
 	 * @param parserSelectionModel 
@@ -275,7 +262,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					gbc_inclusionPattern.gridy = 0;
 					PatternInputVerifier inputVerifier = new PatternInputVerifier(true);
 					inclusionPattern.setInputVerifier(inputVerifier);
-					verifierList.add(new VerifyingPart(inclusionPattern, inputVerifier));
+					addVerifier(new VerifyingPart(inclusionPattern, inputVerifier));
 					standardBackgroundCol = inclusionPattern.getBackground();
 					editFields.add(inclusionPattern, gbc_inclusionPattern);
 				}
@@ -338,7 +325,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 						dataExtractionPatField.setLineWrap(true);
 						PatternInputVerifier inputVerifier = new PatternInputVerifier(false);
 						dataExtractionPatField.setInputVerifier(inputVerifier);
-						verifierList.add(new VerifyingPart(dataExtractionPatField, inputVerifier));
+						addVerifier(new VerifyingPart(dataExtractionPatField, inputVerifier));
 					}
 				}
 			}
@@ -346,260 +333,8 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 				Component verticalStrut = Box.createVerticalStrut(12);
 				dataExtractionPanel.add(verticalStrut);
 			}
-			{
-				JPanel extractionFields = new JPanel();
-				extractionFields.setAlignmentX(Component.LEFT_ALIGNMENT);
-				dataExtractionPanel.add(extractionFields);
-				GridBagLayout gbl_extractionFields = new GridBagLayout();
-				gbl_extractionFields.columnWidths = new int[]{0, 0, 0, 0, 0};
-				gbl_extractionFields.rowHeights = new int[]{0, 0, 0};
-				gbl_extractionFields.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0};
-				gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0};
-				extractionFields.setLayout(gbl_extractionFields);
-				{
-					JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
-					GridBagConstraints gbc_lblOccurenceTimeGroup = new GridBagConstraints();
-					gbc_lblOccurenceTimeGroup.insets = new Insets(0, 0, 5, 5);
-					gbc_lblOccurenceTimeGroup.anchor = GridBagConstraints.EAST;
-					gbc_lblOccurenceTimeGroup.gridx = 0;
-					gbc_lblOccurenceTimeGroup.gridy = 0;
-					extractionFields.add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
-				}
-				{
-					occTimeGroupCombo = new JComboBox();
-					occTimeGroupCombo.setToolTipText("the capturing group index of the group containing the service call occurrence time");
-					occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
-					GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
-					gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
-					gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
-					gbc_occTimeGroupCombo.gridx = 1;
-					gbc_occTimeGroupCombo.gridy = 0;
-					extractionFields.add(occTimeGroupCombo, gbc_occTimeGroupCombo);
-				}
-				{
-					Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
-					GridBagConstraints gbc_rigidArea = new GridBagConstraints();
-					gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
-					gbc_rigidArea.gridx = 2;
-					gbc_rigidArea.gridy = 0;
-					extractionFields.add(rigidArea, gbc_rigidArea);
-				}
-				{
-					JLabel lblOccurrenceTimeFormat = new JLabel("Occurrence Time Format String:");
-					GridBagConstraints gbc_lblOccurrenceTimeFormat = new GridBagConstraints();
-					gbc_lblOccurrenceTimeFormat.insets = new Insets(0, 0, 5, 5);
-					gbc_lblOccurrenceTimeFormat.gridx = 3;
-					gbc_lblOccurrenceTimeFormat.gridy = 0;
-					extractionFields.add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
-				}
-				{
-					InputVerifier inputVerifier = new InputVerifier() {
-						
-						@Override
-						public boolean verify(JComponent input) {
-							String text = ((JTextField) input).getText();
-							if (text != null && text.length() > 0) {
-								try {
-									new SimpleDateFormat(text);
-								} catch (IllegalArgumentException e) {
-									input.setBackground(Color.ORANGE);
-									setError("Not a valid SimpleDateFormat pattern");
-									return false;
-								}
-							} else {
-								input.setBackground(Color.ORANGE);
-								setError("Date Format is mandatory");
-								return false;
-							}
-							input.setBackground(standardBackgroundCol);
-							setError(null);
-							return true;
-						}
-					};
-					{
-						JPanel occTimePanel = new JPanel();
-						GridBagConstraints gbc_occTimePanel = new GridBagConstraints();
-						gbc_occTimePanel.fill = GridBagConstraints.BOTH;
-						gbc_occTimePanel.insets = new Insets(0, 0, 5, 0);
-						gbc_occTimePanel.gridx = 4;
-						gbc_occTimePanel.gridy = 0;
-						extractionFields.add(occTimePanel, gbc_occTimePanel);
-						occTimePanel.setLayout(new BoxLayout(occTimePanel, BoxLayout.X_AXIS));
-						occTimeFormatString = new JTextField();
-						occTimeFormatString.setColumns(30);
-						occTimePanel.add(occTimeFormatString);
-						occTimeFormatString.setToolTipText("The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
-						occTimeFormatString.setInputVerifier(inputVerifier);
-						verifierList.add(new VerifyingPart(occTimeFormatString, inputVerifier));
-						{
-							JLabel lblLanguage = new JLabel("Language:");
-							occTimePanel.add(lblLanguage);
-						}
-						{
-							occTimeLanguage = new JTextField();
-							occTimePanel.add(occTimeLanguage);
-							occTimeLanguage.setColumns(3);
-							occTimeLanguage.setToolTipText("The interpretation language for the occurrence time. (Only necessary, if months are specified as text.");
-//							occTimeLanguage.setInputVerifier(new InputVerifier() {
-//								
-//								@Override
-//								public boolean verify(JComponent input) {
-//									String text = ((JTextField) input).getText();
-//									if (text != null && text.length() > 0 && Locale.forLanguageTag(text) == null) {
-//										input.setBackground(Color.ORANGE);
-//										setError("Not a valid language code");
-//										input.setBackground(Color.ORANGE);
-//										return false;
-//									}
-//									input.setBackground(standardBackgroundCol);
-//									return true;
-//								}
-//							});
-						}
-					}
-				}
-				{
-					JLabel lblServiceNameGroup = new JLabel("Service Name Group Index:");
-					GridBagConstraints gbc_lblServiceNameGroup = new GridBagConstraints();
-					gbc_lblServiceNameGroup.anchor = GridBagConstraints.WEST;
-					gbc_lblServiceNameGroup.insets = new Insets(0, 0, 5, 5);
-					gbc_lblServiceNameGroup.gridx = 0;
-					gbc_lblServiceNameGroup.gridy = 1;
-					extractionFields.add(lblServiceNameGroup, gbc_lblServiceNameGroup);
-				}
-				{
-					serviceComboBox = new JComboBox();
-					serviceComboBox.setToolTipText("the capturing group index of the group containing the service name");
-					serviceComboBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
-					GridBagConstraints gbc_serviceComboBox = new GridBagConstraints();
-					gbc_serviceComboBox.anchor = GridBagConstraints.WEST;
-					gbc_serviceComboBox.insets = new Insets(0, 0, 5, 5);
-					gbc_serviceComboBox.gridx = 1;
-					gbc_serviceComboBox.gridy = 1;
-					extractionFields.add(serviceComboBox, gbc_serviceComboBox);
-				}
-				{
-					Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
-					GridBagConstraints gbc_rigidArea = new GridBagConstraints();
-					gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
-					gbc_rigidArea.gridx = 2;
-					gbc_rigidArea.gridy = 1;
-					extractionFields.add(rigidArea, gbc_rigidArea);
-				}
-				{
-					JLabel lblExcludeServices = new JLabel("Exclude Services");
-					GridBagConstraints gbc_lblExcludeServices = new GridBagConstraints();
-					gbc_lblExcludeServices.anchor = GridBagConstraints.WEST;
-					gbc_lblExcludeServices.insets = new Insets(0, 0, 5, 5);
-					gbc_lblExcludeServices.gridx = 3;
-					gbc_lblExcludeServices.gridy = 1;
-					extractionFields.add(lblExcludeServices, gbc_lblExcludeServices);
-				}
-				{
-					serviceExcludeField = new JTextField();
-					serviceExcludeField.setToolTipText("A comma separated list of service names, specifying services that should be ignored by the parser.");
-					GridBagConstraints gbc_serviceExcludeField = new GridBagConstraints();
-					gbc_serviceExcludeField.insets = new Insets(0, 0, 5, 0);
-					gbc_serviceExcludeField.fill = GridBagConstraints.HORIZONTAL;
-					gbc_serviceExcludeField.gridx = 4;
-					gbc_serviceExcludeField.gridy = 1;
-					extractionFields.add(serviceExcludeField, gbc_serviceExcludeField);
-				}
-				{
-					JLabel lblExecutionTimeGroup = new JLabel("Execution Time Group Index:");
-					GridBagConstraints gbc_lblExecutionTimeGroup = new GridBagConstraints();
-					gbc_lblExecutionTimeGroup.anchor = GridBagConstraints.WEST;
-					gbc_lblExecutionTimeGroup.insets = new Insets(0, 0, 5, 5);
-					gbc_lblExecutionTimeGroup.gridx = 0;
-					gbc_lblExecutionTimeGroup.gridy = 2;
-					extractionFields.add(lblExecutionTimeGroup, gbc_lblExecutionTimeGroup);
-				}
-				{
-					executionTimeBox = new JComboBox();
-					executionTimeBox.setToolTipText("the capturing group index of the group containing the service execution (or response) time");
-					executionTimeBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
-					GridBagConstraints gbc_executionTimeBox = new GridBagConstraints();
-					gbc_executionTimeBox.anchor = GridBagConstraints.WEST;
-					gbc_executionTimeBox.insets = new Insets(0, 0, 5, 5);
-					gbc_executionTimeBox.gridx = 1;
-					gbc_executionTimeBox.gridy = 2;
-					extractionFields.add(executionTimeBox, gbc_executionTimeBox);
-				}
-				{
-					Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
-					GridBagConstraints gbc_rigidArea = new GridBagConstraints();
-					gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
-					gbc_rigidArea.gridx = 2;
-					gbc_rigidArea.gridy = 2;
-					extractionFields.add(rigidArea, gbc_rigidArea);
-				}
-				{
-					JLabel lblConversionFactor = new JLabel("Conversion Factor");
-					GridBagConstraints gbc_lblConversionFactor = new GridBagConstraints();
-					gbc_lblConversionFactor.anchor = GridBagConstraints.WEST;
-					gbc_lblConversionFactor.insets = new Insets(0, 0, 5, 5);
-					gbc_lblConversionFactor.gridx = 3;
-					gbc_lblConversionFactor.gridy = 2;
-					extractionFields.add(lblConversionFactor, gbc_lblConversionFactor);
-				}
-				{
-					conversionFactorField = new JFormattedTextField();
-					conversionFactorField.setToolTipText("Service execution times will be multiplied by this factor before being handed over to the subsequent modules. The factor should be sized such, that the resulting unit is in seconds.");
-					GridBagConstraints gbc_conversionFactorField = new GridBagConstraints();
-					gbc_conversionFactorField.insets = new Insets(0, 0, 5, 0);
-					gbc_conversionFactorField.fill = GridBagConstraints.HORIZONTAL;
-					gbc_conversionFactorField.gridx = 4;
-					gbc_conversionFactorField.gridy = 2;
-					InputVerifier inputVerifier = new InputVerifier() {
-						
-						private final Pattern floatPat = Pattern.compile("\\d*(?:\\.\\d*)?");
-						
-						@Override
-						public boolean verify(JComponent input) {
-							boolean result = false;
-							String text = ((JTextField) input).getText();
-							if (text != null && text.length() > 0) {
-								result = floatPat.matcher(text).matches();
-								setError(result ? null : "Must be a floating point number (consisting of digits and a decmal dot only)");
-							} else
-								setError("Conversion Factor is mandatory!");
-							conversionFactorField.setBackground(result ? standardBackgroundCol : Color.ORANGE);
-							return result;
-						}
-					};
-					conversionFactorField.setInputVerifier(inputVerifier);
-					verifierList.add(new VerifyingPart(conversionFactorField, inputVerifier));
-					extractionFields.add(conversionFactorField, gbc_conversionFactorField);
-				}
-				{
-					JLabel lblUserGroup = new JLabel("User Group Index:");
-					GridBagConstraints gbc_UserGroup = new GridBagConstraints();
-					gbc_UserGroup.anchor = GridBagConstraints.WEST;
-					gbc_UserGroup.insets = new Insets(0, 0, 0, 5);
-					gbc_UserGroup.gridx = 0;
-					gbc_UserGroup.gridy = 3;
-					extractionFields.add(lblUserGroup, gbc_UserGroup);
-				}
-				{
-					userGroupBox = new JComboBox();
-					userGroupBox.setToolTipText("the capturing group index of the group containing the user that called the service. This entry is optional.");
-					userGroupBox.setModel(new DefaultComboBoxModel(new Integer[] {null, 1, 2, 3, 4}));
-					GridBagConstraints gbc_userGroupBox = new GridBagConstraints();
-					gbc_userGroupBox.anchor = GridBagConstraints.WEST;
-					gbc_userGroupBox.insets = new Insets(0, 0, 0, 5);
-					gbc_userGroupBox.gridx = 1;
-					gbc_userGroupBox.gridy = 3;
-					extractionFields.add(userGroupBox, gbc_userGroupBox);
-				}
-				{
-					Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
-					GridBagConstraints gbc_rigidArea = new GridBagConstraints();
-					gbc_rigidArea.insets = new Insets(0, 0, 0, 5);
-					gbc_rigidArea.gridx = 2;
-					gbc_rigidArea.gridy = 3;
-					extractionFields.add(rigidArea, gbc_rigidArea);
-				}
-			}
+			extractionFields = new ServStatExtractionFields(this);
+			dataExtractionPanel.add(extractionFields);
 			{
 				errorText = new JLabel("");
 				errorText.setForeground(Color.RED);
@@ -735,14 +470,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			String incPat = inclusionPattern.getText();
 			loadedParser.setIncludeExcludePattern(incPat != null && incPat.length() > 0 ?  Pattern.compile(incPat) : null);
 			loadedParser.setLinePattern(Pattern.compile(dataExtractionPatField.getText()));
-			loadedParser.setOccTimeIdx((Integer) occTimeGroupCombo.getSelectedItem());
-			loadedParser.setOccTimeFormatString(occTimeFormatString.getText());
-			loadedParser.setOccTimeLanguage(occTimeLanguage.getText());
-			loadedParser.setServiceIdx((Integer) serviceComboBox.getSelectedItem());
-			loadedParser.setIgnoreServiceList(serviceExcludeField.getText());
-			loadedParser.setResponseTimeIdx((Integer) executionTimeBox.getSelectedItem());
-			loadedParser.setResponseTimeFactor(Double.parseDouble(conversionFactorField.getText()));
-			loadedParser.setUserIdx((Integer) userGroupBox.getSelectedItem());
+			extractionFields.saveLoadedParser(loadedParser);
 			loadedParser.setEditable(editable);
 		}
 	}
@@ -750,14 +478,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private void enableDetailFields(boolean b) {
 		inclusionPattern.setEnabled(b);
 		dataExtractionPatField.setEnabled(b);
-		occTimeGroupCombo.setEnabled(b);
-		occTimeFormatString.setEnabled(b);
-		occTimeLanguage.setEnabled(b);
-		serviceComboBox.setEnabled(b);
-		serviceExcludeField.setEnabled(b);
-		executionTimeBox.setEnabled(b);
-		conversionFactorField.setEnabled(b);
-		userGroupBox.setEnabled(b);
+		extractionFields.setEnabled(b);
 	}
 
 	protected void loadEditingFields(ConfiguredLogParser logParser) {
@@ -765,35 +486,29 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		(logParser.isIncludeContaining() ? rdbtnContaining : rdbtnWith).setSelected(true);
 		inclusionPattern.setText(logParser.getIncludeExcludePattern() != null ? logParser.getIncludeExcludePattern().pattern() : null);
 		dataExtractionPatField.setText(logParser.getLinePattern() != null ? logParser.getLinePattern().pattern() : null);
-		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
-		occTimeFormatString.setText(logParser.getOccTimeFormatString());
-		occTimeLanguage.setText(logParser.getOccTimeLanguage());
-		serviceComboBox.setSelectedItem(logParser.getServiceIdx());
-		serviceExcludeField.setText(logParser.getIgnoreServiceList());
-		executionTimeBox.setSelectedItem(logParser.getResponseTimeIdx());
-		conversionFactorField.setText(Double.toString(logParser.getResponseTimeFactor()));
+		extractionFields.loadEditingFields(logParser);
 		loadedParser = logParser;
-		userGroupBox.setSelectedItem(logParser.getUserIdx());
 		editable = logParser.isEditable();
 	}
 
 	public void removeErrorMarks() {
 		inclusionPattern.setBackground(standardBackgroundCol);
 		dataExtractionPatField.setBackground(standardBackgroundCol);
-		occTimeFormatString.setBackground(standardBackgroundCol);
-		occTimeLanguage.setBackground(standardBackgroundCol);
-		serviceExcludeField.setBackground(standardBackgroundCol);
-		conversionFactorField.setBackground(standardBackgroundCol);
+		extractionFields.loadEditingFields(loadedParser);
 		setError(null);
 	}
 	
-	private void setError(String txt) {
+	void setError(String txt) {
 		errorText.setText(txt);
 		enableComponents();
 	}
 	
 	private boolean inError() {
 		return errorText.getText() != null && !errorText.getText().isEmpty();
+	}
+	
+	void addVerifier(VerifyingPart vpart) {
+		verifierList.add(vpart);
 	}
 	
 	private boolean verifyFormDataIsValid() {
