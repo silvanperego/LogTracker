@@ -1,4 +1,4 @@
-package org.sper.logtracker.parserconf;
+package org.sper.logtracker.logreader.servstat;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -21,8 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.sper.logtracker.logreader.ConfiguredLogParser;
+import org.sper.logtracker.parserconf.ExtractionFieldHandler;
+import org.sper.logtracker.parserconf.FileTypeDescriptor;
+import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.VerifyingPart;
 
-public class ServStatExtractionFields extends JPanel {
+public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField conversionFactorField;
@@ -36,15 +40,15 @@ public class ServStatExtractionFields extends JPanel {
 	private Color standardBackgroundCol;
 
 	
-	public ServStatExtractionFields(final ParserConfigDialog configDialog) {
-		JPanel extractionFields = new JPanel();
-		extractionFields.setAlignmentX(Component.LEFT_ALIGNMENT);
+	public ServiceResponseExtractionFields(final ParserConfigDialog configDialog) {
+		super();
+		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();
 		gbl_extractionFields.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_extractionFields.rowHeights = new int[]{0, 0, 0};
 		gbl_extractionFields.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0};
 		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0};
-		extractionFields.setLayout(gbl_extractionFields);
+		setLayout(gbl_extractionFields);
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
 			GridBagConstraints gbc_lblOccurenceTimeGroup = new GridBagConstraints();
@@ -52,7 +56,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_lblOccurenceTimeGroup.anchor = GridBagConstraints.EAST;
 			gbc_lblOccurenceTimeGroup.gridx = 0;
 			gbc_lblOccurenceTimeGroup.gridy = 0;
-			extractionFields.add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
+			add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
 		}
 		{
 			occTimeGroupCombo = new JComboBox();
@@ -63,7 +67,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
 			gbc_occTimeGroupCombo.gridx = 1;
 			gbc_occTimeGroupCombo.gridy = 0;
-			extractionFields.add(occTimeGroupCombo, gbc_occTimeGroupCombo);
+			add(occTimeGroupCombo, gbc_occTimeGroupCombo);
 		}
 		{
 			Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
@@ -71,7 +75,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
 			gbc_rigidArea.gridx = 2;
 			gbc_rigidArea.gridy = 0;
-			extractionFields.add(rigidArea, gbc_rigidArea);
+			add(rigidArea, gbc_rigidArea);
 		}
 		{
 			JLabel lblOccurrenceTimeFormat = new JLabel("Occurrence Time Format String:");
@@ -79,7 +83,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_lblOccurrenceTimeFormat.insets = new Insets(0, 0, 5, 5);
 			gbc_lblOccurrenceTimeFormat.gridx = 3;
 			gbc_lblOccurrenceTimeFormat.gridy = 0;
-			extractionFields.add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
+			add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
 		}
 		{
 			InputVerifier inputVerifier = new InputVerifier() {
@@ -112,7 +116,7 @@ public class ServStatExtractionFields extends JPanel {
 				gbc_occTimePanel.insets = new Insets(0, 0, 5, 0);
 				gbc_occTimePanel.gridx = 4;
 				gbc_occTimePanel.gridy = 0;
-				extractionFields.add(occTimePanel, gbc_occTimePanel);
+				add(occTimePanel, gbc_occTimePanel);
 				occTimePanel.setLayout(new BoxLayout(occTimePanel, BoxLayout.X_AXIS));
 				occTimeFormatString = new JTextField();
 				occTimeFormatString.setColumns(30);
@@ -120,7 +124,7 @@ public class ServStatExtractionFields extends JPanel {
 				occTimePanel.add(occTimeFormatString);
 				occTimeFormatString.setToolTipText("The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
 				occTimeFormatString.setInputVerifier(inputVerifier);
-				configDialog.addVerifier(new ParserConfigDialog.VerifyingPart(occTimeFormatString, inputVerifier));
+				configDialog.addVerifier(new VerifyingPart(occTimeFormatString, inputVerifier));
 				{
 					JLabel lblLanguage = new JLabel("Language:");
 					occTimePanel.add(lblLanguage);
@@ -140,7 +144,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_lblServiceNameGroup.insets = new Insets(0, 0, 5, 5);
 			gbc_lblServiceNameGroup.gridx = 0;
 			gbc_lblServiceNameGroup.gridy = 1;
-			extractionFields.add(lblServiceNameGroup, gbc_lblServiceNameGroup);
+			add(lblServiceNameGroup, gbc_lblServiceNameGroup);
 		}
 		{
 			serviceComboBox = new JComboBox();
@@ -151,7 +155,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_serviceComboBox.insets = new Insets(0, 0, 5, 5);
 			gbc_serviceComboBox.gridx = 1;
 			gbc_serviceComboBox.gridy = 1;
-			extractionFields.add(serviceComboBox, gbc_serviceComboBox);
+			add(serviceComboBox, gbc_serviceComboBox);
 		}
 		{
 			Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
@@ -159,7 +163,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
 			gbc_rigidArea.gridx = 2;
 			gbc_rigidArea.gridy = 1;
-			extractionFields.add(rigidArea, gbc_rigidArea);
+			add(rigidArea, gbc_rigidArea);
 		}
 		{
 			JLabel lblExcludeServices = new JLabel("Exclude Services");
@@ -168,7 +172,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_lblExcludeServices.insets = new Insets(0, 0, 5, 5);
 			gbc_lblExcludeServices.gridx = 3;
 			gbc_lblExcludeServices.gridy = 1;
-			extractionFields.add(lblExcludeServices, gbc_lblExcludeServices);
+			add(lblExcludeServices, gbc_lblExcludeServices);
 		}
 		{
 			serviceExcludeField = new JTextField();
@@ -178,7 +182,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_serviceExcludeField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_serviceExcludeField.gridx = 4;
 			gbc_serviceExcludeField.gridy = 1;
-			extractionFields.add(serviceExcludeField, gbc_serviceExcludeField);
+			add(serviceExcludeField, gbc_serviceExcludeField);
 		}
 		{
 			JLabel lblExecutionTimeGroup = new JLabel("Execution Time Group Index:");
@@ -187,7 +191,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_lblExecutionTimeGroup.insets = new Insets(0, 0, 5, 5);
 			gbc_lblExecutionTimeGroup.gridx = 0;
 			gbc_lblExecutionTimeGroup.gridy = 2;
-			extractionFields.add(lblExecutionTimeGroup, gbc_lblExecutionTimeGroup);
+			add(lblExecutionTimeGroup, gbc_lblExecutionTimeGroup);
 		}
 		{
 			executionTimeBox = new JComboBox();
@@ -198,7 +202,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_executionTimeBox.insets = new Insets(0, 0, 5, 5);
 			gbc_executionTimeBox.gridx = 1;
 			gbc_executionTimeBox.gridy = 2;
-			extractionFields.add(executionTimeBox, gbc_executionTimeBox);
+			add(executionTimeBox, gbc_executionTimeBox);
 		}
 		{
 			Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
@@ -206,7 +210,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
 			gbc_rigidArea.gridx = 2;
 			gbc_rigidArea.gridy = 2;
-			extractionFields.add(rigidArea, gbc_rigidArea);
+			add(rigidArea, gbc_rigidArea);
 		}
 		{
 			JLabel lblConversionFactor = new JLabel("Conversion Factor");
@@ -215,7 +219,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_lblConversionFactor.insets = new Insets(0, 0, 5, 5);
 			gbc_lblConversionFactor.gridx = 3;
 			gbc_lblConversionFactor.gridy = 2;
-			extractionFields.add(lblConversionFactor, gbc_lblConversionFactor);
+			add(lblConversionFactor, gbc_lblConversionFactor);
 		}
 		{
 			conversionFactorField = new JFormattedTextField();
@@ -243,8 +247,8 @@ public class ServStatExtractionFields extends JPanel {
 				}
 			};
 			conversionFactorField.setInputVerifier(inputVerifier);
-			configDialog.addVerifier(new ParserConfigDialog.VerifyingPart(conversionFactorField, inputVerifier));
-			extractionFields.add(conversionFactorField, gbc_conversionFactorField);
+			configDialog.addVerifier(new VerifyingPart(conversionFactorField, inputVerifier));
+			add(conversionFactorField, gbc_conversionFactorField);
 		}
 		{
 			JLabel lblUserGroup = new JLabel("User Group Index:");
@@ -253,7 +257,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_UserGroup.insets = new Insets(0, 0, 0, 5);
 			gbc_UserGroup.gridx = 0;
 			gbc_UserGroup.gridy = 3;
-			extractionFields.add(lblUserGroup, gbc_UserGroup);
+			add(lblUserGroup, gbc_UserGroup);
 		}
 		{
 			userGroupBox = new JComboBox();
@@ -264,7 +268,7 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_userGroupBox.insets = new Insets(0, 0, 0, 5);
 			gbc_userGroupBox.gridx = 1;
 			gbc_userGroupBox.gridy = 3;
-			extractionFields.add(userGroupBox, gbc_userGroupBox);
+			add(userGroupBox, gbc_userGroupBox);
 		}
 		{
 			Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
@@ -272,11 +276,15 @@ public class ServStatExtractionFields extends JPanel {
 			gbc_rigidArea.insets = new Insets(0, 0, 0, 5);
 			gbc_rigidArea.gridx = 2;
 			gbc_rigidArea.gridy = 3;
-			extractionFields.add(rigidArea, gbc_rigidArea);
+			add(rigidArea, gbc_rigidArea);
 		}
 	}
 	
-	void saveLoadedParser(ConfiguredLogParser loadedParser) {
+	/* (non-Javadoc)
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
+	 */
+	@Override
+	public void saveLoadedParser(ConfiguredLogParser loadedParser) {
 		if (loadedParser != null) {
 			loadedParser.setOccTimeIdx((Integer) occTimeGroupCombo.getSelectedItem());
 			loadedParser.setOccTimeFormatString(occTimeFormatString.getText());
@@ -289,7 +297,11 @@ public class ServStatExtractionFields extends JPanel {
 		}
 	}
 
-	void enableDetailFields(boolean b) {
+	/* (non-Javadoc)
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#enableDetailFields(boolean)
+	 */
+	@Override
+	public void enableDetailFields(boolean b) {
 		occTimeGroupCombo.setEnabled(b);
 		occTimeFormatString.setEnabled(b);
 		occTimeLanguage.setEnabled(b);
@@ -300,7 +312,11 @@ public class ServStatExtractionFields extends JPanel {
 		userGroupBox.setEnabled(b);
 	}
 
-	protected void loadEditingFields(ConfiguredLogParser logParser) {
+	/* (non-Javadoc)
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
+	 */
+	@Override
+	public void loadEditingFields(ConfiguredLogParser logParser) {
 		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
 		occTimeFormatString.setText(logParser.getOccTimeFormatString());
 		occTimeLanguage.setText(logParser.getOccTimeLanguage());
@@ -311,11 +327,19 @@ public class ServStatExtractionFields extends JPanel {
 		userGroupBox.setSelectedItem(logParser.getUserIdx());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#removeErrorMarks()
+	 */
+	@Override
 	public void removeErrorMarks() {
 		occTimeFormatString.setBackground(standardBackgroundCol);
 		occTimeLanguage.setBackground(standardBackgroundCol);
 		serviceExcludeField.setBackground(standardBackgroundCol);
 		conversionFactorField.setBackground(standardBackgroundCol);
 	}
-	
+
+	public static FileTypeDescriptor createTypeDescriptor(final ParserConfigDialog configDialog) {
+		ServiceResponseExtractionFields extractionFields = new ServiceResponseExtractionFields(configDialog);
+		return new FileTypeDescriptor(extractionFields, extractionFields, "Service Calls and Response Times");
+	}
 }

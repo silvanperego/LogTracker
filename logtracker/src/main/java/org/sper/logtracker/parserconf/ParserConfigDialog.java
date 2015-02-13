@@ -47,23 +47,11 @@ import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogParser;
 
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
 public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	
-	static class VerifyingPart {
-		private JComponent component;
-		private InputVerifier inputVerifier;
-
-		VerifyingPart(JComponent component, InputVerifier inputVerifier) {
-			super();
-			this.component = component;
-			this.inputVerifier = inputVerifier;
-		}
-		
-		boolean verify() {
-			return inputVerifier.verify(component);
-		}
-	}
-
 	private class PatternInputVerifier extends InputVerifier {
 		
 		private boolean nullable;
@@ -119,7 +107,11 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JButton btnSave;
 	private JButton btnLoadFromFile;
 	private Configuration config;
-	private ServStatExtractionFields extractionFields;
+	private ExtractionFieldHandler extractionFields;
+	private JLabel lblLogFileType;
+	private JComboBox logFileTypeCombo;
+	private DefaultComboBoxModel logFileTypeComboModel;
+	private JPanel dataExtractionPanel;
 	/**
 	 * Create the dialog.
 	 * @param parserSelectionModel 
@@ -197,7 +189,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			}
 		}
 		{
-			JPanel dataExtractionPanel = new JPanel();
+			dataExtractionPanel = new JPanel();
 			contentPanel.add(dataExtractionPanel, BorderLayout.SOUTH);
 			dataExtractionPanel.setLayout(new BoxLayout(dataExtractionPanel, BoxLayout.Y_AXIS));
 			{
@@ -206,17 +198,38 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 				editFields.setAlignmentX(Component.LEFT_ALIGNMENT);
 				GridBagLayout gbl_editFields = new GridBagLayout();
 				gbl_editFields.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-				gbl_editFields.rowHeights = new int[]{0, 0};
-				gbl_editFields.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0};
-				gbl_editFields.rowWeights = new double[]{1.0, 0.0};
+				gbl_editFields.rowHeights = new int[]{0, 0, 0};
+				gbl_editFields.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 0.0};
+				gbl_editFields.rowWeights = new double[]{0.0, 1.0, 0.0};
 				editFields.setLayout(gbl_editFields);
+				{
+					lblLogFileType = new JLabel("Log File Type");
+					GridBagConstraints gbc_lblLogFileType = new GridBagConstraints();
+					gbc_lblLogFileType.anchor = GridBagConstraints.WEST;
+					gbc_lblLogFileType.insets = new Insets(0, 0, 5, 5);
+					gbc_lblLogFileType.gridx = 0;
+					gbc_lblLogFileType.gridy = 0;
+					editFields.add(lblLogFileType, gbc_lblLogFileType);
+				}
+				{
+					logFileTypeCombo = new JComboBox();
+					logFileTypeComboModel = new DefaultComboBoxModel();
+					logFileTypeCombo.setModel(logFileTypeComboModel);
+					GridBagConstraints gbc_logFileTypeCombo = new GridBagConstraints();
+					gbc_logFileTypeCombo.gridwidth = 4;
+					gbc_logFileTypeCombo.insets = new Insets(0, 0, 5, 5);
+					gbc_logFileTypeCombo.fill = GridBagConstraints.HORIZONTAL;
+					gbc_logFileTypeCombo.gridx = 1;
+					gbc_logFileTypeCombo.gridy = 0;
+					editFields.add(logFileTypeCombo, gbc_logFileTypeCombo);
+				}
 				{
 					JLabel lblLines = new JLabel("Lines");
 					GridBagConstraints gbc_lblLines = new GridBagConstraints();
 					gbc_lblLines.anchor = GridBagConstraints.WEST;
 					gbc_lblLines.insets = new Insets(0, 0, 5, 5);
 					gbc_lblLines.gridx = 0;
-					gbc_lblLines.gridy = 0;
+					gbc_lblLines.gridy = 1;
 					editFields.add(lblLines, gbc_lblLines);
 				}
 				{
@@ -225,7 +238,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					gbc_inclusionTypePanel.insets = new Insets(0, 0, 5, 5);
 					gbc_inclusionTypePanel.anchor = GridBagConstraints.WEST;
 					gbc_inclusionTypePanel.gridx = 1;
-					gbc_inclusionTypePanel.gridy = 0;
+					gbc_inclusionTypePanel.gridy = 1;
 					editFields.add(inclusionTypePanel, gbc_inclusionTypePanel);
 					inclusionTypePanel.setLayout(new GridLayout(0, 1, 0, 0));
 					{
@@ -248,7 +261,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					gbc_lblPattern.anchor = GridBagConstraints.WEST;
 					gbc_lblPattern.insets = new Insets(0, 0, 5, 5);
 					gbc_lblPattern.gridx = 2;
-					gbc_lblPattern.gridy = 0;
+					gbc_lblPattern.gridy = 1;
 					editFields.add(lblPattern, gbc_lblPattern);
 				}
 				{
@@ -259,7 +272,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					gbc_inclusionPattern.insets = new Insets(0, 0, 5, 5);
 					gbc_inclusionPattern.fill = GridBagConstraints.HORIZONTAL;
 					gbc_inclusionPattern.gridx = 3;
-					gbc_inclusionPattern.gridy = 0;
+					gbc_inclusionPattern.gridy = 1;
 					PatternInputVerifier inputVerifier = new PatternInputVerifier(true);
 					inclusionPattern.setInputVerifier(inputVerifier);
 					addVerifier(new VerifyingPart(inclusionPattern, inputVerifier));
@@ -272,7 +285,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					gbc_lblAre.anchor = GridBagConstraints.WEST;
 					gbc_lblAre.insets = new Insets(0, 0, 5, 5);
 					gbc_lblAre.gridx = 4;
-					gbc_lblAre.gridy = 0;
+					gbc_lblAre.gridy = 1;
 					editFields.add(lblAre, gbc_lblAre);
 				}
 				{
@@ -281,7 +294,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					gbc_panel.anchor = GridBagConstraints.WEST;
 					gbc_panel.insets = new Insets(0, 0, 5, 0);
 					gbc_panel.gridx = 5;
-					gbc_panel.gridy = 0;
+					gbc_panel.gridy = 1;
 					editFields.add(panel, gbc_panel);
 					panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 					{
@@ -302,20 +315,19 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					JLabel lblExtractionPattern = new JLabel("Extraction Pattern");
 					GridBagConstraints gbc_lblExtractionPattern = new GridBagConstraints();
 					gbc_lblExtractionPattern.anchor = GridBagConstraints.EAST;
-					gbc_lblExtractionPattern.insets = new Insets(0, 0, 5, 5);
+					gbc_lblExtractionPattern.insets = new Insets(0, 0, 0, 5);
 					gbc_lblExtractionPattern.gridx = 0;
-					gbc_lblExtractionPattern.gridy = 1;
+					gbc_lblExtractionPattern.gridy = 2;
 					editFields.add(lblExtractionPattern, gbc_lblExtractionPattern);
 				}
 				{
 					JScrollPane extractScrollPane = new JScrollPane();
 					extractScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 					GridBagConstraints gbc_extractScrollPane = new GridBagConstraints();
-					gbc_extractScrollPane.insets = new Insets(0, 0, 5, 0);
 					gbc_extractScrollPane.fill = GridBagConstraints.BOTH;
 					gbc_extractScrollPane.gridwidth = 5;
 					gbc_extractScrollPane.gridx = 1;
-					gbc_extractScrollPane.gridy = 1;
+					gbc_extractScrollPane.gridy = 2;
 					editFields.add(extractScrollPane, gbc_extractScrollPane);
 					{
 						dataExtractionPatField = new JTextArea();
@@ -333,14 +345,11 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 				Component verticalStrut = Box.createVerticalStrut(12);
 				dataExtractionPanel.add(verticalStrut);
 			}
-			extractionFields = new ServStatExtractionFields(this);
-			dataExtractionPanel.add(extractionFields);
 			{
 				errorText = new JLabel("");
 				errorText.setForeground(Color.RED);
 				dataExtractionPanel.add(errorText);
 			}
-			enableDetailFields(false);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -462,6 +471,17 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		config.registerModule(this);
 		enableComponents();
 	}
+	
+	public void setLogFileType(List<FileTypeDescriptor> fileTypes) {
+		for (FileTypeDescriptor typeDescriptor : fileTypes) {
+			logFileTypeComboModel.addElement(typeDescriptor);
+		}
+		logFileTypeCombo.setSelectedIndex(0);
+		FileTypeDescriptor desc = (FileTypeDescriptor)logFileTypeCombo.getSelectedItem();
+		extractionFields = desc.getExtractionFieldHandler();
+		dataExtractionPanel.add(desc.getExtractionFieldPanel());
+		enableDetailFields(false);
+	}
 
 	protected void saveLoadedParser() {
 		if (loadedParser != null) {
@@ -478,7 +498,8 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private void enableDetailFields(boolean b) {
 		inclusionPattern.setEnabled(b);
 		dataExtractionPatField.setEnabled(b);
-		extractionFields.setEnabled(b);
+		if (extractionFields != null)
+			extractionFields.enableDetailFields(b);
 	}
 
 	protected void loadEditingFields(ConfiguredLogParser logParser) {
@@ -498,7 +519,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		setError(null);
 	}
 	
-	void setError(String txt) {
+	public void setError(String txt) {
 		errorText.setText(txt);
 		enableComponents();
 	}
@@ -507,7 +528,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		return errorText.getText() != null && !errorText.getText().isEmpty();
 	}
 	
-	void addVerifier(VerifyingPart vpart) {
+	public void addVerifier(VerifyingPart vpart) {
 		verifierList.add(vpart);
 	}
 	
