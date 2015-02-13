@@ -362,7 +362,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 
 					public void actionPerformed(ActionEvent e) {
 						saveLoadedParser();
-						ConfiguredLogParser logParser = new ConfiguredLogParser("New Parser");
+						ConfiguredLogParser logParser = extractionFields.createParser("New Parser");
 						logParser.setEditable(true);
 						int newRowIdx = parserConfigModel.addParser(logParser);
 						logParserTable.getSelectionModel().setSelectionInterval(newRowIdx, newRowIdx);

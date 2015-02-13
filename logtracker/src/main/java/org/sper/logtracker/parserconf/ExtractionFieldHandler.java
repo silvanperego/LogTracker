@@ -4,12 +4,14 @@ import org.sper.logtracker.logreader.ConfiguredLogParser;
 
 public interface ExtractionFieldHandler {
 
-	public abstract void saveLoadedParser(ConfiguredLogParser loadedParser);
+	void saveLoadedParser(ConfiguredLogParser loadedParser);
 
-	public abstract void enableDetailFields(boolean b);
+	void enableDetailFields(boolean b);
 
-	public abstract void loadEditingFields(ConfiguredLogParser logParser);
+	void loadEditingFields(ConfiguredLogParser logParser);
 
-	public abstract void removeErrorMarks();
-
+	void removeErrorMarks();
+	
+	ConfiguredLogParser createParser(String parserName);
+	
 }

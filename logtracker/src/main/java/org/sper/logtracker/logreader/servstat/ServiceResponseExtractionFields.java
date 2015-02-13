@@ -284,7 +284,8 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void saveLoadedParser(ConfiguredLogParser loadedParser) {
+	public void saveLoadedParser(ConfiguredLogParser parser) {
+		ServiceResponseLogParser loadedParser = (ServiceResponseLogParser) parser;
 		if (loadedParser != null) {
 			loadedParser.setOccTimeIdx((Integer) occTimeGroupCombo.getSelectedItem());
 			loadedParser.setOccTimeFormatString(occTimeFormatString.getText());
@@ -316,7 +317,8 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void loadEditingFields(ConfiguredLogParser logParser) {
+	public void loadEditingFields(ConfiguredLogParser parser) {
+		ServiceResponseLogParser logParser = (ServiceResponseLogParser) parser;
 		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
 		occTimeFormatString.setText(logParser.getOccTimeFormatString());
 		occTimeLanguage.setText(logParser.getOccTimeLanguage());
@@ -341,5 +343,10 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	public static FileTypeDescriptor createTypeDescriptor(final ParserConfigDialog configDialog) {
 		ServiceResponseExtractionFields extractionFields = new ServiceResponseExtractionFields(configDialog);
 		return new FileTypeDescriptor(extractionFields, extractionFields, "Service Calls and Response Times");
+	}
+
+	@Override
+	public ConfiguredLogParser createParser(String parserName) {
+		return new ServiceResponseLogParser(parserName);
 	}
 }

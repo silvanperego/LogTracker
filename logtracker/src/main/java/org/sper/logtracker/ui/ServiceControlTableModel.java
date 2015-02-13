@@ -83,6 +83,7 @@ public class ServiceControlTableModel extends AbstractTableModel {
 		createOrReplaceTableRow(obj);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Vector getColumnIdentifiers() {
 		return columnIdentifiers;
 	}

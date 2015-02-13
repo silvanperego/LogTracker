@@ -31,7 +31,7 @@ public class LogParserList extends ArrayList<ConfiguredLogParser> {
 			}
 		// Jetzt Parser mit diesem Namen hinzufügen.
 		logParser.setName(name);
-		if (get(size() - 1).getName() != null)
+		if (isEmpty() || get(size() - 1).getName() != null)
 			add(logParser);
 		else
 			add(size() - 1, logParser);

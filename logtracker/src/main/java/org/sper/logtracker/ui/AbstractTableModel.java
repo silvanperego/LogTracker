@@ -8,6 +8,8 @@ import org.sper.logtracker.stats.ServiceStats;
 
 public abstract class AbstractTableModel extends DefaultTableModel {
 
+	private static final long serialVersionUID = 1L;
+
 	public AbstractTableModel() {
 		super();
 	}
@@ -16,7 +18,7 @@ public abstract class AbstractTableModel extends DefaultTableModel {
 		super(rowCount, columnCount);
 	}
 
-	public AbstractTableModel(Vector columnNames, int rowCount) {
+	public AbstractTableModel(@SuppressWarnings("rawtypes") Vector columnNames, int rowCount) {
 		super(columnNames, rowCount);
 	}
 
@@ -24,6 +26,7 @@ public abstract class AbstractTableModel extends DefaultTableModel {
 		super(columnNames, rowCount);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public AbstractTableModel(Vector data, Vector columnNames) {
 		super(data, columnNames);
 	}

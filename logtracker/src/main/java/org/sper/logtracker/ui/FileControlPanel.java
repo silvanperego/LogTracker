@@ -216,10 +216,11 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		obsvalPanel.add(lblLogFileParser);
 		
 		logFileFormatBox = new JComboBox();
-		parserModel = new ParserSelectionModel();
+		final LogFileTypeCatalog logFileTypeCatalog = new LogFileTypeCatalog();
+		parserModel = new ParserSelectionModel(logFileTypeCatalog);
 		logFileFormatBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				if (logFileFormatBox.getSelectedItem() == parserModel.getConfigureItem()) {
+				if (logFileFormatBox.getSelectedItem() == logFileTypeCatalog.getConfigureItem()) {
 					ParserConfigDialog dialog = new ParserConfigDialog(parserModel);
 					dialog.setLogFileType(Arrays.asList(ServiceResponseExtractionFields.createTypeDescriptor(dialog)));
 					dialog.setVisible(true);

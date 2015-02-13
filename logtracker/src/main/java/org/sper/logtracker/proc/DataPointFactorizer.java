@@ -7,6 +7,7 @@ public class DataPointFactorizer<T extends DataPoint> extends AbstractDataListen
 	
 	private Factor service = new Factor();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void receiveData(RawDataPoint data) {
 		DataPoint dp = new DataPoint(service.addString(data.service), data.occTime, data.value);
