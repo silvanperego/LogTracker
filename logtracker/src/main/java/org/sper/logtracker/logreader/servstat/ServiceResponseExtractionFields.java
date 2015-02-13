@@ -24,7 +24,6 @@ import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.parserconf.VerifyingPart;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler {
 
@@ -38,6 +37,8 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	private JTextField serviceExcludeField;
 	private JComboBox userGroupBox;
 	private Color standardBackgroundCol;
+	private InputVerifier occTimeVerifier;
+	private InputVerifier conversionFactorVerifier;
 
 	
 	public ServiceResponseExtractionFields(final ParserConfigDialog configDialog) {
@@ -86,7 +87,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
 		}
 		{
-			InputVerifier inputVerifier = new InputVerifier() {
+			occTimeVerifier = new InputVerifier() {
 				
 				@Override
 				public boolean verify(JComponent input) {
@@ -123,8 +124,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 				standardBackgroundCol = occTimeFormatString.getBackground();
 				occTimePanel.add(occTimeFormatString);
 				occTimeFormatString.setToolTipText("The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
-				occTimeFormatString.setInputVerifier(inputVerifier);
-				configDialog.addVerifier(new VerifyingPart(occTimeFormatString, inputVerifier));
+				occTimeFormatString.setInputVerifier(occTimeVerifier);
 				{
 					JLabel lblLanguage = new JLabel("Language:");
 					occTimePanel.add(lblLanguage);
@@ -229,7 +229,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			gbc_conversionFactorField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_conversionFactorField.gridx = 4;
 			gbc_conversionFactorField.gridy = 2;
-			InputVerifier inputVerifier = new InputVerifier() {
+			conversionFactorVerifier = new InputVerifier() {
 				
 				private final Pattern floatPat = Pattern.compile("\\d*(?:\\.\\d*)?");
 				
@@ -246,8 +246,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 					return result;
 				}
 			};
-			conversionFactorField.setInputVerifier(inputVerifier);
-			configDialog.addVerifier(new VerifyingPart(conversionFactorField, inputVerifier));
+			conversionFactorField.setInputVerifier(conversionFactorVerifier);
 			add(conversionFactorField, gbc_conversionFactorField);
 		}
 		{
@@ -342,11 +341,21 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 
 	public static FileTypeDescriptor createTypeDescriptor(final ParserConfigDialog configDialog) {
 		ServiceResponseExtractionFields extractionFields = new ServiceResponseExtractionFields(configDialog);
-		return new FileTypeDescriptor(extractionFields, extractionFields, "Service Calls and Response Times");
+		return new FileTypeDescriptor(extractionFields, extractionFields, ServiceResponseLogParser.LOG_FILE_TYPE_NAME);
 	}
 
 	@Override
 	public ConfiguredLogParser createParser(String parserName) {
 		return new ServiceResponseLogParser(parserName);
+	}
+
+	@Override
+	public ConfiguredLogParser convertLogParser(ConfiguredLogParser configuredLogParser) {
+		return new ServiceResponseLogParser(configuredLogParser);
+	}
+
+	@Override
+	public boolean verifyFormDataIsValid() {
+		return occTimeVerifier.verify(occTimeFormatString) && conversionFactorVerifier.verify(conversionFactorField);
 	}
 }

@@ -22,7 +22,6 @@ import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.parserconf.VerifyingPart;
 
 public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldHandler {
 
@@ -32,6 +31,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	private JTextField occTimeLanguage;
 	private JComboBox severityComboBox;
 	private Color standardBackgroundCol;
+	private InputVerifier occTimeVerifier;
 
 	
 	public ErrorLogExtractionFields(final ParserConfigDialog configDialog) {
@@ -80,7 +80,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
 		}
 		{
-			InputVerifier inputVerifier = new InputVerifier() {
+			occTimeVerifier = new InputVerifier() {
 				
 				@Override
 				public boolean verify(JComponent input) {
@@ -117,8 +117,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 				standardBackgroundCol = occTimeFormatString.getBackground();
 				occTimePanel.add(occTimeFormatString);
 				occTimeFormatString.setToolTipText("The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
-				occTimeFormatString.setInputVerifier(inputVerifier);
-				configDialog.addVerifier(new VerifyingPart(occTimeFormatString, inputVerifier));
+				occTimeFormatString.setInputVerifier(occTimeVerifier);
 				{
 					JLabel lblLanguage = new JLabel("Language:");
 					occTimePanel.add(lblLanguage);
@@ -201,11 +200,22 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 
 	public static FileTypeDescriptor createTypeDescriptor(final ParserConfigDialog configDialog) {
 		ErrorLogExtractionFields extractionFields = new ErrorLogExtractionFields(configDialog);
-		return new FileTypeDescriptor(extractionFields, extractionFields, "Service Calls and Response Times");
+		return new FileTypeDescriptor(extractionFields, extractionFields, ErrorLogParser.LOG_FILE_TYPE_NAME);
 	}
 
 	@Override
 	public ConfiguredLogParser createParser(String parserName) {
 		return new ErrorLogParser(parserName);
+	}
+
+	@Override
+	public ConfiguredLogParser convertLogParser(
+			ConfiguredLogParser configuredLogParser) {
+		return new ErrorLogParser(configuredLogParser);
+	}
+
+	@Override
+	public boolean verifyFormDataIsValid() {
+		return occTimeVerifier.verify(occTimeFormatString);
 	}
 }

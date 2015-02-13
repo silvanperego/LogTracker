@@ -13,5 +13,9 @@ public interface ExtractionFieldHandler {
 	void removeErrorMarks();
 	
 	ConfiguredLogParser createParser(String parserName);
+
+	ConfiguredLogParser convertLogParser(ConfiguredLogParser configuredLogParser);
+
+	boolean verifyFormDataIsValid();
 	
 }

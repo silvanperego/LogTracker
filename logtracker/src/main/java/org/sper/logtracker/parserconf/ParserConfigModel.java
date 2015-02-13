@@ -84,5 +84,11 @@ public class ParserConfigModel extends AbstractTableModel {
 	public void saveInSelectionModel() {
 		parserSelectionModel.saveInSelectionModel(logParserList.subList(2, logParserList.size()));
 	}
+	
+	public ConfiguredLogParser replaceRow(int rowIdx, ExtractionFieldHandler selectedItem) {
+		ConfiguredLogParser convertLogParser = selectedItem.convertLogParser(logParserList.get(rowIdx));
+		logParserList.set(rowIdx, convertLogParser);
+		return convertLogParser;
+	}
 
 }

@@ -27,13 +27,12 @@ public class FileTypeDescriptor {
 	 * Konstruktor.
 	 * @param extractionFieldPanel
 	 * @param extractionFieldHandler
-	 * @param toString
 	 */
 	public FileTypeDescriptor(JPanel extractionFieldPanel,
-			ExtractionFieldHandler extractionFieldHandler, String toString) {
+			ExtractionFieldHandler extractionFieldHandler, String fileTypeName) {
 		this.extractionFieldPanel = extractionFieldPanel;
 		this.extractionFieldHandler = extractionFieldHandler;
-		this.toString = toString;
+		this.toString = fileTypeName;
 	}
 
 	public JPanel getExtractionFieldPanel() {

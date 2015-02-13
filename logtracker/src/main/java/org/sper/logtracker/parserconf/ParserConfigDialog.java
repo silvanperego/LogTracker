@@ -49,6 +49,8 @@ import org.sper.logtracker.logreader.LogParser;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	
@@ -146,6 +148,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 									int selRowIdx = logParserTable.getSelectedRow();
 									parserConfigModel.deleteRow(selRowIdx);
 									isNewParser = false;
+									loadedParser = null;
 									super.changeSelection(rowIndex, columnIndex, toggle, extend);
 								}
 							} else if (inError()) {
@@ -167,13 +170,15 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					
 					@Override
 					public void valueChanged(ListSelectionEvent e) {
-						saveLoadedParser();
-						loadedParser = null;
-						int[] selectedRows = logParserTable.getSelectedRows();
-						if (selectedRows.length == 1)
-							loadEditingFields(parserConfigModel.getParser(selectedRows[0]));
-						removeErrorMarks();
-						enableComponents();
+						if (!e.getValueIsAdjusting()) {
+							saveLoadedParser();
+							loadedParser = null;
+							int[] selectedRows = logParserTable.getSelectedRows();
+							if (selectedRows.length == 1)
+								loadEditingFields(parserConfigModel.getParser(selectedRows[0]));
+							removeErrorMarks();
+							enableComponents();
+						}
 					}
 				});
 				logParserTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -213,6 +218,16 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 				}
 				{
 					logFileTypeCombo = new JComboBox();
+					logFileTypeCombo.addItemListener(new ItemListener() {
+						public void itemStateChanged(ItemEvent e) {
+							if (e.getStateChange() == ItemEvent.SELECTED) {
+								setLogFileType();
+								if (loadedParser != null)
+									loadedParser = parserConfigModel.replaceRow(logParserTable.getSelectedRow(), ((FileTypeDescriptor) logFileTypeCombo.getSelectedItem()).getExtractionFieldHandler());
+								validate();
+							}
+						}
+					});
 					logFileTypeComboModel = new DefaultComboBoxModel();
 					logFileTypeCombo.setModel(logFileTypeComboModel);
 					GridBagConstraints gbc_logFileTypeCombo = new GridBagConstraints();
@@ -472,15 +487,22 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		enableComponents();
 	}
 	
-	public void setLogFileType(List<FileTypeDescriptor> fileTypes) {
+	public void setLogFileTypeList(List<FileTypeDescriptor> fileTypes) {
 		for (FileTypeDescriptor typeDescriptor : fileTypes) {
 			logFileTypeComboModel.addElement(typeDescriptor);
 		}
 		logFileTypeCombo.setSelectedIndex(0);
+		setLogFileType();
+		enableDetailFields(false);
+	}
+
+	private void setLogFileType() {
 		FileTypeDescriptor desc = (FileTypeDescriptor)logFileTypeCombo.getSelectedItem();
 		extractionFields = desc.getExtractionFieldHandler();
-		dataExtractionPanel.add(desc.getExtractionFieldPanel());
-		enableDetailFields(false);
+		if (dataExtractionPanel.getComponentCount() == 4) {
+			dataExtractionPanel.remove(2);
+		}
+		dataExtractionPanel.add(desc.getExtractionFieldPanel(), 2);
 	}
 
 	protected void saveLoadedParser() {
@@ -502,7 +524,14 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			extractionFields.enableDetailFields(b);
 	}
 
-	protected void loadEditingFields(ConfiguredLogParser logParser) {
+	private void loadEditingFields(ConfiguredLogParser logParser) {
+		for (int i = 0; i < logFileTypeCombo.getItemCount(); i++) {
+			if (logFileTypeCombo.getItemAt(i).toString().equals(logParser.getLogFileTypeName())) {
+				logFileTypeCombo.setSelectedIndex(i);
+				extractionFields = ((FileTypeDescriptor) logFileTypeCombo.getSelectedItem()).getExtractionFieldHandler();
+				break;
+			}
+		}
 		(logParser.isIncludeLines() ? rdbtnIncluded : rdbtnExcluded).setSelected(true);
 		(logParser.isIncludeContaining() ? rdbtnContaining : rdbtnWith).setSelected(true);
 		inclusionPattern.setText(logParser.getIncludeExcludePattern() != null ? logParser.getIncludeExcludePattern().pattern() : null);
@@ -512,10 +541,10 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		editable = logParser.isEditable();
 	}
 
-	public void removeErrorMarks() {
+	private void removeErrorMarks() {
 		inclusionPattern.setBackground(standardBackgroundCol);
 		dataExtractionPatField.setBackground(standardBackgroundCol);
-		extractionFields.loadEditingFields(loadedParser);
+		extractionFields.removeErrorMarks();
 		setError(null);
 	}
 	
@@ -528,7 +557,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		return errorText.getText() != null && !errorText.getText().isEmpty();
 	}
 	
-	public void addVerifier(VerifyingPart vpart) {
+	void addVerifier(VerifyingPart vpart) {
 		verifierList.add(vpart);
 	}
 	
@@ -536,6 +565,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		boolean valid = true;
 		for (VerifyingPart part : verifierList)
 			valid &= part.verify();
+		valid &= extractionFields.verifyFormDataIsValid();
 		if (!valid)
 			setError("Configuration is not valid");
 		return valid;
@@ -556,6 +586,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			editableConfigs &= logParser.isEditable();
 		}
 		btnSave.setEnabled(editableConfigs);
+		logFileTypeCombo.setEnabled(isNewParser);
 		enableDetailFields(singleSelected && editable);
 	}
 

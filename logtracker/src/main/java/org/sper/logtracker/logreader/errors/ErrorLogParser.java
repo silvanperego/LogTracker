@@ -9,18 +9,23 @@ import org.sper.logtracker.logreader.LogLineParser;
 public class ErrorLogParser extends ConfiguredLogParser {
 
 	private static final long serialVersionUID = 1L;
+	public static final String LOG_FILE_TYPE_NAME = "Error Log File";
 	private Integer errorLevelIdx;
 
+	public ErrorLogParser(String parserName) {
+		super(parserName, LOG_FILE_TYPE_NAME);
+	}
+	
+	public ErrorLogParser(ConfiguredLogParser other) {
+		super(other, LOG_FILE_TYPE_NAME);
+	}
+	
 	public Integer getErrorLevelIdx() {
 		return errorLevelIdx;
 	}
 
 	public void setErrorLevelIdx(Integer errorLevel) {
 		this.errorLevelIdx = errorLevel;
-	}
-
-	public ErrorLogParser(String parserName) {
-		super(parserName);
 	}
 
 	@Override

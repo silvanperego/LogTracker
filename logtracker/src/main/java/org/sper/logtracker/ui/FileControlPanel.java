@@ -48,6 +48,7 @@ import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.logreader.errors.ErrorLogExtractionFields;
 import org.sper.logtracker.logreader.servstat.ServiceResponseExtractionFields;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
@@ -222,7 +223,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			public void itemStateChanged(ItemEvent e) {
 				if (logFileFormatBox.getSelectedItem() == logFileTypeCatalog.getConfigureItem()) {
 					ParserConfigDialog dialog = new ParserConfigDialog(parserModel);
-					dialog.setLogFileType(Arrays.asList(ServiceResponseExtractionFields.createTypeDescriptor(dialog)));
+					dialog.setLogFileTypeList(Arrays.asList(ServiceResponseExtractionFields.createTypeDescriptor(dialog), ErrorLogExtractionFields.createTypeDescriptor(dialog)));
 					dialog.setVisible(true);
 					logFileFormatBox.setSelectedItem(null);
 				}

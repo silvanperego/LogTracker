@@ -41,7 +41,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		tomcatAccessLogParser.setResponseTimeFactor(0.001d);
 		tomcatAccessLogParser.setUserIdx(1);
 		// Add a dummy parser, which represents the Parser Config element, at the end of the list
-		configureItem = new ConfiguredLogParser("") {
+		configureItem = new ConfiguredLogParser("", null) {
 			
 			private static final long serialVersionUID = 1L;
 

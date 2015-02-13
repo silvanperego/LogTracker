@@ -10,13 +10,19 @@ import org.sper.logtracker.proc.RawDataPoint;
 public class ServiceResponseLogParser extends ConfiguredLogParser {
 
 	private static final long serialVersionUID = 1L;
+	public static final String LOG_FILE_TYPE_NAME = "Service Calls and Response Times";
 	private String ignoreServiceList;
 	private int serviceIdx;
 	private int responseTimeIdx;
 	private Integer userIdx;
 	private double responseTimeFactor = 1.d;
+	
 	public ServiceResponseLogParser(String parserName) {
-		super(parserName);
+		super(parserName, LOG_FILE_TYPE_NAME);
+	}
+	
+	public ServiceResponseLogParser(ConfiguredLogParser other) {
+		super(other, LOG_FILE_TYPE_NAME);
 	}
 
 	/**

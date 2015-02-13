@@ -22,11 +22,32 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 	private Pattern linePattern, includeExcludePattern;
 	private String parserName;
 	private boolean includeLines, includeContaining, editable;
+	
 	protected String occTimeLanguage;
 	protected int occTimeIdx;
 	protected String dateFormat;
-	public ConfiguredLogParser(String parserName) {
+	private String logFileTypeName;
+	
+	public ConfiguredLogParser(String parserName, String logFileTypeName) {
 		this.parserName = parserName;
+		this.logFileTypeName = logFileTypeName;
+	}
+	
+	/**
+	 * Erstellt einen neuen ConfiguredLogParser und übernimmt die wichtigsten Einträge
+	 * @param orig
+	 */
+	public ConfiguredLogParser(ConfiguredLogParser orig, String logFileTypeName) {
+		linePattern = orig.linePattern;
+		includeExcludePattern = orig.includeExcludePattern;
+		parserName = orig.parserName;
+		includeLines = orig.includeLines;
+		includeContaining = orig.includeContaining;
+		editable = orig.editable;
+		occTimeLanguage = orig.occTimeLanguage;
+		occTimeIdx = orig.occTimeIdx;
+		dateFormat = orig.dateFormat;
+		this.logFileTypeName = logFileTypeName;
 	}
 	
 	public boolean isEditable() {
@@ -36,7 +57,7 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 		this.editable = editable;
 	}
 	/**
-	 * @param linePattern dieses Pattern dient der Identfikation der Werte, welche aus der Log-Zeile extrahiert werden müssen. Die Werte
+	 * @param linePattern dieses Pattern dient der Identifikation der Werte, welche aus der Log-Zeile extrahiert werden müssen. Die Werte
 	 * 	müssen als Regex-Gruppen vorliegen.
 	 */
 	public void setDataExtractionPattern(Pattern linePattern) {
@@ -174,6 +195,10 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 	public void setOccTimeLanguage(String dateLanguage) {
 		this.occTimeLanguage = dateLanguage;
 		occTimeFormatString = null;
+	}
+
+	public String getLogFileTypeName() {
+		return logFileTypeName;
 	}
 
 }
