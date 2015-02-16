@@ -11,7 +11,6 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Box;
@@ -27,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
@@ -46,13 +46,12 @@ import org.sper.logtracker.config.ConfigFileSaveButton;
 import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
-import org.sper.logtracker.erroranalysis.ErrorLogExtractionFields;
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
 import org.sper.logtracker.servstat.ButtonColumn;
-import org.sper.logtracker.servstat.ServiceResponseExtractionFields;
 
 public class FileControlPanel extends JSplitPane implements MessageListener, ConfigurationAware {
 	private static final long serialVersionUID = 1L;
@@ -222,7 +221,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			public void itemStateChanged(ItemEvent e) {
 				if (logFileFormatBox.getSelectedItem() == logFileTypeCatalog.getConfigureItem()) {
 					ParserConfigDialog dialog = new ParserConfigDialog(parserModel);
-					dialog.setLogFileTypeList(Arrays.asList(ServiceResponseExtractionFields.createTypeDescriptor(dialog), ErrorLogExtractionFields.createTypeDescriptor(dialog)));
+					dialog.setLogFileTypeList(logFileTypeCatalog.getParserTypeList(dialog));
 					dialog.setVisible(true);
 					logFileFormatBox.setSelectedItem(null);
 				}
@@ -270,9 +269,12 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		applyFilesButton = new JButton("Apply");
 		outerObsvalPanel.add(applyFilesButton);
 		applyFilesButton.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
-				setupDataPipeLines();
+				try {
+					setupDataPipeLines();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		checkEnableApplyButton();
@@ -401,12 +403,18 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		return conf;
 	}
 
-	void setupDataPipeLines() {
+	void setupDataPipeLines() throws InterruptedException {
+		JTabbedPane tabbedPane = logTracker.getTabbedPane();
+		for (int i = tabbedPane.getTabCount() - 1; i > 0; i--)
+			tabbedPane.remove(i);
+		ConfiguredLogParser logParser = (ConfiguredLogParser) logFileFormatBox.getSelectedItem();
+		FileTypeDescriptor logFileTypeDescriptor = logParser.getLogFileTypeDescriptor();
+		logFileTypeDescriptor.createAndRegisterTabs(logTracker, logParser);
 		List<String> fname = new ArrayList<String>();
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++) {
 			fname.add((String) logFileTableModel.getValueAt(i, 0));
 		}
-		logTracker.setupDataPipeLines(fname, (LogParser) logFileFormatBox.getSelectedItem());
+		logFileTypeDescriptor.setupDataPipeLines(fname, logParser);
 	}
 
 	public Long getObsStart() {

@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogLineParser;
+import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
 public class ErrorLogParser extends ConfiguredLogParser {
 
@@ -12,12 +13,12 @@ public class ErrorLogParser extends ConfiguredLogParser {
 	public static final String LOG_FILE_TYPE_NAME = "Error Log File";
 	private Integer errorLevelIdx;
 
-	public ErrorLogParser(String parserName) {
-		super(parserName, LOG_FILE_TYPE_NAME);
+	public ErrorLogParser(String parserName, FileTypeDescriptor fileTypeDescriptor) {
+		super(parserName, fileTypeDescriptor);
 	}
 	
-	public ErrorLogParser(ConfiguredLogParser other) {
-		super(other, LOG_FILE_TYPE_NAME);
+	public ErrorLogParser(ConfiguredLogParser other, FileTypeDescriptor fileTypeDescriptor) {
+		super(other, fileTypeDescriptor);
 	}
 	
 	public Integer getErrorLevelIdx() {

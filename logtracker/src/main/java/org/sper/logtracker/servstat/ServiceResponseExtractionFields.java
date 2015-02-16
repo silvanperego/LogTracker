@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
-import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler {
@@ -337,21 +336,6 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		occTimeLanguage.setBackground(standardBackgroundCol);
 		serviceExcludeField.setBackground(standardBackgroundCol);
 		conversionFactorField.setBackground(standardBackgroundCol);
-	}
-
-	public static FileTypeDescriptor createTypeDescriptor(final ParserConfigDialog configDialog) {
-		ServiceResponseExtractionFields extractionFields = new ServiceResponseExtractionFields(configDialog);
-		return new FileTypeDescriptor(extractionFields, extractionFields, ServiceResponseLogParser.LOG_FILE_TYPE_NAME);
-	}
-
-	@Override
-	public ConfiguredLogParser createParser(String parserName) {
-		return new ServiceResponseLogParser(parserName);
-	}
-
-	@Override
-	public ConfiguredLogParser convertLogParser(ConfiguredLogParser configuredLogParser) {
-		return new ServiceResponseLogParser(configuredLogParser);
 	}
 
 	@Override

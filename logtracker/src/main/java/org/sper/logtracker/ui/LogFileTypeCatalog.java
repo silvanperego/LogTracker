@@ -6,19 +6,25 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.sper.logtracker.erroranalysis.ErrorLogTypeDescriptor;
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.DefaultParserProvider;
+import org.sper.logtracker.parserconf.FileTypeDescriptor;
+import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.servstat.ServiceResponseFileTypeDescriptor;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 
 
 public class LogFileTypeCatalog implements DefaultParserProvider {
 
+	private static final ErrorLogTypeDescriptor ERROR_LOG_TYPE_DESCRIPTOR = new ErrorLogTypeDescriptor();
+	private static final ServiceResponseFileTypeDescriptor SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR = new ServiceResponseFileTypeDescriptor();
 	private List<ConfiguredLogParser> defaultParserList;
 	private ConfiguredLogParser configureItem;
 	
 	LogFileTypeCatalog() {
-		ServiceResponseLogParser wlsAccessLogParser = new ServiceResponseLogParser("WebLogic AppServer Access-Log");
+		ServiceResponseLogParser wlsAccessLogParser = new ServiceResponseLogParser("WebLogic AppServer Access-Log", SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
 		wlsAccessLogParser.setIncludeExcludePattern(Pattern.compile("^#"));
 		wlsAccessLogParser.setIncludeLines(false);
 		wlsAccessLogParser.setIncludeContaining(true);
@@ -28,7 +34,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		wlsAccessLogParser.setServiceIdx(2);
 		wlsAccessLogParser.setResponseTimeIdx(3);
 		wlsAccessLogParser.setResponseTimeFactor(1.d);
-		ServiceResponseLogParser tomcatAccessLogParser = new ServiceResponseLogParser("Tomcat \"common\" Access-Log");
+		ServiceResponseLogParser tomcatAccessLogParser = new ServiceResponseLogParser("Tomcat \"common\" Access-Log", SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
 		tomcatAccessLogParser.setIncludeExcludePattern(Pattern.compile("-$"));
 		tomcatAccessLogParser.setIncludeLines(false);
 		tomcatAccessLogParser.setIncludeContaining(true);
@@ -88,6 +94,10 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 	@Override
 	public List<ConfiguredLogParser> getDefaultLogParsers() {
 		return defaultParserList;
+	}
+	
+	public List<FileTypeDescriptor> getParserTypeList(ParserConfigDialog dialog) {
+		return Arrays.asList(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR, ERROR_LOG_TYPE_DESCRIPTOR);
 	}
 
 

@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.sper.logtracker.data.Console;
+import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
 /**
  * Ein generischer Log-Parser, welcher über Konfigurationsparamter auf eine Vielzahl von Log-File-Formaten eingestellt werden kann.
@@ -26,18 +27,18 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 	protected String occTimeLanguage;
 	protected int occTimeIdx;
 	protected String dateFormat;
-	private String logFileTypeName;
+	private FileTypeDescriptor logFileTypeDescriptor;
 	
-	public ConfiguredLogParser(String parserName, String logFileTypeName) {
+	public ConfiguredLogParser(String parserName, FileTypeDescriptor logFileTypeDescriptor) {
 		this.parserName = parserName;
-		this.logFileTypeName = logFileTypeName;
+		this.logFileTypeDescriptor = logFileTypeDescriptor;
 	}
 	
 	/**
 	 * Erstellt einen neuen ConfiguredLogParser und übernimmt die wichtigsten Einträge
 	 * @param orig
 	 */
-	public ConfiguredLogParser(ConfiguredLogParser orig, String logFileTypeName) {
+	public ConfiguredLogParser(ConfiguredLogParser orig, FileTypeDescriptor logFileTypeDescriptor) {
 		linePattern = orig.linePattern;
 		includeExcludePattern = orig.includeExcludePattern;
 		parserName = orig.parserName;
@@ -47,7 +48,7 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 		occTimeLanguage = orig.occTimeLanguage;
 		occTimeIdx = orig.occTimeIdx;
 		dateFormat = orig.dateFormat;
-		this.logFileTypeName = logFileTypeName;
+		this.logFileTypeDescriptor = logFileTypeDescriptor;
 	}
 	
 	public boolean isEditable() {
@@ -197,8 +198,8 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 		occTimeFormatString = null;
 	}
 
-	public String getLogFileTypeName() {
-		return logFileTypeName;
+	public FileTypeDescriptor getLogFileTypeDescriptor() {
+		return logFileTypeDescriptor;
 	}
 
 }

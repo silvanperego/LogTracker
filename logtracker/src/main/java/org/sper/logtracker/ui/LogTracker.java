@@ -14,8 +14,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.sper.logtracker.config.Configuration;
-import org.sper.logtracker.logreader.LogParser;
-import org.sper.logtracker.servstat.ServiceStatsTabs;
 
 public class LogTracker {
 
@@ -25,7 +23,6 @@ public class LogTracker {
 	private JTabbedPane tabbedPane;
 	private Configuration configuration = new Configuration();
 	private FileControlPanel fileControlPanel;
-	private ServiceStatsTabs serviceStatsTabs;
 
 	/**
 	 * Launch the application.
@@ -104,7 +101,6 @@ public class LogTracker {
 		fileControlPanel = new FileControlPanel(this, fnameList);
 		tabbedPane.addTab("Config", null, fileControlPanel, null);
 		configuration.registerModule(fileControlPanel);
-		serviceStatsTabs = new ServiceStatsTabs(tabbedPane, this, configuration);
 		if (cfgFile != null) {
 			try {
 				configuration.loadConfiguration(new File(cfgFile));
@@ -114,7 +110,7 @@ public class LogTracker {
 		}
 	}
 
-	Configuration getConfiguration() {
+	public Configuration getConfiguration() {
 		return configuration;
 	}
 
@@ -134,8 +130,8 @@ public class LogTracker {
 		return fileControlPanel;
 	}
 
-	public void setupDataPipeLines(List<String> fname, LogParser selectedItem) {
-		serviceStatsTabs.setupDataPipeLines(fname, selectedItem);
+	public JTabbedPane getTabbedPane() {
+		return tabbedPane;
 	}
 
 }

@@ -1,51 +1,37 @@
 package org.sper.logtracker.parserconf;
 
+import java.util.List;
+
 import javax.swing.JPanel;
+
+import org.sper.logtracker.logreader.ConfiguredLogParser;
+import org.sper.logtracker.ui.LogTracker;
 
 /**
  * Eine Beschreibung einer spezifischen Log-File-Typs, wie z.B. ServiceResponseTime-Logs oder Error-Logs.
  * @author silvan.perego
  */
-public class FileTypeDescriptor {
+public interface FileTypeDescriptor {
+
 
 	/**
-	 * @return ein JPanel mit den Konfigurationsfeldern für diesen Log-File-Type.
+	 * Erstelle die Extraction Fields, in der der Parser-Configuration, die für diesen Typ angemessen sind.
+	 * @param ein JPanel mit den notwendigen ExtractionFields. Das JPanel implementiert das {@link JPanel} Interface.
+	 * @return
 	 */
-	private JPanel extractionFieldPanel;
+	ExtractionFieldHandler createExtractionFieldPanel(ParserConfigDialog parserConfigDialog);
 	
 	/**
-	 * @return ein Handler, welcher die Logik für das extractionFieldPanel zur Verfügung stellt.
+	 * Kreiere die JTabs, die für diesen FileType angemessen sind.
+	 * @param logTracker
+	 * @throws InterruptedException 
 	 */
-	private ExtractionFieldHandler extractionFieldHandler;
+	void createAndRegisterTabs(LogTracker logTracker, ConfiguredLogParser logParser) throws InterruptedException;
 
-	/**
-	 * @return Der Name dieses Log-File-Typs.
-	 */
-	private String toString;
+	ConfiguredLogParser createParser(String string);
 
-	/**
-	 * Konstruktor.
-	 * @param extractionFieldPanel
-	 * @param extractionFieldHandler
-	 */
-	public FileTypeDescriptor(JPanel extractionFieldPanel,
-			ExtractionFieldHandler extractionFieldHandler, String fileTypeName) {
-		this.extractionFieldPanel = extractionFieldPanel;
-		this.extractionFieldHandler = extractionFieldHandler;
-		this.toString = fileTypeName;
-	}
+	ConfiguredLogParser convertLogParser(ConfiguredLogParser configuredLogParser);
 
-	public JPanel getExtractionFieldPanel() {
-		return extractionFieldPanel;
-	}
+	void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser);
 
-	public ExtractionFieldHandler getExtractionFieldHandler() {
-		return extractionFieldHandler;
-	}
-
-	@Override
-	public String toString() {
-		return toString;
-	}
-	
 }

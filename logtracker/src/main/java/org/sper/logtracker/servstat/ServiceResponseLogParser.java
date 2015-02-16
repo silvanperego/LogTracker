@@ -5,24 +5,24 @@ import java.util.regex.Matcher;
 
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogLineParser;
+import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.proc.RawDataPoint;
 
 public class ServiceResponseLogParser extends ConfiguredLogParser {
 
 	private static final long serialVersionUID = 1L;
-	public static final String LOG_FILE_TYPE_NAME = "Service Calls and Response Times";
 	private String ignoreServiceList;
 	private int serviceIdx;
 	private int responseTimeIdx;
 	private Integer userIdx;
 	private double responseTimeFactor = 1.d;
 	
-	public ServiceResponseLogParser(String parserName) {
-		super(parserName, LOG_FILE_TYPE_NAME);
+	public ServiceResponseLogParser(String parserName, FileTypeDescriptor fileTypeDescriptor) {
+		super(parserName, fileTypeDescriptor);
 	}
 	
-	public ServiceResponseLogParser(ConfiguredLogParser other) {
-		super(other, LOG_FILE_TYPE_NAME);
+	public ServiceResponseLogParser(ConfiguredLogParser other, FileTypeDescriptor fileTypeDescriptor) {
+		super(other, fileTypeDescriptor);
 	}
 
 	/**

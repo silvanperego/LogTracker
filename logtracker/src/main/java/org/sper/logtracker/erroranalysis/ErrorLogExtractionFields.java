@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
-import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 
 public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldHandler {
@@ -196,22 +195,6 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	public void removeErrorMarks() {
 		occTimeFormatString.setBackground(standardBackgroundCol);
 		occTimeLanguage.setBackground(standardBackgroundCol);
-	}
-
-	public static FileTypeDescriptor createTypeDescriptor(final ParserConfigDialog configDialog) {
-		ErrorLogExtractionFields extractionFields = new ErrorLogExtractionFields(configDialog);
-		return new FileTypeDescriptor(extractionFields, extractionFields, ErrorLogParser.LOG_FILE_TYPE_NAME);
-	}
-
-	@Override
-	public ConfiguredLogParser createParser(String parserName) {
-		return new ErrorLogParser(parserName);
-	}
-
-	@Override
-	public ConfiguredLogParser convertLogParser(
-			ConfiguredLogParser configuredLogParser) {
-		return new ErrorLogParser(configuredLogParser);
 	}
 
 	@Override

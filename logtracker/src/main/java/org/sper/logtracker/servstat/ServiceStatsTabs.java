@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
-import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.KeepAliveLogReader;
@@ -40,17 +39,20 @@ public class ServiceStatsTabs {
 	private KeepAliveElement terminationPointer;
 	private LogTracker logTracker;
 
-	public ServiceStatsTabs(JTabbedPane tabbedPane, LogTracker logTracker, Configuration configuration) throws InterruptedException {
-		this.tabbedPane = tabbedPane;
+	public ServiceStatsTabs(LogTracker logTracker, ServiceResponseLogParser logParser) throws InterruptedException {
+		this.tabbedPane = logTracker.getTabbedPane();
 		this.logTracker = logTracker;
 		serviceControlPanel = new ServiceControlPanel(this);
 		tabbedPane.addTab("Services/Filter", null, serviceControlPanel, null);
-		configuration.registerModule(serviceControlPanel);
-		userPanel = new UserPanel(this);
-		userPanel.setVisible(false);
-		configuration.registerModule(userPanel);
+		logTracker.getConfiguration().registerModule(serviceControlPanel);
+		if (logParser.providesUsers()) {
+			userPanel = new UserPanel(this);
+			tabbedPane.addTab("Users", userPanel);
+		}
+		logTracker.getConfiguration().registerModule(userPanel);
 		plot = new ServiceScatterPlot();
-		tabbedPane.addTab("Graph", null, plot.getPanel(), null);
+		tabbedPane.addTab("Graph", plot.getPanel());
+		tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, false);
 	}
 
 	public final class ApplyControlAction implements ActionListener {
@@ -58,6 +60,7 @@ public class ServiceStatsTabs {
 			setupDataSeries();
 			tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
 			plot.setMaxRange(20.);
+			tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, true);
 		}
 	}
 
@@ -86,8 +89,6 @@ public class ServiceStatsTabs {
 			factorizer.addListener(serviceStatsCalculator);
 			userPanel.clearTable();
 			if (logParser.providesUsers()) {
-				if (tabbedPane.getTabCount() < 4)
-					tabbedPane.insertTab("Users", null, userPanel, null, 2);
 				factorizer.addListener(new StatsCalculator<UserDataPoint>(factorizer.getUser(), new CategoryExtractor<UserDataPoint>() {
 					@Override
 					public Integer cat(UserDataPoint dp) {

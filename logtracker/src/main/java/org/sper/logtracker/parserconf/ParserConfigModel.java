@@ -57,7 +57,7 @@ public class ParserConfigModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		ConfiguredLogParser logParser = logParserList.get(rowIndex);
-		return columnIndex == 0 ? logParser.getName() : logParser.getLogFileTypeName();
+		return columnIndex == 0 ? logParser.getName() : logParser.getLogFileTypeDescriptor().toString();
 	}
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -88,8 +88,8 @@ public class ParserConfigModel extends AbstractTableModel {
 		parserSelectionModel.saveInSelectionModel(logParserList.subList(2, logParserList.size()));
 	}
 	
-	public ConfiguredLogParser replaceRow(int rowIdx, ExtractionFieldHandler selectedItem) {
-		ConfiguredLogParser convertLogParser = selectedItem.convertLogParser(logParserList.get(rowIdx));
+	public ConfiguredLogParser replaceRow(int rowIdx, FileTypeDescriptor fileTypeDesc) {
+		ConfiguredLogParser convertLogParser = fileTypeDesc.convertLogParser(logParserList.get(rowIdx));
 		logParserList.set(rowIdx, convertLogParser);
 		return convertLogParser;
 	}

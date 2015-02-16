@@ -114,6 +114,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JComboBox logFileTypeCombo;
 	private DefaultComboBoxModel logFileTypeComboModel;
 	private JPanel dataExtractionPanel;
+	private FileTypeDescriptor fileTypeDesc;
 	/**
 	 * Create the dialog.
 	 * @param parserSelectionModel 
@@ -224,7 +225,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 							if (e.getStateChange() == ItemEvent.SELECTED) {
 								setLogFileType();
 								if (loadedParser != null)
-									loadedParser = parserConfigModel.replaceRow(logParserTable.getSelectedRow(), ((FileTypeDescriptor) logFileTypeCombo.getSelectedItem()).getExtractionFieldHandler());
+									loadedParser = parserConfigModel.replaceRow(logParserTable.getSelectedRow(), fileTypeDesc);
 								validate();
 							}
 						}
@@ -378,7 +379,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 
 					public void actionPerformed(ActionEvent e) {
 						saveLoadedParser();
-						ConfiguredLogParser logParser = extractionFields.createParser("New Parser");
+						ConfiguredLogParser logParser = fileTypeDesc.createParser("New Parser");
 						logParser.setEditable(true);
 						int newRowIdx = parserConfigModel.addParser(logParser);
 						logParserTable.getSelectionModel().setSelectionInterval(newRowIdx, newRowIdx);
@@ -501,12 +502,13 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	}
 
 	private void setLogFileType() {
-		FileTypeDescriptor desc = (FileTypeDescriptor)logFileTypeCombo.getSelectedItem();
-		extractionFields = desc.getExtractionFieldHandler();
+		fileTypeDesc = (FileTypeDescriptor)logFileTypeCombo.getSelectedItem();
+		ExtractionFieldHandler panel = fileTypeDesc.createExtractionFieldPanel(this);
+		extractionFields = (ExtractionFieldHandler) panel;
 		if (dataExtractionPanel.getComponentCount() == 4) {
 			dataExtractionPanel.remove(2);
 		}
-		dataExtractionPanel.add(desc.getExtractionFieldPanel(), 2);
+		dataExtractionPanel.add((Component) panel, 2);
 	}
 
 	protected void saveLoadedParser() {
@@ -530,9 +532,9 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 
 	private void loadEditingFields(ConfiguredLogParser logParser) {
 		for (int i = 0; i < logFileTypeCombo.getItemCount(); i++) {
-			if (logFileTypeCombo.getItemAt(i).toString().equals(logParser.getLogFileTypeName())) {
+			if (logFileTypeCombo.getItemAt(i) == logParser.getLogFileTypeDescriptor()) {
 				logFileTypeCombo.setSelectedIndex(i);
-				extractionFields = ((FileTypeDescriptor) logFileTypeCombo.getSelectedItem()).getExtractionFieldHandler();
+				extractionFields = (ExtractionFieldHandler) ((FileTypeDescriptor) logFileTypeCombo.getSelectedItem()).createExtractionFieldPanel(this);
 				break;
 			}
 		}
