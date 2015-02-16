@@ -64,7 +64,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		
 	}
 
-	public ServiceControlPanel(LogTracker logTracker) {
+	public ServiceControlPanel(ServiceStatsTabs serviceStatsTabs) {
 		super();
 		controlTable = new JTable();
 		controlTableModel = new ServiceControlTableModel();
@@ -90,7 +90,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		
 		btnApply = new JButton("Apply");
-		btnApply.addActionListener(logTracker.new ApplyControlAction());
+		btnApply.addActionListener(serviceStatsTabs.new ApplyControlAction());
 		
 		JPanel statMagPanel = new JPanel();
 		FlowLayout fl_statMagPanel = (FlowLayout) statMagPanel.getLayout();

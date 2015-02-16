@@ -27,7 +27,7 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 	private boolean keepConfig = false;
 	private JButton btnApply;
 
-	public UserPanel(LogTracker logTracker) {
+	public UserPanel(ServiceStatsTabs serviceStatsTabs) {
 		userTableModel = new UserTableModel();
 		userTable = new JTable();
 		userTable.setModel(userTableModel);
@@ -49,7 +49,7 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 		
 		btnApply = new JButton("Apply");
-		btnApply.addActionListener(logTracker.new ApplyControlAction());
+		btnApply.addActionListener(serviceStatsTabs.new ApplyControlAction());
 		btnApply.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		btnApply.setHorizontalAlignment(SwingConstants.TRAILING);
 		btnApply.setEnabled(false);
