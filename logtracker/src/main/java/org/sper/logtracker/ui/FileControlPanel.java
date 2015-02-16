@@ -46,8 +46,8 @@ import org.sper.logtracker.config.ConfigFileSaveButton;
 import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
-import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
@@ -417,14 +417,14 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			for (int i = tabbedPane.getTabCount() - 1; i > 0; i--)
 				tabbedPane.remove(i);
 			logTracker.getConfiguration().resetDynamicModules();
-			logFileTypeDescriptor.createAndRegisterTabs(logTracker, logParser);
+			logFileTypeDescriptor.createAndRegisterTabs(logTracker.getTabbedPane(), logTracker.getConfiguration(), logParser);
 			activeLogFileType = logFileTypeDescriptor;
 		}
 		List<String> fname = new ArrayList<String>();
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++) {
 			fname.add((String) logFileTableModel.getValueAt(i, 0));
 		}
-		logFileTypeDescriptor.setupDataPipeLines(fname, logParser);
+		logFileTypeDescriptor.setupDataPipeLines(fname, logParser, getObsStart());
 		logTracker.getConfiguration().resetActiveConfig();
 	}
 

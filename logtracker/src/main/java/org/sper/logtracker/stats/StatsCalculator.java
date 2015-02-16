@@ -11,7 +11,6 @@ import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.data.NewCategoryListener;
 import org.sper.logtracker.proc.DataPoint;
 import org.sper.logtracker.proc.PublishingSemaphore;
-import org.sper.logtracker.servstat.AbstractTableModel;
 
 /**
  * Klassifiziert alle Services eines Data-Frames und erstellt Statistiken für alle Services.

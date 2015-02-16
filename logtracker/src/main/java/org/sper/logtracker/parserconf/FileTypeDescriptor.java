@@ -3,9 +3,9 @@ package org.sper.logtracker.parserconf;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
-import org.sper.logtracker.logreader.ConfiguredLogParser;
-import org.sper.logtracker.ui.LogTracker;
+import org.sper.logtracker.config.Configuration;
 
 /**
  * Eine Beschreibung einer spezifischen Log-File-Typs, wie z.B. ServiceResponseTime-Logs oder Error-Logs.
@@ -26,12 +26,12 @@ public interface FileTypeDescriptor {
 	 * @param logTracker
 	 * @throws InterruptedException 
 	 */
-	void createAndRegisterTabs(LogTracker logTracker, ConfiguredLogParser logParser) throws InterruptedException;
+	void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser logParser) throws InterruptedException;
 
 	ConfiguredLogParser createParser(String string);
 
 	ConfiguredLogParser convertLogParser(ConfiguredLogParser configuredLogParser);
 
-	void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser);
+	void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser, Long obsStart);
 
 }

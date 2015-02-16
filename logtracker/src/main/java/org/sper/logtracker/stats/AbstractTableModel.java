@@ -1,10 +1,8 @@
-package org.sper.logtracker.servstat;
+package org.sper.logtracker.stats;
 
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
-
-import org.sper.logtracker.stats.ServiceStats;
 
 public abstract class AbstractTableModel extends DefaultTableModel {
 

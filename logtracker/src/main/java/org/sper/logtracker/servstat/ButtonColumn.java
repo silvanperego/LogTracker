@@ -15,8 +15,6 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import org.sper.logtracker.ui.LogTracker;
-
 public class ButtonColumn implements TableCellRenderer, TableCellEditor {
 
 	private ActionListener aa;
@@ -41,7 +39,7 @@ public class ButtonColumn implements TableCellRenderer, TableCellEditor {
 
 	public ButtonColumn(ActionListener a) {
 		this.aa = a;
-		delIcon = new ImageIcon(LogTracker.class.getResource("/delFile.png"));
+		delIcon = new ImageIcon(ButtonColumn.class.getResource("/delFile.png"));
 	}
 	
 	private IndexedButton getOrCreateButton(int row) {

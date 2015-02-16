@@ -1,6 +1,7 @@
 package org.sper.logtracker.proc;
 
 import org.sper.logtracker.data.Factor;
+import org.sper.logtracker.data.RawDataPoint;
 
 
 public class UserDataPointFactorizer extends DataPointFactorizer<UserDataPoint> {

@@ -2,11 +2,13 @@ package org.sper.logtracker.erroranalysis;
 
 import java.util.List;
 
-import org.sper.logtracker.logreader.ConfiguredLogParser;
+import javax.swing.JTabbedPane;
+
+import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.ui.LogTracker;
 
 public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 
@@ -22,7 +24,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void createAndRegisterTabs(LogTracker logTracker, ConfiguredLogParser configuredLogParser)
+	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser logParser)
 			throws InterruptedException {
 	}
 
@@ -42,7 +44,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser) {
+	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser, Long obsStart) {
 	}
 
 }

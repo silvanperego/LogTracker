@@ -10,6 +10,7 @@ import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.proc.CategoryCollection;
 import org.sper.logtracker.proc.NewPointExtractor;
 import org.sper.logtracker.servstat.PipelineFactory.PipelineCreator;
+import org.sper.logtracker.stats.AbstractTableModel;
 import org.sper.logtracker.stats.ServiceStats;
 
 public class ServiceControlTableModel extends AbstractTableModel {

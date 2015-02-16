@@ -2,11 +2,13 @@ package org.sper.logtracker.servstat;
 
 import java.util.List;
 
-import org.sper.logtracker.logreader.ConfiguredLogParser;
+import javax.swing.JTabbedPane;
+
+import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.ui.LogTracker;
 
 public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 
@@ -23,8 +25,8 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void createAndRegisterTabs(LogTracker logTracker, ConfiguredLogParser logParser) throws InterruptedException {
-		serviceStatsTabs = new ServiceStatsTabs(logTracker, (ServiceResponseLogParser) logParser);
+	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser logParser) throws InterruptedException {
+		serviceStatsTabs = new ServiceStatsTabs(tabbedPane, configuration, (ServiceResponseLogParser) logParser);
 	}
 
 	@Override
@@ -43,8 +45,8 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser) {
-		serviceStatsTabs.setupDataPipeLines(fname, logParser);
+	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser, Long obsStart) {
+		serviceStatsTabs.setupDataPipeLines(fname, logParser, obsStart);
 	}
 
 }

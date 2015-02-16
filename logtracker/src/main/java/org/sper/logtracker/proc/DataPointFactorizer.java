@@ -2,6 +2,7 @@ package org.sper.logtracker.proc;
 
 import org.sper.logtracker.data.AbstractDataListener;
 import org.sper.logtracker.data.Factor;
+import org.sper.logtracker.data.RawDataPoint;
 
 public class DataPointFactorizer<T extends DataPoint> extends AbstractDataListener<RawDataPoint, T> {
 	

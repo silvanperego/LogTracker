@@ -3,8 +3,8 @@ package org.sper.logtracker.erroranalysis;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
-import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogLineParser;
+import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
 public class ErrorLogParser extends ConfiguredLogParser {

@@ -1,4 +1,4 @@
-package org.sper.logtracker.logreader;
+package org.sper.logtracker.parserconf;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -8,7 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.sper.logtracker.data.Console;
-import org.sper.logtracker.parserconf.FileTypeDescriptor;
+import org.sper.logtracker.logreader.LogLineParser;
+import org.sper.logtracker.logreader.LogParser;
 
 /**
  * Ein generischer Log-Parser, welcher über Konfigurationsparamter auf eine Vielzahl von Log-File-Formaten eingestellt werden kann.

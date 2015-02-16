@@ -44,11 +44,11 @@ import org.sper.logtracker.config.ConfigFileOpenButton;
 import org.sper.logtracker.config.ConfigFileSaveButton;
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.config.ConfigurationAware;
-import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogParser;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 

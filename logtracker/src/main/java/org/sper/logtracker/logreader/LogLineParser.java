@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sper.logtracker.data.DataListener;
-import org.sper.logtracker.proc.RawDataPoint;
+import org.sper.logtracker.data.RawDataPoint;
 
 /**
  * Leitet gelesene Zeilen an den {@link LogParser} weiter welcher sie dann 

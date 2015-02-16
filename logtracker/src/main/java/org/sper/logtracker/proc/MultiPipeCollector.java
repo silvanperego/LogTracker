@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.sper.logtracker.data.AbstractDataListener;
 import org.sper.logtracker.data.DataListener;
+import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.KeepAliveLogReader;
 import org.sper.logtracker.logreader.LogLineParser;

@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
+import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.KeepAliveLogReader;
@@ -25,7 +26,6 @@ import org.sper.logtracker.scatter.ServiceScatterPlot;
 import org.sper.logtracker.scatter.TooltipGenerator;
 import org.sper.logtracker.stats.StatsCalculator;
 import org.sper.logtracker.stats.StatsCalculator.CategoryExtractor;
-import org.sper.logtracker.ui.LogTracker;
 
 public class ServiceStatsTabs {
 	private ServiceScatterPlot plot;
@@ -35,20 +35,20 @@ public class ServiceStatsTabs {
 	private ServiceControlPanel serviceControlPanel;
 	private UserPanel userPanel;
 	private StatsCalculator<DataPoint> serviceStatsCalculator;
-	private JTabbedPane tabbedPane;
 	private KeepAliveElement terminationPointer;
-	private LogTracker logTracker;
+	private boolean providesUsers;
+	private JTabbedPane tabbedPane;
 
-	public ServiceStatsTabs(LogTracker logTracker, ServiceResponseLogParser logParser) throws InterruptedException {
-		this.tabbedPane = logTracker.getTabbedPane();
-		this.logTracker = logTracker;
+	public ServiceStatsTabs(JTabbedPane tabbedPane, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
+		this.tabbedPane = tabbedPane;
 		serviceControlPanel = new ServiceControlPanel(this);
 		tabbedPane.addTab("Services/Filter", null, serviceControlPanel, null);
-		logTracker.getConfiguration().registerModule(serviceControlPanel);
-		if (logParser.providesUsers()) {
+		configuration.registerModule(serviceControlPanel);
+		providesUsers = logParser.providesUsers();
+		if (providesUsers) {
 			userPanel = new UserPanel(this);
 			tabbedPane.addTab("Users", userPanel);
-			logTracker.getConfiguration().registerModule(userPanel);
+			configuration.registerModule(userPanel);
 		}
 		plot = new ServiceScatterPlot();
 		tabbedPane.addTab("Graph", plot.getPanel());
@@ -66,7 +66,7 @@ public class ServiceStatsTabs {
 
 	public void setupDataSeries() {
 		CategoryCollection users = null;
-		if (((LogParser) logTracker.getFileControlPanel().getLogFileFormatBox().getSelectedItem()).providesUsers())
+		if (providesUsers)
 			users = userPanel.createUsersFilter(((UserDataPointFactorizer)factorizer).getUser());
 		newPointExtractor.removeListeners();
 		newPointExtractor.addListener(plot);
@@ -75,7 +75,7 @@ public class ServiceStatsTabs {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void setupDataPipeLines(List<String> fname, LogParser logParser) {
+	public void setupDataPipeLines(List<String> fname, LogParser logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = logParser.providesUsers() ? new UserDataPointFactorizer() : new DataPointFactorizer<DataPoint>();
@@ -102,7 +102,6 @@ public class ServiceStatsTabs {
 			factorizer.addListener(newPointExtractor);
 			if (terminationPointer != null)
 				terminationPointer.endOfLife();
-			Long obsStart = logTracker.getFileControlPanel().getObsStart();
 			if (fname.size() == 1) {
 				LogLineParser logLineParser = new LogLineParser(logParser, obsStart);
 				logLineParser.registerListener(factorizer);
@@ -128,7 +127,7 @@ public class ServiceStatsTabs {
 			plot.getXyPlot().getRenderer().setBaseToolTipGenerator(toolTipGenerator);
 			tabbedPane.setSelectedIndex(1);
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(logTracker.getFrame(), e1, "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(tabbedPane, e1, "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package org.sper.logtracker.proc;
+package org.sper.logtracker.data;
 
 /**
  * Ein Datenpunkt, bei welchem Service-Namen und User-Namen noch als String und nicht als Factor vorliegen.

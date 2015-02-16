@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.sper.logtracker.logreader.ConfiguredLogParser;
-
 /**
  * Das Modell der Parser-Konfigurationen. Hier in der Form, wie sie vom ParserConfigDialog benötigt werden.
  * @author silvan.perego

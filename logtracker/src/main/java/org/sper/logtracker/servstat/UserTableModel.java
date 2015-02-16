@@ -2,6 +2,7 @@ package org.sper.logtracker.servstat;
 
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.proc.CategoryCollection;
+import org.sper.logtracker.stats.AbstractTableModel;
 import org.sper.logtracker.stats.ServiceStats;
 
 public class UserTableModel extends AbstractTableModel {

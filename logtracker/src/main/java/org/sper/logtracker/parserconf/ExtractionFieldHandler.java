@@ -1,6 +1,5 @@
 package org.sper.logtracker.parserconf;
 
-import org.sper.logtracker.logreader.ConfiguredLogParser;
 
 public interface ExtractionFieldHandler {
 

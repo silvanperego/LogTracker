@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.sper.logtracker.logreader.ConfiguredLogParser;
-
 public class LogParserList extends ArrayList<ConfiguredLogParser> {
 
 	private static final long serialVersionUID = 1L;
