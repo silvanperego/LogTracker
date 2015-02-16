@@ -91,8 +91,6 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
 				logTracker.getConfiguration().loadConfiguration(selectedFile);
-				if (checkEnableApplyButton())
-					setupDataPipeLines();
 			}
 		});
 		btnLoadConfig.setToolTipText("Open Config File");

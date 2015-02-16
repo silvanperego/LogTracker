@@ -15,6 +15,7 @@ public class ParserConfigModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private ParserSelectionModel parserSelectionModel;
 	private LogParserList logParserList = new LogParserList();
+	private static final String[] COL_NAMES = new String[] {"Parser Name", "Parser Type"};
 	
 	public ParserConfigModel(ParserSelectionModel parserSelectionModel) {
 		this.parserSelectionModel = parserSelectionModel;
@@ -39,11 +40,11 @@ public class ParserConfigModel extends AbstractTableModel {
 	
 	@Override
 	public int getColumnCount() {
-		return 1;
+		return 2;
 	}
 	@Override
 	public String getColumnName(int columnIndex) {
-		return "Parser Name";
+		return COL_NAMES[columnIndex];
 	}
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -51,15 +52,17 @@ public class ParserConfigModel extends AbstractTableModel {
 	}
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return logParserList.get(rowIndex).isEditable();
+		return logParserList.get(rowIndex).isEditable() && columnIndex == 0;
 	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return logParserList.get(rowIndex).getName();
+		ConfiguredLogParser logParser = logParserList.get(rowIndex);
+		return columnIndex == 0 ? logParser.getName() : logParser.getLogFileTypeName();
 	}
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		logParserList.get(rowIndex).setName((String) aValue);
+		if (columnIndex == 0)
+			logParserList.get(rowIndex).setName((String) aValue);
 	}
 
 	public ConfiguredLogParser getParser(int i) {

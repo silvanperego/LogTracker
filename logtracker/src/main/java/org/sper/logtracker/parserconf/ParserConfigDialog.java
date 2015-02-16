@@ -164,18 +164,16 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 						} else
 							super.changeSelection(rowIndex, columnIndex, toggle, extend);
 					}
-					
 				};
 				logParserTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 					
 					@Override
 					public void valueChanged(ListSelectionEvent e) {
-						if (!e.getValueIsAdjusting()) {
+						int[] selectedRows = logParserTable.getSelectedRows();
+						if (selectedRows.length == 1) {
 							saveLoadedParser();
 							loadedParser = null;
-							int[] selectedRows = logParserTable.getSelectedRows();
-							if (selectedRows.length == 1)
-								loadEditingFields(parserConfigModel.getParser(selectedRows[0]));
+							loadEditingFields(parserConfigModel.getParser(selectedRows[0]));
 							removeErrorMarks();
 							enableComponents();
 						}
@@ -186,9 +184,12 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 				parserConfigModel = new ParserConfigModel(parserSelectionModel);
 				parserConfigModel.loadFromSelectionModel();
 				logParserTable.setModel(parserConfigModel);
-				logParserTable.getColumnModel().getColumn(0).setResizable(false);
-				logParserTable.getColumnModel().getColumn(0).setPreferredWidth(527);
+				logParserTable.getColumnModel().getColumn(0).setResizable(true);
+				logParserTable.getColumnModel().getColumn(0).setPreferredWidth(407);
 				logParserTable.getColumnModel().getColumn(0).setCellRenderer(new ParserTableCellRenderer());
+				logParserTable.getColumnModel().getColumn(1).setResizable(true);
+				logParserTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+				logParserTable.getColumnModel().getColumn(1).setCellRenderer(new ParserTableCellRenderer());
 				scrollPane.setViewportView(logParserTable);
 				logParserTable.setAlignmentX(Component.LEFT_ALIGNMENT);
 			}
@@ -461,9 +462,12 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 				okButton.setToolTipText("Activate the Configuration Changes.");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						saveLoadedParser();
-						parserConfigModel.saveInSelectionModel();
-						setVisible(false);
+						verifyFormDataIsValid();
+						if (!inError()) {
+							saveLoadedParser();
+							parserConfigModel.saveInSelectionModel();
+							setVisible(false);
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -578,7 +582,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		btnCopy.setEnabled(!isNewParser && !inError && singleSelected);
 		btnCreateNew.setEnabled(!inError);
 		btnDelete.setEnabled(editable && (singleSelected || multiSelect));
-		okButton.setEnabled(!inError && !isNewParser);
+		okButton.setEnabled(true);
 		btnLoadFromFile.setEnabled(!inError && !isNewParser);
 		boolean editableConfigs = logParserTable.getSelectedRowCount() > 0;
 		for (int rowIdx : logParserTable.getSelectedRows()) {

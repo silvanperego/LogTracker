@@ -25,6 +25,7 @@ public class ParserSelectionModel extends AbstractListModel implements ComboBoxM
 	}
 
 	void saveInSelectionModel(List<ConfiguredLogParser> newLogParser) {
+		logParserList.clear();
 		logParserList.addAll(defaultParserProvider.getDefaultLogParsers());
 		for (ConfiguredLogParser logParser : newLogParser) {
 			logParserList.add(logParserList.size() - 1, logParser);
