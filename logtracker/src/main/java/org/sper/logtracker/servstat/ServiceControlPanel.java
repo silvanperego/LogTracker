@@ -196,4 +196,9 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 	public JComponent getApplyButton() {
 		return btnApply;
 	}
+
+	@Override
+	public boolean isDynamicModule() {
+		return true;
+	}
 }

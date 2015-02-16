@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -19,9 +20,17 @@ import java.util.Map.Entry;
 public class Configuration {
 
 	private Map<String, ConfigurationAware> configModule = new HashMap<String, ConfigurationAware>();
+	private Map<String, Serializable> activeConfig;
 	
 	public void registerModule(ConfigurationAware module) {
 		configModule.put(module.getCompKey(), module);
+		if (activeConfig != null) {
+			for (Entry<String, Serializable> entry : activeConfig.entrySet()) {
+				if (module.getCompKey().equals(entry.getKey())) {
+					module.applyConfig(entry.getValue());
+				}
+			}
+		}
 	}
 	
 	public void unregisterModule(ConfigurationAware module) {
@@ -49,14 +58,14 @@ public class Configuration {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void loadConfiguration(File f) throws IOException, ClassNotFoundException {
 		ObjectInputStream ois = null;
 		try {
 			FileInputStream fis = new FileInputStream(f);
 			ois = new ObjectInputStream(fis);
-			@SuppressWarnings("unchecked")
-			Map<String, Serializable> configMap = (Map<String, Serializable>) ois.readObject();
-			for (Entry<String, Serializable> entry : configMap.entrySet()) {
+			activeConfig = (Map<String, Serializable>) ois.readObject();
+			for (Entry<String, Serializable> entry : activeConfig.entrySet()) {
 				ConfigurationAware configurationAware = configModule.get(entry.getKey());
 				if (configurationAware != null) {
 					configurationAware.applyConfig(entry.getValue());
@@ -68,4 +77,14 @@ public class Configuration {
 		}
 	}
 
+	public void resetDynamicModules() {
+		for (Iterator<Entry<String, ConfigurationAware>> it = configModule.entrySet().iterator(); it.hasNext(); ) {
+			if (it.next().getValue().isDynamicModule())
+				it.remove();
+		}
+	}
+	
+	public void resetActiveConfig() {
+		activeConfig = null;
+	}
 }

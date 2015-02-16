@@ -619,5 +619,10 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		}
 		return configList;
 	}
+
+	@Override
+	public boolean isDynamicModule() {
+		return false;
+	}
 	
 }

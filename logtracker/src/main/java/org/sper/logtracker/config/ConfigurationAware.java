@@ -25,4 +25,9 @@ public interface ConfigurationAware {
 	 */
 	Serializable getConfig();
 	
+	/**
+	 * @return true, falls dies ein dynmisches Modul ist, welches erst im Verlauf der Operationen nachgeladen wird.
+	 */
+	boolean isDynamicModule();
+	
 }

@@ -65,6 +65,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 	private JSpinner obsValSpinner;
 	private JComboBox logFileFormatBox;
 	private ParserSelectionModel parserModel;
+	private FileTypeDescriptor activeLogFileType;
 	
 	private static class ConfObj implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -257,6 +258,11 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 					logFileFormatBox.setSelectedItem(logParserList.get(0));
 				}
 			}
+
+			@Override
+			public boolean isDynamicModule() {
+				return false;
+			}
 		});
 		obsvalPanel.add(logFileFormatBox);
 
@@ -271,7 +277,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		applyFilesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					setupDataPipeLines();
+					setupFileProcessing();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -403,18 +409,23 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		return conf;
 	}
 
-	void setupDataPipeLines() throws InterruptedException {
-		JTabbedPane tabbedPane = logTracker.getTabbedPane();
-		for (int i = tabbedPane.getTabCount() - 1; i > 0; i--)
-			tabbedPane.remove(i);
+	void setupFileProcessing() throws InterruptedException {
 		ConfiguredLogParser logParser = (ConfiguredLogParser) logFileFormatBox.getSelectedItem();
 		FileTypeDescriptor logFileTypeDescriptor = logParser.getLogFileTypeDescriptor();
-		logFileTypeDescriptor.createAndRegisterTabs(logTracker, logParser);
+		if (activeLogFileType != logFileTypeDescriptor) {
+			JTabbedPane tabbedPane = logTracker.getTabbedPane();
+			for (int i = tabbedPane.getTabCount() - 1; i > 0; i--)
+				tabbedPane.remove(i);
+			logTracker.getConfiguration().resetDynamicModules();
+			logFileTypeDescriptor.createAndRegisterTabs(logTracker, logParser);
+			activeLogFileType = logFileTypeDescriptor;
+		}
 		List<String> fname = new ArrayList<String>();
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++) {
 			fname.add((String) logFileTableModel.getValueAt(i, 0));
 		}
 		logFileTypeDescriptor.setupDataPipeLines(fname, logParser);
+		logTracker.getConfiguration().resetActiveConfig();
 	}
 
 	public Long getObsStart() {
@@ -434,5 +445,10 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 	
 	public JComboBox getLogFileFormatBox() {
 		return logFileFormatBox;
+	}
+
+	@Override
+	public boolean isDynamicModule() {
+		return false;
 	}
 }

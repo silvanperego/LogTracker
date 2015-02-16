@@ -48,8 +48,8 @@ public class ServiceStatsTabs {
 		if (logParser.providesUsers()) {
 			userPanel = new UserPanel(this);
 			tabbedPane.addTab("Users", userPanel);
+			logTracker.getConfiguration().registerModule(userPanel);
 		}
-		logTracker.getConfiguration().registerModule(userPanel);
 		plot = new ServiceScatterPlot();
 		tabbedPane.addTab("Graph", plot.getPanel());
 		tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, false);

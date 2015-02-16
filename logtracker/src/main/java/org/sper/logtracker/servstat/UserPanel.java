@@ -104,4 +104,9 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 	public JComponent getApplyButon() {
 		return btnApply;
 	}
+
+	@Override
+	public boolean isDynamicModule() {
+		return true;
+	}
 }
