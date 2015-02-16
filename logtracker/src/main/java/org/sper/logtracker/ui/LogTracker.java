@@ -15,6 +15,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.servstat.ServiceStatsTabs;
 
 public class LogTracker {
 

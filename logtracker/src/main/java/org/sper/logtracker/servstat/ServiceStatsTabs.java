@@ -1,4 +1,4 @@
-package org.sper.logtracker.ui;
+package org.sper.logtracker.servstat;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +26,7 @@ import org.sper.logtracker.scatter.ServiceScatterPlot;
 import org.sper.logtracker.scatter.TooltipGenerator;
 import org.sper.logtracker.stats.StatsCalculator;
 import org.sper.logtracker.stats.StatsCalculator.CategoryExtractor;
+import org.sper.logtracker.ui.LogTracker;
 
 public class ServiceStatsTabs {
 	private ServiceScatterPlot plot;
@@ -52,7 +53,7 @@ public class ServiceStatsTabs {
 		tabbedPane.addTab("Graph", null, plot.getPanel(), null);
 	}
 
-	final class ApplyControlAction implements ActionListener {
+	public final class ApplyControlAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			setupDataSeries();
 			tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
@@ -71,7 +72,7 @@ public class ServiceStatsTabs {
 	}
 	
 	@SuppressWarnings("unchecked")
-	void setupDataPipeLines(List<String> fname, LogParser logParser) {
+	public void setupDataPipeLines(List<String> fname, LogParser logParser) {
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = logParser.providesUsers() ? new UserDataPointFactorizer() : new DataPointFactorizer<DataPoint>();

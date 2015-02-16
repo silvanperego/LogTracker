@@ -1,4 +1,4 @@
-package org.sper.logtracker.ui;
+package org.sper.logtracker.servstat;
 
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.proc.CategoryCollection;

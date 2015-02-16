@@ -1,4 +1,4 @@
-package org.sper.logtracker.logreader.servstat;
+package org.sper.logtracker.servstat;
 
 import java.text.ParseException;
 import java.util.regex.Matcher;

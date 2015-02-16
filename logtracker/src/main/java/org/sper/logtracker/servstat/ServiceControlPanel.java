@@ -1,4 +1,4 @@
-package org.sper.logtracker.ui;
+package org.sper.logtracker.servstat;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

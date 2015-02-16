@@ -1,4 +1,4 @@
-package org.sper.logtracker.logreader.errors;
+package org.sper.logtracker.erroranalysis;
 
 import java.awt.Color;
 import java.awt.Component;

@@ -1,4 +1,4 @@
-package org.sper.logtracker.ui;
+package org.sper.logtracker.servstat;
 
 import java.awt.Color;
 import java.util.Vector;
@@ -9,8 +9,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.proc.CategoryCollection;
 import org.sper.logtracker.proc.NewPointExtractor;
+import org.sper.logtracker.servstat.PipelineFactory.PipelineCreator;
 import org.sper.logtracker.stats.ServiceStats;
-import org.sper.logtracker.ui.PipelineFactory.PipelineCreator;
 
 public class ServiceControlTableModel extends AbstractTableModel {
 

@@ -46,12 +46,13 @@ import org.sper.logtracker.config.ConfigFileSaveButton;
 import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
+import org.sper.logtracker.erroranalysis.ErrorLogExtractionFields;
 import org.sper.logtracker.logreader.ConfiguredLogParser;
 import org.sper.logtracker.logreader.LogParser;
-import org.sper.logtracker.logreader.errors.ErrorLogExtractionFields;
-import org.sper.logtracker.logreader.servstat.ServiceResponseExtractionFields;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
+import org.sper.logtracker.servstat.ButtonColumn;
+import org.sper.logtracker.servstat.ServiceResponseExtractionFields;
 
 public class FileControlPanel extends JSplitPane implements MessageListener, ConfigurationAware {
 	private static final long serialVersionUID = 1L;
@@ -423,7 +424,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		return result;
 	}
 	
-	JComboBox getLogFileFormatBox() {
+	public JComboBox getLogFileFormatBox() {
 		return logFileFormatBox;
 	}
 }

@@ -1,4 +1,4 @@
-package org.sper.logtracker.ui;
+package org.sper.logtracker.servstat;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -14,6 +14,8 @@ import javax.swing.JTable;
 import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+
+import org.sper.logtracker.ui.LogTracker;
 
 public class ButtonColumn implements TableCellRenderer, TableCellEditor {
 
