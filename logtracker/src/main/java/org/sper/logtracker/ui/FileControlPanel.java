@@ -51,7 +51,7 @@ import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
-import org.sper.logtracker.servstat.ButtonColumn;
+import org.sper.logtracker.servstat.ui.ButtonColumn;
 
 public class FileControlPanel extends JSplitPane implements MessageListener, ConfigurationAware {
 	private static final long serialVersionUID = 1L;

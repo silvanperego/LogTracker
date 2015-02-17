@@ -12,16 +12,16 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.sper.logtracker.data.AbstractDataListener;
-import org.sper.logtracker.proc.CallsPerTime;
-import org.sper.logtracker.proc.CategoryCollection;
-import org.sper.logtracker.proc.DataPoint;
-import org.sper.logtracker.proc.DataPointGroup;
-import org.sper.logtracker.proc.MeanExecTime;
-import org.sper.logtracker.proc.MedianExecTime;
-import org.sper.logtracker.proc.NewPointExtractor;
-import org.sper.logtracker.proc.ServiceRouter;
-import org.sper.logtracker.proc.TimeBasedCollector;
-import org.sper.logtracker.proc.XYDataSeriesListener;
+import org.sper.logtracker.servstat.proc.CallsPerTime;
+import org.sper.logtracker.servstat.proc.CategoryCollection;
+import org.sper.logtracker.servstat.proc.DataPoint;
+import org.sper.logtracker.servstat.proc.DataPointGroup;
+import org.sper.logtracker.servstat.proc.MeanExecTime;
+import org.sper.logtracker.servstat.proc.MedianExecTime;
+import org.sper.logtracker.servstat.proc.NewPointExtractor;
+import org.sper.logtracker.servstat.proc.ServiceRouter;
+import org.sper.logtracker.servstat.proc.TimeBasedCollector;
+import org.sper.logtracker.servstat.proc.XYDataSeriesListener;
 
 /**
  * Erstellt Pipeline-Element und verknüpft sie mit Parent-Elementen. Parent-Elemente werden automatisch wiedererkannt. D.h.

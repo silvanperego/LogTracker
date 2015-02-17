@@ -8,14 +8,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
-import org.sper.logtracker.erroranalysis.ErrorLogTypeDescriptor;
+import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.DefaultParserProvider;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.servstat.ServiceResponseFileTypeDescriptor;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
+import org.sper.logtracker.servstat.ui.ServiceResponseFileTypeDescriptor;
 
 
 public class LogFileTypeCatalog implements DefaultParserProvider {
