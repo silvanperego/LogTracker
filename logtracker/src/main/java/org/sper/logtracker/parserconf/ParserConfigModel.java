@@ -26,10 +26,10 @@ public class ParserConfigModel extends AbstractTableModel {
 	 */
 	void loadFromSelectionModel() {
 		logParserList.clear();
-		List<ConfiguredLogParser> selList = parserSelectionModel.getLogParserList();
-		for (ConfiguredLogParser logParser : selList)
+		List<ConfiguredLogParser<?>> selList = parserSelectionModel.getLogParserList();
+		for (ConfiguredLogParser<?> logParser : selList)
 			if (logParser.getName() != null)
-				logParserList.add((ConfiguredLogParser) logParser.clone());
+				logParserList.add((ConfiguredLogParser<?>) logParser.clone());
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class ParserConfigModel extends AbstractTableModel {
 	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		ConfiguredLogParser logParser = logParserList.get(rowIndex);
+		ConfiguredLogParser<?> logParser = logParserList.get(rowIndex);
 		return columnIndex == 0 ? logParser.getName() : logParser.getLogFileTypeDescriptor().toString();
 	}
 	@Override
@@ -64,11 +64,11 @@ public class ParserConfigModel extends AbstractTableModel {
 			logParserList.get(rowIndex).setName((String) aValue);
 	}
 
-	public ConfiguredLogParser getParser(int i) {
+	public ConfiguredLogParser<?> getParser(int i) {
 		return logParserList.get(i);
 	}
 	
-	public int addParser(ConfiguredLogParser logParser) {
+	public int addParser(ConfiguredLogParser<?> logParser) {
 		logParserList.add(logParser);
 		int newRowIdx = logParserList.size() - 1;
 		fireTableRowsInserted(newRowIdx, newRowIdx);
@@ -80,15 +80,15 @@ public class ParserConfigModel extends AbstractTableModel {
 		fireTableRowsDeleted(selRowIdx, selRowIdx);
 	}
 	
-	public void addParsers(List<ConfiguredLogParser> logParserList) {
+	public void addParsers(List<ConfiguredLogParser<?>> logParserList) {
 		this.logParserList.addParserConfigs(logParserList);
 	}
 	public void saveInSelectionModel() {
 		parserSelectionModel.saveInSelectionModel(logParserList.subList(STANDARD_PARSERS_COUNT, logParserList.size()));
 	}
 	
-	public ConfiguredLogParser replaceRow(int rowIdx, FileTypeDescriptor fileTypeDesc) {
-		ConfiguredLogParser convertLogParser = fileTypeDesc.convertLogParser(logParserList.get(rowIdx));
+	public ConfiguredLogParser<?> replaceRow(int rowIdx, FileTypeDescriptor fileTypeDesc) {
+		ConfiguredLogParser<?> convertLogParser = fileTypeDesc.convertLogParser(logParserList.get(rowIdx));
 		logParserList.set(rowIdx, convertLogParser);
 		return convertLogParser;
 	}

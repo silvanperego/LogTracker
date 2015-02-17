@@ -26,12 +26,12 @@ public interface FileTypeDescriptor {
 	 * @param logTracker
 	 * @throws InterruptedException 
 	 */
-	void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser logParser) throws InterruptedException;
+	void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser<?> logParser) throws InterruptedException;
 
-	ConfiguredLogParser createParser(String string);
+	ConfiguredLogParser<?> createParser(String string);
 
-	ConfiguredLogParser convertLogParser(ConfiguredLogParser configuredLogParser);
+	ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> configuredLogParser);
 
-	void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser, Long obsStart);
+	void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart);
 
 }

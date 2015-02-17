@@ -235,9 +235,9 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			
 			@Override
 			public Serializable getConfig() {
-				ConfiguredLogParser parserConfig = (ConfiguredLogParser) logFileFormatBox.getSelectedItem();
+				ConfiguredLogParser<?> parserConfig = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 				if (parserConfig.isEditable()) {
-					ArrayList<ConfiguredLogParser> configList = new ArrayList<ConfiguredLogParser>();
+					ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
 					configList.add(parserConfig);
 					return configList;
 				}
@@ -252,7 +252,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			@Override
 			public void applyConfig(Serializable cfg) {
 				@SuppressWarnings("unchecked")
-				ArrayList<ConfiguredLogParser> logParserList = (ArrayList<ConfiguredLogParser>) cfg;
+				ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
 				if (logParserList != null && !logParserList.isEmpty()) {
 					parserModel.addParsers(logParserList);
 					logFileFormatBox.setSelectedItem(logParserList.get(0));
@@ -391,7 +391,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		}
 		if (logFileFormatBox.getSelectedIndex() < 0 && conf.parserConfig != null)
 			for (int i = parserModel.getSize(); --i >= 0; ) {
-				LogParser logParser = parserModel.getElementAt(i);
+				LogParser<?> logParser = parserModel.getElementAt(i);
 				if (conf.parserConfig.equals(logParser.getName())) {
 					logFileFormatBox.setSelectedIndex(i);;
 				}
@@ -405,12 +405,12 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++)
 			conf.fname[i] = (String) logFileTableModel.getValueAt(i, 0);
 		conf.obsVal = useObsVal.isSelected() ? (Integer) obsValSpinner.getValue() : null;
-		conf.parserConfig = ((ConfiguredLogParser) logFileFormatBox.getSelectedItem()).getName();
+		conf.parserConfig = ((ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem()).getName();
 		return conf;
 	}
 
 	void setupFileProcessing() throws InterruptedException {
-		ConfiguredLogParser logParser = (ConfiguredLogParser) logFileFormatBox.getSelectedItem();
+		ConfiguredLogParser<?> logParser = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 		FileTypeDescriptor logFileTypeDescriptor = logParser.getLogFileTypeDescriptor();
 		if (activeLogFileType != logFileTypeDescriptor) {
 			JTabbedPane tabbedPane = logTracker.getTabbedPane();

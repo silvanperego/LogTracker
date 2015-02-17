@@ -11,6 +11,7 @@ import javax.swing.JTabbedPane;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.data.Factor;
+import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.KeepAliveLogReader;
 import org.sper.logtracker.logreader.LogLineParser;
@@ -75,7 +76,7 @@ public class ServiceStatsTabs {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void setupDataPipeLines(List<String> fname, LogParser logParser, Long obsStart) {
+	public void setupDataPipeLines(List<String> fname, LogParser<RawDataPoint> logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = logParser.providesUsers() ? new UserDataPointFactorizer() : new DataPointFactorizer<DataPoint>();
@@ -103,7 +104,7 @@ public class ServiceStatsTabs {
 			if (terminationPointer != null)
 				terminationPointer.endOfLife();
 			if (fname.size() == 1) {
-				LogLineParser logLineParser = new LogLineParser(logParser, obsStart);
+				LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
 				logLineParser.registerListener(factorizer);
 				KeepAliveLogReader keepAliveLogReader = new KeepAliveLogReader(new File(fname.get(0)), logLineParser);
 				terminationPointer = keepAliveLogReader;
@@ -113,7 +114,7 @@ public class ServiceStatsTabs {
 				MultiPipeCollector pipeCollector = new MultiPipeCollector();
 				pipeCollector.addListener(factorizer);
 				for (String fn : fname) {
-					LogLineParser logLineParser = new LogLineParser(logParser, obsStart);
+					LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
 					KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(fn), logLineParser);
 					pipeCollector.addFeeder(logLineParser, keepAliveElement);
 				}

@@ -12,10 +12,10 @@ import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.logreader.LogParser;
 
 /**
- * Ein generischer Log-Parser, welcher über Konfigurationsparamter auf eine Vielzahl von Log-File-Formaten eingestellt werden kann.
+ * Ein generischer Log-Parser, welcher über Konfigurationsparameter auf eine Vielzahl von Log-File-Formaten eingestellt werden kann.
  * @author silvan.perego
  */
-public abstract class ConfiguredLogParser implements LogParser, Serializable, Cloneable {
+public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializable, Cloneable {
 
 	public static final String CONFIG_NAME = "ParserConfig";
 	private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 	 * Erstellt einen neuen ConfiguredLogParser und übernimmt die wichtigsten Einträge
 	 * @param orig
 	 */
-	public ConfiguredLogParser(ConfiguredLogParser orig, FileTypeDescriptor logFileTypeDescriptor) {
+	public ConfiguredLogParser(ConfiguredLogParser<?> orig, FileTypeDescriptor logFileTypeDescriptor) {
 		linePattern = orig.linePattern;
 		includeExcludePattern = orig.includeExcludePattern;
 		parserName = orig.parserName;
@@ -75,7 +75,7 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 	}
 
 	@Override
-	synchronized public void scanLine(String readLine, LogLineParser logLineParser, Long obsStart) {
+	synchronized public void scanLine(String readLine, LogLineParser<T> logLineParser, Long obsStart) {
 		if (occTimeFormatString == null) {
 			this.occTimeFormatString = 
 					occTimeLanguage != null && !occTimeLanguage.isEmpty() ? 
@@ -107,7 +107,7 @@ public abstract class ConfiguredLogParser implements LogParser, Serializable, Cl
 		return occTimeFormatString.parse(m.group(occTimeIdx)).getTime();
 	}
 
-	protected abstract void extractData(LogLineParser logLineParser, Long obsStart,
+	protected abstract void extractData(LogLineParser<T> logLineParser, Long obsStart,
 			Matcher m) throws ParseException;
 
 	@Override

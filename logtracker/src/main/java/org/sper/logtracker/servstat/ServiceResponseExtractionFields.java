@@ -282,7 +282,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void saveLoadedParser(ConfiguredLogParser parser) {
+	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
 		ServiceResponseLogParser loadedParser = (ServiceResponseLogParser) parser;
 		if (loadedParser != null) {
 			loadedParser.setOccTimeIdx((Integer) occTimeGroupCombo.getSelectedItem());
@@ -315,7 +315,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void loadEditingFields(ConfiguredLogParser parser) {
+	public void loadEditingFields(ConfiguredLogParser<?> parser) {
 		ServiceResponseLogParser logParser = (ServiceResponseLogParser) parser;
 		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
 		occTimeFormatString.setText(logParser.getOccTimeFormatString());

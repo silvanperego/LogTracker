@@ -5,6 +5,8 @@ import java.util.List;
 import javax.swing.JTabbedPane;
 
 import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.data.RawDataPoint;
+import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
@@ -25,7 +27,7 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser logParser) throws InterruptedException {
+	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser<?> logParser) throws InterruptedException {
 		serviceStatsTabs = new ServiceStatsTabs(tabbedPane, configuration, (ServiceResponseLogParser) logParser);
 	}
 
@@ -35,18 +37,19 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ConfiguredLogParser createParser(String string) {
+	public ConfiguredLogParser<RawDataPoint> createParser(String string) {
 		return new ServiceResponseLogParser(string, this);
 	}
 
 	@Override
-	public ConfiguredLogParser convertLogParser(ConfiguredLogParser other) {
+	public ConfiguredLogParser<RawDataPoint> convertLogParser(ConfiguredLogParser<?> other) {
 		return new ServiceResponseLogParser(other, this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser, Long obsStart) {
-		serviceStatsTabs.setupDataPipeLines(fname, logParser, obsStart);
+	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
+		serviceStatsTabs.setupDataPipeLines(fname, (LogParser<RawDataPoint>) logParser, obsStart);
 	}
 
 }

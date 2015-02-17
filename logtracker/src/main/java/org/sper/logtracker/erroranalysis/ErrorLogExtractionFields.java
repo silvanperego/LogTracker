@@ -194,7 +194,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void saveLoadedParser(ConfiguredLogParser parser) {
+	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
 		ErrorLogParser loadedParser = (ErrorLogParser) parser;
 		if (loadedParser != null) {
 			loadedParser.setSeverityIdx((Integer) severityComboBox.getSelectedItem());
@@ -223,7 +223,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void loadEditingFields(ConfiguredLogParser parser) {
+	public void loadEditingFields(ConfiguredLogParser<?> parser) {
 		ErrorLogParser logParser = (ErrorLogParser) parser;
 		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
 		occTimeFormatString.setText(logParser.getOccTimeFormatString());

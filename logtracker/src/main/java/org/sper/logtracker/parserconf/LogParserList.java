@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LogParserList extends ArrayList<ConfiguredLogParser> {
+public class LogParserList extends ArrayList<ConfiguredLogParser<?>> {
 
 	private static final long serialVersionUID = 1L;
 	private static final Pattern NUM_END_PAT = Pattern.compile(".* \\((\\d+)\\)");
 
-	private void addParserConfig(ConfiguredLogParser logParser) {
+	private void addParserConfig(ConfiguredLogParser<?> logParser) {
 		// Falls der gewünschte Name bereits vergeben ist, füge eine Laufnummer in Klammern hinzu.
 		int extNum = 0;
 		String name = logParser.getName();
@@ -19,7 +19,7 @@ public class LogParserList extends ArrayList<ConfiguredLogParser> {
 			extNum = Integer.parseInt(m.group(1));
 		until_unused_name:
 			while (true) {
-				for (ConfiguredLogParser parser : this) {
+				for (ConfiguredLogParser<?> parser : this) {
 					if (name.equals(parser.getName())) {
 						name = new StringBuilder().append(logParser.getName()).append(" (").append(++extNum).append(")").toString();
 						continue until_unused_name;
@@ -35,8 +35,8 @@ public class LogParserList extends ArrayList<ConfiguredLogParser> {
 			add(size() - 1, logParser);
 	}
 	
-	public void addParserConfigs(List<ConfiguredLogParser> logParserList) {
-		for (ConfiguredLogParser logParser : logParserList) {
+	public void addParserConfigs(List<ConfiguredLogParser<?>> logParserList) {
+		for (ConfiguredLogParser<?> logParser : logParserList) {
 			addParserConfig(logParser);
 		}
 	}

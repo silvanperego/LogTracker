@@ -1,5 +1,6 @@
 package org.sper.logtracker.parserconf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -23,10 +24,10 @@ public class ParserSelectionModel extends AbstractListModel implements ComboBoxM
 		logParserList.addAll(defaultParserProvider.getDefaultLogParsers());
 	}
 
-	void saveInSelectionModel(List<ConfiguredLogParser> newLogParser) {
+	void saveInSelectionModel(List<ConfiguredLogParser<?>> newLogParser) {
 		logParserList.clear();
 		logParserList.addAll(defaultParserProvider.getDefaultLogParsers());
-		for (ConfiguredLogParser logParser : newLogParser) {
+		for (ConfiguredLogParser<?> logParser : newLogParser) {
 			logParserList.add(logParserList.size() - 1, logParser);
 		}
 		fireContentsChanged(this, 0, logParserList.size());
@@ -37,12 +38,12 @@ public class ParserSelectionModel extends AbstractListModel implements ComboBoxM
 		return logParserList.size();
 	}
 
-	List<ConfiguredLogParser> getLogParserList() {
+	List<ConfiguredLogParser<?>> getLogParserList() {
 		return logParserList;
 	}
 
 	@Override
-	public LogParser getElementAt(int index) {
+	public LogParser<?> getElementAt(int index) {
 		return logParserList.get(index);
 	}
 
@@ -56,8 +57,8 @@ public class ParserSelectionModel extends AbstractListModel implements ComboBoxM
 		return selectedItem;
 	}
 
-	public void addParsers(List<ConfiguredLogParser> logParserList) {
-		this.logParserList.addParserConfigs(logParserList);
+	public void addParsers(ArrayList<ConfiguredLogParser<?>> logParserList2) {
+		this.logParserList.addParserConfigs(logParserList2);
 		fireContentsChanged(this, 0, getSize());
 	}
 

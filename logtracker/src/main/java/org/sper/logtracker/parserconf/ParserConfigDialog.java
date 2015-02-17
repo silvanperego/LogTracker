@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,8 +22,10 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -45,12 +49,6 @@ import org.sper.logtracker.config.ConfigFileSaveButton;
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.logreader.LogParser;
-
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	
@@ -97,7 +95,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JRadioButton rdbtnIncluded;
 	private JRadioButton rdbtnExcluded;
 	private JLabel errorText;
-	private ConfiguredLogParser loadedParser;
+	private ConfiguredLogParser<?> loadedParser;
 	private JButton okButton;
 	private Color standardBackgroundCol;
 	private boolean isNewParser = false;
@@ -378,7 +376,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 
 					public void actionPerformed(ActionEvent e) {
 						saveLoadedParser();
-						ConfiguredLogParser logParser = fileTypeDesc.createParser("New Parser");
+						ConfiguredLogParser<?> logParser = fileTypeDesc.createParser("New Parser");
 						logParser.setEditable(true);
 						int newRowIdx = parserConfigModel.addParser(logParser);
 						logParserTable.getSelectionModel().setSelectionInterval(newRowIdx, newRowIdx);
@@ -431,8 +429,8 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					public void actionPerformed(ActionEvent e) {
 						saveLoadedParser();
 						int selectedRow = logParserTable.getSelectedRow();
-						LogParser oldParser = parserConfigModel.getParser(selectedRow);
-						ConfiguredLogParser newParser = (ConfiguredLogParser) oldParser.clone();
+						LogParser<?> oldParser = parserConfigModel.getParser(selectedRow);
+						ConfiguredLogParser<?> newParser = (ConfiguredLogParser<?>) oldParser.clone();
 						newParser.setName(oldParser.getName() + " - Copy");
 						int newRowIdx = parserConfigModel.addParser(newParser);
 						logParserTable.getSelectionModel().setSelectionInterval(newRowIdx, newRowIdx);
@@ -491,8 +489,8 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		enableComponents();
 	}
 	
-	public void setLogFileTypeList(List<FileTypeDescriptor> fileTypes) {
-		for (FileTypeDescriptor typeDescriptor : fileTypes) {
+	public void setLogFileTypeList(List<FileTypeDescriptor> list) {
+		for (FileTypeDescriptor typeDescriptor : list) {
 			logFileTypeComboModel.addElement(typeDescriptor);
 		}
 		logFileTypeCombo.setSelectedIndex(0);
@@ -530,7 +528,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			extractionFields.enableDetailFields(b);
 	}
 
-	private void loadEditingFields(ConfiguredLogParser logParser) {
+	private void loadEditingFields(ConfiguredLogParser<?> logParser) {
 		for (int i = 0; i < logFileTypeCombo.getItemCount(); i++) {
 			if (logFileTypeCombo.getItemAt(i) == logParser.getLogFileTypeDescriptor()) {
 				logFileTypeCombo.setSelectedIndex(i);
@@ -588,7 +586,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		btnLoadFromFile.setEnabled(!inError && !isNewParser);
 		boolean editableConfigs = logParserTable.getSelectedRowCount() > 0;
 		for (int rowIdx : logParserTable.getSelectedRows()) {
-			ConfiguredLogParser logParser = parserConfigModel.getParser(rowIdx);
+			ConfiguredLogParser<?> logParser = parserConfigModel.getParser(rowIdx);
 			editableConfigs &= logParser.isEditable();
 		}
 		btnSave.setEnabled(editableConfigs);
@@ -604,15 +602,15 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	@Override
 	public void applyConfig(Serializable cfg) {
 		@SuppressWarnings("unchecked")
-		ArrayList<ConfiguredLogParser> logParserList = (ArrayList<ConfiguredLogParser>) cfg;
+		ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
 		parserConfigModel.addParsers(logParserList);
 	}
 	
 	@Override
 	public Serializable getConfig() {
-		ArrayList<ConfiguredLogParser> configList = new ArrayList<ConfiguredLogParser>();
+		ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
 		for (int row : logParserTable.getSelectedRows()) {
-			ConfiguredLogParser parserConfig = parserConfigModel.getParser(row);
+			ConfiguredLogParser<?> parserConfig = parserConfigModel.getParser(row);
 			if (parserConfig.isEditable()) {
 				configList.add(parserConfig);
 			}

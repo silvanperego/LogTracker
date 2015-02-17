@@ -70,7 +70,7 @@ public class MultiPipeCollector extends AbstractDataListener<RawDataPoint, RawDa
 	private Set<CollectorFifo> fifoSet = new HashSet<CollectorFifo>();
 	private long latestOccTime = 0;
 	
-	public void addFeeder(LogLineParser parser, KeepAliveLogReader keepAliveElement) {
+	public void addFeeder(LogLineParser<RawDataPoint> parser, KeepAliveLogReader keepAliveElement) {
 		CollectorFifo fifo = new CollectorFifo(keepAliveElement);
 		parser.registerListener(fifo);
 		fifoList.add(fifo);

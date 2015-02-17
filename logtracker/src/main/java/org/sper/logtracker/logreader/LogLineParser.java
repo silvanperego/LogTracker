@@ -4,31 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sper.logtracker.data.DataListener;
-import org.sper.logtracker.data.RawDataPoint;
 
 /**
  * Leitet gelesene Zeilen an den {@link LogParser} weiter welcher sie dann 
  * @author silvan.perego
  */
-public class LogLineParser implements DataListener<RawDataPoint>{
+public class LogLineParser<T> implements DataListener<T> {
 
-	private List<DataListener<RawDataPoint>> dataListeners = new ArrayList<DataListener<RawDataPoint>>();
-	private LogParser logParser;
+	private List<DataListener<T>> dataListeners = new ArrayList<DataListener<T>>();
+	private LogParser<T> logParser;
 	private Long obsStart;
 
-	public LogLineParser(LogParser logParser, Long obsStart) {
+	public LogLineParser(LogParser<T> logParser, Long obsStart) {
 		this.logParser = logParser;
 		this.obsStart = obsStart;
 	}
 
 	@Override
 	public synchronized void publishData() {
-		for (DataListener<RawDataPoint> dataListener : dataListeners) {
+		for (DataListener<T> dataListener : dataListeners) {
 			dataListener.publishData();
 		}
 	}
 
-	public void registerListener(DataListener<RawDataPoint> listener) {
+	public void registerListener(DataListener<T> listener) {
 		dataListeners.add(listener);
 	}
 
@@ -36,8 +35,9 @@ public class LogLineParser implements DataListener<RawDataPoint>{
 		dataListeners.clear();
 	}
 	
-	public void receiveData(RawDataPoint dataPoint) {
-		for (DataListener<RawDataPoint> listener : dataListeners) {
+	@Override
+	public void receiveData(T dataPoint) {
+		for (DataListener<T> listener : dataListeners) {
 			listener.receiveData(dataPoint);
 		}
 	}

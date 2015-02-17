@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface DefaultParserProvider {
 
-	List<ConfiguredLogParser> getDefaultLogParsers();
+	List<ConfiguredLogParser<?>> getDefaultLogParsers();
 
 }

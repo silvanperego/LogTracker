@@ -24,7 +24,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser logParser)
+	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser<?> logParser)
 			throws InterruptedException {
 	}
 
@@ -34,17 +34,17 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ConfiguredLogParser createParser(String name) {
+	public ConfiguredLogParser<?> createParser(String name) {
 		return new ErrorLogParser(name, this);
 	}
 
 	@Override
-	public ConfiguredLogParser convertLogParser(ConfiguredLogParser other) {
+	public ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> other) {
 		return new ErrorLogParser(other, this);
 	}
 
 	@Override
-	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser logParser, Long obsStart) {
+	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
 	}
 
 }

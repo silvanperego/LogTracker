@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
  */
 public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 
-	private LogLineParser listener;
+	private LogLineParser<?> listener;
 	private boolean keepAlive = true;
 	private File logFile;
 	private long lastPos = 0;
@@ -32,7 +32,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 	 * @throws FileNotFoundException
 	 *             falls das gewünschte File nicht gefunden werden kann.
 	 */
-	public KeepAliveLogReader(File logFile, LogLineParser listener)
+	public KeepAliveLogReader(File logFile, LogLineParser<?> listener)
 			throws FileNotFoundException {
 		this.logFile = logFile;
 		this.listener = listener;

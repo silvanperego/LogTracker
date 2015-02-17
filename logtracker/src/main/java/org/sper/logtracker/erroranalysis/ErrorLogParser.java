@@ -3,11 +3,12 @@ package org.sper.logtracker.erroranalysis;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
+import org.sper.logtracker.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
-public class ErrorLogParser extends ConfiguredLogParser {
+public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	public static final String LOG_FILE_TYPE_NAME = "Error Log File";
@@ -19,7 +20,7 @@ public class ErrorLogParser extends ConfiguredLogParser {
 		super(parserName, fileTypeDescriptor);
 	}
 	
-	public ErrorLogParser(ConfiguredLogParser other, FileTypeDescriptor fileTypeDescriptor) {
+	public ErrorLogParser(ConfiguredLogParser<?> other, FileTypeDescriptor fileTypeDescriptor) {
 		super(other, fileTypeDescriptor);
 	}
 	
@@ -53,7 +54,7 @@ public class ErrorLogParser extends ConfiguredLogParser {
 	}
 
 	@Override
-	protected void extractData(LogLineParser logLineParser, Long obsStart,
+	protected void extractData(LogLineParser<RawErrorDataPoint> logLineParser, Long obsStart,
 			Matcher m) throws ParseException {
 		
 	}

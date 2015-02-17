@@ -8,7 +8,7 @@ import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
-public class ServiceResponseLogParser extends ConfiguredLogParser {
+public class ServiceResponseLogParser extends ConfiguredLogParser<RawDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	private String ignoreServiceList;
@@ -21,7 +21,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser {
 		super(parserName, fileTypeDescriptor);
 	}
 	
-	public ServiceResponseLogParser(ConfiguredLogParser other, FileTypeDescriptor fileTypeDescriptor) {
+	public ServiceResponseLogParser(ConfiguredLogParser<?> other, FileTypeDescriptor fileTypeDescriptor) {
 		super(other, fileTypeDescriptor);
 	}
 
@@ -83,7 +83,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser {
 	}
 
 	@Override
-	protected void extractData(LogLineParser logLineParser, Long obsStart, Matcher m) throws ParseException {
+	protected void extractData(LogLineParser<RawDataPoint> logLineParser, Long obsStart, Matcher m) throws ParseException {
 		String service = m.group(serviceIdx);
 		if (service.isEmpty())
 			service = "/";

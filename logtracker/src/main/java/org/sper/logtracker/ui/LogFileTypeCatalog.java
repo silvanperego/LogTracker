@@ -1,6 +1,7 @@
 package org.sper.logtracker.ui;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,8 +22,8 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 
 	private static final ErrorLogTypeDescriptor ERROR_LOG_TYPE_DESCRIPTOR = new ErrorLogTypeDescriptor();
 	private static final ServiceResponseFileTypeDescriptor SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR = new ServiceResponseFileTypeDescriptor();
-	private List<ConfiguredLogParser> defaultParserList;
-	private ConfiguredLogParser configureItem;
+	private List<ConfiguredLogParser<?>> defaultParserList;
+	private ConfiguredLogParser<?> configureItem;
 	
 	LogFileTypeCatalog() {
 		ServiceResponseLogParser wlsAccessLogParser = new ServiceResponseLogParser("WebLogic AppServer Access-Log", SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
@@ -59,12 +60,12 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		diagLogParser.setSeverityIdx(2);
 		diagLogParser.setMsgIdx(4);
 		// Add a dummy parser, which represents the Parser Config element, at the end of the list
-		configureItem = new ConfiguredLogParser("", null) {
+		configureItem = new ConfiguredLogParser<Object>("", null) {
 			
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void scanLine(String readLine, LogLineParser logLineParser,
+			public void scanLine(String readLine, LogLineParser<Object> logLineParser,
 					Long obsStart) {
 				
 			}
@@ -89,22 +90,26 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 			}
 
 			@Override
-			protected void extractData(LogLineParser logLineParser,
+			protected void extractData(LogLineParser<Object> logLineParser,
 					Long obsStart, Matcher m) throws ParseException {
 			}
 			
 		};
-		defaultParserList = Arrays.asList(wlsAccessLogParser, tomcatAccessLogParser, diagLogParser, configureItem);
+		defaultParserList = new ArrayList<ConfiguredLogParser<?>>();
+		defaultParserList.add(wlsAccessLogParser);
+		defaultParserList.add(tomcatAccessLogParser);
+		defaultParserList.add(diagLogParser);
+		defaultParserList.add(configureItem);
 	}
 	
-	public ConfiguredLogParser getConfigureItem() {
+	public ConfiguredLogParser<?> getConfigureItem() {
 		return configureItem;
 	}
 	/* (non-Javadoc)
 	 * @see org.sper.logtracker.ui.DefaultParserProvider#prepareDefaultAccessLogParsers()
 	 */
 	@Override
-	public List<ConfiguredLogParser> getDefaultLogParsers() {
+	public List<ConfiguredLogParser<?>> getDefaultLogParsers() {
 		return defaultParserList;
 	}
 	
