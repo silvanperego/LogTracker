@@ -54,9 +54,14 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	}
 
 	@Override
-	protected void extractData(LogLineParser<RawErrorDataPoint> logLineParser, Long obsStart,
-			Matcher m) throws ParseException {
-		
+	protected void extractData(LogLineParser<RawErrorDataPoint> logLineParser, Long obsStart, Matcher m) throws ParseException {
+		Long time = occTimeIdx != null ? getOccTime(m) : null;
+		if (time == null || obsStart == null || time.longValue() > obsStart.longValue()) {
+			String service = m.group(severityIdx);
+			String msg = m.group(msgIdx);
+			String severity = severityIdx != null ? m.group(severityIdx) : null;
+			logLineParser.receiveData(new RawErrorDataPoint(time, service, severity, msg));
+		}
 	}
 
 }

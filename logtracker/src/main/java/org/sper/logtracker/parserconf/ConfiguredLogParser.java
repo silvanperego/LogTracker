@@ -26,7 +26,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	private boolean includeLines, includeContaining, editable;
 	
 	protected String occTimeLanguage;
-	protected int occTimeIdx;
+	protected Integer occTimeIdx;
 	protected String dateFormat;
 	private FileTypeDescriptor logFileTypeDescriptor;
 	
