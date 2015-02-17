@@ -226,7 +226,6 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 								setLogFileType();
 								if (loadedParser != null)
 									loadedParser = parserConfigModel.replaceRow(logParserTable.getSelectedRow(), fileTypeDesc);
-								validate();
 							}
 						}
 					});
@@ -509,6 +508,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			dataExtractionPanel.remove(2);
 		}
 		dataExtractionPanel.add((Component) panel, 2);
+		dataExtractionPanel.repaint();
 	}
 
 	protected void saveLoadedParser() {

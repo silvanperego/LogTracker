@@ -10,6 +10,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ParserConfigModel extends AbstractTableModel {
 
+	public static final int STANDARD_PARSERS_COUNT = 3;
 	private static final long serialVersionUID = 1L;
 	private ParserSelectionModel parserSelectionModel;
 	private LogParserList logParserList = new LogParserList();
@@ -83,7 +84,7 @@ public class ParserConfigModel extends AbstractTableModel {
 		this.logParserList.addParserConfigs(logParserList);
 	}
 	public void saveInSelectionModel() {
-		parserSelectionModel.saveInSelectionModel(logParserList.subList(2, logParserList.size()));
+		parserSelectionModel.saveInSelectionModel(logParserList.subList(STANDARD_PARSERS_COUNT, logParserList.size()));
 	}
 	
 	public ConfiguredLogParser replaceRow(int rowIdx, FileTypeDescriptor fileTypeDesc) {

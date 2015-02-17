@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.ErrorLogTypeDescriptor;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -46,6 +47,17 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		tomcatAccessLogParser.setResponseTimeIdx(4);
 		tomcatAccessLogParser.setResponseTimeFactor(0.001d);
 		tomcatAccessLogParser.setUserIdx(1);
+		ErrorLogParser diagLogParser = new ErrorLogParser("WebLogic Diagnostic Log", ERROR_LOG_TYPE_DESCRIPTOR);
+		diagLogParser.setIncludeExcludePattern(Pattern.compile("^\\s*$"));
+		diagLogParser.setIncludeLines(false);
+		diagLogParser.setIncludeContaining(false);
+		diagLogParser.setDataExtractionPattern(Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3})\\+\\d{2}:\\d{2}\\] \\[\\S+\\] \\[(\\w+)(?::\\w+)?\\].*?\\[userId: ([^\\]]+)\\] (?:\\[[^\\]]*\\] *){1,7}(.*)"));
+		diagLogParser.setOccTimeIdx(1);
+		diagLogParser.setOccTimeFormatString("yyyy-MM-ddTkk:mm:ss.SSS");
+		diagLogParser.setOccTimeLanguage("en");
+		diagLogParser.setUserIdIdx(3);
+		diagLogParser.setSeverityIdx(2);
+		diagLogParser.setMsgIdx(4);
 		// Add a dummy parser, which represents the Parser Config element, at the end of the list
 		configureItem = new ConfiguredLogParser("", null) {
 			
@@ -82,7 +94,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 			}
 			
 		};
-		defaultParserList = Arrays.asList(wlsAccessLogParser, tomcatAccessLogParser, configureItem);
+		defaultParserList = Arrays.asList(wlsAccessLogParser, tomcatAccessLogParser, diagLogParser, configureItem);
 	}
 	
 	public ConfiguredLogParser getConfigureItem() {

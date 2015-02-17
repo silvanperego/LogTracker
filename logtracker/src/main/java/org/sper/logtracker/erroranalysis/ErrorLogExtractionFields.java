@@ -31,6 +31,8 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	private JComboBox severityComboBox;
 	private Color standardBackgroundCol;
 	private InputVerifier occTimeVerifier;
+	private JComboBox userIdComboBox;
+	private JComboBox contentComboBox;
 
 	
 	public ErrorLogExtractionFields(final ParserConfigDialog configDialog) {
@@ -38,9 +40,9 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();
 		gbl_extractionFields.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_extractionFields.rowHeights = new int[]{0, 0, 0};
+		gbl_extractionFields.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_extractionFields.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0};
-		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
 		setLayout(gbl_extractionFields);
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
@@ -54,7 +56,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		{
 			occTimeGroupCombo = new JComboBox();
 			occTimeGroupCombo.setToolTipText("the capturing group index of the group containing the service call occurrence time");
-			occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
+			occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] {null, 1, 2, 3, 4}));
 			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
 			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
 			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
@@ -112,7 +114,6 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 				add(occTimePanel, gbc_occTimePanel);
 				occTimePanel.setLayout(new BoxLayout(occTimePanel, BoxLayout.X_AXIS));
 				occTimeFormatString = new JTextField();
-				occTimeFormatString.setColumns(30);
 				standardBackgroundCol = occTimeFormatString.getBackground();
 				occTimePanel.add(occTimeFormatString);
 				occTimeFormatString.setToolTipText("The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
@@ -149,6 +150,44 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			gbc_severityComboBox.gridy = 1;
 			add(severityComboBox, gbc_severityComboBox);
 		}
+		{
+			JLabel lblUserId = new JLabel("User Id");
+			GridBagConstraints gbc_lblUserId = new GridBagConstraints();
+			gbc_lblUserId.anchor = GridBagConstraints.WEST;
+			gbc_lblUserId.insets = new Insets(0, 0, 5, 5);
+			gbc_lblUserId.gridx = 0;
+			gbc_lblUserId.gridy = 2;
+			add(lblUserId, gbc_lblUserId);
+		}
+		{
+			userIdComboBox = new JComboBox();
+			userIdComboBox.setModel(new DefaultComboBoxModel(new Integer[] {null, 1, 2, 3, 4}));
+			GridBagConstraints gbc_userIdComboBox = new GridBagConstraints();
+			gbc_userIdComboBox.anchor = GridBagConstraints.WEST;
+			gbc_userIdComboBox.insets = new Insets(0, 0, 5, 5);
+			gbc_userIdComboBox.gridx = 1;
+			gbc_userIdComboBox.gridy = 2;
+			add(userIdComboBox, gbc_userIdComboBox);
+		}
+		{
+			JLabel lblMessageContent = new JLabel("Message Content");
+			GridBagConstraints gbc_lblMessageContent = new GridBagConstraints();
+			gbc_lblMessageContent.anchor = GridBagConstraints.WEST;
+			gbc_lblMessageContent.insets = new Insets(0, 0, 0, 5);
+			gbc_lblMessageContent.gridx = 0;
+			gbc_lblMessageContent.gridy = 3;
+			add(lblMessageContent, gbc_lblMessageContent);
+		}
+		{
+			contentComboBox = new JComboBox();
+			contentComboBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
+			GridBagConstraints gbc_contentComboBox = new GridBagConstraints();
+			gbc_contentComboBox.anchor = GridBagConstraints.WEST;
+			gbc_contentComboBox.insets = new Insets(0, 0, 0, 5);
+			gbc_contentComboBox.gridx = 1;
+			gbc_contentComboBox.gridy = 3;
+			add(contentComboBox, gbc_contentComboBox);
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -158,10 +197,12 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	public void saveLoadedParser(ConfiguredLogParser parser) {
 		ErrorLogParser loadedParser = (ErrorLogParser) parser;
 		if (loadedParser != null) {
-			loadedParser.setErrorLevelIdx((Integer) severityComboBox.getSelectedItem());
+			loadedParser.setSeverityIdx((Integer) severityComboBox.getSelectedItem());
 			loadedParser.setOccTimeIdx((Integer) occTimeGroupCombo.getSelectedItem());
 			loadedParser.setOccTimeFormatString(occTimeFormatString.getText());
 			loadedParser.setOccTimeLanguage(occTimeLanguage.getText());
+			loadedParser.setUserIdIdx((Integer) userIdComboBox.getSelectedItem());
+			loadedParser.setMsgIdx((Integer) contentComboBox.getSelectedItem());
 		}
 	}
 
@@ -174,6 +215,8 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		occTimeFormatString.setEnabled(b);
 		occTimeLanguage.setEnabled(b);
 		severityComboBox.setEnabled(b);
+		userIdComboBox.setEnabled(b);
+		contentComboBox.setEnabled(b);
 	}
 
 	/* (non-Javadoc)
@@ -185,7 +228,9 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
 		occTimeFormatString.setText(logParser.getOccTimeFormatString());
 		occTimeLanguage.setText(logParser.getOccTimeLanguage());
-		severityComboBox.setSelectedItem(logParser.getErrorLevelIdx());
+		severityComboBox.setSelectedItem(logParser.getSeverityIdx());
+		userIdComboBox.setSelectedItem(logParser.getUserIdIdx());
+		contentComboBox.setSelectedItem(logParser.getMsgIdx());
 	}
 
 	/* (non-Javadoc)
