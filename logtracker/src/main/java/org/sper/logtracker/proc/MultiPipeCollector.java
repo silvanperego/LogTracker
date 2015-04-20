@@ -1,4 +1,4 @@
-package org.sper.logtracker.servstat.proc;
+package org.sper.logtracker.proc;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,11 +19,11 @@ import org.sper.logtracker.logreader.LogLineParser;
  * ebenfalls sortiert.
  * @author silvan.perego
  */
-public class MultiPipeCollector extends AbstractDataListener<RawDataPoint, RawDataPoint> implements KeepAliveElement {
+public class MultiPipeCollector<T extends RawDataPoint> extends AbstractDataListener<T, T> implements KeepAliveElement {
 
 	private static int fifoSeqNo = 0;
 
-	private class CollectorFifo extends LinkedList<RawDataPoint> implements DataListener<RawDataPoint> {
+	private class CollectorFifo extends LinkedList<T> implements DataListener<T> {
 
 		private static final long serialVersionUID = 1L;
 		private KeepAliveLogReader keepAliveElement;
@@ -37,7 +37,7 @@ public class MultiPipeCollector extends AbstractDataListener<RawDataPoint, RawDa
 		}
 
 		@Override
-		public void receiveData(RawDataPoint data) {
+		public void receiveData(T data) {
 			synchronized (MultiPipeCollector.this) {
 				add(data);
 				if (data.occTime > latestOccTime)
@@ -70,7 +70,7 @@ public class MultiPipeCollector extends AbstractDataListener<RawDataPoint, RawDa
 	private Set<CollectorFifo> fifoSet = new HashSet<CollectorFifo>();
 	private long latestOccTime = 0;
 	
-	public void addFeeder(LogLineParser<RawDataPoint> parser, KeepAliveLogReader keepAliveElement) {
+	public void addFeeder(LogLineParser<T> parser, KeepAliveLogReader keepAliveElement) {
 		CollectorFifo fifo = new CollectorFifo(keepAliveElement);
 		parser.registerListener(fifo);
 		fifoList.add(fifo);
@@ -127,7 +127,7 @@ public class MultiPipeCollector extends AbstractDataListener<RawDataPoint, RawDa
 	}
 
 	@Override
-	public void receiveData(RawDataPoint data) {
+	public void receiveData(T data) {
 		throw new UnsupportedOperationException("Diese Methode kann nicht direkt aufgerufen werden. Verbinden sie Ihre Log-Reader via #addFeeder");
 	}
 

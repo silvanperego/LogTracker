@@ -5,13 +5,13 @@ import java.util.List;
 import javax.swing.JTabbedPane;
 
 import org.sper.logtracker.config.Configuration;
-import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
+import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.servstat.ui.ServiceStatsTabs;
 
 public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
@@ -39,19 +39,19 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ConfiguredLogParser<RawDataPoint> createParser(String string) {
+	public ConfiguredLogParser<RawStatsDataPoint> createParser(String string) {
 		return new ServiceResponseLogParser(string, this);
 	}
 
 	@Override
-	public ConfiguredLogParser<RawDataPoint> convertLogParser(ConfiguredLogParser<?> other) {
+	public ConfiguredLogParser<RawStatsDataPoint> convertLogParser(ConfiguredLogParser<?> other) {
 		return new ServiceResponseLogParser(other, this);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
-		serviceStatsTabs.setupDataPipeLines(fname, (LogParser<RawDataPoint>) logParser, obsStart);
+		serviceStatsTabs.setupDataPipeLines(fname, (LogParser<RawStatsDataPoint>) logParser, obsStart);
 	}
 
 }

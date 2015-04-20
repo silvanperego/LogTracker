@@ -2,8 +2,6 @@ package org.sper.logtracker.servstat.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -12,16 +10,14 @@ import javax.swing.JTabbedPane;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.data.Factor;
-import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.KeepAliveElement;
-import org.sper.logtracker.logreader.KeepAliveLogReader;
-import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.proc.PipelineHelper;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
+import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
 import org.sper.logtracker.servstat.proc.DataPoint;
-import org.sper.logtracker.servstat.proc.DataPointFactorizer;
-import org.sper.logtracker.servstat.proc.MultiPipeCollector;
+import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
 import org.sper.logtracker.servstat.proc.NewPointExtractor;
 import org.sper.logtracker.servstat.proc.UserDataPoint;
 import org.sper.logtracker.servstat.proc.UserDataPointFactorizer;
@@ -34,7 +30,7 @@ public class ServiceStatsTabs {
 	private ServiceScatterPlot plot;
 	private NewPointExtractor newPointExtractor;
 	@SuppressWarnings("rawtypes")
-	private DataPointFactorizer factorizer;
+	private StatsDataPointFactorizer factorizer;
 	private ServiceControlPanel serviceControlPanel;
 	private UserPanel userPanel;
 	private StatsCalculator<DataPoint> serviceStatsCalculator;
@@ -78,10 +74,10 @@ public class ServiceStatsTabs {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void setupDataPipeLines(List<String> fname, LogParser<RawDataPoint> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<String> fname, LogParser<RawStatsDataPoint> logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
-			factorizer = logParser.providesUsers() ? new UserDataPointFactorizer() : new DataPointFactorizer<DataPoint>();
+			factorizer = logParser.providesUsers() ? new UserDataPointFactorizer() : new StatsDataPointFactorizer<DataPoint>();
 			serviceStatsCalculator = new StatsCalculator<DataPoint>(factorizer.getService(), new CategoryExtractor<DataPoint>() {
 
 				@Override
@@ -105,7 +101,7 @@ public class ServiceStatsTabs {
 			factorizer.addListener(newPointExtractor);
 			if (terminationPointer != null)
 				terminationPointer.endOfLife();
-			terminationPointer = setupFileReaders(fname, logParser, obsStart, factorizer);
+			terminationPointer = PipelineHelper.setupFileReaders(fname, logParser, obsStart, factorizer);
 
 			Factor services = factorizer.getService();
 			Factor users = factorizer.getUser();
@@ -115,40 +111,6 @@ public class ServiceStatsTabs {
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(tabbedPane, e1, "Error", JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	/**
-	 * Erstelle die Log-File-nahe Basisstruktur der der Pipeline.
-	 * @param fname
-	 * @param logParser
-	 * @param obsStart
-	 * @param factorizer
-	 * @return 
-	 * @throws FileNotFoundException
-	 */
-	private static KeepAliveElement setupFileReaders(List<String> fname,
-			LogParser<RawDataPoint> logParser, Long obsStart, DataPointFactorizer<?> factorizer)
-			throws FileNotFoundException {
-		KeepAliveElement terminationPointer = null;
-		if (fname.size() == 1) {
-			LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
-			logLineParser.registerListener(factorizer);
-			KeepAliveLogReader keepAliveLogReader = new KeepAliveLogReader(new File(fname.get(0)), logLineParser);
-			terminationPointer = keepAliveLogReader;
-			keepAliveLogReader.start();
-		} else {
-			// Bei mehreren Input-Files müssen die Daten durch einen MutliPipeCollector zusammengefasst werden.
-			MultiPipeCollector pipeCollector = new MultiPipeCollector();
-			pipeCollector.addListener(factorizer);
-			for (String fn : fname) {
-				LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
-				KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(fn), logLineParser);
-				pipeCollector.addFeeder(logLineParser, keepAliveElement);
-			}
-			pipeCollector.run();
-			terminationPointer = pipeCollector;
-		}
-		return terminationPointer;
 	}
 
 }

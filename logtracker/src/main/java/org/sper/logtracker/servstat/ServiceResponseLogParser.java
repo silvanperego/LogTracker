@@ -3,12 +3,12 @@ package org.sper.logtracker.servstat;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
-import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
+import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 
-public class ServiceResponseLogParser extends ConfiguredLogParser<RawDataPoint> {
+public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	private String ignoreServiceList;
@@ -83,7 +83,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawDataPoint> 
 	}
 
 	@Override
-	protected void extractData(LogLineParser<RawDataPoint> logLineParser, Long obsStart, Matcher m) throws ParseException {
+	protected void extractData(LogLineParser<RawStatsDataPoint> logLineParser, Long obsStart, Matcher m) throws ParseException {
 		String service = m.group(serviceIdx);
 		if (service.isEmpty())
 			service = "/";
@@ -92,7 +92,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawDataPoint> 
 			if (obsStart == null || time >= obsStart) {
 				double execTime = Double.parseDouble(m.group(responseTimeIdx)) * responseTimeFactor;
 				String user = userIdx != null ? m.group(userIdx) : null;
-				logLineParser.receiveData(new RawDataPoint(time, execTime, service, user));
+				logLineParser.receiveData(new RawStatsDataPoint(time, execTime, service, user));
 			}
 		}
 	}
