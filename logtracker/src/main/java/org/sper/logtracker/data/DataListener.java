@@ -10,7 +10,7 @@ public interface DataListener<T> {
 	void receiveData(T data);
 	
 	/**
-	 * Es ist ein günstiger Zeitpunkt eingetreten, um die Datenzu publizieren. (Normalerweise das momentane Ende eines Log-Files.)
+	 * Es ist ein günstiger Zeitpunkt eingetreten, um die Daten zu publizieren. (Normalerweise das momentane Ende eines Log-Files.)
 	 */
 	void publishData();
 	

@@ -6,7 +6,8 @@ import java.util.List;
 import org.sper.logtracker.data.DataListener;
 
 /**
- * Leitet gelesene Zeilen an den {@link LogParser} weiter welcher sie dann 
+ * Verwendet einen Log-Parser zum einlesen einzelner Log-Zeilen. Leitet jede gelesene Zeile dann an alle
+ * Registrierten DataListeners weiter. 
  * @author silvan.perego
  */
 public class LogLineParser<T> implements DataListener<T> {

@@ -3,6 +3,7 @@ package org.sper.logtracker.servstat.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -104,24 +105,7 @@ public class ServiceStatsTabs {
 			factorizer.addListener(newPointExtractor);
 			if (terminationPointer != null)
 				terminationPointer.endOfLife();
-			if (fname.size() == 1) {
-				LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
-				logLineParser.registerListener(factorizer);
-				KeepAliveLogReader keepAliveLogReader = new KeepAliveLogReader(new File(fname.get(0)), logLineParser);
-				terminationPointer = keepAliveLogReader;
-				keepAliveLogReader.start();
-			} else {
-				// Bei mehreren Input-Files müssen die Daten durch einen MutliPipeCollector zusammengefasst werden.
-				MultiPipeCollector pipeCollector = new MultiPipeCollector();
-				pipeCollector.addListener(factorizer);
-				for (String fn : fname) {
-					LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
-					KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(fn), logLineParser);
-					pipeCollector.addFeeder(logLineParser, keepAliveElement);
-				}
-				pipeCollector.run();
-				terminationPointer = pipeCollector;
-			}
+			terminationPointer = setupFileReaders(fname, logParser, obsStart, factorizer);
 
 			Factor services = factorizer.getService();
 			Factor users = factorizer.getUser();
@@ -131,6 +115,40 @@ public class ServiceStatsTabs {
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(tabbedPane, e1, "Error", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	/**
+	 * Erstelle die Log-File-nahe Basisstruktur der der Pipeline.
+	 * @param fname
+	 * @param logParser
+	 * @param obsStart
+	 * @param factorizer
+	 * @return 
+	 * @throws FileNotFoundException
+	 */
+	private static KeepAliveElement setupFileReaders(List<String> fname,
+			LogParser<RawDataPoint> logParser, Long obsStart, DataPointFactorizer<?> factorizer)
+			throws FileNotFoundException {
+		KeepAliveElement terminationPointer = null;
+		if (fname.size() == 1) {
+			LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
+			logLineParser.registerListener(factorizer);
+			KeepAliveLogReader keepAliveLogReader = new KeepAliveLogReader(new File(fname.get(0)), logLineParser);
+			terminationPointer = keepAliveLogReader;
+			keepAliveLogReader.start();
+		} else {
+			// Bei mehreren Input-Files müssen die Daten durch einen MutliPipeCollector zusammengefasst werden.
+			MultiPipeCollector pipeCollector = new MultiPipeCollector();
+			pipeCollector.addListener(factorizer);
+			for (String fn : fname) {
+				LogLineParser<RawDataPoint> logLineParser = new LogLineParser<RawDataPoint>(logParser, obsStart);
+				KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(fn), logLineParser);
+				pipeCollector.addFeeder(logLineParser, keepAliveElement);
+			}
+			pipeCollector.run();
+			terminationPointer = pipeCollector;
+		}
+		return terminationPointer;
 	}
 
 }

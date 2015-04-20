@@ -6,6 +6,7 @@ import javax.swing.JTabbedPane;
 
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
+import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
@@ -27,6 +28,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	@Override
 	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser<?> logParser)
 			throws InterruptedException {
+		tabbedPane.addTab("Log Lines", new LogLinePanel());
 	}
 
 	@Override
@@ -46,6 +48,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 
 	@Override
 	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
+		
 	}
 
 }
