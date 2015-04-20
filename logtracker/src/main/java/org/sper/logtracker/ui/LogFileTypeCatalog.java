@@ -15,7 +15,7 @@ import org.sper.logtracker.parserconf.DefaultParserProvider;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
-import org.sper.logtracker.servstat.ui.ServiceResponseFileTypeDescriptor;
+import org.sper.logtracker.servstat.parserconf.ServiceResponseFileTypeDescriptor;
 
 
 public class LogFileTypeCatalog implements DefaultParserProvider {
