@@ -8,6 +8,7 @@ import javax.swing.JTabbedPane;
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
+import org.sper.logtracker.erroranalysis.data.LogLineCatalog;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
 import org.sper.logtracker.logreader.KeepAliveElement;
@@ -66,7 +67,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	@Override
 	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
 		try {
-			DataListener<RawErrorDataPoint> copyToTableListener = new CopyToTableListener(logLineTableModel);
+			DataListener<RawErrorDataPoint> copyToTableListener = new LogLineCatalog(logLineTableModel);
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
 			}

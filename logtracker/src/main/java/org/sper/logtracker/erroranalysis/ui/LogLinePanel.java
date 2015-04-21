@@ -20,7 +20,9 @@ public class LogLinePanel extends JPanel {
 		logLineTableModel = new LogLineTableModel();
 		logLineTable.setModel(logLineTableModel);
 		logLineTable.getColumnModel().getColumn(0).setPreferredWidth(98);
-		logLineTable.getColumnModel().getColumn(1).setPreferredWidth(625);
+		logLineTable.getColumnModel().getColumn(1).setPreferredWidth(98);
+		logLineTable.getColumnModel().getColumn(2).setPreferredWidth(98);
+		logLineTable.getColumnModel().getColumn(3).setPreferredWidth(625);
 		
 		JScrollPane scrollPane = new JScrollPane(logLineTable);
 		add(scrollPane, BorderLayout.CENTER);
