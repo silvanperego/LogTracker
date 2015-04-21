@@ -53,7 +53,7 @@ public class LogLineCatalog implements DataListener<RawErrorDataPoint> {
 						latestMessage.severity,
 						new Date(latestMessage.occTime),
 						cat.getNumMessages(),
-						latestMessage.msg
+						cat
 				});
 			}
 		}

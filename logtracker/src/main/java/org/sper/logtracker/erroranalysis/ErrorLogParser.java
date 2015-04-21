@@ -3,7 +3,6 @@ package org.sper.logtracker.erroranalysis;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
-import org.sper.logtracker.data.Console;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -58,10 +57,10 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	protected void extractData(LogLineParser<RawErrorDataPoint> logLineParser, Long obsStart, Matcher m) throws ParseException {
 		Long time = occTimeIdx != null ? getOccTime(m) : null;
 		if (time == null || obsStart == null || time.longValue() > obsStart.longValue()) {
-			String service = m.group(severityIdx);
 			String msg = m.group(msgIdx);
 			String severity = severityIdx != null ? m.group(severityIdx) : null;
-			logLineParser.receiveData(new RawErrorDataPoint(time, service, severity, msg));
+			String user = userIdIdx != null ? m.group(userIdIdx) : null;
+			logLineParser.receiveData(new RawErrorDataPoint(time, user, severity, msg));
 		}
 	}
 

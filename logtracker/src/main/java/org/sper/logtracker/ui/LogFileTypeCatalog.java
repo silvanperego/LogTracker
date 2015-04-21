@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.sper.logtracker.data.Console;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
 import org.sper.logtracker.logreader.LogLineParser;

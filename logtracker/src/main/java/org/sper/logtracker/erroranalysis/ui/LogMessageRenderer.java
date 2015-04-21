@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.sper.logtracker.erroranalysis.data.ErrorCategory;
+
 public class LogMessageRenderer extends DefaultTableCellRenderer {
 
 	private static final long serialVersionUID = 1L;
@@ -13,7 +15,8 @@ public class LogMessageRenderer extends DefaultTableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
-		JLabel msg = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		ErrorCategory cat = (ErrorCategory) value;
+		JLabel msg = (JLabel) super.getTableCellRendererComponent(table, cat.getLatestMessage().msg, isSelected, hasFocus, row, column);
 		if (value != null) {
 			msg.setToolTipText(value.toString());
 		}

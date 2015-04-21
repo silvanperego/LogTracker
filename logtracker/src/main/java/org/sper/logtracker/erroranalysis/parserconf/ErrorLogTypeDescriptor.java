@@ -11,6 +11,7 @@ import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.data.LogLineCatalog;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
+import org.sper.logtracker.erroranalysis.ui.LogLineTableModel;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -18,7 +19,6 @@ import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.proc.PipelineHelper;
-import org.sper.logtracker.erroranalysis.ui.LogLineTableModel;
 
 public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 

@@ -3,6 +3,7 @@ package org.sper.logtracker.erroranalysis.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
  * und einer Liste aller Raw-Meldungen, welche dieser Klasse zugeordnet wurden.
  * @author silvan.perego
  */
-public class ErrorCategory {
+public class ErrorCategory implements Iterable<RawErrorDataPoint> {
 
 	/**
 	 * Die Schlüsselwörter, die diese Klasse repräsentieren.
@@ -75,11 +76,16 @@ public class ErrorCategory {
 		keyWordSet = intersectSet;
 	}
 	
-	RawErrorDataPoint getLatestMessage() {
+	public RawErrorDataPoint getLatestMessage() {
 		return errorList.get(errorList.size() - 1);
 	}
 
 	public int getNumMessages() {
 		return errorList.size();
+	}
+
+	@Override
+	public Iterator<RawErrorDataPoint> iterator() {
+		return errorList.iterator();
 	}
 }
