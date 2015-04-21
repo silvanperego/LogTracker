@@ -17,11 +17,8 @@ public class LogLinePanel extends JPanel {
 		add(lblMostRelevantErrors, BorderLayout.NORTH);
 		
 		logLineTable = new JTable();
-		logLineTable.setModel(new LogLineTableModel(new Object[][] {
-			{null, null},
-		}, new String[] {
-			"Severity", "Content"
-		}));
+		logLineTableModel = new LogLineTableModel();
+		logLineTable.setModel(logLineTableModel);
 		logLineTable.getColumnModel().getColumn(0).setPreferredWidth(98);
 		logLineTable.getColumnModel().getColumn(1).setPreferredWidth(625);
 		
@@ -31,5 +28,10 @@ public class LogLinePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTable logLineTable;
+	private LogLineTableModel logLineTableModel;
+	
+	public LogLineTableModel getTableModel() {
+		return logLineTableModel;
+	}
 
 }

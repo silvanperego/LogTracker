@@ -94,13 +94,12 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 					throw new RuntimeException(e);
 				}
 			} else {
-				StringBuilder sb = new StringBuilder();
-				sb.append("Warning: Line with unknown format: ");
-				sb.append(readLine);
-				sb.append('\n');
-				Console.addMessage(sb.toString());
+				markUnknownLine(readLine);
 			}
 		}
+	}
+
+	protected void markUnknownLine(String readLine) {
 	}
 
 	public long getOccTime(Matcher m) throws ParseException {

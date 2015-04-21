@@ -3,6 +3,7 @@ package org.sper.logtracker.servstat;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
+import org.sper.logtracker.data.Console;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
@@ -100,6 +101,15 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 	@Override
 	public boolean providesUsers() {
 		return userIdx != null;
+	}
+
+	@Override
+	protected void markUnknownLine(String readLine) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Warning: Line with unknown format: ");
+		sb.append(readLine);
+		sb.append('\n');
+		Console.addMessage(sb.toString());
 	}
 
 }

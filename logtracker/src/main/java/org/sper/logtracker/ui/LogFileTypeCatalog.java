@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.sper.logtracker.data.Console;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
 import org.sper.logtracker.logreader.LogLineParser;
@@ -54,7 +55,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		diagLogParser.setIncludeContaining(false);
 		diagLogParser.setDataExtractionPattern(Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3})\\+\\d{2}:\\d{2}\\] \\[\\S+\\] \\[(\\w+)(?::\\w+)?\\].*?\\[userId: ([^\\]]+)\\] (?:\\[[^\\]]*\\] *){1,7}(.*)"));
 		diagLogParser.setOccTimeIdx(1);
-		diagLogParser.setOccTimeFormatString("yyyy-MM-ddTkk:mm:ss.SSS");
+		diagLogParser.setOccTimeFormatString("yyyy-MM-dd'T'kk:mm:ss.SSS");
 		diagLogParser.setOccTimeLanguage("en");
 		diagLogParser.setUserIdIdx(3);
 		diagLogParser.setSeverityIdx(2);
@@ -116,6 +117,5 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 	public List<FileTypeDescriptor> getParserTypeList(ParserConfigDialog dialog) {
 		return Arrays.asList(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR, ERROR_LOG_TYPE_DESCRIPTOR);
 	}
-
 
 }
