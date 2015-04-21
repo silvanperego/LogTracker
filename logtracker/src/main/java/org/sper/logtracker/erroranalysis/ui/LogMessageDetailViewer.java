@@ -38,7 +38,7 @@ public class LogMessageDetailViewer extends AbstractCellEditor implements
 			tableModel.addRow(new Object[] {
 					new Date(dp.occTime),
 					dp.user,
-					dp.msg
+					dp
 			});
 		}
 		viewer.setVisible(true);

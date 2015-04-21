@@ -46,15 +46,17 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 				FileInputStream fis = new FileInputStream(logFile);
 				fis.getChannel().position(lastPos);
 				reader = new BufferedReader(new InputStreamReader(fis));
+				long position = fis.getChannel().position();
 				String readLine = reader.readLine();
 				while (readLine != null) {
 					if (readLine.length() > 0) {
-						listener.scanLine(new FileSnippet(logFile, fis.getChannel().position(), readLine));
+						listener.scanLine(new FileSnippet(logFile, position, readLine));
 					}
+					position = fis.getChannel().position();
 					readLine = reader.readLine();
 				}
 				listener.publishData();
-				lastPos = fis.getChannel().position();
+				lastPos = position;
 				if (reader != null)
 					reader.close();
 				if (keepAlive)

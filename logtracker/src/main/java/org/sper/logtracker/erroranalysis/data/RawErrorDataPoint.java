@@ -29,4 +29,9 @@ public class RawErrorDataPoint extends RawDataPoint {
 		this.fileSnippet = fileSnippet;
 	}
 
+	@Override
+	public String toString() {
+		return msg;
+	}
+
 }

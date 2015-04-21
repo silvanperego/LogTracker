@@ -12,11 +12,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
-import java.awt.Dimension;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
+import org.sper.logtracker.logreader.FileSnippet;
 
 public class CategoryViewer extends JDialog {
 
@@ -74,9 +78,21 @@ public class CategoryViewer extends JDialog {
 			catMessageTable.setModel(tableModel);
 			catMessageTable.getColumnModel().getColumn(0).setPreferredWidth(100);
 			catMessageTable.getColumnModel().getColumn(2).setPreferredWidth(669);
+			catMessageTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					int selectedRow = catMessageTable.getSelectedRow();
+					if (selectedRow >= 0) {
+						FileSnippet snippet = ((RawErrorDataPoint) tableModel.getValueAt(selectedRow, 2)).fileSnippet;
+						fullMessage.setText(snippet.getContents());
+					} else
+						fullMessage.setText(null);
+				}
+			});
 			JScrollPane scrollPane = new JScrollPane(catMessageTable);
 			fullMessage = new JTextArea();
-			JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, fullMessage);
+			fullMessage.setEditable(false);
+			JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, new JScrollPane(fullMessage));
 			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			getContentPane().add(splitPane, BorderLayout.CENTER);
 		}
