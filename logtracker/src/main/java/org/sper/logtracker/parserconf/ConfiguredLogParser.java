@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.sper.logtracker.data.Console;
+import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.logreader.LogParser;
 
@@ -75,20 +76,21 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	}
 
 	@Override
-	synchronized public void scanLine(String readLine, LogLineParser<T> logLineParser, Long obsStart) {
+	synchronized public void scanLine(FileSnippet lineInFile, LogLineParser<T> logLineParser, Long obsStart) {
 		if (occTimeFormatString == null) {
 			this.occTimeFormatString = 
 					occTimeLanguage != null && !occTimeLanguage.isEmpty() ? 
 							new SimpleDateFormat(dateFormat, new Locale(occTimeLanguage)) :
 								new SimpleDateFormat(dateFormat);
 		}
+		String readLine = lineInFile.line;
 		Matcher incExlMatcher = includeExcludePattern.matcher(readLine);
 		boolean found = includeContaining ?	incExlMatcher.find() : incExlMatcher.matches();
 		if (found == includeLines) {
 			Matcher m = linePattern.matcher(readLine);
 			if (m.matches()) {
 				try {
-					extractData(logLineParser, obsStart, m);
+					extractData(logLineParser, obsStart, m, lineInFile);
 				} catch (Exception e) {
 					Console.addMessage(e.toString());
 					throw new RuntimeException(e);
@@ -107,7 +109,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	}
 
 	protected abstract void extractData(LogLineParser<T> logLineParser, Long obsStart,
-			Matcher m) throws ParseException;
+			Matcher m, FileSnippet lineInFile) throws ParseException;
 
 	@Override
 	public String toString() {

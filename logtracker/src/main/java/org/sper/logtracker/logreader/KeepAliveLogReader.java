@@ -49,7 +49,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 				String readLine = reader.readLine();
 				while (readLine != null) {
 					if (readLine.length() > 0) {
-						listener.scanLine(readLine);
+						listener.scanLine(new FileSnippet(logFile, fis.getChannel().position(), readLine));
 					}
 					readLine = reader.readLine();
 				}

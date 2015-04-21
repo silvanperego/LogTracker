@@ -14,12 +14,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import java.awt.Dimension;
 
 public class CategoryViewer extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JTable catMessageTable;
 	private DefaultTableModel tableModel;
+	private JTextArea fullMessage;
 
 	/**
 	 * Create the dialog.
@@ -27,7 +31,7 @@ public class CategoryViewer extends JDialog {
 	 */
 	CategoryViewer(JComponent owner) {
 		super(JOptionPane.getFrameForComponent(owner), "Message Category Detail View");
-		setBounds(100, 100, 685, 536);
+		setBounds(100, 100, 1200, 759);
 		getContentPane().setLayout(new BorderLayout());
 		{
 			JPanel buttonPane = new JPanel();
@@ -50,7 +54,6 @@ public class CategoryViewer extends JDialog {
 			getContentPane().add(lblErrorMessagesWithin, BorderLayout.NORTH);
 		}
 		{
-			catMessageTable = new JTable();
 			tableModel = new DefaultTableModel(
 				new Object[][] {
 				},
@@ -65,11 +68,17 @@ public class CategoryViewer extends JDialog {
 					return columnTypes[columnIndex];
 				}
 			};
+		}
+		{
+			catMessageTable = new JTable();
 			catMessageTable.setModel(tableModel);
 			catMessageTable.getColumnModel().getColumn(0).setPreferredWidth(100);
 			catMessageTable.getColumnModel().getColumn(2).setPreferredWidth(669);
 			JScrollPane scrollPane = new JScrollPane(catMessageTable);
-			getContentPane().add(scrollPane, BorderLayout.CENTER);
+			fullMessage = new JTextArea();
+			JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, fullMessage);
+			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			getContentPane().add(splitPane, BorderLayout.CENTER);
 		}
 	}
 

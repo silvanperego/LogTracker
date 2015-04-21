@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.regex.Matcher;
 
 import org.sper.logtracker.data.Console;
+import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
@@ -84,7 +85,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 	}
 
 	@Override
-	protected void extractData(LogLineParser<RawStatsDataPoint> logLineParser, Long obsStart, Matcher m) throws ParseException {
+	protected void extractData(LogLineParser<RawStatsDataPoint> logLineParser, Long obsStart, Matcher m, FileSnippet lineInFile) throws ParseException {
 		String service = m.group(serviceIdx);
 		if (service.isEmpty())
 			service = "/";

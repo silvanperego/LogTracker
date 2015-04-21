@@ -43,8 +43,8 @@ public class LogLineParser<T> implements DataListener<T> {
 		}
 	}
 
-	public void scanLine(String readLine) {
-		logParser.scanLine(readLine, this, obsStart);
+	public void scanLine(FileSnippet lineInFile) {
+		logParser.scanLine(lineInFile, this, obsStart);
 	}
 
 }

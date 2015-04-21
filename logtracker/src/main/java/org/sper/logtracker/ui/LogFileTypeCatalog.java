@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
+import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.DefaultParserProvider;
@@ -65,7 +66,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void scanLine(String readLine, LogLineParser<Object> logLineParser,
+			public void scanLine(FileSnippet lineInFile, LogLineParser<Object> logLineParser,
 					Long obsStart) {
 				
 			}
@@ -91,7 +92,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 
 			@Override
 			protected void extractData(LogLineParser<Object> logLineParser,
-					Long obsStart, Matcher m) throws ParseException {
+					Long obsStart, Matcher m, FileSnippet lineInFile) throws ParseException {
 			}
 			
 		};

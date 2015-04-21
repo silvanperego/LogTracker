@@ -11,10 +11,10 @@ public interface LogParser<T> extends Cloneable {
 
 	/**
 	 * Teilt dem Listener mit, dass eine neue Log-File-Zeile entdeckt wurde.
-	 * @param readLine die entdeckte Log-File-Zeile.
+	 * @param lineInFile die entdeckte Log-File-Zeile.
 	 * @param logLineParser 
 	 */
-	void scanLine(String readLine, LogLineParser<T> logLineParser, Long obsStart);
+	void scanLine(FileSnippet lineInFile, LogLineParser<T> logLineParser, Long obsStart);
 
 	/**
 	 * @return true, falls dieser Log-Parser Usernamen liefert.
