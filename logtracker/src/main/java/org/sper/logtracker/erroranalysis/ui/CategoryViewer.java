@@ -71,6 +71,9 @@ public class CategoryViewer extends JDialog {
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 				}
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
 			};
 		}
 		{
@@ -85,6 +88,7 @@ public class CategoryViewer extends JDialog {
 					if (selectedRow >= 0) {
 						FileSnippet snippet = ((RawErrorDataPoint) tableModel.getValueAt(selectedRow, 2)).fileSnippet;
 						fullMessage.setText(snippet.getContents());
+						fullMessage.setCaretPosition(0);
 					} else
 						fullMessage.setText(null);
 				}

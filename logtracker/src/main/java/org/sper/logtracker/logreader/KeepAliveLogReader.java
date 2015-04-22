@@ -1,11 +1,11 @@
 package org.sper.logtracker.logreader;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 
 /**
  * Die Klasse öffnet ein Log-File, liest es Zeile für Zeile und übergibt den
@@ -37,28 +37,64 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 		this.logFile = logFile;
 		this.listener = listener;
 	}
+	
+	private class CountingInputStream extends BufferedInputStream {
 
+		private long pos;
+		private byte[] scannedLine = new byte[10240];
+		private long startPos;
+
+		CountingInputStream(InputStream in, long startpos) {
+			super(in);
+			pos = startpos;
+		}
+		
+		String readLine() throws IOException {
+			int n = 0;
+			while (n == 0) {	// Ignoriere Leere Zeilen
+				startPos = pos;
+				while (true) {
+					int c = read();
+					pos++;
+					if (c < 0 && n == 0) {
+						return null;
+					}
+					if (c == '\n' || c == '\r' || c < 0)
+						break;
+					// Zeichen, welche keine neue Zeile bedeuten, werden der aktuellen Zeile hinzugefügt.
+					scannedLine[n++] = (byte) c;
+				}
+			}
+			return new String(scannedLine, 0, n);
+		}
+
+		/**
+		 * Liefere die Start-Position der letzten gelesenen Zeile.
+		 * @return die Start-Position.
+		 */
+		long lineStart() {
+			return startPos;
+		}
+		
+	}
+	
 	@Override
 	public void run() {
-		BufferedReader reader = null;
+		CountingInputStream cis = null;
 		try {
 			do {
 				FileInputStream fis = new FileInputStream(logFile);
+				cis = new CountingInputStream(fis, lastPos);
 				fis.getChannel().position(lastPos);
-				reader = new BufferedReader(new InputStreamReader(fis));
-				long position = fis.getChannel().position();
-				String readLine = reader.readLine();
+				String readLine = cis.readLine();
 				while (readLine != null) {
-					if (readLine.length() > 0) {
-						listener.scanLine(new FileSnippet(logFile, position, readLine));
-					}
-					position = fis.getChannel().position();
-					readLine = reader.readLine();
+					listener.scanLine(new FileSnippet(logFile, cis.lineStart(), readLine));
+					readLine = cis.readLine();
 				}
 				listener.publishData();
-				lastPos = position;
-				if (reader != null)
-					reader.close();
+				lastPos = fis.getChannel().position();
+				if (cis != null)
+					cis.close();
 				if (keepAlive)
 					try {
 						Thread.sleep(15000);
@@ -69,9 +105,9 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (reader != null)
+			if (cis != null)
 				try {
-					reader.close();
+					cis.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
