@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * und einer Liste aller Raw-Meldungen, welche dieser Klasse zugeordnet wurden.
  * @author silvan.perego
  */
-public class ErrorCategory implements Iterable<RawErrorDataPoint> {
+public class ErrorCategory implements Iterable<RawErrorDataPoint>, Comparable<ErrorCategory> {
 
 	/**
 	 * Die Schlüsselwörter, die diese Klasse repräsentieren.
@@ -34,6 +34,7 @@ public class ErrorCategory implements Iterable<RawErrorDataPoint> {
 	private String[] split;
 	private RawErrorDataPoint lastPoint;
 	private String severity;
+	private int relevance;
 
 	public ErrorCategory(RawErrorDataPoint dp) {
 		split = wordSep.split(dp.msg);
@@ -41,6 +42,10 @@ public class ErrorCategory implements Iterable<RawErrorDataPoint> {
 		errorList.add(dp);
 		keyWordSet = new HashSet<String>();
 		severity = dp.severity;
+		if ("ERROR".equals(severity))
+			relevance = 2000;
+		if ("WARNING".equals(severity))
+			relevance = 1000;
 		for (String word : split) {
 			keyWordSet.add(word);
 		}
@@ -88,4 +93,20 @@ public class ErrorCategory implements Iterable<RawErrorDataPoint> {
 	public Iterator<RawErrorDataPoint> iterator() {
 		return errorList.iterator();
 	}
+
+	/**
+	 * Vergleicht die Kategorien bezüglich Relevanz.
+	 */
+	@Override
+	public int compareTo(ErrorCategory o) {
+		if (relevance != o.relevance)
+			return (relevance < o.relevance ? 1 : 0) - (relevance > o.relevance ? 1 : 0);
+		RawErrorDataPoint latestMessage = getLatestMessage();
+		RawErrorDataPoint otherMessage = o.getLatestMessage();
+		if (latestMessage.occTime != null && otherMessage.occTime != null)
+			return otherMessage.occTime.compareTo(latestMessage.occTime);
+		return 0;
+	}
+	
+	
 }

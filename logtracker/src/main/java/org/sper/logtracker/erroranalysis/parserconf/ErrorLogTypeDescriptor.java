@@ -46,6 +46,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 		LogLinePanel logLinePanel = new LogLinePanel();
 		logLineTableModel = logLinePanel.getTableModel();
 		tabbedPane.addTab("Log Lines", logLinePanel);
+		tabbedPane.setSelectedIndex(1);
 	}
 
 	@Override
@@ -67,11 +68,11 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	@Override
 	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
 		try {
-			DataListener<RawErrorDataPoint> copyToTableListener = new LogLineCatalog(logLineTableModel);
+			DataListener<RawErrorDataPoint> logLineCatalog = new LogLineCatalog(logLineTableModel);
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
 			}
-			keepAliveElement = PipelineHelper.setupFileReaders(fname, (LogParser<RawErrorDataPoint>) logParser, obsStart, copyToTableListener);
+			keepAliveElement = PipelineHelper.setupFileReaders(fname, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(parentPane, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}

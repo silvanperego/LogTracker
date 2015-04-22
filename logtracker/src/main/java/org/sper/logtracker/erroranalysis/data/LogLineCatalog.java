@@ -1,6 +1,7 @@
 package org.sper.logtracker.erroranalysis.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class LogLineCatalog implements DataListener<RawErrorDataPoint> {
 	public void publishData() {
 		if (needsRefresh) {
 			tableModel.setRowCount(0);
+			Collections.sort(catalog);
 			for (ErrorCategory cat : catalog) {
 				RawErrorDataPoint latestMessage = cat.getLatestMessage();
 				tableModel.addRow(new Object[] {
