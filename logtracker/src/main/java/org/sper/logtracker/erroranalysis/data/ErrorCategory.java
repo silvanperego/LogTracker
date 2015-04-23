@@ -107,6 +107,5 @@ public class ErrorCategory implements Iterable<RawErrorDataPoint>, Comparable<Er
 			return otherMessage.occTime.compareTo(latestMessage.occTime);
 		return 0;
 	}
-	
-	
+
 }

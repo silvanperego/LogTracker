@@ -1,15 +1,12 @@
 package org.sper.logtracker.erroranalysis.ui;
 
 import java.awt.Component;
-import java.util.Date;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
-import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 
 public class LogMessageDetailViewer extends AbstractCellEditor implements
 		TableCellEditor {
@@ -31,16 +28,8 @@ public class LogMessageDetailViewer extends AbstractCellEditor implements
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
-		CategoryViewer viewer = new CategoryViewer(table);
-		DefaultTableModel tableModel = viewer.getTableModel();
 		cat = (ErrorCategory) value;
-		for (RawErrorDataPoint dp : cat) {
-			tableModel.addRow(new Object[] {
-					new Date(dp.occTime),
-					dp.user,
-					dp
-			});
-		}
+		CategoryViewer viewer = new CategoryViewer(table, cat);
 		viewer.setVisible(true);
 		stopCellEditing();
 		return null;

@@ -1,11 +1,17 @@
 package org.sper.logtracker.erroranalysis.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -15,10 +21,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 
@@ -31,23 +39,33 @@ public class CategoryViewer extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param cat 
 	 * @param table 
 	 */
-	CategoryViewer(JComponent owner) {
+	CategoryViewer(JComponent owner, ErrorCategory cat) {
 		super(JOptionPane.getFrameForComponent(owner), "Message Category Detail View");
 		setBounds(100, 100, 1200, 759);
 		getContentPane().setLayout(new BorderLayout());
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 					}
 				});
+				buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
+				
+				JCheckBox showDistributionBox = new JCheckBox("Show Temporal Distribution Graph");
+				showDistributionBox.setSelected(true);
+				showDistributionBox.setHorizontalAlignment(SwingConstants.LEFT);
+				buttonPane.add(showDistributionBox);
+				
+				Component horizontalGlue = Box.createHorizontalGlue();
+				buttonPane.add(horizontalGlue);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -75,7 +93,15 @@ public class CategoryViewer extends JDialog {
 					return false;
 				}
 			};
+			for (RawErrorDataPoint dp : cat) {
+				tableModel.addRow(new Object[] {
+						new Date(dp.occTime),
+						dp.user,
+						dp
+				});
+			}
 		}
+		
 		{
 			catMessageTable = new JTable();
 			catMessageTable.setModel(tableModel);
@@ -96,9 +122,16 @@ public class CategoryViewer extends JDialog {
 			JScrollPane scrollPane = new JScrollPane(catMessageTable);
 			fullMessage = new JTextArea();
 			fullMessage.setEditable(false);
+			
+			JPanel chartPanel = TemporalDistributionPlot.createPlotOnData(cat);
+			chartPanel.setPreferredSize(new Dimension(1200, 250));
+			chartPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+			FlowLayout flowLayout = (FlowLayout) chartPanel.getLayout();
+			flowLayout.setAlignment(FlowLayout.LEFT);
 			JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, new JScrollPane(fullMessage));
-			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			getContentPane().add(chartPanel, BorderLayout.NORTH);
 			getContentPane().add(splitPane, BorderLayout.CENTER);
+			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		}
 	}
 
