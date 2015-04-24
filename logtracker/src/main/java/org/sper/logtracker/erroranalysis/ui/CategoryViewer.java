@@ -25,9 +25,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import org.jfree.chart.ChartPanel;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
+
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class CategoryViewer extends JFrame {
 
@@ -35,6 +39,8 @@ public class CategoryViewer extends JFrame {
 	private JTable catMessageTable;
 	private DefaultTableModel tableModel;
 	private JTextArea fullMessage;
+	private JCheckBox showDistributionBox;
+	private ChartPanel chartPanel;
 
 	/**
 	 * Create the dialog.
@@ -46,6 +52,9 @@ public class CategoryViewer extends JFrame {
 		setBounds(100, 100, 1200, 759);
 		getContentPane().setLayout(new BorderLayout());
 		{
+			chartPanel = TemporalDistributionPlot.createPlotOnData(cat);
+			chartPanel.setPreferredSize(new Dimension(1200, 250));
+			chartPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 			JPanel buttonPane = new JPanel();
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
@@ -58,7 +67,12 @@ public class CategoryViewer extends JFrame {
 				});
 				buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
 				
-				JCheckBox showDistributionBox = new JCheckBox("Show Temporal Distribution Graph");
+				showDistributionBox = new JCheckBox("Show Temporal Distribution Graph");
+				showDistributionBox.addChangeListener(new ChangeListener() {
+					public void stateChanged(ChangeEvent e) {
+						chartPanel.setVisible(showDistributionBox.isSelected());
+					}
+				});
 				showDistributionBox.setSelected(true);
 				showDistributionBox.setHorizontalAlignment(SwingConstants.LEFT);
 				buttonPane.add(showDistributionBox);
@@ -122,9 +136,6 @@ public class CategoryViewer extends JFrame {
 			fullMessage = new JTextArea();
 			fullMessage.setEditable(false);
 			
-			JPanel chartPanel = TemporalDistributionPlot.createPlotOnData(cat);
-			chartPanel.setPreferredSize(new Dimension(1200, 250));
-			chartPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 			FlowLayout flowLayout = (FlowLayout) chartPanel.getLayout();
 			flowLayout.setAlignment(FlowLayout.LEFT);
 			JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, new JScrollPane(fullMessage));
