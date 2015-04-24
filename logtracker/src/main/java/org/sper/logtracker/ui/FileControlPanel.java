@@ -223,8 +223,8 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 				if (logFileFormatBox.getSelectedItem() == logFileTypeCatalog.getConfigureItem()) {
 					ParserConfigDialog dialog = new ParserConfigDialog(parserModel);
 					dialog.setLogFileTypeList(logFileTypeCatalog.getParserTypeList(dialog));
-					dialog.setVisible(true);
 					logFileFormatBox.setSelectedItem(null);
+					dialog.setVisible(true);
 				}
 				checkEnableApplyButton();
 			}

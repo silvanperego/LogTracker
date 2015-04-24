@@ -496,6 +496,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		logFileTypeCombo.setSelectedIndex(0);
 		setLogFileType();
 		enableDetailFields(false);
+		logParserTable.getSelectionModel().setSelectionInterval(0, 0);
 	}
 
 	private void setLogFileType() {
