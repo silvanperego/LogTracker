@@ -13,9 +13,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -30,7 +29,7 @@ import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 
-public class CategoryViewer extends JDialog {
+public class CategoryViewer extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTable catMessageTable;
@@ -43,7 +42,7 @@ public class CategoryViewer extends JDialog {
 	 * @param table 
 	 */
 	CategoryViewer(JComponent owner, ErrorCategory cat) {
-		super(JOptionPane.getFrameForComponent(owner), "Message Category Detail View");
+		super("Message Category Detail View");
 		setBounds(100, 100, 1200, 759);
 		getContentPane().setLayout(new BorderLayout());
 		{
@@ -132,6 +131,7 @@ public class CategoryViewer extends JDialog {
 			getContentPane().add(chartPanel, BorderLayout.NORTH);
 			getContentPane().add(splitPane, BorderLayout.CENTER);
 			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			splitPane.setResizeWeight(0.4);
 		}
 	}
 

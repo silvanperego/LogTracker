@@ -91,7 +91,7 @@ class TemporalDistributionPlot {
 		XYBarDataset xyBarDataset = new XYBarDataset(xySeriesCollection, combineInSlots(cat, xySeries));
 		xySeriesCollection.addSeries(xySeries);
 		JFreeChart jfreechart = ChartFactory.createTimeSeriesChart(
-				"Temporal Distribution of Messages", "Occurrence", "Occurrences", xyBarDataset, false, false, false);
+				null, "Time", "Occurrences", xyBarDataset, false, false, false);
 		XYBarRenderer renderer = new XYBarRenderer(0.3);
 		renderer.setSeriesFillPaint(0, Color.GREEN);
 		jfreechart.getXYPlot().setRenderer(renderer);
