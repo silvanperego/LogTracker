@@ -1,6 +1,7 @@
 package org.sper.logtracker.logreader;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,7 +42,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 	private class CountingInputStream extends BufferedInputStream {
 
 		private long pos;
-		private byte[] scannedLine = new byte[10240];
+		private ByteArrayOutputStream scannedLine = new ByteArrayOutputStream(10240);
 		private long startPos;
 
 		CountingInputStream(InputStream in, long startpos) {
@@ -50,22 +51,22 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 		}
 		
 		String readLine() throws IOException {
-			int n = 0;
-			while (n == 0) {	// Ignoriere Leere Zeilen
+			scannedLine.reset();
+			while (scannedLine.size() == 0) {	// Ignoriere Leere Zeilen
 				startPos = pos;
 				while (true) {
 					int c = read();
 					pos++;
-					if (c < 0 && n == 0) {
+					if (c < 0 && scannedLine.size() == 0) {
 						return null;
 					}
 					if (c == '\n' || c == '\r' || c < 0)
 						break;
 					// Zeichen, welche keine neue Zeile bedeuten, werden der aktuellen Zeile hinzugefügt.
-					scannedLine[n++] = (byte) c;
+					scannedLine.write(c);
 				}
 			}
-			return new String(scannedLine, 0, n);
+			return new String(scannedLine.toByteArray());
 		}
 
 		/**
