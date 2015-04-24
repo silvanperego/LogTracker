@@ -45,13 +45,15 @@ class TemporalDistributionPlot {
 	private static long combineInSlots(ErrorCategory cat, XYSeries xySeries) {
 		long min = Long.MAX_VALUE;
 		long max = Long.MIN_VALUE;
-		for (RawErrorDataPoint dp : cat) {
-			if (dp.occTime != null) {
-				long occTime = (long) dp.occTime;
-				if (occTime < min)
-					min = occTime;
-				if (occTime > max)
-					max = occTime;
+		synchronized (cat) {
+			for (RawErrorDataPoint dp : cat) {
+				if (dp.occTime != null) {
+					long occTime = (long) dp.occTime;
+					if (occTime < min)
+						min = occTime;
+					if (occTime > max)
+						max = occTime;
+				}
 			}
 		}
 		
@@ -67,8 +69,10 @@ class TemporalDistributionPlot {
 			if (barint > -1) {
 				int offs = (int)(min / barint);
 				int[] bar = new int[(int)((max + barint - 1) / barint) - offs];
-				for (RawErrorDataPoint dp : cat) {
-					bar[(int)(dp.occTime / barint) - offs]++;
+				synchronized (cat) {
+					for (RawErrorDataPoint dp : cat) {
+						bar[(int)(dp.occTime / barint) - offs]++;
+					}
 				}
 				for (int i = 0; i < bar.length; i++) {
 					XYDataItem item = new XYDataItem(new Long((i + offs) * barint), new Integer(bar[i]));

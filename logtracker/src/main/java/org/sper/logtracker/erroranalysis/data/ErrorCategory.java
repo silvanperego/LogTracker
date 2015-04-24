@@ -75,17 +75,17 @@ public class ErrorCategory implements Iterable<RawErrorDataPoint>, Comparable<Er
 	 * Der letzte Datenpunkt, welche mittels {@link #score(RawErrorDataPoint)} analysiert wurde, wird definitiv
 	 * dieser Kategorie zugeschlagen.
 	 */
-	void addDataPoint() {
+	synchronized void addDataPoint() {
 		totalWords += split.length;
 		errorList.add(lastPoint);
 		keyWordSet = intersectSet;
 	}
 	
-	public RawErrorDataPoint getLatestMessage() {
+	public synchronized RawErrorDataPoint getLatestMessage() {
 		return errorList.get(errorList.size() - 1);
 	}
 
-	public int getNumMessages() {
+	public synchronized int getNumMessages() {
 		return errorList.size();
 	}
 
