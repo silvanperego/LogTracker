@@ -21,6 +21,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -29,9 +31,6 @@ import org.jfree.chart.ChartPanel;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
-
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 
 public class CategoryViewer extends JFrame {
 
@@ -52,7 +51,8 @@ public class CategoryViewer extends JFrame {
 		setBounds(100, 100, 1200, 759);
 		getContentPane().setLayout(new BorderLayout());
 		{
-			chartPanel = TemporalDistributionPlot.createPlotOnData(cat);
+			TemporalDistributionPlot temporalDistributionPlot = new TemporalDistributionPlot();
+			chartPanel = temporalDistributionPlot.createPlotOnData(cat);
 			chartPanel.setPreferredSize(new Dimension(1200, 250));
 			chartPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 			JPanel buttonPane = new JPanel();
