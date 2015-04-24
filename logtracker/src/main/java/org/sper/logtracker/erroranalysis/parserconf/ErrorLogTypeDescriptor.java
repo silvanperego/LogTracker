@@ -56,12 +56,12 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 
 	@Override
 	public ConfiguredLogParser<?> createParser(String name) {
-		return new ErrorLogParser(name, this);
+		return new ErrorLogParser(name);
 	}
 
 	@Override
 	public ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> other) {
-		return new ErrorLogParser(other, this);
+		return new ErrorLogParser(other);
 	}
 
 	@SuppressWarnings("unchecked")

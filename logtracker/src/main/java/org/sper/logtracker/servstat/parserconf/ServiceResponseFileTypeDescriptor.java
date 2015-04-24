@@ -40,12 +40,12 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 
 	@Override
 	public ConfiguredLogParser<RawStatsDataPoint> createParser(String string) {
-		return new ServiceResponseLogParser(string, this);
+		return new ServiceResponseLogParser(string);
 	}
 
 	@Override
 	public ConfiguredLogParser<RawStatsDataPoint> convertLogParser(ConfiguredLogParser<?> other) {
-		return new ServiceResponseLogParser(other, this);
+		return new ServiceResponseLogParser(other);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -13,17 +13,18 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	public static final String LOG_FILE_TYPE_NAME = "Error Log File";
+	private static FileTypeDescriptor fileTypeDescriptor;
 	private Integer severityIdx;
 	private Integer userIdIdx;
 	private Integer msgIdx;
 	private FileSnippet lastLineInFile;
 
-	public ErrorLogParser(String parserName, FileTypeDescriptor fileTypeDescriptor) {
-		super(parserName, fileTypeDescriptor);
+	public ErrorLogParser(String parserName) {
+		super(parserName);
 	}
 	
-	public ErrorLogParser(ConfiguredLogParser<?> other, FileTypeDescriptor fileTypeDescriptor) {
-		super(other, fileTypeDescriptor);
+	public ErrorLogParser(ConfiguredLogParser<?> other) {
+		super(other);
 	}
 	
 	public Integer getSeverityIdx() {
@@ -69,4 +70,13 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 		}
 	}
 
+	@Override
+	public FileTypeDescriptor getLogFileTypeDescriptor() {
+		return fileTypeDescriptor;
+	}
+
+	public static void setFileTypeDescriptor(FileTypeDescriptor fileTypeDescriptor) {
+		ErrorLogParser.fileTypeDescriptor = fileTypeDescriptor;
+	}
+	
 }

@@ -29,18 +29,16 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	protected String occTimeLanguage;
 	protected Integer occTimeIdx;
 	protected String dateFormat;
-	private FileTypeDescriptor logFileTypeDescriptor;
 	
-	public ConfiguredLogParser(String parserName, FileTypeDescriptor logFileTypeDescriptor) {
+	public ConfiguredLogParser(String parserName) {
 		this.parserName = parserName;
-		this.logFileTypeDescriptor = logFileTypeDescriptor;
 	}
 	
 	/**
 	 * Erstellt einen neuen ConfiguredLogParser und übernimmt die wichtigsten Einträge
 	 * @param orig
 	 */
-	public ConfiguredLogParser(ConfiguredLogParser<?> orig, FileTypeDescriptor logFileTypeDescriptor) {
+	public ConfiguredLogParser(ConfiguredLogParser<?> orig) {
 		linePattern = orig.linePattern;
 		includeExcludePattern = orig.includeExcludePattern;
 		parserName = orig.parserName;
@@ -50,7 +48,6 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		occTimeLanguage = orig.occTimeLanguage;
 		occTimeIdx = orig.occTimeIdx;
 		dateFormat = orig.dateFormat;
-		this.logFileTypeDescriptor = logFileTypeDescriptor;
 	}
 	
 	public boolean isEditable() {
@@ -200,8 +197,5 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		occTimeFormatString = null;
 	}
 
-	public FileTypeDescriptor getLogFileTypeDescriptor() {
-		return logFileTypeDescriptor;
-	}
-
+	public abstract FileTypeDescriptor getLogFileTypeDescriptor();
 }

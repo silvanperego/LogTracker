@@ -27,7 +27,9 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 	private ConfiguredLogParser<?> configureItem;
 	
 	LogFileTypeCatalog() {
-		ServiceResponseLogParser wlsAccessLogParser = new ServiceResponseLogParser("WebLogic AppServer Access-Log", SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
+		ServiceResponseLogParser.setFileTypeDescriptor(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
+		ErrorLogParser.setFileTypeDescriptor(ERROR_LOG_TYPE_DESCRIPTOR);
+		ServiceResponseLogParser wlsAccessLogParser = new ServiceResponseLogParser("WebLogic AppServer Access-Log");
 		wlsAccessLogParser.setIncludeExcludePattern(Pattern.compile("^#"));
 		wlsAccessLogParser.setIncludeLines(false);
 		wlsAccessLogParser.setIncludeContaining(true);
@@ -37,7 +39,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		wlsAccessLogParser.setServiceIdx(2);
 		wlsAccessLogParser.setResponseTimeIdx(3);
 		wlsAccessLogParser.setResponseTimeFactor(1.d);
-		ServiceResponseLogParser tomcatAccessLogParser = new ServiceResponseLogParser("Tomcat \"common\" Access-Log", SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
+		ServiceResponseLogParser tomcatAccessLogParser = new ServiceResponseLogParser("Tomcat \"common\" Access-Log");
 		tomcatAccessLogParser.setIncludeExcludePattern(Pattern.compile("-$"));
 		tomcatAccessLogParser.setIncludeLines(false);
 		tomcatAccessLogParser.setIncludeContaining(true);
@@ -49,7 +51,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		tomcatAccessLogParser.setResponseTimeIdx(4);
 		tomcatAccessLogParser.setResponseTimeFactor(0.001d);
 		tomcatAccessLogParser.setUserIdx(1);
-		ErrorLogParser diagLogParser = new ErrorLogParser("WebLogic Diagnostic Log", ERROR_LOG_TYPE_DESCRIPTOR);
+		ErrorLogParser diagLogParser = new ErrorLogParser("WebLogic Diagnostic Log");
 		diagLogParser.setIncludeExcludePattern(Pattern.compile("^\\s*$"));
 		diagLogParser.setIncludeLines(false);
 		diagLogParser.setIncludeContaining(false);
@@ -61,7 +63,7 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		diagLogParser.setSeverityIdx(2);
 		diagLogParser.setMsgIdx(4);
 		// Add a dummy parser, which represents the Parser Config element, at the end of the list
-		configureItem = new ConfiguredLogParser<Object>("", null) {
+		configureItem = new ConfiguredLogParser<Object>("") {
 			
 			private static final long serialVersionUID = 1L;
 
@@ -93,6 +95,11 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 			@Override
 			protected void extractData(LogLineParser<Object> logLineParser,
 					Long obsStart, Matcher m, FileSnippet lineInFile) throws ParseException {
+			}
+
+			@Override
+			public FileTypeDescriptor getLogFileTypeDescriptor() {
+				return null;
 			}
 			
 		};

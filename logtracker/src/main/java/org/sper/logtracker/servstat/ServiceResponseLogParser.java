@@ -13,18 +13,19 @@ import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPoint> {
 
 	private static final long serialVersionUID = 1L;
+	transient static FileTypeDescriptor fileTypeDescriptor;
 	private String ignoreServiceList;
 	private int serviceIdx;
 	private int responseTimeIdx;
 	private Integer userIdx;
 	private double responseTimeFactor = 1.d;
 	
-	public ServiceResponseLogParser(String parserName, FileTypeDescriptor fileTypeDescriptor) {
-		super(parserName, fileTypeDescriptor);
+	public ServiceResponseLogParser(String parserName) {
+		super(parserName);
 	}
 	
-	public ServiceResponseLogParser(ConfiguredLogParser<?> other, FileTypeDescriptor fileTypeDescriptor) {
-		super(other, fileTypeDescriptor);
+	public ServiceResponseLogParser(ConfiguredLogParser<?> other) {
+		super(other);
 	}
 
 	/**
@@ -113,4 +114,13 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 		Console.addMessage(sb.toString());
 	}
 
+	@Override
+	public FileTypeDescriptor getLogFileTypeDescriptor() {
+		return fileTypeDescriptor;
+	}
+
+	public static void setFileTypeDescriptor(FileTypeDescriptor fileTypeDescriptor) {
+		ServiceResponseLogParser.fileTypeDescriptor = fileTypeDescriptor;
+	}
+	
 }
