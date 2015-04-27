@@ -106,12 +106,15 @@ public class CategoryViewer extends JFrame {
 					return false;
 				}
 			};
-			for (RawErrorDataPoint dp : cat) {
-				tableModel.addRow(new Object[] {
-						new Date(dp.occTime),
-						dp.user,
-						dp
-				});
+			synchronized(cat) {
+				for (int i = cat.getNumMessages(); --i >= 0; ) {
+					RawErrorDataPoint dp = cat.getErrorsAsList().get(i);
+					tableModel.addRow(new Object[] {
+							new Date(dp.occTime),
+							dp.user,
+							dp
+					});
+				}
 			}
 		}
 		

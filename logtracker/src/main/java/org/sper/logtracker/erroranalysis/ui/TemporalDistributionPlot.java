@@ -52,7 +52,7 @@ class TemporalDistributionPlot {
 		long min = Long.MAX_VALUE;
 		long max = Long.MIN_VALUE;
 		synchronized (cat) {
-			for (RawErrorDataPoint dp : cat) {
+			for (RawErrorDataPoint dp : cat.getErrorsAsList()) {
 				if (dp.occTime != null) {
 					long occTime = (long) dp.occTime;
 					if (occTime < min)
@@ -93,7 +93,7 @@ class TemporalDistributionPlot {
 				int offs = (int)(min / barint);
 				int[] bar = new int[(int)((max + barint - 1) / barint) - offs];
 				synchronized (cat) {
-					for (RawErrorDataPoint dp : cat) {
+					for (RawErrorDataPoint dp : cat.getErrorsAsList()) {
 						if (dp.occTime >= min && dp.occTime <= max)
 							bar[(int)(dp.occTime / barint) - offs]++;
 						else if (dp.occTime < belowval)
