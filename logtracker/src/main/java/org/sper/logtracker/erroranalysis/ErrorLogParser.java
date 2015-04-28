@@ -17,7 +17,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	private Integer severityIdx;
 	private Integer userIdIdx;
 	private Integer msgIdx;
-	private FileSnippet lastLineInFile;
+	private ThreadLocal<FileSnippet> lastLineInFile = new ThreadLocal<FileSnippet>();
 
 	public ErrorLogParser(String parserName) {
 		super(parserName);
@@ -64,9 +64,9 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 			String severity = severityIdx != null ? m.group(severityIdx) : null;
 			String user = userIdIdx != null ? m.group(userIdIdx) : null;
 			logLineParser.receiveData(new RawErrorDataPoint(time, user, severity, msg, fileSnippet));
-			if (lastLineInFile != null)
-				lastLineInFile.setEndPos(fileSnippet);
-			lastLineInFile = fileSnippet;
+			if (lastLineInFile.get() != null)
+				lastLineInFile.get().setEndPos(fileSnippet);
+			lastLineInFile.set(fileSnippet);
 		}
 	}
 

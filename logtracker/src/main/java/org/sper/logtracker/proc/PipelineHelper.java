@@ -34,7 +34,7 @@ public class PipelineHelper {
 			terminationPointer = keepAliveLogReader;
 			keepAliveLogReader.start();
 		} else {
-			// Bei mehreren Input-Files müssen die Daten durch einen MutliPipeCollector zusammengefasst werden.
+			// Bei mehreren Input-Files müssen die Daten durch einen MultiPipeCollector zusammengefasst werden.
 			MultiPipeCollector<T> pipeCollector = new MultiPipeCollector<T>();
 			pipeCollector.addListener(rawDataListener);
 			for (String fn : fname) {
