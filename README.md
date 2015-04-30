@@ -7,6 +7,17 @@ Just type the plus button to add log-files to the monitor, choose an appropriate
 
 Copyright 2015, Silvan Perego
 
+
+
+
+
+
+
+
+
+
+
+
 Licensed under the Apache License, Version 2.0 (the "License")you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
