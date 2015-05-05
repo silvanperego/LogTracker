@@ -86,7 +86,8 @@ public class ServiceStatsTabs {
 				}
 			}, serviceControlPanel.getTable(), true, serviceControlPanel.getPublishingSemaphore(), serviceControlPanel.getApplyButton());
 			factorizer.addListener(serviceStatsCalculator);
-			userPanel.clearTable();
+			if (userPanel != null)
+				userPanel.clearTable();
 			if (logParser.providesUsers()) {
 				factorizer.addListener(new StatsCalculator<UserDataPoint>(factorizer.getUser(), new CategoryExtractor<UserDataPoint>() {
 					@Override
