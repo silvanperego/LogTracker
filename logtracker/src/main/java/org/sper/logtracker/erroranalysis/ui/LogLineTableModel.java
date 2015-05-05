@@ -6,7 +6,7 @@ public final class LogLineTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 1L;
 	Class[] columnTypes = new Class[] { String.class, String.class, Integer.class, String.class };
-	boolean[] columnEditables = new boolean[] { false, false, false, true };
+	boolean[] columnEditables = new boolean[] { false, false, false, false };
 
 	LogLineTableModel() {
 		super(new String[] { "Severity", "Latest occurrence", "# of Messages", "Latest Content" }, 0);
