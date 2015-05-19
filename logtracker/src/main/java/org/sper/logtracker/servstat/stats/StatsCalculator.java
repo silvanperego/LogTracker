@@ -26,15 +26,17 @@ public class StatsCalculator implements DataListener<DataPoint>, NewCategoryList
 	private JTable jtable;
 	private PublishingSemaphore semaphore;
 	private JComponent enableComp;
+	private Integer successRetCode;
 	
 	public static interface CategoryExtractor {
 		Integer cat(DataPoint dp);
 	}
 
 	public StatsCalculator(Factor services, CategoryExtractor extractor, JTable jtable, 
-			boolean withTotals, PublishingSemaphore semaphore, JComponent enableComp) {
+			boolean withTotals, PublishingSemaphore semaphore, JComponent enableComp, Integer successRetCode) {
+		this.successRetCode = successRetCode;
 		groupStats = new ArrayList<ServiceStats>();
-		totals = new ServiceStats("Total");
+		totals = new ServiceStats("Total", successRetCode);
 		this.withTotals = withTotals;
 		services.addCategoryListener(this);
 		this.extractor = extractor;
@@ -74,7 +76,7 @@ public class StatsCalculator implements DataListener<DataPoint>, NewCategoryList
 
 	@Override
 	public void newCategory(String name, int idx) {
-		groupStats.add(new ServiceStats(name));
+		groupStats.add(new ServiceStats(name, successRetCode));
 	}
 
 	public double getTotalMean() {

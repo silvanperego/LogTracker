@@ -82,7 +82,7 @@ public class ServiceStatsTabs {
 				public Integer cat(DataPoint dp) {
 					return dp.svcIdx;
 				}
-			}, serviceControlPanel.getTable(), true, serviceControlPanel.getPublishingSemaphore(), serviceControlPanel.getApplyButton());
+			}, serviceControlPanel.getTable(), true, serviceControlPanel.getPublishingSemaphore(), serviceControlPanel.getApplyButton(), successRetCode);
 			factorizer.addListener(serviceStatsCalculator);
 			if (userPanel != null)
 				userPanel.clearTable();
@@ -92,7 +92,7 @@ public class ServiceStatsTabs {
 					public Integer cat(DataPoint dp) {
 						return dp.user;
 					}
-				}, userPanel.getTable(), false, null, userPanel.getApplyButon()));
+				}, userPanel.getTable(), false, null, userPanel.getApplyButon(), successRetCode));
 			} else
 				if (tabbedPane.getTabCount() == 4)
 					tabbedPane.remove(2);

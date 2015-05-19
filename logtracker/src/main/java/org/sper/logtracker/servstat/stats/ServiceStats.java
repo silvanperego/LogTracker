@@ -14,7 +14,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.sper.logtracker.servstat.proc.DataPoint;
-import org.sper.logtracker.servstat.ui.ServiceControlTableModel;
 
 /**
  * Repräsentiert die Statistiken für einen einzelnen Service. 
@@ -29,12 +28,12 @@ public class ServiceStats {
 	private Double callsPerMinute;
 	private Double execMedian;
 	private Double percentile;
+	private Integer successRetCode;
+	private long errCount;
 	
-	ServiceStats(String serviceName) {
+	ServiceStats(String serviceName, Integer successRetCode) {
 		this.serviceName = serviceName;
-	}
-	
-	ServiceStats(String serviceName, ServiceStats timeFrame) {
+		this.successRetCode = successRetCode;
 	}
 	
 	void addDataPoint(DataPoint dpt) {
@@ -57,6 +56,7 @@ public class ServiceStats {
 	}
 
 	private void calcStatsInternal() {
+		countErrors();
 		calcMeanExecTime();
 		calcCallsPerMinute();
 		calcMedianExecTimeAndPercentile();
@@ -69,6 +69,14 @@ public class ServiceStats {
 				startTime = pt.occTime;
 			if (pt.occTime > endTime)
 				endTime = pt.occTime;
+		}
+	}
+
+	private void countErrors() {
+		errCount = 0;
+		for (DataPoint pt : data) {
+			if (successRetCode != null && !successRetCode.equals(pt.returnCode))
+				errCount++;
 		}
 	}
 
@@ -108,7 +116,7 @@ public class ServiceStats {
 	public void fillTableModelRow(Object[] row) {
 		row[SERVICE_NAME_COL] = serviceName;
 		row[NUMBER_OF_CALLS_COL] = data.size();
-		row[NUMBER_OF_ERRORS_COL] = 0;
+		row[NUMBER_OF_ERRORS_COL] = errCount;
 		row[CALLS_PER_MINUTE_COL] = callsPerMinute;
 		row[MEAN_RESPONSE_TIME_COL] = meanExecTime;
 		row[MEDIAN_COL] = execMedian;

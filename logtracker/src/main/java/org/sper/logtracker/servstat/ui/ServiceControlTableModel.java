@@ -57,7 +57,7 @@ public class ServiceControlTableModel extends AbstractTableModel {
 				if ("Total".equals(serviceName))
 					othersIdx = i;
 				else {
-					XYSeries xySeries = createXYSeries(modelColumn, serviceName, xyPlot, creator, (Color)getValueAt(i, 10), seriesSuffix);
+					XYSeries xySeries = createXYSeries(modelColumn, serviceName, xyPlot, creator, (Color)getValueAt(i, COLOR_COL), seriesSuffix);
 					CategoryCollection servColl = new CategoryCollection();
 					servColl.addFactoryCat(services.getStringIndex(serviceName));
 					creator.createPipeLine(servColl, xySeries);
