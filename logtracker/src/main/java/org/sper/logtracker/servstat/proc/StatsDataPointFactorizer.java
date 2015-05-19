@@ -4,15 +4,15 @@ import org.sper.logtracker.data.AbstractDataListener;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 
-public class StatsDataPointFactorizer<T extends DataPoint> extends AbstractDataListener<RawStatsDataPoint, T> {
+public class StatsDataPointFactorizer extends AbstractDataListener<RawStatsDataPoint, DataPoint> {
 	
 	private Factor service = new Factor();
+	private Factor user = new Factor();
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void receiveData(RawStatsDataPoint data) {
-		DataPoint dp = new DataPoint(service.addString(data.service), data.occTime, data.value);
-		sendToListeners((T) dp);
+		DataPoint dp = new DataPoint(service.addString(data.service), data.occTime, data.value, data.user != null ? user.addString(data.user) : null, data.returnCode);
+		sendToListeners(dp);
 	}
 
 	public Factor getService() {

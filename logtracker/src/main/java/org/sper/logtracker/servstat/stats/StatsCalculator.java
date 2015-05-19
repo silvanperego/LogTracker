@@ -16,22 +16,22 @@ import org.sper.logtracker.servstat.proc.PublishingSemaphore;
  * Klassifiziert alle Services eines Data-Frames und erstellt Statistiken für alle Services.
  * @author silvan.perego
  */
-public class StatsCalculator<T extends DataPoint> implements DataListener<T>, NewCategoryListener {
+public class StatsCalculator implements DataListener<DataPoint>, NewCategoryListener {
 	
 	private List<ServiceStats> groupStats;
 	private ServiceStats totals;
-	private CategoryExtractor<T> extractor;
+	private CategoryExtractor extractor;
 	private boolean withTotals;
 	private AbstractTableModel tableModel;
 	private JTable jtable;
 	private PublishingSemaphore semaphore;
 	private JComponent enableComp;
 	
-	public static interface CategoryExtractor<T> {
-		Integer cat(T dp);
+	public static interface CategoryExtractor {
+		Integer cat(DataPoint dp);
 	}
 
-	public StatsCalculator(Factor services, CategoryExtractor<T> extractor, JTable jtable, 
+	public StatsCalculator(Factor services, CategoryExtractor extractor, JTable jtable, 
 			boolean withTotals, PublishingSemaphore semaphore, JComponent enableComp) {
 		groupStats = new ArrayList<ServiceStats>();
 		totals = new ServiceStats("Total");
@@ -45,7 +45,7 @@ public class StatsCalculator<T extends DataPoint> implements DataListener<T>, Ne
 	}
 
 	@Override
-	public void receiveData(T dpt) {
+	public void receiveData(DataPoint dpt) {
 		totals.addDataPoint(dpt);
 		groupStats.get(extractor.cat(dpt)).addDataPoint(dpt);
 	}

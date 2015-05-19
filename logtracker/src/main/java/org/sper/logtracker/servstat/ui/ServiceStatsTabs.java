@@ -17,10 +17,8 @@ import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
 import org.sper.logtracker.servstat.proc.DataPoint;
-import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
 import org.sper.logtracker.servstat.proc.NewPointExtractor;
-import org.sper.logtracker.servstat.proc.UserDataPoint;
-import org.sper.logtracker.servstat.proc.UserDataPointFactorizer;
+import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
 import org.sper.logtracker.servstat.scatter.ServiceScatterPlot;
 import org.sper.logtracker.servstat.scatter.TooltipGenerator;
 import org.sper.logtracker.servstat.stats.StatsCalculator;
@@ -29,11 +27,10 @@ import org.sper.logtracker.servstat.stats.StatsCalculator.CategoryExtractor;
 public class ServiceStatsTabs {
 	private ServiceScatterPlot plot;
 	private NewPointExtractor newPointExtractor;
-	@SuppressWarnings("rawtypes")
 	private StatsDataPointFactorizer factorizer;
 	private ServiceControlPanel serviceControlPanel;
 	private UserPanel userPanel;
-	private StatsCalculator<DataPoint> serviceStatsCalculator;
+	private StatsCalculator serviceStatsCalculator;
 	private KeepAliveElement terminationPointer;
 	private boolean providesUsers;
 	private JTabbedPane tabbedPane;
@@ -66,19 +63,18 @@ public class ServiceStatsTabs {
 	public void setupDataSeries() {
 		CategoryCollection users = null;
 		if (providesUsers)
-			users = userPanel.createUsersFilter(((UserDataPointFactorizer)factorizer).getUser());
+			users = userPanel.createUsersFilter(factorizer.getUser());
 		newPointExtractor.removeListeners();
 		newPointExtractor.addListener(plot);
 		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users);
 		newPointExtractor.resendData();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setupDataPipeLines(List<String> fname, LogParser<RawStatsDataPoint> logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
-			factorizer = logParser.providesUsers() ? new UserDataPointFactorizer() : new StatsDataPointFactorizer<DataPoint>();
-			serviceStatsCalculator = new StatsCalculator<DataPoint>(factorizer.getService(), new CategoryExtractor<DataPoint>() {
+			factorizer = new StatsDataPointFactorizer();
+			serviceStatsCalculator = new StatsCalculator(factorizer.getService(), new CategoryExtractor() {
 
 				@Override
 				public Integer cat(DataPoint dp) {
@@ -89,10 +85,10 @@ public class ServiceStatsTabs {
 			if (userPanel != null)
 				userPanel.clearTable();
 			if (logParser.providesUsers()) {
-				factorizer.addListener(new StatsCalculator<UserDataPoint>(factorizer.getUser(), new CategoryExtractor<UserDataPoint>() {
+				factorizer.addListener(new StatsCalculator(factorizer.getUser(), new CategoryExtractor() {
 					@Override
-					public Integer cat(UserDataPoint dp) {
-						return dp.userIdx;
+					public Integer cat(DataPoint dp) {
+						return dp.user;
 					}
 				}, userPanel.getTable(), false, null, userPanel.getApplyButon()));
 			} else

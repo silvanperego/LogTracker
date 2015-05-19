@@ -13,12 +13,16 @@ public class DataPoint extends XYDataItem {
 	final public Long occTime;
 	final public Double value;
 	final public Integer svcIdx;
+	final public Integer user;
+	final public Integer returnCode;
 	
-	public DataPoint(Integer svcIdx, Long occTime, Double execTime) {
+	public DataPoint(Integer svcIdx, Long occTime, Double execTime, Integer user, Integer returnCode) {
 		super(occTime, execTime);
 		this.svcIdx = svcIdx;
 		this.occTime = occTime;
 		this.value = execTime;
+		this.user = user;
+		this.returnCode = returnCode;
 	}
 
 }

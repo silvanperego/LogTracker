@@ -31,7 +31,7 @@ public class NewPointExtractor extends AbstractDataListener<DataPoint, DataPoint
 	}
 
 	private boolean userOk(DataPoint dp) {
-		return userFilter == null || (dp instanceof UserDataPoint && userFilter.contains(((UserDataPoint)dp).userIdx));
+		return userFilter == null || userFilter.contains(dp.user);
 	}
 
 	@Override

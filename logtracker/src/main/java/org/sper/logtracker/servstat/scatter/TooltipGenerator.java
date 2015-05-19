@@ -8,7 +8,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.servstat.proc.DataPoint;
-import org.sper.logtracker.servstat.proc.UserDataPoint;
 
 public class TooltipGenerator implements XYToolTipGenerator {
 
@@ -25,12 +24,9 @@ public class TooltipGenerator implements XYToolTipGenerator {
 	public String generateToolTip(XYDataset dataset, int seriesIdx, int itemIdx) {
 		DataPoint item = (DataPoint) ((XYSeriesCollection)dataset).getSeries(seriesIdx).getDataItem(itemIdx);
 		StringBuilder sb = new StringBuilder();
-		if (item instanceof UserDataPoint) {
-			UserDataPoint useritem = (UserDataPoint) item;
-			if (useritem.userIdx != null) {
-				sb.append(useritem.userIdx != null ? users.getLabel(useritem.userIdx) : "");
-				sb.append(": ");
-			}
+		if (item.user != null) {
+			sb.append(users.getLabel(item.user));
+			sb.append(": ");
 		}
 		sb.append(item.svcIdx != null ? services.getLabel(item.svcIdx) : "Others");
 		sb.append(" | ");
@@ -38,6 +34,10 @@ public class TooltipGenerator implements XYToolTipGenerator {
 		sb.append(" | ");
 		sb.append(item.getY());
 		sb.append("sec");
+		if (item.returnCode != null) {
+			sb.append(", RetCode: ");
+			sb.append(item.returnCode);
+		}
 		return sb.toString();
 	}
 }
