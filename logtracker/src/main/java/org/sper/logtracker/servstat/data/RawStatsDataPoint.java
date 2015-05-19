@@ -11,11 +11,13 @@ public class RawStatsDataPoint extends RawDataPoint {
 
 	final public Double value;
 	final public String service;
+	final public Integer returnCode;
 
-	public RawStatsDataPoint(Long occTime, Double value, String service, String user) {
+	public RawStatsDataPoint(Long occTime, Double value, String service, String user, Integer returnCode) {
 		super(occTime, user);
 		this.value = value;
 		this.service = service;
+		this.returnCode = returnCode;
 	}
 	
 }

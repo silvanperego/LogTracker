@@ -19,6 +19,8 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 	private int responseTimeIdx;
 	private Integer userIdx;
 	private double responseTimeFactor = 1.d;
+	private String successCode;
+	private Integer returnCodeIdx;
 	
 	public ServiceResponseLogParser(String parserName) {
 		super(parserName);
@@ -95,7 +97,8 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 			if (obsStart == null || time >= obsStart) {
 				double execTime = Double.parseDouble(m.group(responseTimeIdx)) * responseTimeFactor;
 				String user = userIdx != null ? m.group(userIdx) : null;
-				logLineParser.receiveData(new RawStatsDataPoint(time, execTime, service, user));
+				Integer returnCode = returnCodeIdx != null && m.group(returnCodeIdx) != null ? Integer.valueOf(m.group(returnCodeIdx)) : null;
+				logLineParser.receiveData(new RawStatsDataPoint(time, execTime, service, user, returnCode));
 			}
 		}
 	}
@@ -121,6 +124,22 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 
 	public static void setFileTypeDescriptor(FileTypeDescriptor fileTypeDescriptor) {
 		ServiceResponseLogParser.fileTypeDescriptor = fileTypeDescriptor;
+	}
+
+	public Integer getReturnCodeIdx() {
+		return returnCodeIdx;
+	}
+
+	public String getSuccessCode() {
+		return successCode;
+	}
+
+	public void setSuccessCode(String successCode) {
+		this.successCode = successCode;
+	}
+
+	public void setReturnCodeIdx(Integer returnCodeIdx) {
+		this.returnCodeIdx = returnCodeIdx;
 	}
 	
 }

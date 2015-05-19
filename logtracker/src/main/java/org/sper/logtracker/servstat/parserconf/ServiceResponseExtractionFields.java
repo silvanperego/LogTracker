@@ -27,18 +27,23 @@ import org.sper.logtracker.servstat.ServiceResponseLogParser;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler {
 
+	private static final DefaultComboBoxModel<Integer> GROUP_IDX_ITEMS_WITH_NULL = new DefaultComboBoxModel<Integer>(new Integer[] {null, 1, 2, 3, 4, 5});
+	private static final DefaultComboBoxModel<Integer> GROUP_IDX_ITEMS = new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5});
 	private static final long serialVersionUID = 1L;
 	private JTextField conversionFactorField;
-	private JComboBox executionTimeBox;
+	private JComboBox<Integer> executionTimeBox;
 	private JTextField occTimeFormatString;
-	private JComboBox occTimeGroupCombo;
+	private JComboBox<Integer> occTimeGroupCombo;
 	private JTextField occTimeLanguage;
-	private JComboBox serviceComboBox;
+	private JComboBox<Integer> serviceComboBox;
 	private JTextField serviceExcludeField;
-	private JComboBox userGroupBox;
+	private JComboBox<Integer> userGroupBox;
 	private Color standardBackgroundCol;
 	private InputVerifier occTimeVerifier;
 	private InputVerifier conversionFactorVerifier;
+	private JTextField successCodeField;
+	private JComboBox<Integer> returnCodeGroupBox;
+	private InputVerifier successCodeVerifier;
 
 	
 	public ServiceResponseExtractionFields(final ParserConfigDialog configDialog) {
@@ -46,9 +51,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();
 		gbl_extractionFields.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_extractionFields.rowHeights = new int[]{0, 0, 0};
+		gbl_extractionFields.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gbl_extractionFields.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0};
-		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
 		setLayout(gbl_extractionFields);
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
@@ -60,9 +65,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
 		}
 		{
-			occTimeGroupCombo = new JComboBox();
+			occTimeGroupCombo = new JComboBox<Integer>();
 			occTimeGroupCombo.setToolTipText("the capturing group index of the group containing the service call occurrence time");
-			occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
+			occTimeGroupCombo.setModel(GROUP_IDX_ITEMS);
 			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
 			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
 			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
@@ -147,9 +152,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblServiceNameGroup, gbc_lblServiceNameGroup);
 		}
 		{
-			serviceComboBox = new JComboBox();
+			serviceComboBox = new JComboBox<Integer>();
 			serviceComboBox.setToolTipText("the capturing group index of the group containing the service name");
-			serviceComboBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
+			serviceComboBox.setModel(GROUP_IDX_ITEMS);
 			GridBagConstraints gbc_serviceComboBox = new GridBagConstraints();
 			gbc_serviceComboBox.anchor = GridBagConstraints.WEST;
 			gbc_serviceComboBox.insets = new Insets(0, 0, 5, 5);
@@ -194,9 +199,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblExecutionTimeGroup, gbc_lblExecutionTimeGroup);
 		}
 		{
-			executionTimeBox = new JComboBox();
+			executionTimeBox = new JComboBox<Integer>();
 			executionTimeBox.setToolTipText("the capturing group index of the group containing the service execution (or response) time");
-			executionTimeBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
+			executionTimeBox.setModel(GROUP_IDX_ITEMS);
 			GridBagConstraints gbc_executionTimeBox = new GridBagConstraints();
 			gbc_executionTimeBox.anchor = GridBagConstraints.WEST;
 			gbc_executionTimeBox.insets = new Insets(0, 0, 5, 5);
@@ -253,18 +258,18 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			JLabel lblUserGroup = new JLabel("User Group Index:");
 			GridBagConstraints gbc_UserGroup = new GridBagConstraints();
 			gbc_UserGroup.anchor = GridBagConstraints.WEST;
-			gbc_UserGroup.insets = new Insets(0, 0, 0, 5);
+			gbc_UserGroup.insets = new Insets(0, 0, 5, 5);
 			gbc_UserGroup.gridx = 0;
 			gbc_UserGroup.gridy = 3;
 			add(lblUserGroup, gbc_UserGroup);
 		}
 		{
-			userGroupBox = new JComboBox();
+			userGroupBox = new JComboBox<Integer>();
 			userGroupBox.setToolTipText("the capturing group index of the group containing the user that called the service. This entry is optional.");
-			userGroupBox.setModel(new DefaultComboBoxModel(new Integer[] {null, 1, 2, 3, 4}));
+			userGroupBox.setModel(GROUP_IDX_ITEMS_WITH_NULL);
 			GridBagConstraints gbc_userGroupBox = new GridBagConstraints();
 			gbc_userGroupBox.anchor = GridBagConstraints.WEST;
-			gbc_userGroupBox.insets = new Insets(0, 0, 0, 5);
+			gbc_userGroupBox.insets = new Insets(0, 0, 5, 5);
 			gbc_userGroupBox.gridx = 1;
 			gbc_userGroupBox.gridy = 3;
 			add(userGroupBox, gbc_userGroupBox);
@@ -272,10 +277,64 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		{
 			Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 			GridBagConstraints gbc_rigidArea = new GridBagConstraints();
-			gbc_rigidArea.insets = new Insets(0, 0, 0, 5);
+			gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
 			gbc_rigidArea.gridx = 2;
 			gbc_rigidArea.gridy = 3;
 			add(rigidArea, gbc_rigidArea);
+		}
+		{
+			JLabel lblReturnCode = new JLabel("Return Code:");
+			GridBagConstraints gbc_lblReturnCode = new GridBagConstraints();
+			gbc_lblReturnCode.anchor = GridBagConstraints.WEST;
+			gbc_lblReturnCode.insets = new Insets(0, 0, 0, 5);
+			gbc_lblReturnCode.gridx = 0;
+			gbc_lblReturnCode.gridy = 4;
+			add(lblReturnCode, gbc_lblReturnCode);
+		}
+		{
+			returnCodeGroupBox = new JComboBox<Integer>();
+			returnCodeGroupBox.setToolTipText("the capturing group index of the return code of the service call.");
+			returnCodeGroupBox.setModel(GROUP_IDX_ITEMS_WITH_NULL);
+			GridBagConstraints gbc_userGroupBox = new GridBagConstraints();
+			gbc_userGroupBox.anchor = GridBagConstraints.WEST;
+			gbc_userGroupBox.insets = new Insets(0, 0, 5, 5);
+			gbc_userGroupBox.gridx = 1;
+			gbc_userGroupBox.gridy = 4;
+			add(returnCodeGroupBox, gbc_userGroupBox);
+		}
+		{
+			JLabel lblValueRepresentingok = new JLabel("Value representing \"OK\"");
+			GridBagConstraints gbc_lblValueRepresentingok = new GridBagConstraints();
+			gbc_lblValueRepresentingok.anchor = GridBagConstraints.WEST;
+			gbc_lblValueRepresentingok.insets = new Insets(0, 0, 0, 5);
+			gbc_lblValueRepresentingok.gridx = 3;
+			gbc_lblValueRepresentingok.gridy = 4;
+			add(lblValueRepresentingok, gbc_lblValueRepresentingok);
+		}
+		{
+			successCodeVerifier = new InputVerifier() {
+				
+				@Override
+				public boolean verify(JComponent input) {
+					String text = successCodeField.getText();
+					try {
+						Integer.parseInt(text);
+					} catch (NumberFormatException e) {
+						return false;
+					}
+					return true;
+				}
+			};
+			successCodeField = new JTextField();
+			successCodeField.setText("200");
+			successCodeField.setToolTipText("The return code that should be considered as \"successful execution without errors\". In http calls, this is normally 200. In Program calls 0.");
+			GridBagConstraints gbc_textField = new GridBagConstraints();
+			gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_textField.gridx = 4;
+			gbc_textField.gridy = 4;
+			add(successCodeField, gbc_textField);
+			successCodeField.setColumns(10);
+			successCodeField.setInputVerifier(successCodeVerifier);
 		}
 	}
 	
@@ -294,6 +353,8 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			loadedParser.setResponseTimeIdx((Integer) executionTimeBox.getSelectedItem());
 			loadedParser.setResponseTimeFactor(Double.parseDouble(conversionFactorField.getText()));
 			loadedParser.setUserIdx((Integer) userGroupBox.getSelectedItem());
+			loadedParser.setReturnCodeIdx((Integer) returnCodeGroupBox.getSelectedItem());
+			loadedParser.setSuccessCode(successCodeField.getText());
 		}
 	}
 
@@ -326,6 +387,8 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		executionTimeBox.setSelectedItem(logParser.getResponseTimeIdx());
 		conversionFactorField.setText(Double.toString(logParser.getResponseTimeFactor()));
 		userGroupBox.setSelectedItem(logParser.getUserIdx());
+		returnCodeGroupBox.setSelectedItem(logParser.getReturnCodeIdx());
+		successCodeField.setText(logParser.getSuccessCode());
 	}
 
 	/* (non-Javadoc)
@@ -341,6 +404,6 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 
 	@Override
 	public boolean verifyFormDataIsValid() {
-		return occTimeVerifier.verify(occTimeFormatString) && conversionFactorVerifier.verify(conversionFactorField);
+		return occTimeVerifier.verify(occTimeFormatString) && conversionFactorVerifier.verify(conversionFactorField) && successCodeVerifier.verify(successCodeField);
 	}
 }
