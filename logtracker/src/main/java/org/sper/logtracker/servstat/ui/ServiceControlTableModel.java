@@ -32,9 +32,9 @@ public class ServiceControlTableModel extends AbstractTableModel {
 		return columnTypes[columnIndex];
 	}
 	
-	private XYSeries createXYSeries(int modelColumn, String serviceName, XYPlot xyPlot, PipelineCreator creator, Color color) {
+	private XYSeries createXYSeries(int modelColumn, String serviceName, XYPlot xyPlot, PipelineCreator creator, Color color, String seriesSuffix) {
 		XYSeriesCollection collection = (XYSeriesCollection)xyPlot.getDataset();
-		XYSeries xySeries = new XYSeries(serviceName + ' ' + getColumnName(modelColumn));
+		XYSeries xySeries = new XYSeries(serviceName + ' ' + getColumnName(modelColumn) + seriesSuffix);
 		xySeries.setNotify(false);
 		collection.addSeries(xySeries);
 		int idx = collection.getSeriesCount() - 1;
@@ -42,7 +42,7 @@ public class ServiceControlTableModel extends AbstractTableModel {
 		return xySeries;
 	}
 	
-	private void createSeriesOfType(Factor services, PipelineCreator creator, int modelColumn, XYPlot xyPlot) {
+	private void createSeriesOfType(Factor services, PipelineCreator creator, int modelColumn, XYPlot xyPlot, String seriesSuffix) {
 		CategoryCollection others = new CategoryCollection();
 		Integer othersIdx = null;
 		for (int i = 0; i < getRowCount(); i++) {
@@ -51,7 +51,7 @@ public class ServiceControlTableModel extends AbstractTableModel {
 				if ("Total".equals(serviceName))
 					othersIdx = i;
 				else {
-					XYSeries xySeries = createXYSeries(modelColumn, serviceName, xyPlot, creator, (Color)getValueAt(i, 10));
+					XYSeries xySeries = createXYSeries(modelColumn, serviceName, xyPlot, creator, (Color)getValueAt(i, 10), seriesSuffix);
 					CategoryCollection servColl = new CategoryCollection();
 					servColl.addFactoryCat(services.getStringIndex(serviceName));
 					creator.createPipeLine(servColl, xySeries);
@@ -60,20 +60,25 @@ public class ServiceControlTableModel extends AbstractTableModel {
 				others.addFactoryCat(services.getStringIndex(serviceName));
 		}
 		if (othersIdx != null) {
-			XYSeries series = createXYSeries(modelColumn, "Others", xyPlot, creator, (Color)getValueAt(othersIdx, 10));
+			XYSeries series = createXYSeries(modelColumn, "Others", xyPlot, creator, (Color)getValueAt(othersIdx, 10), seriesSuffix);
 			creator.createPipeLine(others, series);
 		}
 	}
 
-	public void applyToSeriesCollection(NewPointExtractor newPointExtractor, Factor services, XYPlot xyPlot, CategoryCollection usersFilter, double statsMagFact) {
+	public void applyToSeriesCollection(NewPointExtractor newPointExtractor, Factor services, XYPlot xyPlot, CategoryCollection usersFilter, double statsMagFact, Integer successRetCode) {
 		XYSeriesCollection seriesCollection = (XYSeriesCollection)xyPlot.getDataset();
 		newPointExtractor.setUserFilter(usersFilter);
 		seriesCollection.removeAllSeries();
 		PipelineFactory factory = new PipelineFactory(newPointExtractor, getRowCount(), 60000, 1000, 20, statsMagFact, xyPlot, usersFilter);
-		createSeriesOfType(services, factory.scatterCreator, 6, xyPlot);
-		createSeriesOfType(services, factory.callsPerTimeCreator, 7, xyPlot);
-		createSeriesOfType(services, factory.meanTimeCreator, 8, xyPlot);
-		createSeriesOfType(services, factory.medianTimeCreator, 9, xyPlot);
+		if (successRetCode == null) {
+			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(null), 6, xyPlot, "");
+		} else {
+			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(successRetCode), 6, xyPlot, "");
+			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(-successRetCode), 6, xyPlot, " errors");
+		}
+		createSeriesOfType(services, factory.callsPerTimeCreator, 7, xyPlot, "");
+		createSeriesOfType(services, factory.meanTimeCreator, 8, xyPlot, "");
+		createSeriesOfType(services, factory.medianTimeCreator, 9, xyPlot, "");
 	}
 
 	@Override

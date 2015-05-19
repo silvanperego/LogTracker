@@ -358,7 +358,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			loadedParser.setResponseTimeFactor(Double.parseDouble(conversionFactorField.getText()));
 			loadedParser.setUserIdx((Integer) userGroupBox.getSelectedItem());
 			loadedParser.setReturnCodeIdx((Integer) returnCodeGroupBox.getSelectedItem());
-			loadedParser.setSuccessCode(successCodeField.getText());
+			loadedParser.setSuccessCode(successCodeField.getText() != null && successCodeField.getText().length() > 0 ? Integer.parseInt(successCodeField.getText()) : null);
 		}
 	}
 
@@ -392,7 +392,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		conversionFactorField.setText(Double.toString(logParser.getResponseTimeFactor()));
 		userGroupBox.setSelectedItem(logParser.getUserIdx());
 		returnCodeGroupBox.setSelectedItem(logParser.getReturnCodeIdx());
-		successCodeField.setText(logParser.getSuccessCode());
+		successCodeField.setText(logParser.getSuccessCode() != null ? logParser.getSuccessCode().toString() : null);
 	}
 
 	/* (non-Javadoc)

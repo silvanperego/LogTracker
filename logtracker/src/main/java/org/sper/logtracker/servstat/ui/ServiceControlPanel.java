@@ -127,8 +127,8 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 	}
 
 	public void applyToSeriesCollection(NewPointExtractor newPointExtractor,
-			Factor service, XYPlot xyPlot, CategoryCollection users) {
-		controlTableModel.applyToSeriesCollection(newPointExtractor, service, xyPlot, users, (Double) magFactSpinner.getValue());
+			Factor service, XYPlot xyPlot, CategoryCollection users, Integer successRetCode) {
+		controlTableModel.applyToSeriesCollection(newPointExtractor, service, xyPlot, users, (Double) magFactSpinner.getValue(), successRetCode);
 	}
 
 	@Override

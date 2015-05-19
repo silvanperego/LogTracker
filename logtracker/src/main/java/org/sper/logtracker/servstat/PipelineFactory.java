@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.sper.logtracker.data.AbstractDataListener;
+import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.servstat.proc.CallsPerTime;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
 import org.sper.logtracker.servstat.proc.DataPoint;
@@ -40,14 +42,96 @@ public class PipelineFactory {
 	private long minPoints;
 	private double magFact;
 	private long perTimeMeasure;
-	private static final Shape SQUARE  = new Rectangle2D.Double(1.,1.,2.,2.);
+	private static final Shape SQUARE  = new Rectangle2D.Double(-1.,-1.,2.,2.);
+	private static final Path2D.Double CROSS = new Path2D.Double();
+	private static final double CROSSLEN = 2.;
+	
+	static {
+		CROSS.moveTo(-CROSSLEN, -CROSSLEN);
+		CROSS.lineTo(CROSSLEN,  CROSSLEN);
+		CROSS.moveTo(CROSSLEN, -CROSSLEN);
+		CROSS.lineTo(-CROSSLEN,  CROSSLEN);
+	}
 	
 	public interface PipelineCreator {
 		void createPipeLine(CategoryCollection services, XYSeries series);
-
+	
 		void applyFormat(XYPlot xyPlot, int idx, Color color);
 	}
-	
+
+	/**
+	 * Erstellt eine ScatterPlot-Pipeline
+	 */
+	public class ScatterPlotPipelineCreator implements PipelineCreator {
+		
+		private Integer successRetCode;
+		
+		/**
+		 * Konstruktor.
+		 * @param successRetCode der Code, welcher ein erfolgreiches Ende eines Service-Aufrufs darstellt.
+		 * 			Ist dieser Code = null, werden alle Services dargestellt, ist er Positiv, so wird
+		 * 			nach den Services gefiltert, welche einen ReturnCode = successRetCode haben. Ist der Wert negativ,
+		 * 			so wird nach den Services gefiltert, welche einen ReturnCode != -successRetCode haben.
+		 */
+		public ScatterPlotPipelineCreator(Integer successRetCode) {
+			this.successRetCode = successRetCode;
+		}
+
+		@Override
+		public void createPipeLine(CategoryCollection services, XYSeries series) {
+			ServiceRouter serviceRouter = getOrCreateServiceRouter(services);
+			final XYDataSeriesListener dataSeriesListener = new XYDataSeriesListener(series);
+			if (successRetCode != null) {
+				if (successRetCode > 0) {
+					serviceRouter.registerListener(services,new DataListener<DataPoint>() {
+
+						@Override
+						public void receiveData(DataPoint data) {
+							if (data.returnCode != null && data.returnCode.equals(successRetCode)) {
+								dataSeriesListener.receiveData(data);
+							}
+						}
+
+						@Override
+						public void publishData() {
+							dataSeriesListener.publishData();
+						}
+					});
+				} else {
+					serviceRouter.registerListener(services,new DataListener<DataPoint>() {
+
+						@Override
+						public void receiveData(DataPoint data) {
+							if (data.returnCode == null || !data.returnCode.equals(-successRetCode)) {
+								dataSeriesListener.receiveData(data);
+							}
+						}
+
+						@Override
+						public void publishData() {
+							dataSeriesListener.publishData();
+						}
+					});
+					
+				}
+			} else
+				serviceRouter.registerListener(services, dataSeriesListener);
+		}
+
+		@Override
+		public void applyFormat(XYPlot xyPlot, int idx, Color color) {
+			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer)xyPlot.getRenderer();
+			renderer.setSeriesLinesVisible(idx, false);
+			renderer.setSeriesShapesVisible(idx, true);
+			boolean normalPipeline = successRetCode == null || successRetCode > 0;
+			renderer.setSeriesShape(idx, normalPipeline ? SQUARE : CROSS);
+			renderer.setSeriesShapesFilled(idx, true);
+			renderer.setSeriesPaint(idx, color);
+			renderer.setSeriesVisibleInLegend(idx, normalPipeline);
+		}
+
+	}
+
 	public PipelineFactory(NewPointExtractor newPointExtractor, int nservices, int timeFrame, long perTimeMeasure, int minPoints, double magFact, XYPlot xyPlot, CategoryCollection users) {
 		this.nservices = nservices;
 		this.timeFrame = timeFrame;
@@ -89,26 +173,6 @@ public class PipelineFactory {
 		return newPointExtractor;
 	}
 
-	public final PipelineCreator scatterCreator = new PipelineCreator() {
-		
-		@Override
-		public void createPipeLine(CategoryCollection services, XYSeries series) {
-			XYDataSeriesListener dataSeriesListener = new XYDataSeriesListener(series);
-			ServiceRouter serviceRouter = getOrCreateServiceRouter(services);
-			serviceRouter.registerListener(services, dataSeriesListener);
-		}
-
-		@Override
-		public void applyFormat(XYPlot xyPlot, int idx, Color color) {
-			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer)xyPlot.getRenderer();
-			renderer.setSeriesLinesVisible(idx, false);
-			renderer.setSeriesShapesVisible(idx, true);
-			renderer.setSeriesShape(idx, SQUARE);
-			renderer.setSeriesShapesFilled(idx, true);
-			renderer.setSeriesPaint(idx, color);
-		}
-	};
-	
 	public final PipelineCreator callsPerTimeCreator = new PipelineCreator() {
 
 		private final Stroke dashed = new BasicStroke(LINEWIDTH, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{3,5}, 0);

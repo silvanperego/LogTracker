@@ -34,6 +34,7 @@ public class ServiceStatsTabs {
 	private KeepAliveElement terminationPointer;
 	private boolean providesUsers;
 	private JTabbedPane tabbedPane;
+	private Integer successRetCode;
 
 	public ServiceStatsTabs(JTabbedPane tabbedPane, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
 		this.tabbedPane = tabbedPane;
@@ -49,6 +50,7 @@ public class ServiceStatsTabs {
 		plot = new ServiceScatterPlot();
 		tabbedPane.addTab("Graph", plot.getPanel());
 		tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, false);
+		successRetCode = logParser.getSuccessCode();
 	}
 
 	public final class ApplyControlAction implements ActionListener {
@@ -66,7 +68,7 @@ public class ServiceStatsTabs {
 			users = userPanel.createUsersFilter(factorizer.getUser());
 		newPointExtractor.removeListeners();
 		newPointExtractor.addListener(plot);
-		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users);
+		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users, successRetCode);
 		newPointExtractor.resendData();
 	}
 	

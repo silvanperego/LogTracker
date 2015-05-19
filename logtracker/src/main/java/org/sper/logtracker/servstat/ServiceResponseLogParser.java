@@ -19,7 +19,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 	private int responseTimeIdx;
 	private Integer userIdx;
 	private double responseTimeFactor = 1.d;
-	private String successCode;
+	private Integer successCode;
 	private Integer returnCodeIdx;
 	
 	public ServiceResponseLogParser(String parserName) {
@@ -130,11 +130,11 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 		return returnCodeIdx;
 	}
 
-	public String getSuccessCode() {
+	public Integer getSuccessCode() {
 		return successCode;
 	}
 
-	public void setSuccessCode(String successCode) {
+	public void setSuccessCode(Integer successCode) {
 		this.successCode = successCode;
 	}
 
