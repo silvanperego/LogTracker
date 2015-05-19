@@ -17,13 +17,19 @@ import org.sper.logtracker.servstat.stats.ServiceStats;
 public class ServiceControlTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	Class<?>[] columnTypes = new Class[] { String.class, Long.class, Double.class,
+	
+	public static final int SERVICE_NAME_COL = 0, NUMBER_OF_CALLS_COL = 1, NUMBER_OF_ERRORS_COL = 2,
+			CALLS_PER_MINUTE_COL = 3, MEAN_RESPONSE_TIME_COL = 4, MEDIAN_COL = 5, PERCENTILE_COL = 6,
+			DO_SCATTER_COL = 7, DO_PER_SECOND_COL = 8, DO_MEAN_TIME_COL = 9, DO_MEDIAN_TIME_COL = 10, COLOR_COL = 11,
+			NCOLS = 12, FIRST_STAT_COL = NUMBER_OF_CALLS_COL, LAST_STAT_COL = PERCENTILE_COL, FIRST_SWITCH_COL = DO_SCATTER_COL;
+	
+	Class<?>[] columnTypes = new Class[] { String.class, Long.class, Long.class, Double.class,
 			Double.class, Double.class, Double.class, Boolean.class,
 			Boolean.class, Boolean.class, Boolean.class, Color.class };
 	
 	public ServiceControlTableModel() {
 		super(new Object[][] {},
-				new String[] { "Service", "Calls", "Calls Per Minute",
+				new String[] { "Service", "Calls", "Errors", "Calls Per Minute",
 						"Mean Response Time", "Median ", "90% Percentile",
 						"Scatter", "perSecond", "Mean", "Median", "Color" });
 	}
@@ -60,7 +66,7 @@ public class ServiceControlTableModel extends AbstractTableModel {
 				others.addFactoryCat(services.getStringIndex(serviceName));
 		}
 		if (othersIdx != null) {
-			XYSeries series = createXYSeries(modelColumn, "Others", xyPlot, creator, (Color)getValueAt(othersIdx, 10), seriesSuffix);
+			XYSeries series = createXYSeries(modelColumn, "Others", xyPlot, creator, (Color)getValueAt(othersIdx, COLOR_COL), seriesSuffix);
 			creator.createPipeLine(others, series);
 		}
 	}
@@ -71,20 +77,20 @@ public class ServiceControlTableModel extends AbstractTableModel {
 		seriesCollection.removeAllSeries();
 		PipelineFactory factory = new PipelineFactory(newPointExtractor, getRowCount(), 60000, 1000, 20, statsMagFact, xyPlot, usersFilter);
 		if (successRetCode == null) {
-			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(null), 6, xyPlot, "");
+			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(null), DO_SCATTER_COL, xyPlot, "");
 		} else {
-			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(successRetCode), 6, xyPlot, "");
-			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(-successRetCode), 6, xyPlot, " errors");
+			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(successRetCode), DO_SCATTER_COL, xyPlot, "");
+			createSeriesOfType(services, factory.new ScatterPlotPipelineCreator(-successRetCode), DO_SCATTER_COL, xyPlot, " errors");
 		}
-		createSeriesOfType(services, factory.callsPerTimeCreator, 7, xyPlot, "");
-		createSeriesOfType(services, factory.meanTimeCreator, 8, xyPlot, "");
-		createSeriesOfType(services, factory.medianTimeCreator, 9, xyPlot, "");
+		createSeriesOfType(services, factory.callsPerTimeCreator, DO_PER_SECOND_COL, xyPlot, "");
+		createSeriesOfType(services, factory.meanTimeCreator, DO_MEAN_TIME_COL, xyPlot, "");
+		createSeriesOfType(services, factory.medianTimeCreator, DO_MEDIAN_TIME_COL, xyPlot, "");
 	}
 
 	@Override
 	public void createOrReplaceTableRow(Boolean total, ServiceStats stats) {
 		Object[] obj = new Object[] {
-				null, null, null, null, null, null, total, total, total, total, total ? Color.BLACK : null
+				null, null, null, null, null, null, null, total, total, total, total, total ? Color.BLACK : null
 		};
 		stats.fillTableModelRow(obj);
 		createOrReplaceTableRow(obj);

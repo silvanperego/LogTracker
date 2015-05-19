@@ -1,11 +1,20 @@
 package org.sper.logtracker.servstat.stats;
 
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.CALLS_PER_MINUTE_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEAN_RESPONSE_TIME_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEDIAN_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.NUMBER_OF_CALLS_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.NUMBER_OF_ERRORS_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.PERCENTILE_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.SERVICE_NAME_COL;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import org.sper.logtracker.servstat.proc.DataPoint;
+import org.sper.logtracker.servstat.ui.ServiceControlTableModel;
 
 /**
  * Repräsentiert die Statistiken für einen einzelnen Service. 
@@ -97,12 +106,13 @@ public class ServiceStats {
 	}
 
 	public void fillTableModelRow(Object[] row) {
-		row[0] = serviceName;
-		row[1] = data.size();
-		row[2] = callsPerMinute;
-		row[3] = meanExecTime;
-		row[4] = execMedian;
-		row[5] = percentile;
+		row[SERVICE_NAME_COL] = serviceName;
+		row[NUMBER_OF_CALLS_COL] = data.size();
+		row[NUMBER_OF_ERRORS_COL] = 0;
+		row[CALLS_PER_MINUTE_COL] = callsPerMinute;
+		row[MEAN_RESPONSE_TIME_COL] = meanExecTime;
+		row[MEDIAN_COL] = execMedian;
+		row[PERCENTILE_COL] = percentile;
 	}
 
 	public double getMean() {

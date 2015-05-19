@@ -1,5 +1,14 @@
 package org.sper.logtracker.servstat.ui;
 
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.CALLS_PER_MINUTE_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.COLOR_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.FIRST_STAT_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.FIRST_SWITCH_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.LAST_STAT_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEAN_RESPONSE_TIME_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEDIAN_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.NCOLS;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -70,12 +79,12 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		controlTableModel = new ServiceControlTableModel();
 		controlTable.setModel(controlTableModel);
 		controlTable.getColumnModel().getColumn(0).setPreferredWidth(300);
-		controlTable.getColumnModel().getColumn(2).setPreferredWidth(132);
-		controlTable.getColumnModel().getColumn(3).setPreferredWidth(133);
-		controlTable.getColumnModel().getColumn(5).setPreferredWidth(104);
+		controlTable.getColumnModel().getColumn(CALLS_PER_MINUTE_COL).setPreferredWidth(132);
+		controlTable.getColumnModel().getColumn(MEAN_RESPONSE_TIME_COL).setPreferredWidth(133);
+		controlTable.getColumnModel().getColumn(MEDIAN_COL).setPreferredWidth(104);
 		cellEditor = new ColorEditor();
-		controlTable.getColumnModel().getColumn(10).setCellEditor(cellEditor);
-		controlTable.getColumnModel().getColumn(10).setCellRenderer(new ColorCellRenderer());
+		controlTable.getColumnModel().getColumn(COLOR_COL).setCellEditor(cellEditor);
+		controlTable.getColumnModel().getColumn(COLOR_COL).setCellRenderer(new ColorCellRenderer());
 		controlTable.setAutoCreateRowSorter(true);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -142,9 +151,11 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		controlTableModel.setRowCount(0);
 		keepConfig = true;
 		for (Vector<Object> row : confData.data) {
-			for (int i = 1; i < 6; i++)
-				row.set(i, null);
-			controlTableModel.addRow(row);
+			if (row.size() == NCOLS) {
+				for (int i = FIRST_STAT_COL; i <= LAST_STAT_COL; i++)
+					row.set(i, null);
+				controlTableModel.addRow(row);
+			}
 		}
 		magFactSpinner.setValue(confData.magFact);
 	}
@@ -156,7 +167,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 	 */
 	private boolean rowHoldsConfig(Vector<Object> row) {
 		boolean storeRow = false;
-		for (int i = 6; i <= 9; i++)
+		for (int i = FIRST_SWITCH_COL; i <= LAST_STAT_COL; i++)
 			storeRow |= (Boolean) row.get(i);
 		storeRow |= row.get(10) != null;
 		return storeRow;
@@ -185,7 +196,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		for (int i = dataVector.size(); --i >= 0; ) {
 			Vector<Object> row = dataVector.get(i);
 			if (rowHoldsConfig(row))
-				for (int j = 1; j < 6; j++)
+				for (int j = FIRST_STAT_COL; j <= LAST_STAT_COL; j++)
 					row.set(j, null);
 			else
 				dataVector.remove(i);
