@@ -61,7 +61,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 		Long time = occTimeIdx != null ? getOccTime(m) : null;
 		if (time == null || obsStart == null || time.longValue() > obsStart.longValue()) {
 			String msg = m.group(msgIdx);
-			String severity = severityIdx != null ? m.group(severityIdx) : null;
+			String severity = severityIdx != null && m.group(severityIdx) != null ? m.group(severityIdx).toUpperCase() : null;
 			String user = userIdIdx != null ? m.group(userIdIdx) : null;
 			logLineParser.receiveData(new RawErrorDataPoint(time, user, severity, msg, fileSnippet));
 			if (lastLineInFile == null)

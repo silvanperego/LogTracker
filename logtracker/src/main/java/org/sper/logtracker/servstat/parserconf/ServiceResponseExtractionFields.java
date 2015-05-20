@@ -31,18 +31,18 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	private static final Integer[] GROUP_IDX_ITEMS = new Integer[] {1, 2, 3, 4, 5};
 	private static final long serialVersionUID = 1L;
 	private JTextField conversionFactorField;
-	private JComboBox<Integer> executionTimeBox;
+	private JComboBox executionTimeBox;
 	private JTextField occTimeFormatString;
-	private JComboBox<Integer> occTimeGroupCombo;
+	private JComboBox occTimeGroupCombo;
 	private JTextField occTimeLanguage;
-	private JComboBox<Integer> serviceComboBox;
+	private JComboBox serviceComboBox;
 	private JTextField serviceExcludeField;
-	private JComboBox<Integer> userGroupBox;
+	private JComboBox userGroupBox;
 	private Color standardBackgroundCol;
 	private InputVerifier occTimeVerifier;
 	private InputVerifier conversionFactorVerifier;
 	private JTextField successCodeField;
-	private JComboBox<Integer> returnCodeGroupBox;
+	private JComboBox returnCodeGroupBox;
 	private InputVerifier successCodeVerifier;
 
 	
@@ -65,9 +65,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
 		}
 		{
-			occTimeGroupCombo = new JComboBox<Integer>();
+			occTimeGroupCombo = new JComboBox();
 			occTimeGroupCombo.setToolTipText("the capturing group index of the group containing the service call occurrence time");
-			occTimeGroupCombo.setModel(new DefaultComboBoxModel<Integer>(GROUP_IDX_ITEMS));
+			occTimeGroupCombo.setModel(new DefaultComboBoxModel(GROUP_IDX_ITEMS));
 			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
 			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
 			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
@@ -152,9 +152,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblServiceNameGroup, gbc_lblServiceNameGroup);
 		}
 		{
-			serviceComboBox = new JComboBox<Integer>();
+			serviceComboBox = new JComboBox();
 			serviceComboBox.setToolTipText("the capturing group index of the group containing the service name");
-			serviceComboBox.setModel(new DefaultComboBoxModel<Integer>(GROUP_IDX_ITEMS));
+			serviceComboBox.setModel(new DefaultComboBoxModel(GROUP_IDX_ITEMS));
 			GridBagConstraints gbc_serviceComboBox = new GridBagConstraints();
 			gbc_serviceComboBox.anchor = GridBagConstraints.WEST;
 			gbc_serviceComboBox.insets = new Insets(0, 0, 5, 5);
@@ -199,9 +199,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblExecutionTimeGroup, gbc_lblExecutionTimeGroup);
 		}
 		{
-			executionTimeBox = new JComboBox<Integer>();
+			executionTimeBox = new JComboBox();
 			executionTimeBox.setToolTipText("the capturing group index of the group containing the service execution (or response) time");
-			executionTimeBox.setModel(new DefaultComboBoxModel<Integer>(GROUP_IDX_ITEMS));
+			executionTimeBox.setModel(new DefaultComboBoxModel(GROUP_IDX_ITEMS));
 			GridBagConstraints gbc_executionTimeBox = new GridBagConstraints();
 			gbc_executionTimeBox.anchor = GridBagConstraints.WEST;
 			gbc_executionTimeBox.insets = new Insets(0, 0, 5, 5);
@@ -264,9 +264,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblUserGroup, gbc_UserGroup);
 		}
 		{
-			userGroupBox = new JComboBox<Integer>();
+			userGroupBox = new JComboBox();
 			userGroupBox.setToolTipText("the capturing group index of the group containing the user that called the service. This entry is optional.");
-			userGroupBox.setModel(new DefaultComboBoxModel<Integer>(GROUP_IDX_ITEMS_WITH_NULL));
+			userGroupBox.setModel(new DefaultComboBoxModel(GROUP_IDX_ITEMS_WITH_NULL));
 			GridBagConstraints gbc_userGroupBox = new GridBagConstraints();
 			gbc_userGroupBox.anchor = GridBagConstraints.WEST;
 			gbc_userGroupBox.insets = new Insets(0, 0, 5, 5);
@@ -292,9 +292,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblReturnCode, gbc_lblReturnCode);
 		}
 		{
-			returnCodeGroupBox = new JComboBox<Integer>();
+			returnCodeGroupBox = new JComboBox();
 			returnCodeGroupBox.setToolTipText("the capturing group index of the return code of the service call.");
-			returnCodeGroupBox.setModel(new DefaultComboBoxModel<Integer>(GROUP_IDX_ITEMS_WITH_NULL));
+			returnCodeGroupBox.setModel(new DefaultComboBoxModel(GROUP_IDX_ITEMS_WITH_NULL));
 			GridBagConstraints gbc_userGroupBox = new GridBagConstraints();
 			gbc_userGroupBox.anchor = GridBagConstraints.WEST;
 			gbc_userGroupBox.insets = new Insets(0, 0, 5, 5);

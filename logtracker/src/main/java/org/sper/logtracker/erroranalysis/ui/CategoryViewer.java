@@ -96,6 +96,7 @@ public class CategoryViewer extends JFrame {
 					"Time", "User", "Message Content"
 				}
 			) {
+				private static final long serialVersionUID = 1L;
 				Class[] columnTypes = new Class[] {
 					Object.class, String.class, Object.class
 				};
