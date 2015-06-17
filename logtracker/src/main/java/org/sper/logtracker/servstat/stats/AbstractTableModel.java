@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.sper.logtracker.servstat.ui.ServiceControlTableModel;
+
 public abstract class AbstractTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public abstract class AbstractTableModel extends DefaultTableModel {
 		for (int i = 0; i < data.size(); i++) {
 			Vector<Object> row = data.get(i);
 			if (obj[0].equals(row.get(0))) {
-				for (int j = 1; j < 6; j++)
+				for (int j = 1; j <= ServiceControlTableModel.LAST_STAT_COL; j++)
 					row.setElementAt(obj[j], j);;
 				return;
 			}

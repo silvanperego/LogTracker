@@ -2,6 +2,8 @@ package org.sper.logtracker.servstat.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -108,7 +110,11 @@ public class ServiceStatsTabs {
 			plot.getXyPlot().getRenderer().setBaseToolTipGenerator(toolTipGenerator);
 			tabbedPane.setSelectedIndex(1);
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(tabbedPane, e1, "Error", JOptionPane.ERROR_MESSAGE);
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e1.printStackTrace(pw);
+			JOptionPane.showMessageDialog(tabbedPane, sw.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+			pw.close();
 		}
 	}
 

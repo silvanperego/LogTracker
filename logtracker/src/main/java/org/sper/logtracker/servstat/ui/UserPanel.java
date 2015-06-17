@@ -94,7 +94,7 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 	public Serializable getConfig() {
 		HashMap<String, Boolean> filterMap = new HashMap<String, Boolean>();
 		for (int i = 0; i < userTableModel.getRowCount(); i++) {
-			Boolean selected = (Boolean) userTableModel.getValueAt(i, 6);
+			Boolean selected = (Boolean) userTableModel.getValueAt(i, 7);
 			if (!selected)		// Beim User-Filter werden nur diejenigen User gespeichert, welche *nicht* angezeigt werden sollen.
 				filterMap.put((String) userTableModel.getValueAt(i, 0), selected);
 		}

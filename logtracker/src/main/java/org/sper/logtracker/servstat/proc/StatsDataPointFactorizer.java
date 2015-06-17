@@ -20,7 +20,7 @@ public class StatsDataPointFactorizer extends AbstractDataListener<RawStatsDataP
 	}
 
 	public Factor getUser() {
-		return null;
+		return user;
 	}
 
 }

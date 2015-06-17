@@ -100,4 +100,10 @@ public class ServiceControlTableModel extends AbstractTableModel {
 	public Vector getColumnIdentifiers() {
 		return columnIdentifiers;
 	}
+
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return column > LAST_STAT_COL;
+	}
+
 }
