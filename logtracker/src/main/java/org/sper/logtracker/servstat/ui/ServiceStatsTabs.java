@@ -14,6 +14,7 @@ import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.proc.PipelineHelper;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
@@ -74,7 +75,7 @@ public class ServiceStatsTabs {
 		newPointExtractor.resendData();
 	}
 	
-	public void setupDataPipeLines(List<String> fname, LogParser<RawStatsDataPoint> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, LogParser<RawStatsDataPoint> logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = new StatsDataPointFactorizer();
@@ -102,7 +103,7 @@ public class ServiceStatsTabs {
 			factorizer.addListener(newPointExtractor);
 			if (terminationPointer != null)
 				terminationPointer.endOfLife();
-			terminationPointer = PipelineHelper.setupFileReaders(fname, logParser, obsStart, factorizer);
+			terminationPointer = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, factorizer);
 
 			Factor services = factorizer.getService();
 			Factor users = factorizer.getUser();

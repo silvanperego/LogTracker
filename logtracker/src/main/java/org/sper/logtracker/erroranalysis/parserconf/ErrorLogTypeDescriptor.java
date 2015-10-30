@@ -14,6 +14,7 @@ import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
 import org.sper.logtracker.erroranalysis.ui.LogLineTableModel;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
@@ -66,13 +67,13 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart) {
 		try {
 			DataListener<RawErrorDataPoint> logLineCatalog = new LogLineCatalog(logLineTableModel);
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
 			}
-			keepAliveElement = PipelineHelper.setupFileReaders(fname, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog);
+			keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(parentPane, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}

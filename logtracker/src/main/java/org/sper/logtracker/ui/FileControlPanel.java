@@ -47,6 +47,7 @@ import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
@@ -73,8 +74,15 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		Integer obsVal;
 		String parserConfig;
 	}
+	
+	private static class ConfObj2 implements Serializable {
+		private static final long serialVersionUID = 1L;
+		LogSource[] logSource;
+		Integer obsVal;
+		String parserConfig;
+	}
 
-	public FileControlPanel(final LogTracker logTracker, List<String> fnameList) {
+	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList) {
 		super();
 		setContinuousLayout(true);
 		setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -149,7 +157,8 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 				File[] logFile = LogFileTableEditor.selectLogFile(logTracker.getFrame(), null, true);
 				if (logFile != null)
 					for (File file : logFile) {
-						logFileTableModel.addRow(new Object[] {file.getPath(), null});
+						LogSource source = new LogSource(file.getPath());
+						logFileTableModel.addRow(source.modelEntry());
 					}
 			}
 
@@ -164,31 +173,6 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		
 		logFileTable = new JTable();
 		logFileScrollPane.setViewportView(logFileTable);
-		logFileTableModel = new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"File Name", "Del"
-				}
-			) {
-				private static final long serialVersionUID = 1L;
-				Class<?>[] columnTypes = new Class[] {
-					String.class, Object.class
-				};
-				public Class<?> getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-				boolean[] columnEditables = new boolean[] {
-					true, true
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			};
-			for (String fname : fnameList) {
-				logFileTableModel.addRow(new Object[] {fname, null});
-			}
-		logFileTable.setModel(logFileTableModel);
 		
 		JPanel outerObsvalPanel = new JPanel();
 		logFileContentPanel.add(outerObsvalPanel, BorderLayout.SOUTH);
@@ -236,7 +220,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			@Override
 			public Serializable getConfig() {
 				ConfiguredLogParser<?> parserConfig = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
-				if (parserConfig.isEditable()) {
+				if (parserConfig != null && parserConfig.isEditable()) {
 					ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
 					configList.add(parserConfig);
 					return configList;
@@ -283,12 +267,11 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 				}
 			}
 		});
-		checkEnableApplyButton();
 		logFileTableModel = new DefaultTableModel(
 				new Object[][] {
 				},
 				new String[] {
-						"File Name", "Del"
+						"File Name", "Name", "Del"
 				}
 				) {
 			/**
@@ -296,20 +279,21 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			 */
 			private static final long serialVersionUID = 1L;
 			Class<?>[] columnTypes = new Class[] {
-				String.class, Object.class
+					String.class, String.class, Object.class
 			};
 			public Class<?> getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				true, true
+					true, true, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		};
-		for (String fname : fnameList) {
-			logFileTableModel.addRow(new Object[] {fname, null});
+		checkEnableApplyButton();
+		for (LogSource source : fnameList) {
+			logFileTableModel.addRow(source.modelEntry());
 		}
 		logFileTable.setModel(logFileTableModel);
 		
@@ -356,10 +340,12 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		TableColumn delCol = logFileTable.getColumn("Del");
 		delCol.setCellRenderer(cellRenderer);
 		delCol.setCellEditor(cellRenderer);
-		logFileTable.getColumnModel().getColumn(0).setResizable(false);
-		logFileTable.getColumnModel().getColumn(0).setPreferredWidth(1000);
-		logFileTable.getColumnModel().getColumn(1).setResizable(false);
-		logFileTable.getColumnModel().getColumn(1).setPreferredWidth(30);
+		logFileTable.getColumnModel().getColumn(0).setResizable(true);
+		logFileTable.getColumnModel().getColumn(0).setPreferredWidth(800);
+		logFileTable.getColumnModel().getColumn(1).setResizable(true);
+		logFileTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+		logFileTable.getColumnModel().getColumn(2).setResizable(false);
+		logFileTable.getColumnModel().getColumn(2).setPreferredWidth(30);
 		Console.setListener(this);
 	}
 
@@ -380,32 +366,53 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 
 	@Override
 	public void applyConfig(Serializable cfg) {
-		ConfObj conf = (ConfObj) cfg;
 		logFileTableModel.setRowCount(0);
-		for (String fname : conf.fname) {
-			logFileTableModel.addRow(new Object[] {fname, null});
-		}
-		useObsVal.setSelected(conf.obsVal != null);
-		if (conf.obsVal != null) {
-			obsValSpinner.setValue(conf.obsVal);
-		}
-		if (logFileFormatBox.getSelectedIndex() < 0 && conf.parserConfig != null)
-			for (int i = parserModel.getSize(); --i >= 0; ) {
-				LogParser<?> logParser = parserModel.getElementAt(i);
-				if (conf.parserConfig.equals(logParser.getName())) {
-					logFileFormatBox.setSelectedIndex(i);;
-				}
+		if (cfg instanceof ConfObj) {
+			ConfObj conf = (ConfObj) cfg;
+			for (String fname : conf.fname) {
+				LogSource source = new LogSource(fname);
+				logFileTableModel.addRow(source.modelEntry());
 			}
+			useObsVal.setSelected(conf.obsVal != null);
+			if (conf.obsVal != null) {
+				obsValSpinner.setValue(conf.obsVal);
+			}
+			if (logFileFormatBox.getSelectedIndex() < 0 && conf.parserConfig != null)
+				for (int i = parserModel.getSize(); --i >= 0; ) {
+					LogParser<?> logParser = parserModel.getElementAt(i);
+					if (conf.parserConfig.equals(logParser.getName())) {
+						logFileFormatBox.setSelectedIndex(i);;
+					}
+				}
+		} else if (cfg instanceof ConfObj2) {
+			ConfObj2 conf = (ConfObj2) cfg;
+			for (LogSource source : conf.logSource) {
+				logFileTableModel.addRow(source.modelEntry());
+			}
+			useObsVal.setSelected(conf.obsVal != null);
+			if (conf.obsVal != null) {
+				obsValSpinner.setValue(conf.obsVal);
+			}
+			if (logFileFormatBox.getSelectedIndex() < 0 && conf.parserConfig != null)
+				for (int i = parserModel.getSize(); --i >= 0; ) {
+					LogParser<?> logParser = parserModel.getElementAt(i);
+					if (conf.parserConfig.equals(logParser.getName())) {
+						logFileFormatBox.setSelectedIndex(i);;
+					}
+				}
+		}
 	}
 
 	@Override
 	public Serializable getConfig() {
-		ConfObj conf = new ConfObj();
-		conf.fname = new String[logFileTableModel.getRowCount()];
+		ConfObj2 conf = new ConfObj2();
+		conf.logSource = new LogSource[logFileTableModel.getRowCount()];
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++)
-			conf.fname[i] = (String) logFileTableModel.getValueAt(i, 0);
+			conf.logSource[i] = new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1));
 		conf.obsVal = useObsVal.isSelected() ? (Integer) obsValSpinner.getValue() : null;
-		conf.parserConfig = ((ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem()).getName();
+		ConfiguredLogParser<?> selectedItem = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
+		if (selectedItem != null)
+			conf.parserConfig = selectedItem.getName();
 		return conf;
 	}
 
@@ -420,11 +427,11 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 			logFileTypeDescriptor.createAndRegisterTabs(logTracker.getTabbedPane(), logTracker.getConfiguration(), logParser);
 			activeLogFileType = logFileTypeDescriptor;
 		}
-		List<String> fname = new ArrayList<String>();
+		List<LogSource> logSource = new ArrayList<LogSource>();
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++) {
-			fname.add((String) logFileTableModel.getValueAt(i, 0));
+			logSource.add(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
 		}
-		logFileTypeDescriptor.setupDataPipeLines(fname, logParser, getObsStart());
+		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart());
 		logTracker.getConfiguration().resetActiveConfig();
 	}
 

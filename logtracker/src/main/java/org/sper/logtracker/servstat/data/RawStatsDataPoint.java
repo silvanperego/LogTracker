@@ -13,8 +13,8 @@ public class RawStatsDataPoint extends RawDataPoint {
 	final public String service;
 	final public Integer returnCode;
 
-	public RawStatsDataPoint(Long occTime, Double value, String service, String user, Integer returnCode) {
-		super(occTime, user);
+	public RawStatsDataPoint(Long occTime, Double value, String service, String user, Integer returnCode, String logSource) {
+		super(occTime, user, logSource);
 		this.value = value;
 		this.service = service;
 		this.returnCode = returnCode;

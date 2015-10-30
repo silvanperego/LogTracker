@@ -6,6 +6,7 @@ import javax.swing.JTabbedPane;
 
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
@@ -50,8 +51,8 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart) {
-		serviceStatsTabs.setupDataPipeLines(fname, (LogParser<RawStatsDataPoint>) logParser, obsStart);
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart) {
+		serviceStatsTabs.setupDataPipeLines(logSource, (LogParser<RawStatsDataPoint>) logParser, obsStart);
 	}
 
 }

@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.logreader.LogSource;
 
 /**
  * Eine Beschreibung einer spezifischen Log-File-Typs, wie z.B. ServiceResponseTime-Logs oder Error-Logs.
@@ -32,6 +33,6 @@ public interface FileTypeDescriptor {
 
 	ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> configuredLogParser);
 
-	void setupDataPipeLines(List<String> fname, ConfiguredLogParser<?> logParser, Long obsStart);
+	void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart);
 
 }

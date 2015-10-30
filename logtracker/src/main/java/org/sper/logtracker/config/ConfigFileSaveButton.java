@@ -48,6 +48,7 @@ public class ConfigFileSaveButton extends JButton {
 										JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
 							action.execConfigFileOperation(selectedFile);
 					} catch (Exception saveex) {
+						saveex.printStackTrace();
 						JOptionPane.showMessageDialog(parent, saveex, "Error while writing Configuration File", JOptionPane.ERROR_MESSAGE);
 					}
 				}

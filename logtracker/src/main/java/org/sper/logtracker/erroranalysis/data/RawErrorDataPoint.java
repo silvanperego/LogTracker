@@ -22,8 +22,8 @@ public class RawErrorDataPoint extends RawDataPoint {
 	 * @param msg der Meldungstext.
 	 * @param fileSnippet Der File-Ausschnitt, welcher diese Fehlermeldung repräsentiert.
 	 */
-	public RawErrorDataPoint(Long occTime, String user, String severity, String msg, FileSnippet fileSnippet) {
-		super(occTime, user);
+	public RawErrorDataPoint(Long occTime, String user, String severity, String msg, String logSource, FileSnippet fileSnippet) {
+		super(occTime, user, logSource);
 		this.severity = severity;
 		this.msg = msg;
 		this.fileSnippet = fileSnippet;

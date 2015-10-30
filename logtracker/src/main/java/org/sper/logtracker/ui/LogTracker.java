@@ -14,11 +14,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.logreader.LogSource;
 
 public class LogTracker {
 
 	private static String cfgFile;
-	private static List<String> fnameList = new ArrayList<String>();
+	private static List<LogSource> fnameList = new ArrayList<LogSource>();
 	private JFrame frame;
 	private JTabbedPane tabbedPane;
 	private Configuration configuration = new Configuration();
@@ -41,7 +42,7 @@ public class LogTracker {
 					}
 					cfgFile = arg;
 				} else {
-					fnameList.add(arg);
+					fnameList.add(new LogSource(arg));
 				}
 			}
 			if (cfgFile != null && !fnameList.isEmpty()) {

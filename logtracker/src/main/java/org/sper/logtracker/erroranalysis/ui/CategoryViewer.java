@@ -93,12 +93,12 @@ public class CategoryViewer extends JFrame {
 				new Object[][] {
 				},
 				new String[] {
-					"Time", "User", "Message Content"
+					"Time", "User", "Source", "Message Content"
 				}
 			) {
 				private static final long serialVersionUID = 1L;
 				Class[] columnTypes = new Class[] {
-					Object.class, String.class, Object.class
+					Object.class, String.class, String.class, Object.class
 				};
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
@@ -113,6 +113,7 @@ public class CategoryViewer extends JFrame {
 					tableModel.addRow(new Object[] {
 							new Date(dp.occTime),
 							dp.user,
+							dp.logSource,
 							dp
 					});
 				}
@@ -123,13 +124,14 @@ public class CategoryViewer extends JFrame {
 			catMessageTable = new JTable();
 			catMessageTable.setModel(tableModel);
 			catMessageTable.getColumnModel().getColumn(0).setPreferredWidth(100);
-			catMessageTable.getColumnModel().getColumn(2).setPreferredWidth(669);
+			catMessageTable.getColumnModel().getColumn(2).setPreferredWidth(80);
+			catMessageTable.getColumnModel().getColumn(3).setPreferredWidth(669);
 			catMessageTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
 					int selectedRow = catMessageTable.getSelectedRow();
 					if (selectedRow >= 0) {
-						FileSnippet snippet = ((RawErrorDataPoint) tableModel.getValueAt(selectedRow, 2)).fileSnippet;
+						FileSnippet snippet = ((RawErrorDataPoint) tableModel.getValueAt(selectedRow, 3)).fileSnippet;
 						fullMessage.setText(snippet.getContents());
 						fullMessage.setCaretPosition(0);
 					} else

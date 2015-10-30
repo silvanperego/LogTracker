@@ -15,10 +15,12 @@ public class LogLineParser<T> implements DataListener<T> {
 	private List<DataListener<T>> dataListeners = new ArrayList<DataListener<T>>();
 	private LogParser<T> logParser;
 	private Long obsStart;
+	private String logSource;
 
-	public LogLineParser(LogParser<T> logParser, Long obsStart) {
+	public LogLineParser(LogParser<T> logParser, Long obsStart, String logSource) {
 		this.logParser = logParser;
 		this.obsStart = obsStart;
+		this.logSource = logSource;
 	}
 
 	@Override
@@ -45,6 +47,10 @@ public class LogLineParser<T> implements DataListener<T> {
 
 	public void scanLine(FileSnippet lineInFile) {
 		logParser.scanLine(lineInFile, this, obsStart);
+	}
+
+	public String getLogSource() {
+		return logSource;
 	}
 
 }
