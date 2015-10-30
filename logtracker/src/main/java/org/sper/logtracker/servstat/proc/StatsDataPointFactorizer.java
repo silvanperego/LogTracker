@@ -11,7 +11,7 @@ public class StatsDataPointFactorizer extends AbstractDataListener<RawStatsDataP
 
 	@Override
 	public void receiveData(RawStatsDataPoint data) {
-		DataPoint dp = new DataPoint(service.addString(data.service), data.occTime, data.value, data.user != null ? user.addString(data.user) : null, data.returnCode);
+		DataPoint dp = new DataPoint(service.addString(data.service), data.occTime, data.value, data.user != null ? user.addString(data.user) : null, data.returnCode, data.logSource);
 		sendToListeners(dp);
 	}
 

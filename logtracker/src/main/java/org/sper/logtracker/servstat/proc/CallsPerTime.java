@@ -16,7 +16,7 @@ public class CallsPerTime extends AbstractDataListener<DataPointGroup, DataPoint
 	
 	@Override
 	public void receiveData(DataPointGroup dpg) {
-		sendToListeners(new DataPoint(null, dpg.getMidTime(), (double) dpg.size() / dpg.getTimespan() * timespan, null, null));
+		sendToListeners(new DataPoint(null, dpg.getMidTime(), (double) dpg.size() / dpg.getTimespan() * timespan, null, null, null));
 	}
 	
 }
