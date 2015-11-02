@@ -41,6 +41,7 @@ public class ConfigFileOpenButton extends JButton {
 						configFileDir = fileChooser.getCurrentDirectory();
 						action.execConfigFileOperation(fileChooser.getSelectedFile());
 					} catch (Exception ex) {
+						ex.printStackTrace();
 						JOptionPane.showMessageDialog(parent, ex, "Error while loading Configuration File", JOptionPane.ERROR_MESSAGE);
 					}
 				}
