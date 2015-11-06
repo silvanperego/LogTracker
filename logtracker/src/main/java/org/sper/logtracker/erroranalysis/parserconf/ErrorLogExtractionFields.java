@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 
 import javax.swing.Box;
@@ -34,6 +35,8 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	private InputVerifier occTimeVerifier;
 	private JComboBox userIdComboBox;
 	private JComboBox contentComboBox;
+	private JTextField encodingField;
+	private InputVerifier encodingVerifier;
 
 	
 	public ErrorLogExtractionFields(final ParserConfigDialog configDialog) {
@@ -41,9 +44,9 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();
 		gbl_extractionFields.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_extractionFields.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_extractionFields.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0};
-		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+		gbl_extractionFields.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_extractionFields.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0};
+		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
 		setLayout(gbl_extractionFields);
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
@@ -174,7 +177,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			JLabel lblMessageContent = new JLabel("Message Content");
 			GridBagConstraints gbc_lblMessageContent = new GridBagConstraints();
 			gbc_lblMessageContent.anchor = GridBagConstraints.WEST;
-			gbc_lblMessageContent.insets = new Insets(0, 0, 0, 5);
+			gbc_lblMessageContent.insets = new Insets(0, 0, 5, 5);
 			gbc_lblMessageContent.gridx = 0;
 			gbc_lblMessageContent.gridy = 3;
 			add(lblMessageContent, gbc_lblMessageContent);
@@ -184,10 +187,47 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			contentComboBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
 			GridBagConstraints gbc_contentComboBox = new GridBagConstraints();
 			gbc_contentComboBox.anchor = GridBagConstraints.WEST;
-			gbc_contentComboBox.insets = new Insets(0, 0, 0, 5);
+			gbc_contentComboBox.insets = new Insets(0, 0, 5, 5);
 			gbc_contentComboBox.gridx = 1;
 			gbc_contentComboBox.gridy = 3;
 			add(contentComboBox, gbc_contentComboBox);
+		}
+		{
+			JLabel lblEncoding = new JLabel("Encoding");
+			GridBagConstraints gbc_lblEncoding = new GridBagConstraints();
+			gbc_lblEncoding.anchor = GridBagConstraints.WEST;
+			gbc_lblEncoding.insets = new Insets(0, 0, 0, 5);
+			gbc_lblEncoding.gridx = 0;
+			gbc_lblEncoding.gridy = 4;
+			add(lblEncoding, gbc_lblEncoding);
+		}
+		{
+			encodingField = new JTextField();
+			GridBagConstraints gbc_textField = new GridBagConstraints();
+			gbc_textField.insets = new Insets(0, 0, 0, 5);
+			gbc_textField.anchor = GridBagConstraints.WEST;
+			gbc_textField.gridx = 1;
+			gbc_textField.gridy = 4;
+			add(encodingField, gbc_textField);
+			encodingField.setColumns(6);
+		}
+		{
+			encodingVerifier = new InputVerifier() {
+				
+				@Override
+				public boolean verify(JComponent input) {
+					String text = ((JTextField) input).getText();
+					if (text != null && text.length() > 0 && !Charset.isSupported(text)) {
+						input.setBackground(Color.ORANGE);
+						configDialog.setError("This encoding is not supported.");
+						return false;
+					}
+					input.setBackground(standardBackgroundCol);
+					configDialog.setError(null);
+					return true;
+				}
+			};
+			encodingField.setInputVerifier(encodingVerifier);
 		}
 	}
 	
@@ -204,6 +244,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			loadedParser.setOccTimeLanguage(occTimeLanguage.getText());
 			loadedParser.setUserIdIdx((Integer) userIdComboBox.getSelectedItem());
 			loadedParser.setMsgIdx((Integer) contentComboBox.getSelectedItem());
+			loadedParser.setEncoding(encodingField.getText());
 		}
 	}
 
@@ -218,6 +259,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		severityComboBox.setEnabled(b);
 		userIdComboBox.setEnabled(b);
 		contentComboBox.setEnabled(b);
+		encodingField.setEnabled(b);
 	}
 
 	/* (non-Javadoc)
@@ -232,6 +274,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		severityComboBox.setSelectedItem(logParser.getSeverityIdx());
 		userIdComboBox.setSelectedItem(logParser.getUserIdIdx());
 		contentComboBox.setSelectedItem(logParser.getMsgIdx());
+		encodingField.setText(logParser.getEncoding());
 	}
 
 	/* (non-Javadoc)
@@ -245,6 +288,6 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 
 	@Override
 	public boolean verifyFormDataIsValid() {
-		return occTimeVerifier.verify(occTimeFormatString);
+		return occTimeVerifier.verify(occTimeFormatString) && encodingVerifier.verify(encodingField);
 	}
 }

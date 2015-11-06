@@ -27,4 +27,6 @@ public interface LogParser<T> extends Cloneable {
 	
 	Object clone();
 	
+	String getEncoding();
+	
 }

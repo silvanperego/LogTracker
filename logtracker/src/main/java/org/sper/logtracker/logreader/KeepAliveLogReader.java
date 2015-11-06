@@ -22,6 +22,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 	private boolean keepAlive = true;
 	private File logFile;
 	private long lastPos = 0;
+	private String encoding;
 
 	/**
 	 * Konstruktor.
@@ -33,10 +34,11 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 	 * @throws FileNotFoundException
 	 *             falls das gewünschte File nicht gefunden werden kann.
 	 */
-	public KeepAliveLogReader(File logFile, LogLineParser<?> listener)
+	public KeepAliveLogReader(File logFile, LogLineParser<?> listener, String encoding)
 			throws FileNotFoundException {
 		this.logFile = logFile;
 		this.listener = listener;
+		this.encoding = encoding;
 	}
 	
 	private class CountingInputStream extends BufferedInputStream {
@@ -66,7 +68,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 					scannedLine.write(c);
 				}
 			}
-			return new String(scannedLine.toByteArray());
+			return new String(scannedLine.toByteArray(), encoding);
 		}
 
 		/**
@@ -89,7 +91,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 				fis.getChannel().position(lastPos);
 				String readLine = cis.readLine();
 				while (readLine != null) {
-					listener.scanLine(new FileSnippet(logFile, cis.lineStart(), readLine));
+					listener.scanLine(new FileSnippet(logFile, cis.lineStart(), readLine, encoding));
 					readLine = cis.readLine();
 				}
 				listener.publishData();

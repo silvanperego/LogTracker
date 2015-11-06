@@ -31,7 +31,7 @@ public class PipelineHelper {
 		if (logSource.size() == 1) {
 			LogLineParser<T> logLineParser = new LogLineParser<T>(logLineInterpreter, obsStart, logSource.get(0).getSourceName());
 			logLineParser.registerListener(rawDataListener);
-			KeepAliveLogReader keepAliveLogReader = new KeepAliveLogReader(new File(logSource.get(0).getFileName()), logLineParser);
+			KeepAliveLogReader keepAliveLogReader = new KeepAliveLogReader(new File(logSource.get(0).getFileName()), logLineParser, logLineInterpreter.getEncoding());
 			terminationPointer = keepAliveLogReader;
 			keepAliveLogReader.start();
 		} else {
@@ -40,7 +40,7 @@ public class PipelineHelper {
 			pipeCollector.addListener(rawDataListener);
 			for (LogSource ls : logSource) {
 				LogLineParser<T> logLineParser = new LogLineParser<T>(logLineInterpreter, obsStart, ls.getSourceName());
-				KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(ls.getFileName()), logLineParser);
+				KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(ls.getFileName()), logLineParser, logLineInterpreter.getEncoding());
 				pipeCollector.addFeeder(logLineParser, keepAliveElement);
 			}
 			pipeCollector.run();

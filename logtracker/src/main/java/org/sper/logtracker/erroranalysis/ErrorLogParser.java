@@ -18,6 +18,16 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	private Integer userIdIdx;
 	private Integer msgIdx;
 	private transient ThreadLocal<FileSnippet> lastLineInFile = new ThreadLocal<FileSnippet>();
+	private String encoding;
+
+	@Override
+	public String getEncoding() {
+		return encoding != null ? encoding : super.getEncoding();
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
 
 	public ErrorLogParser(String parserName) {
 		super(parserName);

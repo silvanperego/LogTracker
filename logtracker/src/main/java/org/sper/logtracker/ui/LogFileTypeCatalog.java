@@ -101,6 +101,11 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 			public FileTypeDescriptor getLogFileTypeDescriptor() {
 				return null;
 			}
+
+			@Override
+			public String getEncoding() {
+				return null;
+			}
 			
 		};
 		defaultParserList = new ArrayList<ConfiguredLogParser<?>>();

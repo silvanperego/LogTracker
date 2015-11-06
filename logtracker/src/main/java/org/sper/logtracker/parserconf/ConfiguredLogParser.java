@@ -143,6 +143,11 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		return includeExcludePattern;
 	}
 	
+	@Override
+	public String getEncoding() {
+		return "ISO-8859-1";
+	}
+
 	public boolean isIncludeLines() {
 		return includeLines;
 	}
