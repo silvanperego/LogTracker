@@ -139,12 +139,16 @@ public class CategoryViewer extends JFrame {
 				}
 			});
 			JScrollPane scrollPane = new JScrollPane(catMessageTable);
+			scrollPane.setPreferredSize(new Dimension(700, 120));
 			fullMessage = new JTextArea();
 			fullMessage.setEditable(false);
+			fullMessage.setLineWrap(true);
 			
 			FlowLayout flowLayout = (FlowLayout) chartPanel.getLayout();
 			flowLayout.setAlignment(FlowLayout.LEFT);
-			JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, new JScrollPane(fullMessage));
+			JScrollPane messageScrollPane = new JScrollPane(fullMessage);
+			messageScrollPane.setPreferredSize(new Dimension(700, 400));
+			JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, messageScrollPane);
 			getContentPane().add(chartPanel, BorderLayout.NORTH);
 			getContentPane().add(splitPane, BorderLayout.CENTER);
 			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
