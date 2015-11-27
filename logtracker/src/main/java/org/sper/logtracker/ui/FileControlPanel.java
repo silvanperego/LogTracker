@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
 import org.sper.logtracker.servstat.ui.ButtonColumn;
+import javax.swing.JTextField;
 
 public class FileControlPanel extends JSplitPane implements MessageListener, ConfigurationAware {
 	private static final long serialVersionUID = 1L;
@@ -67,6 +70,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 	private JComboBox logFileFormatBox;
 	private ParserSelectionModel parserModel;
 	private FileTypeDescriptor activeLogFileType;
+	private JTextField txtLogtracker;
 	
 	private static class ConfObj implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -79,7 +83,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		private static final long serialVersionUID = 1L;
 		LogSource[] logSource;
 		Integer obsVal;
-		String parserConfig;
+		String parserConfig, title;
 	}
 
 	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList) {
@@ -116,6 +120,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		toolBar.add(btnSaveConfig);
 		
 		Component horizontalGlue = Box.createHorizontalGlue();
+		horizontalGlue.setPreferredSize(new Dimension(400, 0));
 		toolBar.add(horizontalGlue);
 		
 		JButton btnInfo = new JButton(new ImageIcon(FileControlPanel.class.getResource("/Info.png")));
@@ -124,6 +129,32 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 				JOptionPane.showMessageDialog(logTracker.getFrame(), new JScrollPane(new WelcomePanel()), "About Log-Tracker", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
+		
+		JLabel lblTitle = new JLabel("Title:");
+		toolBar.add(lblTitle);
+		
+		txtLogtracker = new JTextField();
+		txtLogtracker.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				logTracker.setTitle(txtLogtracker.getText());
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+		txtLogtracker.setToolTipText("Dieser Text wird als Fenstertitel angezeigt");
+		String defaultTitle = "LogTracker";
+		txtLogtracker.setText(defaultTitle);
+		logTracker.setTitle(defaultTitle);
+		toolBar.add(txtLogtracker);
+		txtLogtracker.setColumns(20);
 		btnInfo.setHorizontalAlignment(SwingConstants.LEFT);
 		toolBar.add(btnInfo);
 		
@@ -386,6 +417,10 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 				}
 		} else if (cfg instanceof ConfObj2) {
 			ConfObj2 conf = (ConfObj2) cfg;
+			if (conf.title != null) {
+				txtLogtracker.setText(conf.title);
+				logTracker.setTitle(conf.title);
+			}
 			for (LogSource source : conf.logSource) {
 				logFileTableModel.addRow(source.modelEntry());
 			}
@@ -410,6 +445,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++)
 			conf.logSource[i] = new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1));
 		conf.obsVal = useObsVal.isSelected() ? (Integer) obsValSpinner.getValue() : null;
+		conf.title = txtLogtracker.getText();
 		ConfiguredLogParser<?> selectedItem = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 		if (selectedItem != null)
 			conf.parserConfig = selectedItem.getName();

@@ -94,7 +94,6 @@ public class LogTracker {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(LogTracker.class.getResource("/LogTrackerLogo.png")));
 		frame.setBounds(100, 100, 986, 804);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Log-Tracker");
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -133,6 +132,10 @@ public class LogTracker {
 
 	public JTabbedPane getTabbedPane() {
 		return tabbedPane;
+	}
+	
+	void setTitle(String title) {
+		frame.setTitle(title);
 	}
 
 }
