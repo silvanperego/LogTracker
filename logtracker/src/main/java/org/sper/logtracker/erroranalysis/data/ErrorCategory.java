@@ -41,6 +41,8 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 		errorList.add(dp);
 		keyWordSet = new HashSet<String>();
 		severity = dp.severity;
+		if ("CRITICAL".equals(severity))
+			relevance = 3000;
 		if ("ERROR".equals(severity))
 			relevance = 2000;
 		if ("WARNING".equals(severity))
