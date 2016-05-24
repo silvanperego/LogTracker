@@ -38,8 +38,12 @@ public class LogLineCatalog implements DataListener<RawErrorDataPoint> {
 		if (bestCategory != null)
 			bestCategory.addDataPoint();
 		else {
-			ErrorCategory cat = new ErrorCategory(data);
-			catalog.add(cat);
+			ErrorCategory cat;
+			try {
+				cat = new ErrorCategory(data);
+				catalog.add(cat);
+			} catch (NoContextException e) {
+			}
 		}
 		needsRefresh = true;
 	}

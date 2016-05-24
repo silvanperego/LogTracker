@@ -35,9 +35,12 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 	private String severity;
 	private int relevance;
 
-	public ErrorCategory(RawErrorDataPoint dp) {
+	public ErrorCategory(RawErrorDataPoint dp) throws NoContextException {
 		split = wordSep.split(dp.msg);
 		totalWords = split.length;
+		if (totalWords == 0) {
+			throw new NoContextException();
+		}
 		errorList.add(dp);
 		keyWordSet = new HashSet<String>();
 		severity = dp.severity;
