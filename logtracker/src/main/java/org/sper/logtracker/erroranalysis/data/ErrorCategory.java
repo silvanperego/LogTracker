@@ -28,7 +28,7 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 	 */
 	private List<RawErrorDataPoint> errorList = new ArrayList<RawErrorDataPoint>();
 	
-	private static final Pattern wordSep = Pattern.compile("[^\\w/]");
+	private static final Pattern wordSep = Pattern.compile("[^\\w/\\.:-]+");
 	private HashSet<String> intersectSet;
 	private String[] split;
 	private RawErrorDataPoint lastPoint;
@@ -36,7 +36,7 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 	private int relevance;
 
 	public ErrorCategory(RawErrorDataPoint dp) throws NoContextException {
-		split = wordSep.split(dp.msg);
+		split = splitLine(dp);
 		totalWords = split.length;
 		if (totalWords == 0) {
 			throw new NoContextException();
@@ -56,6 +56,18 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 	}
 
 	/**
+	 * Trenne die Zeile in separate Wörter. Berücksichtige bei sehr langen Zeilen nicht alles.
+	 * @param dp der DataPoint.
+	 * @return
+	 */
+	private String[] splitLine(RawErrorDataPoint dp) {
+		String[] split = wordSep.split(dp.msg);
+		if (split.length > 20)
+			split = Arrays.copyOfRange(split, 0, 20);
+		return split;
+	}
+
+	/**
 	 * Berechnet einen Score, welcher angibt, wie gut eine neue Meldung zu dieser Kategorie passt.
 	 * Behält Analyseergebnisse für eine eventuelle spätere Speicherung im Speicher. 
 	 * @param dp der Datenpunkt
@@ -65,9 +77,7 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 		if (!(severity == dp.severity || severity != null && severity.equals(dp.severity)))
 			return 0;
 		lastPoint = dp;
-		split = wordSep.split(dp.msg);
-		if (split.length < 2)
-			return 0;
+		split = splitLine(dp);
 		intersectSet = new HashSet<String>(keyWordSet);
 		intersectSet.retainAll(Arrays.asList(split));
 		int meanWords = totalWords / errorList.size();

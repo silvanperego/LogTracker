@@ -23,6 +23,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 	private File logFile;
 	private long lastPos = 0;
 	private String encoding;
+	private long lastLength;
 
 	/**
 	 * Konstruktor.
@@ -87,6 +88,11 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 		try {
 			do {
 				FileInputStream fis = new FileInputStream(logFile);
+				long fileLength = logFile.length();
+				if (fileLength < lastLength) {  // Hier könnte ein Roll-Over passiert sein. Wie lesen die Datei noch einmal von Anfang.
+					lastPos = 0;
+				}
+				lastLength = fileLength;
 				cis = new CountingInputStream(fis, lastPos);
 				fis.getChannel().position(lastPos);
 				String readLine = cis.readLine();
