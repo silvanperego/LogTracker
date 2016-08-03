@@ -2,17 +2,11 @@ package org.sper.logtracker.erroranalysis.parserconf;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.TimeZone;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
@@ -24,24 +18,20 @@ import javax.swing.JTextField;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
+import org.sper.logtracker.parserconf.OccurrenceTimeFieldsHelper;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 
 public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldHandler {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField occTimeFormatString;
-	private JComboBox occTimeGroupCombo;
-	private JTextField occTimeLanguage;
 	private JComboBox severityComboBox;
 	private Color standardBackgroundCol;
-	private InputVerifier occTimeVerifier;
 	private JComboBox userIdComboBox;
 	private JComboBox contentComboBox;
 	private JTextField encodingField;
 	private InputVerifier encodingVerifier;
-	private InputVerifier timezoneVerifier;
-	private JTextField occTimeTimezone;
-
+	private OccurrenceTimeFieldsHelper timeFieldsHelper = new OccurrenceTimeFieldsHelper();;
+	
 	public ErrorLogExtractionFields(final ParserConfigDialog configDialog) {
 		super();
 		setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -51,128 +41,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		gbl_extractionFields.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 1.0 };
 		gbl_extractionFields.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		setLayout(gbl_extractionFields);
-		{
-			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
-			GridBagConstraints gbc_lblOccurenceTimeGroup = new GridBagConstraints();
-			gbc_lblOccurenceTimeGroup.insets = new Insets(0, 0, 5, 5);
-			gbc_lblOccurenceTimeGroup.anchor = GridBagConstraints.EAST;
-			gbc_lblOccurenceTimeGroup.gridx = 0;
-			gbc_lblOccurenceTimeGroup.gridy = 0;
-			add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
-		}
-		{
-			occTimeGroupCombo = new JComboBox();
-			occTimeGroupCombo.setToolTipText(
-					"the capturing group index of the group containing the service call occurrence time");
-			occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] { null, 1, 2, 3, 4 }));
-			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
-			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
-			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
-			gbc_occTimeGroupCombo.gridx = 1;
-			gbc_occTimeGroupCombo.gridy = 0;
-			add(occTimeGroupCombo, gbc_occTimeGroupCombo);
-		}
-		{
-			Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
-			GridBagConstraints gbc_rigidArea = new GridBagConstraints();
-			gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
-			gbc_rigidArea.gridx = 2;
-			gbc_rigidArea.gridy = 0;
-			add(rigidArea, gbc_rigidArea);
-		}
-		{
-			JLabel lblOccurrenceTimeFormat = new JLabel("Time Format String:");
-			GridBagConstraints gbc_lblOccurrenceTimeFormat = new GridBagConstraints();
-			gbc_lblOccurrenceTimeFormat.insets = new Insets(0, 0, 5, 5);
-			gbc_lblOccurrenceTimeFormat.gridx = 3;
-			gbc_lblOccurrenceTimeFormat.gridy = 0;
-			add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
-		}
-		{
-			occTimeVerifier = new InputVerifier() {
-
-				@Override
-				public boolean verify(JComponent input) {
-					String text = ((JTextField) input).getText();
-					if (text != null && text.length() > 0) {
-						try {
-							new SimpleDateFormat(text);
-						} catch (IllegalArgumentException e) {
-							input.setBackground(Color.ORANGE);
-							configDialog.setError("Not a valid SimpleDateFormat pattern");
-							return false;
-						}
-					} else {
-						input.setBackground(Color.ORANGE);
-						configDialog.setError("Date Format is mandatory");
-						return false;
-					}
-					input.setBackground(standardBackgroundCol);
-					configDialog.setError(null);
-					return true;
-				}
-			};
-			timezoneVerifier = new InputVerifier() {
-
-				@Override
-				public boolean verify(JComponent input) {
-					String text = ((JTextField) input).getText();
-					if (text != null && text.length() > 0) {
-						if (Arrays.asList(TimeZone.getAvailableIDs()).contains(text)) {
-							input.setBackground(standardBackgroundCol);
-							configDialog.setError(null);
-							return true;
-						} else {
-							input.setBackground(Color.ORANGE);
-							configDialog.setError("Timezone is unknown.");
-							return false;
-						}
-					} else {
-						text = null;
-						input.setBackground(standardBackgroundCol);
-						return true;
-					}
-				}
-			};
-			{
-				JPanel occTimePanel = new JPanel();
-				GridBagConstraints gbc_occTimePanel = new GridBagConstraints();
-				gbc_occTimePanel.fill = GridBagConstraints.BOTH;
-				gbc_occTimePanel.insets = new Insets(0, 0, 5, 0);
-				gbc_occTimePanel.gridx = 4;
-				gbc_occTimePanel.gridy = 0;
-				add(occTimePanel, gbc_occTimePanel);
-				occTimePanel.setLayout(new BoxLayout(occTimePanel, BoxLayout.X_AXIS));
-				occTimeFormatString = new JTextField();
-				standardBackgroundCol = occTimeFormatString.getBackground();
-				occTimePanel.add(occTimeFormatString);
-				occTimeFormatString.setToolTipText(
-						"The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
-				occTimeFormatString.setInputVerifier(occTimeVerifier);
-				{
-					JLabel lblLanguage = new JLabel("Language:");
-					occTimePanel.add(lblLanguage);
-				}
-				{
-					occTimeLanguage = new JTextField();
-					occTimePanel.add(occTimeLanguage);
-					occTimeLanguage.setColumns(3);
-					occTimeLanguage.setToolTipText(
-							"The interpretation language for the occurrence time. (Only necessary, if months are specified as text.");
-				}
-				{
-					JLabel lblLanguage = new JLabel("TimeZone:");
-					occTimePanel.add(lblLanguage);
-				}
-				{
-					occTimeTimezone = new JTextField();
-					occTimePanel.add(occTimeTimezone);
-					occTimeTimezone.setColumns(7);
-					occTimeTimezone.setToolTipText("The timezone of the Log-File Entries.");
-					occTimeTimezone.setInputVerifier(timezoneVerifier);
-				}
-			}
-		}
+		timeFieldsHelper.addOccurrenceStartTimeFields(this, configDialog);
 		{
 			JLabel lblSeverityNameGroup = new JLabel("Message Severity");
 			GridBagConstraints gbc_lblSeverityNameGroup = new GridBagConstraints();
@@ -242,6 +111,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		}
 		{
 			encodingField = new JTextField();
+			standardBackgroundCol = encodingField.getBackground();
 			GridBagConstraints gbc_textField = new GridBagConstraints();
 			gbc_textField.insets = new Insets(0, 0, 0, 5);
 			gbc_textField.anchor = GridBagConstraints.WEST;
@@ -281,13 +151,10 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		ErrorLogParser loadedParser = (ErrorLogParser) parser;
 		if (loadedParser != null) {
 			loadedParser.setSeverityIdx((Integer) severityComboBox.getSelectedItem());
-			loadedParser.setOccTimeIdx((Integer) occTimeGroupCombo.getSelectedItem());
-			loadedParser.setOccTimeFormatString(occTimeFormatString.getText());
-			loadedParser.setOccTimeLanguage(occTimeLanguage.getText());
+			timeFieldsHelper.saveLoadedParser(parser);
 			loadedParser.setUserIdIdx((Integer) userIdComboBox.getSelectedItem());
 			loadedParser.setMsgIdx((Integer) contentComboBox.getSelectedItem());
 			loadedParser.setEncoding(encodingField.getText());
-			loadedParser.setOccTimeTimezone(occTimeTimezone.getText());
 		}
 	}
 
@@ -299,9 +166,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	 */
 	@Override
 	public void enableDetailFields(boolean b) {
-		occTimeGroupCombo.setEnabled(b);
-		occTimeFormatString.setEnabled(b);
-		occTimeLanguage.setEnabled(b);
+		timeFieldsHelper.enableDetailFields(b);
 		severityComboBox.setEnabled(b);
 		userIdComboBox.setEnabled(b);
 		contentComboBox.setEnabled(b);
@@ -317,10 +182,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	@Override
 	public void loadEditingFields(ConfiguredLogParser<?> parser) {
 		ErrorLogParser logParser = (ErrorLogParser) parser;
-		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
-		occTimeFormatString.setText(logParser.getOccTimeFormatString());
-		occTimeLanguage.setText(logParser.getOccTimeLanguage());
-		occTimeTimezone.setText(logParser.getOccTimeTimezone());
+		timeFieldsHelper.loadEditingFields(parser);
 		severityComboBox.setSelectedItem(logParser.getSeverityIdx());
 		userIdComboBox.setSelectedItem(logParser.getUserIdIdx());
 		contentComboBox.setSelectedItem(logParser.getMsgIdx());
@@ -335,12 +197,11 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	 */
 	@Override
 	public void removeErrorMarks() {
-		occTimeFormatString.setBackground(standardBackgroundCol);
-		occTimeLanguage.setBackground(standardBackgroundCol);
+		timeFieldsHelper.removeErrorMarks();
 	}
 
 	@Override
 	public boolean verifyFormDataIsValid() {
-		return occTimeVerifier.verify(occTimeFormatString) && encodingVerifier.verify(encodingField);
+		return timeFieldsHelper.verifyFormDataIsValid() && encodingVerifier.verify(encodingField);
 	}
 }

@@ -120,7 +120,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	public ParserConfigDialog(ParserSelectionModel parserSelectionModel) {
 		setTitle("Log-Files Parser Configuration");
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 795, 681);
+		setBounds(100, 100, 909, 681);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

@@ -216,5 +216,9 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		return occTimeTimezone;
 	}
 	
+	public void setOccTimeTimezone(String occTimeTimezone) {
+		this.occTimeTimezone = occTimeTimezone;
+	}
+
 	public abstract FileTypeDescriptor getLogFileTypeDescriptor();
 }
