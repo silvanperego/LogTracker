@@ -1,6 +1,5 @@
 package org.sper.logtracker.erroranalysis.parserconf;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,7 +9,6 @@ import java.nio.charset.Charset;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,12 +18,12 @@ import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.OccurrenceTimeFieldsHelper;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.TextVerifier;
 
 public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldHandler {
 
 	private static final long serialVersionUID = 1L;
 	private JComboBox severityComboBox;
-	private Color standardBackgroundCol;
 	private JComboBox userIdComboBox;
 	private JComboBox contentComboBox;
 	private JTextField encodingField;
@@ -111,7 +109,6 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		}
 		{
 			encodingField = new JTextField();
-			standardBackgroundCol = encodingField.getBackground();
 			GridBagConstraints gbc_textField = new GridBagConstraints();
 			gbc_textField.insets = new Insets(0, 0, 0, 5);
 			gbc_textField.anchor = GridBagConstraints.WEST;
@@ -121,19 +118,14 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			encodingField.setColumns(6);
 		}
 		{
-			encodingVerifier = new InputVerifier() {
+			encodingVerifier = new TextVerifier(configDialog) {
 
 				@Override
-				public boolean verify(JComponent input) {
-					String text = ((JTextField) input).getText();
+				protected String verifyText(String text) {
 					if (text != null && text.length() > 0 && !Charset.isSupported(text)) {
-						input.setBackground(Color.ORANGE);
-						configDialog.setError("This encoding is not supported.");
-						return false;
+						return "This encoding is not supported.";
 					}
-					input.setBackground(standardBackgroundCol);
-					configDialog.setError(null);
-					return true;
+					return null;
 				}
 			};
 			encodingField.setInputVerifier(encodingVerifier);

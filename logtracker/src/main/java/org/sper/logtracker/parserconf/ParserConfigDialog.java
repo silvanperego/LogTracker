@@ -23,10 +23,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,7 +39,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.JTextComponent;
 
 import org.sper.logtracker.config.ConfigFileAction;
 import org.sper.logtracker.config.ConfigFileOpenButton;
@@ -52,33 +49,27 @@ import org.sper.logtracker.logreader.LogParser;
 
 public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	
-	private class PatternInputVerifier extends InputVerifier {
+	private class PatternInputVerifier extends TextVerifier {
 		
 		private boolean nullable;
 
 		PatternInputVerifier(boolean nullable) {
+			super(ParserConfigDialog.this);
 			this.nullable = nullable;
 		}
 		
 		@Override
-		public boolean verify(JComponent input) {
-			String text = ((JTextComponent) input).getText();
+		protected String verifyText(String text) {
 			if (text != null && text.length() > 0) {
 				try {
 					Pattern.compile(text);
 				} catch (PatternSyntaxException e) {
-					input.setBackground(Color.ORANGE);
-					setError("Not a valid Java Regex pattern");
-					return false;
+					return "Not a valid Java Regex pattern";
 				}
 			} else if (!nullable) {
-				input.setBackground(Color.ORANGE);
-				setError("Pattern is mandatory");
-				return false;
+				return "Pattern is mandatory";
 			}
-			input.setBackground(standardBackgroundCol);
-			setError(null);
-			return true;
+			return null;
 		}
 	}
 
@@ -97,7 +88,6 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JLabel errorText;
 	private ConfiguredLogParser<?> loadedParser;
 	private JButton okButton;
-	private Color standardBackgroundCol;
 	private boolean isNewParser = false;
 	private JButton btnCopy;
 	private JButton btnCreateNew;
@@ -113,6 +103,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private DefaultComboBoxModel logFileTypeComboModel;
 	private JPanel dataExtractionPanel;
 	private FileTypeDescriptor fileTypeDesc;
+	private static Color standardBackgroundColor = new JTextField().getBackground();
 	/**
 	 * Create the dialog.
 	 * @param parserSelectionModel 
@@ -290,7 +281,6 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					PatternInputVerifier inputVerifier = new PatternInputVerifier(true);
 					inclusionPattern.setInputVerifier(inputVerifier);
 					addVerifier(new VerifyingPart(inclusionPattern, inputVerifier));
-					standardBackgroundCol = inclusionPattern.getBackground();
 					editFields.add(inclusionPattern, gbc_inclusionPattern);
 				}
 				{
@@ -547,8 +537,8 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	}
 
 	private void removeErrorMarks() {
-		inclusionPattern.setBackground(standardBackgroundCol);
-		dataExtractionPatField.setBackground(standardBackgroundCol);
+		inclusionPattern.setBackground(standardBackgroundColor);
+		dataExtractionPatField.setBackground(standardBackgroundColor);
 		extractionFields.removeErrorMarks();
 		setError(null);
 	}
@@ -622,6 +612,10 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	@Override
 	public boolean isDynamicModule() {
 		return false;
+	}
+
+	public static Color getStandardBackgroundColor() {
+		return standardBackgroundColor;
 	}
 	
 }

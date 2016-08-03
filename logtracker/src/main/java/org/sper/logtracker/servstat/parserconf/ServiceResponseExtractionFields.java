@@ -1,6 +1,5 @@
 package org.sper.logtracker.servstat.parserconf;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -12,7 +11,6 @@ import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +20,7 @@ import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.OccurrenceTimeFieldsHelper;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.TextVerifier;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler {
@@ -34,7 +33,6 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	private JComboBox serviceComboBox;
 	private JTextField serviceExcludeField;
 	private JComboBox userGroupBox;
-	private Color standardBackgroundCol;
 	private InputVerifier conversionFactorVerifier;
 	private JTextField successCodeField;
 	private JComboBox returnCodeGroupBox;
@@ -153,21 +151,18 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			gbc_conversionFactorField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_conversionFactorField.gridx = 4;
 			gbc_conversionFactorField.gridy = 2;
-			conversionFactorVerifier = new InputVerifier() {
+			conversionFactorVerifier = new TextVerifier(configDialog) {
 				
 				private final Pattern floatPat = Pattern.compile("\\d*(?:\\.\\d*)?");
 				
 				@Override
-				public boolean verify(JComponent input) {
+				protected String verifyText(String text) {
 					boolean result = false;
-					String text = ((JTextField) input).getText();
 					if (text != null && text.length() > 0) {
 						result = floatPat.matcher(text).matches();
-						configDialog.setError(result ? null : "Must be a floating point number (consisting of digits and a decmal dot only)");
-					} else
-						configDialog.setError("Conversion Factor is mandatory!");
-					conversionFactorField.setBackground(result ? standardBackgroundCol : Color.ORANGE);
-					return result;
+						return result ? null : "Must be a floating point number (consisting of digits and a decmal dot only)";
+					}
+					return "Conversion Factor is mandatory!";
 				}
 			};
 			conversionFactorField.setInputVerifier(conversionFactorVerifier);
@@ -231,22 +226,19 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(lblValueRepresentingok, gbc_lblValueRepresentingok);
 		}
 		{
-			successCodeVerifier = new InputVerifier() {
+			successCodeVerifier = new TextVerifier(configDialog) {
 				
 				@Override
-				public boolean verify(JComponent input) {
+				protected String verifyText(String text) {
 					boolean result = true;
 					if (returnCodeGroupBox.getSelectedItem() != null) {
-						String text = successCodeField.getText();
 						try {
 							Integer.parseInt(text);
 						} catch (NumberFormatException e) {
 							result = false;
 						}
 					}
-					configDialog.setError(result ? null : "The return code must be an integer number!");
-					successCodeField.setBackground(result ? standardBackgroundCol : Color.ORANGE);
-					return result;
+					return result ? null : "The return code must be an integer number!";
 				}
 			};
 			successCodeField = new JTextField();
@@ -290,6 +282,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		executionTimeBox.setEnabled(b);
 		conversionFactorField.setEnabled(b);
 		userGroupBox.setEnabled(b);
+		successCodeField.setEnabled(b);
 	}
 
 	/* (non-Javadoc)
@@ -314,8 +307,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	@Override
 	public void removeErrorMarks() {
 		timeFieldsHelper.removeErrorMarks();
-		serviceExcludeField.setBackground(standardBackgroundCol);
-		conversionFactorField.setBackground(standardBackgroundCol);
+		serviceExcludeField.setBackground(ParserConfigDialog.getStandardBackgroundColor());
+		conversionFactorField.setBackground(ParserConfigDialog.getStandardBackgroundColor());
+		successCodeField.setBackground(ParserConfigDialog.getStandardBackgroundColor());
 	}
 
 	@Override

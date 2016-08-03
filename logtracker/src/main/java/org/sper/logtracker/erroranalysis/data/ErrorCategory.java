@@ -31,6 +31,7 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 	
 	private static final Pattern wordSep = Pattern.compile("[^\\w/\\.:-]+");
 	private static final Color LIGHT_GREEN = new Color(0xa0ffa0);
+	private static final Color LIGHT_RED = new Color(0xffa0a0);
 	private HashSet<String> intersectSet;
 	private String[] split;
 	private RawErrorDataPoint lastPoint;
@@ -52,7 +53,7 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 			relevanceColor = Color.MAGENTA;
 		} else if ("ERROR".equals(severity)) {
 			relevance = 2000;
-			relevanceColor = Color.RED;
+			relevanceColor = LIGHT_RED;
 		} else if ("WARNING".equals(severity)) {
 			relevance = 1000;
 			relevanceColor = Color.YELLOW;

@@ -1,6 +1,5 @@
 package org.sper.logtracker.parserconf;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -14,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,7 +30,6 @@ public class OccurrenceTimeFieldsHelper {
 	private JTextField occTimeTimezone;
 	private InputVerifier occTimeVerifier;
 	private InputVerifier timezoneVerifier;
-	private Color standardBackgroundCol;
 
 	public void addOccurrenceStartTimeFields(final JPanel panel, final ParserConfigDialog configDialog) {
 		{
@@ -73,48 +70,34 @@ public class OccurrenceTimeFieldsHelper {
 			panel.add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
 		}
 		{
-			occTimeVerifier = new InputVerifier() {
-	
+			occTimeVerifier = new TextVerifier(configDialog) {
+				
 				@Override
-				public boolean verify(JComponent input) {
-					String text = ((JTextField) input).getText();
+				protected String verifyText(String text) {
 					if (text != null && text.length() > 0) {
 						try {
 							new SimpleDateFormat(text);
 						} catch (IllegalArgumentException e) {
-							input.setBackground(Color.ORANGE);
-							configDialog.setError("Not a valid SimpleDateFormat pattern");
-							return false;
+							return "Not a valid SimpleDateFormat pattern";
 						}
 					} else {
-						input.setBackground(Color.ORANGE);
-						configDialog.setError("Date Format is mandatory");
-						return false;
+						return "Date Format is mandatory";
 					}
-					input.setBackground(standardBackgroundCol);
-					configDialog.setError(null);
-					return true;
+					return null;
 				}
 			};
-			timezoneVerifier = new InputVerifier() {
+			timezoneVerifier = new TextVerifier(configDialog) {
 	
 				@Override
-				public boolean verify(JComponent input) {
-					String text = ((JTextField) input).getText();
+				protected String verifyText(String text) {
 					if (text != null && text.length() > 0) {
 						if (Arrays.asList(TimeZone.getAvailableIDs()).contains(text)) {
-							input.setBackground(standardBackgroundCol);
-							configDialog.setError(null);
-							return true;
+							return null;
 						} else {
-							input.setBackground(Color.ORANGE);
-							configDialog.setError("Timezone is unknown.");
-							return false;
+							return "Timezone is unknown.";
 						}
 					} else {
-						text = null;
-						input.setBackground(standardBackgroundCol);
-						return true;
+						return null;
 					}
 				}
 			};
@@ -128,7 +111,6 @@ public class OccurrenceTimeFieldsHelper {
 				panel.add(occTimePanel, gbc_occTimePanel);
 				occTimePanel.setLayout(new BoxLayout(occTimePanel, BoxLayout.X_AXIS));
 				occTimeFormatString = new JTextField();
-				standardBackgroundCol = occTimeFormatString.getBackground();
 				occTimePanel.add(occTimeFormatString);
 				occTimeFormatString.setToolTipText(
 						"The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
@@ -170,6 +152,7 @@ public class OccurrenceTimeFieldsHelper {
 		occTimeGroupCombo.setEnabled(b);
 		occTimeFormatString.setEnabled(b);
 		occTimeLanguage.setEnabled(b);
+		occTimeTimezone.setEnabled(b);
 	}
 
 	public void loadEditingFields(ConfiguredLogParser<?> logParser) {
@@ -180,8 +163,9 @@ public class OccurrenceTimeFieldsHelper {
 	}
 
 	public void removeErrorMarks() {
-		occTimeFormatString.setBackground(standardBackgroundCol);
-		occTimeLanguage.setBackground(standardBackgroundCol);
+		occTimeFormatString.setBackground(ParserConfigDialog.getStandardBackgroundColor());
+		occTimeLanguage.setBackground(ParserConfigDialog.getStandardBackgroundColor());
+		occTimeTimezone.setBackground(ParserConfigDialog.getStandardBackgroundColor());
 	}
 
 	public boolean verifyFormDataIsValid() {
