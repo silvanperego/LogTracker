@@ -1,7 +1,11 @@
 package org.sper.logtracker.erroranalysis.ui;
 
+import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.table.DefaultTableModel;
 
+import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.servstat.ui.ServiceControlTableModel;
 
 public final class LogLineTableModel extends DefaultTableModel {
@@ -20,6 +24,11 @@ public final class LogLineTableModel extends DefaultTableModel {
 	@Override
 	public boolean isCellEditable(int row, int column) {
 		return column > ServiceControlTableModel.LAST_STAT_COL;
+	}
+
+	public void setRowColor(Component comp, int row) {
+		Color relevanceColor = ((ErrorCategory) getValueAt(row, 3)).getRelevanceColor();
+		comp.setBackground(relevanceColor);
 	}
 
 }

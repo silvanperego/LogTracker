@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.TimeZone;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,16 +39,17 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	private JComboBox contentComboBox;
 	private JTextField encodingField;
 	private InputVerifier encodingVerifier;
+	private InputVerifier timezoneVerifier;
+	private JTextField occTimeTimezone;
 
-	
 	public ErrorLogExtractionFields(final ParserConfigDialog configDialog) {
 		super();
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();
-		gbl_extractionFields.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_extractionFields.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gbl_extractionFields.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0};
-		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_extractionFields.columnWidths = new int[] { 0, 0, 0, 0, 0 };
+		gbl_extractionFields.rowHeights = new int[] { 0, 0, 0, 0, 0 };
+		gbl_extractionFields.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 1.0 };
+		gbl_extractionFields.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		setLayout(gbl_extractionFields);
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
@@ -59,8 +62,9 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		}
 		{
 			occTimeGroupCombo = new JComboBox();
-			occTimeGroupCombo.setToolTipText("the capturing group index of the group containing the service call occurrence time");
-			occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] {null, 1, 2, 3, 4}));
+			occTimeGroupCombo.setToolTipText(
+					"the capturing group index of the group containing the service call occurrence time");
+			occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] { null, 1, 2, 3, 4 }));
 			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
 			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
 			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
@@ -77,7 +81,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			add(rigidArea, gbc_rigidArea);
 		}
 		{
-			JLabel lblOccurrenceTimeFormat = new JLabel("Occurrence Time Format String:");
+			JLabel lblOccurrenceTimeFormat = new JLabel("Time Format String:");
 			GridBagConstraints gbc_lblOccurrenceTimeFormat = new GridBagConstraints();
 			gbc_lblOccurrenceTimeFormat.insets = new Insets(0, 0, 5, 5);
 			gbc_lblOccurrenceTimeFormat.gridx = 3;
@@ -86,7 +90,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		}
 		{
 			occTimeVerifier = new InputVerifier() {
-				
+
 				@Override
 				public boolean verify(JComponent input) {
 					String text = ((JTextField) input).getText();
@@ -108,6 +112,28 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 					return true;
 				}
 			};
+			timezoneVerifier = new InputVerifier() {
+
+				@Override
+				public boolean verify(JComponent input) {
+					String text = ((JTextField) input).getText();
+					if (text != null && text.length() > 0) {
+						if (Arrays.asList(TimeZone.getAvailableIDs()).contains(text)) {
+							input.setBackground(standardBackgroundCol);
+							configDialog.setError(null);
+							return true;
+						} else {
+							input.setBackground(Color.ORANGE);
+							configDialog.setError("Timezone is unknown.");
+							return false;
+						}
+					} else {
+						text = null;
+						input.setBackground(standardBackgroundCol);
+						return true;
+					}
+				}
+			};
 			{
 				JPanel occTimePanel = new JPanel();
 				GridBagConstraints gbc_occTimePanel = new GridBagConstraints();
@@ -120,7 +146,8 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 				occTimeFormatString = new JTextField();
 				standardBackgroundCol = occTimeFormatString.getBackground();
 				occTimePanel.add(occTimeFormatString);
-				occTimeFormatString.setToolTipText("The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
+				occTimeFormatString.setToolTipText(
+						"The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
 				occTimeFormatString.setInputVerifier(occTimeVerifier);
 				{
 					JLabel lblLanguage = new JLabel("Language:");
@@ -130,7 +157,19 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 					occTimeLanguage = new JTextField();
 					occTimePanel.add(occTimeLanguage);
 					occTimeLanguage.setColumns(3);
-					occTimeLanguage.setToolTipText("The interpretation language for the occurrence time. (Only necessary, if months are specified as text.");
+					occTimeLanguage.setToolTipText(
+							"The interpretation language for the occurrence time. (Only necessary, if months are specified as text.");
+				}
+				{
+					JLabel lblLanguage = new JLabel("TimeZone:");
+					occTimePanel.add(lblLanguage);
+				}
+				{
+					occTimeTimezone = new JTextField();
+					occTimePanel.add(occTimeTimezone);
+					occTimeTimezone.setColumns(7);
+					occTimeTimezone.setToolTipText("The timezone of the Log-File Entries.");
+					occTimeTimezone.setInputVerifier(timezoneVerifier);
 				}
 			}
 		}
@@ -146,7 +185,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		{
 			severityComboBox = new JComboBox();
 			severityComboBox.setToolTipText("the capturing group index of the group containing the service name");
-			severityComboBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
+			severityComboBox.setModel(new DefaultComboBoxModel(new Integer[] { 1, 2, 3, 4 }));
 			GridBagConstraints gbc_severityComboBox = new GridBagConstraints();
 			gbc_severityComboBox.anchor = GridBagConstraints.WEST;
 			gbc_severityComboBox.insets = new Insets(0, 0, 5, 5);
@@ -165,7 +204,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		}
 		{
 			userIdComboBox = new JComboBox();
-			userIdComboBox.setModel(new DefaultComboBoxModel(new Integer[] {null, 1, 2, 3, 4}));
+			userIdComboBox.setModel(new DefaultComboBoxModel(new Integer[] { null, 1, 2, 3, 4 }));
 			GridBagConstraints gbc_userIdComboBox = new GridBagConstraints();
 			gbc_userIdComboBox.anchor = GridBagConstraints.WEST;
 			gbc_userIdComboBox.insets = new Insets(0, 0, 5, 5);
@@ -184,7 +223,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		}
 		{
 			contentComboBox = new JComboBox();
-			contentComboBox.setModel(new DefaultComboBoxModel(new Integer[] {1, 2, 3, 4}));
+			contentComboBox.setModel(new DefaultComboBoxModel(new Integer[] { 1, 2, 3, 4 }));
 			GridBagConstraints gbc_contentComboBox = new GridBagConstraints();
 			gbc_contentComboBox.anchor = GridBagConstraints.WEST;
 			gbc_contentComboBox.insets = new Insets(0, 0, 5, 5);
@@ -213,7 +252,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		}
 		{
 			encodingVerifier = new InputVerifier() {
-				
+
 				@Override
 				public boolean verify(JComponent input) {
 					String text = ((JTextField) input).getText();
@@ -230,9 +269,12 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			encodingField.setInputVerifier(encodingVerifier);
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#
+	 * saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
 	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
@@ -245,11 +287,15 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 			loadedParser.setUserIdIdx((Integer) userIdComboBox.getSelectedItem());
 			loadedParser.setMsgIdx((Integer) contentComboBox.getSelectedItem());
 			loadedParser.setEncoding(encodingField.getText());
+			loadedParser.setOccTimeTimezone(occTimeTimezone.getText());
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#enableDetailFields(boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#
+	 * enableDetailFields(boolean)
 	 */
 	@Override
 	public void enableDetailFields(boolean b) {
@@ -262,8 +308,11 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		encodingField.setEnabled(b);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#
+	 * loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
 	public void loadEditingFields(ConfiguredLogParser<?> parser) {
@@ -271,14 +320,18 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
 		occTimeFormatString.setText(logParser.getOccTimeFormatString());
 		occTimeLanguage.setText(logParser.getOccTimeLanguage());
+		occTimeTimezone.setText(logParser.getOccTimeTimezone());
 		severityComboBox.setSelectedItem(logParser.getSeverityIdx());
 		userIdComboBox.setSelectedItem(logParser.getUserIdIdx());
 		contentComboBox.setSelectedItem(logParser.getMsgIdx());
 		encodingField.setText(logParser.getEncoding());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#removeErrorMarks()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#
+	 * removeErrorMarks()
 	 */
 	@Override
 	public void removeErrorMarks() {

@@ -90,5 +90,9 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	public static void setFileTypeDescriptor(FileTypeDescriptor fileTypeDescriptor) {
 		ErrorLogParser.fileTypeDescriptor = fileTypeDescriptor;
 	}
-	
+
+	public void setOccTimeTimezone(String occTimeTimezone) {
+		this.occTimeTimezone = occTimeTimezone;
+	}
+
 }

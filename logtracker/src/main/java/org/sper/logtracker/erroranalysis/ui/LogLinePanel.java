@@ -1,6 +1,7 @@
 package org.sper.logtracker.erroranalysis.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -8,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 
@@ -19,7 +21,18 @@ public class LogLinePanel extends JPanel {
 		JLabel lblMostRelevantErrors = new JLabel("Most relevant Errors");
 		add(lblMostRelevantErrors, BorderLayout.NORTH);
 		
-		logLineTable = new JTable();
+		logLineTable = new JTable() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				final Component comp = super.prepareRenderer(renderer, row, column);
+				logLineTableModel.setRowColor(comp, row);
+				return comp;
+			}
+			
+		};
 		logLineTableModel = new LogLineTableModel();
 		logLineTable.setModel(logLineTableModel);
 		logLineTable.getColumnModel().getColumn(0).setPreferredWidth(98);

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +26,9 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	private Pattern linePattern, includeExcludePattern;
 	private String parserName;
 	private boolean includeLines, includeContaining, editable;
+	private Long timezoneOffset;
 	
-	protected String occTimeLanguage;
+	protected String occTimeLanguage, occTimeTimezone;
 	protected Integer occTimeIdx;
 	protected String dateFormat;
 	
@@ -46,6 +48,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		includeContaining = orig.includeContaining;
 		editable = orig.editable;
 		occTimeLanguage = orig.occTimeLanguage;
+		occTimeTimezone = orig.occTimeTimezone;
 		occTimeIdx = orig.occTimeIdx;
 		dateFormat = orig.dateFormat;
 	}
@@ -80,6 +83,10 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 							new SimpleDateFormat(dateFormat, new Locale(occTimeLanguage)) :
 								new SimpleDateFormat(dateFormat);
 		}
+		if (timezoneOffset == null && occTimeTimezone != null) {
+			long time = System.currentTimeMillis();
+			timezoneOffset = (long) (TimeZone.getDefault().getOffset(time) - TimeZone.getTimeZone(occTimeTimezone).getOffset(time));
+		}
 		String readLine = lineInFile.line;
 		Matcher incExlMatcher = includeExcludePattern.matcher(readLine);
 		boolean found = includeContaining ?	incExlMatcher.find() : incExlMatcher.matches();
@@ -102,7 +109,10 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	}
 
 	public long getOccTime(Matcher m) throws ParseException {
-		return occTimeFormatString.parse(m.group(occTimeIdx)).getTime();
+		long time = occTimeFormatString.parse(m.group(occTimeIdx)).getTime();
+		if (timezoneOffset != null)
+			time += timezoneOffset.longValue();
+		return time;
 	}
 
 	protected abstract void extractData(LogLineParser<T> logLineParser, Long obsStart,
@@ -202,5 +212,9 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		occTimeFormatString = null;
 	}
 
+	public String getOccTimeTimezone() {
+		return occTimeTimezone;
+	}
+	
 	public abstract FileTypeDescriptor getLogFileTypeDescriptor();
 }

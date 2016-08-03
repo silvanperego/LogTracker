@@ -1,5 +1,6 @@
 package org.sper.logtracker.erroranalysis.data;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,11 +30,13 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 	private List<RawErrorDataPoint> errorList = new ArrayList<RawErrorDataPoint>();
 	
 	private static final Pattern wordSep = Pattern.compile("[^\\w/\\.:-]+");
+	private static final Color LIGHT_GREEN = new Color(0xa0ffa0);
 	private HashSet<String> intersectSet;
 	private String[] split;
 	private RawErrorDataPoint lastPoint;
 	private String severity;
 	private int relevance;
+	private Color relevanceColor;
 
 	public ErrorCategory(RawErrorDataPoint dp) throws NoContextException {
 		split = splitLine(dp);
@@ -44,12 +47,17 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 		errorList.add(dp);
 		keyWordSet = new HashSet<String>();
 		severity = dp.severity;
-		if ("CRITICAL".equals(severity))
+		if ("CRITICAL".equals(severity)) {
 			relevance = 3000;
-		if ("ERROR".equals(severity))
+			relevanceColor = Color.MAGENTA;
+		} else if ("ERROR".equals(severity)) {
 			relevance = 2000;
-		if ("WARNING".equals(severity))
+			relevanceColor = Color.RED;
+		} else if ("WARNING".equals(severity)) {
 			relevance = 1000;
+			relevanceColor = Color.YELLOW;
+		} else 
+			relevanceColor = LIGHT_GREEN;
 		for (String word : split) {
 			keyWordSet.add(word);
 		}
@@ -119,6 +127,10 @@ public class ErrorCategory implements Comparable<ErrorCategory> {
 		if (latestMessage.occTime != null && otherMessage.occTime != null)
 			return otherMessage.occTime.compareTo(latestMessage.occTime);
 		return 0;
+	}
+	
+	public Color getRelevanceColor() {
+		return ((System.currentTimeMillis() - getLatestMessage().occTime.longValue()) < 600000L) ? relevanceColor : null;
 	}
 
 }
