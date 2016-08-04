@@ -124,24 +124,13 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		JPanel outerObsvalPanel = new JPanel();
 		logFileContentPanel.add(outerObsvalPanel, BorderLayout.SOUTH);
 		outerObsvalPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		outerObsvalPanel.setLayout(new BoxLayout(outerObsvalPanel, BoxLayout.X_AXIS));
+		outerObsvalPanel.setLayout(new BoxLayout(outerObsvalPanel, BoxLayout.Y_AXIS));
 		
 		JPanel obsvalPanel = new JPanel();
 		outerObsvalPanel.add(obsvalPanel);
 		obsvalPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		FlowLayout flowLayout_1 = (FlowLayout) obsvalPanel.getLayout();
 		flowLayout_1.setAlignment(FlowLayout.LEFT);
-		
-		useObsVal = new JCheckBox("Consider only last");
-		obsValSpinner = new JSpinner();
-		obsValSpinner.setEnabled(false);
-		obsValSpinner.setModel(new SpinnerNumberModel(new Integer(2), new Integer(1), null, new Integer(1)));
-
-		useObsVal.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				obsValSpinner.setEnabled(useObsVal.isSelected());
-			}
-		});
 		
 		JLabel lblLogFileParser = new JLabel("Log File Format:");
 		obsvalPanel.add(lblLogFileParser);
@@ -196,15 +185,37 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			}
 		});
 		obsvalPanel.add(logFileFormatBox);
-
-		obsvalPanel.add(useObsVal);
-		obsvalPanel.add(obsValSpinner);
-
-		JLabel lblHours = new JLabel("hours");
-		obsvalPanel.add(lblHours);
+		
+		JPanel considerOnlyPanel = new JPanel();
+		considerOnlyPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		FlowLayout flowLayout_2 = (FlowLayout) considerOnlyPanel.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.LEFT);
+		outerObsvalPanel.add(considerOnlyPanel);
+		
+		useObsVal = new JCheckBox("Consider only last");
+		considerOnlyPanel.add(useObsVal);
+		obsValSpinner = new JSpinner();
+		considerOnlyPanel.add(obsValSpinner);
+		obsValSpinner.setEnabled(false);
+		obsValSpinner.setModel(new SpinnerNumberModel(new Integer(2), new Integer(1), null, new Integer(1)));
+		
+				JLabel lblHours = new JLabel("hours");
+				considerOnlyPanel.add(lblHours);
+		
+				useObsVal.addChangeListener(new ChangeListener() {
+					public void stateChanged(ChangeEvent e) {
+						obsValSpinner.setEnabled(useObsVal.isSelected());
+					}
+				});
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		FlowLayout flowLayout_3 = (FlowLayout) buttonPanel.getLayout();
+		flowLayout_3.setAlignment(FlowLayout.RIGHT);
+		outerObsvalPanel.add(buttonPanel);
 
 		applyFilesButton = new JButton("Apply");
-		outerObsvalPanel.add(applyFilesButton);
+		buttonPanel.add(applyFilesButton);
 		applyFilesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
