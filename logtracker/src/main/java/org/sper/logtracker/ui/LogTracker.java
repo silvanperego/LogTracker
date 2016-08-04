@@ -10,20 +10,24 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.logreader.LogSource;
+
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
 
 public class LogTracker {
 
 	private static String cfgFile;
 	private static List<LogSource> fnameList = new ArrayList<LogSource>();
 	private JFrame frame;
-	private JTabbedPane tabbedPane;
 	private Configuration configuration = new Configuration();
 	private FileControlPanel fileControlPanel;
+	private ToolBar toolBar;
+	private CControl control;
 
 	/**
 	 * Launch the application.
@@ -94,12 +98,22 @@ public class LogTracker {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(LogTracker.class.getResource("/LogTrackerLogo.png")));
 		frame.setBounds(100, 100, 986, 804);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout(0, 2));
+		toolBar = new ToolBar(this);
+		frame.add(toolBar, BorderLayout.NORTH);
 
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-		
-		fileControlPanel = new FileControlPanel(this, fnameList);
-		tabbedPane.addTab("Config", null, fileControlPanel, null);
+		control = new CControl(frame);
+		frame.add(control.getContentArea(), BorderLayout.CENTER);
+		final LogFilePanel logFilePanel = new LogFilePanel();
+		fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar);
+		final DefaultSingleCDockable fileSelectionDockable = new DefaultSingleCDockable("File Selection", "File Selection", fileControlPanel);
+		control.addDockable(fileSelectionDockable);
+		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
+		control.addDockable(logFileDockable);
+		fileSelectionDockable.setLocation(CLocation.base().normal().stack(0));
+		logFileDockable.setLocation(CLocation.base().normal().stack(1));
+		logFileDockable.setVisible(true);
+		fileSelectionDockable.setVisible(true);
 		configuration.registerModule(fileControlPanel);
 		if (cfgFile != null) {
 			try {
@@ -123,19 +137,19 @@ public class LogTracker {
 	}
 
 	public void setTabIdx(int idx) {
-		tabbedPane.setSelectedIndex(idx);
+//		tabbedPane.setSelectedIndex(idx);
 	}
 
 	public FileControlPanel getFileControlPanel() {
 		return fileControlPanel;
 	}
 
-	public JTabbedPane getTabbedPane() {
-		return tabbedPane;
-	}
-	
 	void setTitle(String title) {
 		frame.setTitle(title);
+	}
+
+	public CControl getControl() {
+		return control;
 	}
 
 }

@@ -3,7 +3,6 @@ package org.sper.logtracker.erroranalysis.parserconf;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.data.DataListener;
@@ -21,13 +20,18 @@ import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.proc.PipelineHelper;
 
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
+
 public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 
 	private ParserConfigDialog parserConfigDialog;
 	private ErrorLogExtractionFields fields;
-	private JTabbedPane parentPane;
 	private KeepAliveElement keepAliveElement;
 	private LogLineTableModel logLineTableModel;
+	private LogLinePanel logLinePanel;
+	private DefaultSingleCDockable logLineDockable;
 	
 	public ErrorLogTypeDescriptor() {
 	}
@@ -41,13 +45,14 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser<?> logParser)
+	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?> logParser)
 			throws InterruptedException {
-		parentPane = tabbedPane;
-		LogLinePanel logLinePanel = new LogLinePanel();
+		logLinePanel = new LogLinePanel();
 		logLineTableModel = logLinePanel.getTableModel();
-		tabbedPane.addTab("Log Lines", logLinePanel);
-		tabbedPane.setSelectedIndex(1);
+		logLineDockable = new DefaultSingleCDockable("ErrorDockable", "Error Log-Messages", logLinePanel);
+		control.addDockable(logLineDockable);
+		logLineDockable.setLocation(CLocation.base().normalEast(0.6));
+		logLineDockable.setVisible(true);
 	}
 
 	@Override
@@ -75,8 +80,14 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 			}
 			keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(parentPane, e, "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(logLinePanel, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	@Override
+	public void removeDockables(CControl control) {
+		control.removeDockable(logLineDockable);
+		logLineDockable = null;
 	}
 
 }

@@ -3,10 +3,11 @@ package org.sper.logtracker.parserconf;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.logreader.LogSource;
+
+import bibliothek.gui.dock.common.CControl;
 
 /**
  * Eine Beschreibung einer spezifischen Log-File-Typs, wie z.B. ServiceResponseTime-Logs oder Error-Logs.
@@ -27,12 +28,14 @@ public interface FileTypeDescriptor {
 	 * @param logTracker
 	 * @throws InterruptedException 
 	 */
-	void createAndRegisterTabs(JTabbedPane tabbedPane, Configuration configuration, ConfiguredLogParser<?> logParser) throws InterruptedException;
+	void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?> logParser) throws InterruptedException;
 
 	ConfiguredLogParser<?> createParser(String string);
 
 	ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> configuredLogParser);
 
 	void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart);
+
+	void removeDockables(CControl cControl);
 
 }

@@ -8,33 +8,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSpinner;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
@@ -42,9 +32,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.sper.logtracker.config.ConfigFileAction;
-import org.sper.logtracker.config.ConfigFileOpenButton;
-import org.sper.logtracker.config.ConfigFileSaveButton;
 import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
@@ -55,22 +42,19 @@ import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
 import org.sper.logtracker.servstat.ui.ButtonColumn;
-import javax.swing.JTextField;
 
-public class FileControlPanel extends JSplitPane implements MessageListener, ConfigurationAware {
+public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private static final long serialVersionUID = 1L;
 	private JTable logFileTable;
 	private DefaultTableModel logFileTableModel;
 	private JButton applyFilesButton;
-	private JTextArea warnings;
-	private JButton btnClearLog;
 	private LogTracker logTracker;
 	private JCheckBox useObsVal;
 	private JSpinner obsValSpinner;
 	private JComboBox logFileFormatBox;
 	private ParserSelectionModel parserModel;
 	private FileTypeDescriptor activeLogFileType;
-	private JTextField txtLogtracker;
+	private ToolBar toolBar;
 	
 	private static class ConfObj implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -86,84 +70,16 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		String parserConfig, title;
 	}
 
-	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList) {
+	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList, MessageListener listener, ToolBar toolBar) {
 		super();
-		setContinuousLayout(true);
-		setOrientation(JSplitPane.VERTICAL_SPLIT);
 		this.logTracker = logTracker;
+		this.toolBar = toolBar;
 		
-		JPanel fileTopPanel = new JPanel();
-		setLeftComponent(fileTopPanel);
-		fileTopPanel.setLayout(new BoxLayout(fileTopPanel, BoxLayout.Y_AXIS));
-		
-		JToolBar toolBar = new JToolBar();
-		fileTopPanel.add(toolBar);
-		toolBar.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-		JButton btnLoadConfig = new ConfigFileOpenButton(logTracker.getFrame(), null, new ConfigFileAction() {
-			@Override
-			public void execConfigFileOperation(File selectedFile) throws Exception {
-				logTracker.getConfiguration().loadConfiguration(selectedFile);
-			}
-		});
-		btnLoadConfig.setToolTipText("Open Config File");
-		toolBar.add(btnLoadConfig);
-		
-		JButton btnSaveConfig = new ConfigFileSaveButton(logTracker.getFrame(), null, new ConfigFileAction() {
-			
-			@Override
-			public void execConfigFileOperation(File selectedFile) throws Exception {
-				logTracker.getConfiguration().safeToFile(selectedFile);
-			}
-		});
-		btnSaveConfig.setToolTipText("Save Config File");
-		toolBar.add(btnSaveConfig);
-		
-		Component horizontalGlue = Box.createHorizontalGlue();
-		horizontalGlue.setPreferredSize(new Dimension(400, 0));
-		toolBar.add(horizontalGlue);
-		
-		JButton btnInfo = new JButton(new ImageIcon(FileControlPanel.class.getResource("/Info.png")));
-		btnInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(logTracker.getFrame(), new JScrollPane(new WelcomePanel()), "About Log-Tracker", JOptionPane.PLAIN_MESSAGE);
-			}
-		});
-		
-		JLabel lblTitle = new JLabel("Title:");
-		toolBar.add(lblTitle);
-		
-		txtLogtracker = new JTextField();
-		txtLogtracker.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				logTracker.setTitle(txtLogtracker.getText());
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
-		txtLogtracker.setToolTipText("Dieser Text wird als Fenstertitel angezeigt");
-		String defaultTitle = "LogTracker";
-		txtLogtracker.setText(defaultTitle);
-		logTracker.setTitle(defaultTitle);
-		toolBar.add(txtLogtracker);
-		txtLogtracker.setColumns(20);
-		btnInfo.setHorizontalAlignment(SwingConstants.LEFT);
-		toolBar.add(btnInfo);
-		
-		JSeparator separator = new JSeparator();
-		fileTopPanel.add(separator);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel logFileContentPanel = new JPanel();
 		logFileContentPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		fileTopPanel.add(logFileContentPanel);
+		add(logFileContentPanel);
 		logFileContentPanel.setLayout(new BorderLayout(0, 0));
 		
 		JPanel logFileChangePanel = new JPanel();
@@ -328,31 +244,6 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		}
 		logFileTable.setModel(logFileTableModel);
 		
-		JPanel warningPanel = new JPanel();
-		setRightComponent(warningPanel);
-		warningPanel.setLayout(new BorderLayout(0, 0));
-		warnings = new JTextArea();
-		warnings.setBackground(UIManager.getColor("EditorPane.disabledBackground"));
-		warnings.setEditable(false);
-		warnings.setAutoscrolls(true);
-		JScrollPane scrollPane = new JScrollPane(warnings);
-		warningPanel.add(scrollPane);
-		
-		JPanel logButtonPanel = new JPanel();
-		warningPanel.add(logButtonPanel, BorderLayout.SOUTH);
-		logButtonPanel.setLayout(new BorderLayout(0, 0));
-		
-		btnClearLog = new JButton("Clear Log");
-		btnClearLog.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				warnings.setText("");
-				btnClearLog.setVisible(false);
-			}
-		});
-		btnClearLog.setVisible(false);
-		btnClearLog.setHorizontalAlignment(SwingConstants.RIGHT);
-		logButtonPanel.add(btnClearLog, BorderLayout.EAST);
-		btnClearLog.setIcon(new ImageIcon(LogTracker.class.getResource("/delFile.png")));
 		logFileTableModel.addTableModelListener(new TableModelListener() {
 			@Override
 			public void tableChanged(TableModelEvent e) {
@@ -377,17 +268,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		logFileTable.getColumnModel().getColumn(1).setPreferredWidth(200);
 		logFileTable.getColumnModel().getColumn(2).setResizable(false);
 		logFileTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-		Console.setListener(this);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.sper.logtracker.ui.MessageListener#addMessage(java.lang.String)
-	 */
-	@Override
-	public void addMessage(String text) {
-		warnings.setText(warnings.getText() + text);
-		btnClearLog.setVisible(true);
-		logTracker.setTabIdx(0);
+		Console.setListener(listener);
 	}
 
 	@Override
@@ -418,8 +299,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		} else if (cfg instanceof ConfObj2) {
 			ConfObj2 conf = (ConfObj2) cfg;
 			if (conf.title != null) {
-				txtLogtracker.setText(conf.title);
-				logTracker.setTitle(conf.title);
+				toolBar.setText(conf.title);
 			}
 			for (LogSource source : conf.logSource) {
 				logFileTableModel.addRow(source.modelEntry());
@@ -445,7 +325,7 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++)
 			conf.logSource[i] = new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1));
 		conf.obsVal = useObsVal.isSelected() ? (Integer) obsValSpinner.getValue() : null;
-		conf.title = txtLogtracker.getText();
+		conf.title = toolBar.getText();
 		ConfiguredLogParser<?> selectedItem = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 		if (selectedItem != null)
 			conf.parserConfig = selectedItem.getName();
@@ -456,11 +336,10 @@ public class FileControlPanel extends JSplitPane implements MessageListener, Con
 		ConfiguredLogParser<?> logParser = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 		FileTypeDescriptor logFileTypeDescriptor = logParser.getLogFileTypeDescriptor();
 		if (activeLogFileType != logFileTypeDescriptor) {
-			JTabbedPane tabbedPane = logTracker.getTabbedPane();
-			for (int i = tabbedPane.getTabCount() - 1; i > 0; i--)
-				tabbedPane.remove(i);
+			if (activeLogFileType != null)
+				activeLogFileType.removeDockables(logTracker.getControl());
 			logTracker.getConfiguration().resetDynamicModules();
-			logFileTypeDescriptor.createAndRegisterTabs(logTracker.getTabbedPane(), logTracker.getConfiguration(), logParser);
+			logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), logTracker.getConfiguration(), logParser);
 			activeLogFileType = logFileTypeDescriptor;
 		}
 		List<LogSource> logSource = new ArrayList<LogSource>();

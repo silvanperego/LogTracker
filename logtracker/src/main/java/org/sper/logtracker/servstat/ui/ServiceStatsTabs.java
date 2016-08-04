@@ -1,5 +1,6 @@
 package org.sper.logtracker.servstat.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
@@ -7,7 +8,6 @@ import java.io.StringWriter;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.Configuration;
@@ -27,6 +27,10 @@ import org.sper.logtracker.servstat.scatter.TooltipGenerator;
 import org.sper.logtracker.servstat.stats.StatsCalculator;
 import org.sper.logtracker.servstat.stats.StatsCalculator.CategoryExtractor;
 
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
+
 public class ServiceStatsTabs {
 	private ServiceScatterPlot plot;
 	private NewPointExtractor newPointExtractor;
@@ -36,32 +40,42 @@ public class ServiceStatsTabs {
 	private StatsCalculator serviceStatsCalculator;
 	private KeepAliveElement terminationPointer;
 	private boolean providesUsers;
-	private JTabbedPane tabbedPane;
 	private Integer successRetCode;
+	private DefaultSingleCDockable serviceControlDockable;
+	private DefaultSingleCDockable graphDockable;
+	private DefaultSingleCDockable userDockable;
 
-	public ServiceStatsTabs(JTabbedPane tabbedPane, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
-		this.tabbedPane = tabbedPane;
+	public ServiceStatsTabs(CControl control, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
 		serviceControlPanel = new ServiceControlPanel(this);
-		tabbedPane.addTab("Services/Filter", null, serviceControlPanel, null);
+		int stackpos = 0;
+		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel);
 		configuration.registerModule(serviceControlPanel);
 		providesUsers = logParser.providesUsers();
 		if (providesUsers) {
 			userPanel = new UserPanel(this);
-			tabbedPane.addTab("Users", userPanel);
 			configuration.registerModule(userPanel);
+			userDockable = createDockable(control, stackpos++, "Users", userPanel);
+			userDockable.setVisible(true);
 		}
 		plot = new ServiceScatterPlot();
-		tabbedPane.addTab("Graph", plot.getPanel());
-		tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, false);
+		graphDockable = createDockable(control, stackpos++, "Graph", plot.getPanel());
 		successRetCode = logParser.getSuccessCode();
+		graphDockable.setVisible(true);
+		serviceControlDockable.setVisible(true);
+	}
+
+	private DefaultSingleCDockable createDockable(CControl control, int stackpos, String title, Component comp) {
+		final DefaultSingleCDockable dockable = new DefaultSingleCDockable(title, title, comp);
+		control.addDockable(dockable);
+		dockable.setLocation(CLocation.base().normalEast(0.6).stack(stackpos));
+		return dockable;
 	}
 
 	public final class ApplyControlAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			setupDataSeries();
-			tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
 			plot.setMaxRange(20.);
-			tabbedPane.setEnabledAt(tabbedPane.getTabCount() - 1, true);
+			graphDockable.toFront();
 		}
 	}
 
@@ -96,9 +110,7 @@ public class ServiceStatsTabs {
 						return dp.user;
 					}
 				}, userPanel.getTable(), false, null, userPanel.getApplyButon(), successRetCode));
-			} else
-				if (tabbedPane.getTabCount() == 4)
-					tabbedPane.remove(2);
+			}
 			newPointExtractor = new NewPointExtractor();
 			factorizer.addListener(newPointExtractor);
 			if (terminationPointer != null)
@@ -109,14 +121,21 @@ public class ServiceStatsTabs {
 			Factor users = factorizer.getUser();
 			XYToolTipGenerator toolTipGenerator = new TooltipGenerator(services, users);
 			plot.getXyPlot().getRenderer().setBaseToolTipGenerator(toolTipGenerator);
-			tabbedPane.setSelectedIndex(1);
+			serviceControlDockable.toFront();
 		} catch (Exception e1) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			e1.printStackTrace(pw);
-			JOptionPane.showMessageDialog(tabbedPane, sw.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(serviceControlPanel, sw.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 			pw.close();
 		}
+	}
+
+	public void removeDockables(CControl control) {
+		control.removeDockable(serviceControlDockable);
+		control.removeDockable(graphDockable);
+		if (userDockable != null)
+			control.removeDockable(userDockable);
 	}
 
 }
