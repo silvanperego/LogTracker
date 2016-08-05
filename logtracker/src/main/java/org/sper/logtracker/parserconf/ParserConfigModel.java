@@ -12,12 +12,12 @@ public class ParserConfigModel extends AbstractTableModel {
 
 	public static final int STANDARD_PARSERS_COUNT = 3;
 	private static final long serialVersionUID = 1L;
-	private ParserSelectionModel parserSelectionModel;
-	private LogParserList logParserList = new LogParserList();
+	private ParserConfigList logParserCatalog;
+	private ParserConfigList logParserList;
 	private static final String[] COL_NAMES = new String[] {"Parser Name", "Parser Type"};
 	
-	public ParserConfigModel(ParserSelectionModel parserSelectionModel) {
-		this.parserSelectionModel = parserSelectionModel;
+	public ParserConfigModel(ParserConfigList logParserCatalog) {
+		this.logParserCatalog = logParserCatalog;
 	}
 	/**
 	 * Kopiere die aktuelle Konfiguration. Die Kopie ist notwendig, da Änderungen des Benutzers erst beim Betätigen von
@@ -26,8 +26,7 @@ public class ParserConfigModel extends AbstractTableModel {
 	 */
 	void loadFromSelectionModel() {
 		logParserList.clear();
-		List<ConfiguredLogParser<?>> selList = parserSelectionModel.getLogParserList();
-		for (ConfiguredLogParser<?> logParser : selList)
+		for (ConfiguredLogParser<?> logParser : logParserCatalog)
 			if (logParser.getName() != null)
 				logParserList.add((ConfiguredLogParser<?>) logParser.clone());
 	}
@@ -81,10 +80,10 @@ public class ParserConfigModel extends AbstractTableModel {
 	}
 	
 	public void addParsers(List<ConfiguredLogParser<?>> logParserList) {
-		this.logParserList.addParserConfigs(logParserList);
+		this.logParserList.addAll(logParserList);
 	}
 	public void saveInSelectionModel() {
-		parserSelectionModel.saveInSelectionModel(logParserList.subList(STANDARD_PARSERS_COUNT, logParserList.size()));
+		logParserCatalog.addAll(logParserList.subList(STANDARD_PARSERS_COUNT, logParserList.size()));
 	}
 	
 	public ConfiguredLogParser<?> replaceRow(int rowIdx, FileTypeDescriptor fileTypeDesc) {

@@ -1,34 +1,31 @@
 package org.sper.logtracker.ui;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
-import org.sper.logtracker.logreader.FileSnippet;
-import org.sper.logtracker.logreader.LogLineParser;
-import org.sper.logtracker.parserconf.ConfiguredLogParser;
-import org.sper.logtracker.parserconf.DefaultParserProvider;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.ParserConfigList;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.parserconf.ServiceResponseFileTypeDescriptor;
 
 
-public class LogFileTypeCatalog implements DefaultParserProvider {
+public class ParserConfigCatalog extends ParserConfigList {
 
+	private static final long serialVersionUID = 1L;
 	private static final ErrorLogTypeDescriptor ERROR_LOG_TYPE_DESCRIPTOR = new ErrorLogTypeDescriptor();
 	private static final ServiceResponseFileTypeDescriptor SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR = new ServiceResponseFileTypeDescriptor();
-	private List<ConfiguredLogParser<?>> defaultParserList;
-	private ConfiguredLogParser<?> configureItem;
 	
-	LogFileTypeCatalog() {
+	ParserConfigCatalog() {
 		ServiceResponseLogParser.setFileTypeDescriptor(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
 		ErrorLogParser.setFileTypeDescriptor(ERROR_LOG_TYPE_DESCRIPTOR);
+		setDefaultParsers();
+	}
+
+	private void setDefaultParsers() {
 		ServiceResponseLogParser wlsAccessLogParser = new ServiceResponseLogParser("WebLogic AppServer Access-Log");
 		wlsAccessLogParser.setIncludeExcludePattern(Pattern.compile("^#"));
 		wlsAccessLogParser.setIncludeLines(false);
@@ -62,72 +59,20 @@ public class LogFileTypeCatalog implements DefaultParserProvider {
 		diagLogParser.setUserIdIdx(3);
 		diagLogParser.setSeverityIdx(2);
 		diagLogParser.setMsgIdx(4);
-		// Add a dummy parser, which represents the Parser Config element, at the end of the list
-		configureItem = new ConfiguredLogParser<Object>("") {
-			
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void scanLine(FileSnippet lineInFile, LogLineParser<Object> logLineParser,
-					Long obsStart) {
-				
-			}
-
-			@Override
-			public String toString() {
-				return "<html><em>Configure Log Parsers...</em></html>";
-			}
-
-			@Override
-			public boolean providesUsers() {
-				return false;
-			}
-
-			@Override
-			public String getName() {
-				return null;
-			}
-
-			@Override
-			public void setName(String name) {
-			}
-
-			@Override
-			protected void extractData(LogLineParser<Object> logLineParser,
-					Long obsStart, Matcher m, FileSnippet lineInFile) throws ParseException {
-			}
-
-			@Override
-			public FileTypeDescriptor getLogFileTypeDescriptor() {
-				return null;
-			}
-
-			@Override
-			public String getEncoding() {
-				return null;
-			}
-			
-		};
-		defaultParserList = new ArrayList<ConfiguredLogParser<?>>();
-		defaultParserList.add(wlsAccessLogParser);
-		defaultParserList.add(tomcatAccessLogParser);
-		defaultParserList.add(diagLogParser);
-		defaultParserList.add(configureItem);
+		add(wlsAccessLogParser);
+		add(tomcatAccessLogParser);
+		add(diagLogParser);
 	}
 	
-	public ConfiguredLogParser<?> getConfigureItem() {
-		return configureItem;
-	}
-	/* (non-Javadoc)
-	 * @see org.sper.logtracker.ui.DefaultParserProvider#prepareDefaultAccessLogParsers()
-	 */
-	@Override
-	public List<ConfiguredLogParser<?>> getDefaultLogParsers() {
-		return defaultParserList;
-	}
 	
 	public List<FileTypeDescriptor> getParserTypeList(ParserConfigDialog dialog) {
 		return Arrays.asList(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR, ERROR_LOG_TYPE_DESCRIPTOR);
+	}
+
+	@Override
+	public void clear() {
+		super.clear();
+		setDefaultParsers();
 	}
 
 }

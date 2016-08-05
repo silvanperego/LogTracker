@@ -15,36 +15,31 @@ import org.sper.logtracker.logreader.LogParser;
 public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implements ComboBoxModel<LogParser<?>> {
 	
 	private static final long serialVersionUID = 1L;
-	private LogParserList logParserList = new LogParserList();
 	private Object selectedItem;
-	private DefaultParserProvider defaultParserProvider;
+	private List<ConfiguredLogParser<?>> parserList;
 	
-	public ParserSelectionModel(DefaultParserProvider defaultParserProvider) {
-		this.defaultParserProvider = defaultParserProvider;
-		logParserList.addAll(defaultParserProvider.getDefaultLogParsers());
+	public ParserSelectionModel(List<ConfiguredLogParser<?>> parserList) {
+		this.parserList = parserList;
 	}
 
 	void saveInSelectionModel(List<ConfiguredLogParser<?>> newLogParser) {
-		logParserList.clear();
-		logParserList.addAll(defaultParserProvider.getDefaultLogParsers());
-		for (ConfiguredLogParser<?> logParser : newLogParser) {
-			logParserList.add(logParserList.size() - 1, logParser);
-		}
-		fireContentsChanged(this, 0, logParserList.size());
+		parserList.clear();
+		parserList.addAll(newLogParser);
+		fireContentsChanged(this, 0, parserList.size());
 	}
 	
 	@Override
 	public int getSize() {
-		return logParserList.size();
+		return parserList.size();
 	}
 
-	List<ConfiguredLogParser<?>> getLogParserList() {
-		return logParserList;
+	List<ConfiguredLogParser<?>> getparserList() {
+		return parserList;
 	}
 
 	@Override
 	public LogParser<?> getElementAt(int index) {
-		return logParserList.get(index);
+		return parserList.get(index);
 	}
 
 	@Override
@@ -57,8 +52,8 @@ public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implem
 		return selectedItem;
 	}
 
-	public void addParsers(ArrayList<ConfiguredLogParser<?>> logParserList2) {
-		this.logParserList.addParserConfigs(logParserList2);
+	public void addParsers(ArrayList<ConfiguredLogParser<?>> parserList2) {
+		parserList.addAll(parserList2);
 		fireContentsChanged(this, 0, getSize());
 	}
 
