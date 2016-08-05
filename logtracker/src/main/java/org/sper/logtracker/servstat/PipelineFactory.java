@@ -27,7 +27,7 @@ import org.sper.logtracker.servstat.proc.XYDataSeriesListener;
 
 /**
  * Erstellt Pipeline-Element und verknüpft sie mit Parent-Elementen. Parent-Elemente werden automatisch wiedererkannt. D.h.
- * falls ein Parent-Element mehrfach in mehreren Pipelines benötigt wird, wird es nur trotzdem nur einmal erzeugt. Dadurch
+ * falls ein Parent-Element mehrfach in mehreren Pipelines benötigt wird, wird es trotzdem nur einmal erzeugt. Dadurch
  * entsteht eine Pipeline-Baumstruktur und die Mehrfachverarbeitungen werden vermieden.
  * @author sper
  */

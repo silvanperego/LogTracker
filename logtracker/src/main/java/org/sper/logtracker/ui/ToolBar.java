@@ -21,6 +21,9 @@ import javax.swing.SwingConstants;
 import org.sper.logtracker.config.ConfigFileAction;
 import org.sper.logtracker.config.ConfigFileOpenButton;
 import org.sper.logtracker.config.ConfigFileSaveButton;
+import org.sper.logtracker.config.Configuration;
+
+import bibliothek.gui.dock.common.CLocation;
 
 public class ToolBar extends JToolBar {
 	
@@ -35,7 +38,7 @@ public class ToolBar extends JToolBar {
 		JButton btnLoadConfig = new ConfigFileOpenButton(logTracker.getFrame(), null, new ConfigFileAction() {
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
-				logTracker.getConfiguration().loadConfiguration(selectedFile);
+//				logTracker.getConfiguration().loadConfiguration(selectedFile);
 			}
 		});
 		btnLoadConfig.setToolTipText("Open Config File");
@@ -45,11 +48,20 @@ public class ToolBar extends JToolBar {
 			
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
-				logTracker.getConfiguration().safeToFile(selectedFile);
+//				logTracker.getConfiguration().safeToFile(selectedFile);
 			}
 		});
 		btnSaveConfig.setToolTipText("Save Config File");
 		add(btnSaveConfig);
+		
+		JButton newFileControlBtn = new JButton(new ImageIcon(ToolBar.class.getResource("/newFileConfig.png")));
+		newFileControlBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent paramActionEvent) {
+				logTracker.addNewFileControl(new Configuration(), CLocation.base().normalSouth(0.5), null);
+			}
+		});
+		newFileControlBtn.setToolTipText("Add new Log-File Source Config Box");
+		add(newFileControlBtn);
 		
 		Component horizontalGlue = Box.createHorizontalGlue();
 		horizontalGlue.setPreferredSize(new Dimension(400, 0));

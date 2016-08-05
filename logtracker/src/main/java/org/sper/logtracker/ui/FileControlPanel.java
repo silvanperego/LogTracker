@@ -32,6 +32,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.config.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
@@ -51,10 +52,11 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private LogTracker logTracker;
 	private JCheckBox useObsVal;
 	private JSpinner obsValSpinner;
-	private JComboBox logFileFormatBox;
+	private JComboBox<LogParser<?>> logFileFormatBox;
 	private ParserSelectionModel parserModel;
 	private FileTypeDescriptor activeLogFileType;
 	private ToolBar toolBar;
+	private Configuration config;
 	
 	private static class ConfObj implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -70,10 +72,11 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		String parserConfig, title;
 	}
 
-	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList, MessageListener listener, ToolBar toolBar) {
+	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList, MessageListener listener, ToolBar toolBar, Configuration config) {
 		super();
 		this.logTracker = logTracker;
 		this.toolBar = toolBar;
+		this.config = config;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -135,7 +138,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		JLabel lblLogFileParser = new JLabel("Log File Format:");
 		obsvalPanel.add(lblLogFileParser);
 		
-		logFileFormatBox = new JComboBox();
+		logFileFormatBox = new JComboBox<>();
 		final LogFileTypeCatalog logFileTypeCatalog = new LogFileTypeCatalog();
 		parserModel = new ParserSelectionModel(logFileTypeCatalog);
 		logFileFormatBox.addItemListener(new ItemListener() {
@@ -151,7 +154,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		});
 		logFileFormatBox.setModel(parserModel);
 		logFileFormatBox.setToolTipText("Choose an appropriate Parser for your Log-Files");
-		logTracker.getConfiguration().registerModule(new ConfigurationAware() {
+		config.registerModule(new ConfigurationAware() {
 			
 			@Override
 			public Serializable getConfig() {
@@ -250,9 +253,10 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			}
 		};
 		checkEnableApplyButton();
-		for (LogSource source : fnameList) {
-			logFileTableModel.addRow(source.modelEntry());
-		}
+		if (fnameList != null)
+			for (LogSource source : fnameList) {
+				logFileTableModel.addRow(source.modelEntry());
+			}
 		logFileTable.setModel(logFileTableModel);
 		
 		logFileTableModel.addTableModelListener(new TableModelListener() {
@@ -349,8 +353,8 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		if (activeLogFileType != logFileTypeDescriptor) {
 			if (activeLogFileType != null)
 				activeLogFileType.removeDockables(logTracker.getControl());
-			logTracker.getConfiguration().resetDynamicModules();
-			logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), logTracker.getConfiguration(), logParser);
+			config.resetDynamicModules();
+			logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser);
 			activeLogFileType = logFileTypeDescriptor;
 		}
 		List<LogSource> logSource = new ArrayList<LogSource>();
@@ -358,7 +362,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			logSource.add(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
 		}
 		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart());
-		logTracker.getConfiguration().resetActiveConfig();
+		config.resetActiveConfig();
 	}
 
 	public Long getObsStart() {
@@ -376,7 +380,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		return result;
 	}
 	
-	public JComboBox getLogFileFormatBox() {
+	public JComboBox<LogParser<?>> getLogFileFormatBox() {
 		return logFileFormatBox;
 	}
 

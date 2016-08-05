@@ -29,7 +29,7 @@ import org.sper.logtracker.servstat.stats.StatsCalculator.CategoryExtractor;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
-import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 
 public class ServiceStatsTabs {
 	private ServiceScatterPlot plot;
@@ -41,9 +41,9 @@ public class ServiceStatsTabs {
 	private KeepAliveElement terminationPointer;
 	private boolean providesUsers;
 	private Integer successRetCode;
-	private DefaultSingleCDockable serviceControlDockable;
-	private DefaultSingleCDockable graphDockable;
-	private DefaultSingleCDockable userDockable;
+	private DefaultMultipleCDockable serviceControlDockable;
+	private DefaultMultipleCDockable graphDockable;
+	private DefaultMultipleCDockable userDockable;
 
 	public ServiceStatsTabs(CControl control, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
 		serviceControlPanel = new ServiceControlPanel(this);
@@ -64,8 +64,8 @@ public class ServiceStatsTabs {
 		serviceControlDockable.setVisible(true);
 	}
 
-	private DefaultSingleCDockable createDockable(CControl control, int stackpos, String title, Component comp) {
-		final DefaultSingleCDockable dockable = new DefaultSingleCDockable(title, title, comp);
+	private DefaultMultipleCDockable createDockable(CControl control, int stackpos, String title, Component comp) {
+		final DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null, title, comp);
 		control.addDockable(dockable);
 		dockable.setLocation(CLocation.base().normalEast(0.6).stack(stackpos));
 		return dockable;

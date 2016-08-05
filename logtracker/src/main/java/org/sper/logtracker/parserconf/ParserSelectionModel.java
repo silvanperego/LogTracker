@@ -12,7 +12,7 @@ import org.sper.logtracker.logreader.LogParser;
  * Führt eine Liste aller Verfügbaren Log-File-Parser und ihrer Eigenschaften.
  * @author silvan.perego
  */
-public class ParserSelectionModel extends AbstractListModel implements ComboBoxModel {
+public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implements ComboBoxModel<LogParser<?>> {
 	
 	private static final long serialVersionUID = 1L;
 	private LogParserList logParserList = new LogParserList();

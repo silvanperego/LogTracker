@@ -17,6 +17,7 @@ import org.sper.logtracker.logreader.LogSource;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
 
 public class LogTracker {
@@ -24,10 +25,9 @@ public class LogTracker {
 	private static String cfgFile;
 	private static List<LogSource> fnameList = new ArrayList<LogSource>();
 	private JFrame frame;
-	private Configuration configuration = new Configuration();
-	private FileControlPanel fileControlPanel;
 	private ToolBar toolBar;
 	private CControl control;
+	private LogFilePanel logFilePanel;
 
 	/**
 	 * Launch the application.
@@ -104,16 +104,13 @@ public class LogTracker {
 
 		control = new CControl(frame);
 		frame.add(control.getContentArea(), BorderLayout.CENTER);
-		final LogFilePanel logFilePanel = new LogFilePanel();
-		fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar);
-		final DefaultSingleCDockable fileSelectionDockable = new DefaultSingleCDockable("File Selection", "File Selection", fileControlPanel);
-		control.addDockable(fileSelectionDockable);
+		logFilePanel = new LogFilePanel();
 		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
 		control.addDockable(logFileDockable);
-		fileSelectionDockable.setLocation(CLocation.base().normal().stack(0));
-		logFileDockable.setLocation(CLocation.base().normal().stack(1));
+		logFileDockable.setLocation(CLocation.base().normal().stack());
 		logFileDockable.setVisible(true);
-		fileSelectionDockable.setVisible(true);
+		Configuration configuration = new Configuration();
+		FileControlPanel fileControlPanel = addNewFileControl(configuration, CLocation.base().normal().stack(), fnameList);
 		configuration.registerModule(fileControlPanel);
 		if (cfgFile != null) {
 			try {
@@ -124,8 +121,14 @@ public class LogTracker {
 		}
 	}
 
-	public Configuration getConfiguration() {
-		return configuration;
+	FileControlPanel addNewFileControl(Configuration config, CLocation location, List<LogSource> fnameList) {
+		FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, config);
+		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
+		control.addDockable(fileSelectionDockable);
+		fileSelectionDockable.setLocation(location);
+		fileSelectionDockable.setCloseable(true);
+		fileSelectionDockable.setVisible(true);
+		return fileControlPanel;
 	}
 
 	public JFrame getFrame() {
@@ -138,10 +141,6 @@ public class LogTracker {
 
 	public void setTabIdx(int idx) {
 //		tabbedPane.setSelectedIndex(idx);
-	}
-
-	public FileControlPanel getFileControlPanel() {
-		return fileControlPanel;
 	}
 
 	void setTitle(String title) {

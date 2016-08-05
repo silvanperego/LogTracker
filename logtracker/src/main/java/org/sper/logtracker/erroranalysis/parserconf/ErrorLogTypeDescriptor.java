@@ -22,7 +22,7 @@ import org.sper.logtracker.proc.PipelineHelper;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
-import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 
 public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 
@@ -31,7 +31,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	private KeepAliveElement keepAliveElement;
 	private LogLineTableModel logLineTableModel;
 	private LogLinePanel logLinePanel;
-	private DefaultSingleCDockable logLineDockable;
+	private DefaultMultipleCDockable logLineDockable;
 	
 	public ErrorLogTypeDescriptor() {
 	}
@@ -49,7 +49,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 			throws InterruptedException {
 		logLinePanel = new LogLinePanel();
 		logLineTableModel = logLinePanel.getTableModel();
-		logLineDockable = new DefaultSingleCDockable("ErrorDockable", "Error Log-Messages", logLinePanel);
+		logLineDockable = new DefaultMultipleCDockable(null, "Error Log-Messages", logLinePanel);
 		control.addDockable(logLineDockable);
 		logLineDockable.setLocation(CLocation.base().normalEast(0.6));
 		logLineDockable.setVisible(true);
