@@ -16,6 +16,8 @@ public class CategoryCollection implements Iterable<Integer> {
 	}
 	
 	public void addFactoryCat(int idx) {
+		if (idx < 0)
+			return;
 		int pos = idx / 64;
 		int offs = idx % 64;
 		if (pos >= key.length) {
