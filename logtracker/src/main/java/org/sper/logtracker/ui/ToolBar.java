@@ -22,6 +22,7 @@ import org.sper.logtracker.config.ConfigFileAction;
 import org.sper.logtracker.config.ConfigFileOpenButton;
 import org.sper.logtracker.config.ConfigFileSaveButton;
 import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.parserconf.ParserConfigDialog;
 
 import bibliothek.gui.dock.common.CLocation;
 
@@ -31,7 +32,7 @@ public class ToolBar extends JToolBar {
 	private JTextField txtLogtracker;
 	private LogTracker logTracker;
 
-	public ToolBar(final LogTracker logTracker) {
+	public ToolBar(final LogTracker logTracker, final ParserConfigCatalog parserConfigList) {
 		this.logTracker = logTracker;
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		
@@ -62,6 +63,17 @@ public class ToolBar extends JToolBar {
 		});
 		newFileControlBtn.setToolTipText("Add new Log-File Source Config Box");
 		add(newFileControlBtn);
+		
+		JButton btnConfigLogParsers = new JButton(new ImageIcon(ToolBar.class.getResource("/Zahnrad.png")));
+		btnConfigLogParsers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent paramActionEvent) {
+				ParserConfigDialog dialog = new ParserConfigDialog(parserConfigList);
+				dialog.setLogFileTypeList(parserConfigList.getParserTypeList(dialog));
+				dialog.setVisible(true);
+			}
+		});
+		btnConfigLogParsers.setToolTipText("Configure Log Parsers");
+		add(btnConfigLogParsers);
 		
 		Component horizontalGlue = Box.createHorizontalGlue();
 		horizontalGlue.setPreferredSize(new Dimension(400, 0));

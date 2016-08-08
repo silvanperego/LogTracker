@@ -14,7 +14,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.sper.logtracker.config.Configuration;
 import org.sper.logtracker.logreader.LogSource;
-import org.sper.logtracker.parserconf.ConfiguredLogParser;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
@@ -29,7 +28,7 @@ public class LogTracker {
 	private ToolBar toolBar;
 	private CControl control;
 	private LogFilePanel logFilePanel;
-	private List<ConfiguredLogParser<?>> parserConfigCatalog = new ParserConfigCatalog();
+	private ParserConfigCatalog parserConfigCatalog = new ParserConfigCatalog();
 
 	/**
 	 * Launch the application.
@@ -101,7 +100,7 @@ public class LogTracker {
 		frame.setBounds(100, 100, 986, 804);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout(0, 2));
-		toolBar = new ToolBar(this);
+		toolBar = new ToolBar(this, parserConfigCatalog);
 		frame.add(toolBar, BorderLayout.NORTH);
 
 		control = new CControl(frame);
@@ -124,7 +123,7 @@ public class LogTracker {
 	}
 
 	FileControlPanel addNewFileControl(Configuration config, CLocation location, List<LogSource> fnameList) {
-		FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, config, parserConfigCatalog );
+		FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, config, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
 		fileSelectionDockable.setLocation(location);

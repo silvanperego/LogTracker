@@ -2,6 +2,7 @@ package org.sper.logtracker.parserconf;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,15 +10,31 @@ public class ParserConfigList extends ArrayList<ConfiguredLogParser<?>> {
 
 	private static final long serialVersionUID = 1L;
 	private static final Pattern NUM_END_PAT = Pattern.compile(".* \\((\\d+)\\)");
+	private List<ChangeListener> listenerList = new ArrayList<>();
+	
+	public interface ChangeListener {
+		void modelChanged();
+	}
+	
+	public void addChangeListener(ChangeListener listener) {
+		listenerList.add(listener);
+	}
 
 	@Override
 	public boolean add(ConfiguredLogParser<?> paramE) {
-		return super.add(checkNameUnqiue(paramE));
+		final boolean result = super.add(checkNameUnqiue(paramE));
+		markModelChanged();
+		return result;
+	}
+
+	private void markModelChanged() {
+		listenerList.forEach(ChangeListener::modelChanged);
 	}
 
 	@Override
 	public void add(int paramInt, ConfiguredLogParser<?> paramE) {
 		super.add(paramInt, checkNameUnqiue(paramE));
+		markModelChanged();
 	}
 
 	@Override
@@ -25,7 +42,9 @@ public class ParserConfigList extends ArrayList<ConfiguredLogParser<?>> {
 		for (ConfiguredLogParser<?> parser : paramCollection) {
 			checkNameUnqiue(parser);
 		}
-		return super.addAll(paramCollection);
+		final boolean result = super.addAll(paramCollection);
+		markModelChanged();
+		return result;
 	}
 
 	private ConfiguredLogParser<?> checkNameUnqiue(ConfiguredLogParser<?> logParser) {

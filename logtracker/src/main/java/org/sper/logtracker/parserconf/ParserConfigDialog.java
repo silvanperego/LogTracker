@@ -108,7 +108,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	 * Create the dialog.
 	 * @param parserSelectionModel 
 	 */
-	public ParserConfigDialog(ParserSelectionModel parserSelectionModel) {
+	public ParserConfigDialog(ParserConfigList parserConfigList) {
 		setTitle("Log-Files Parser Configuration");
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setBounds(100, 100, 909, 681);
@@ -171,7 +171,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 				});
 				logParserTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 				logParserTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-				parserConfigModel = new ParserConfigModel(null);
+				parserConfigModel = new ParserConfigModel(parserConfigList);
 				parserConfigModel.loadFromSelectionModel();
 				logParserTable.setModel(parserConfigModel);
 				logParserTable.getColumnModel().getColumn(0).setResizable(true);

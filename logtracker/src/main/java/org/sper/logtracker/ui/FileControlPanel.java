@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
+import org.sper.logtracker.parserconf.ParserConfigList;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
 import org.sper.logtracker.servstat.ui.ButtonColumn;
 
@@ -69,7 +72,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		String parserConfig, title;
 	}
 
-	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList, MessageListener listener, ToolBar toolBar, Configuration config, List<ConfiguredLogParser<?>> parserConfigCatalog) {
+	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList, MessageListener listener, ToolBar toolBar, Configuration config, ParserConfigList parserConfigCatalog) {
 		super();
 		this.logTracker = logTracker;
 		this.toolBar = toolBar;
@@ -136,6 +139,11 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		obsvalPanel.add(lblLogFileParser);
 		
 		logFileFormatBox = new JComboBox<>();
+		logFileFormatBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				checkEnableApplyButton();
+			}
+		});
 		parserModel = new ParserSelectionModel(parserConfigCatalog);
 		logFileFormatBox.setModel(parserModel);
 		logFileFormatBox.setToolTipText("Choose an appropriate Parser for your Log-Files");

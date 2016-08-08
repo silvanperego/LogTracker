@@ -13,7 +13,7 @@ public class ParserConfigModel extends AbstractTableModel {
 	public static final int STANDARD_PARSERS_COUNT = 3;
 	private static final long serialVersionUID = 1L;
 	private ParserConfigList logParserCatalog;
-	private ParserConfigList logParserList;
+	private ParserConfigList logParserList = new ParserConfigList();
 	private static final String[] COL_NAMES = new String[] {"Parser Name", "Parser Type"};
 	
 	public ParserConfigModel(ParserConfigList logParserCatalog) {
@@ -83,6 +83,7 @@ public class ParserConfigModel extends AbstractTableModel {
 		this.logParserList.addAll(logParserList);
 	}
 	public void saveInSelectionModel() {
+		logParserCatalog.clear();
 		logParserCatalog.addAll(logParserList.subList(STANDARD_PARSERS_COUNT, logParserList.size()));
 	}
 	

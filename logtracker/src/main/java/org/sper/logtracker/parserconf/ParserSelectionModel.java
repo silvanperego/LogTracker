@@ -18,16 +18,11 @@ public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implem
 	private Object selectedItem;
 	private List<ConfiguredLogParser<?>> parserList;
 	
-	public ParserSelectionModel(List<ConfiguredLogParser<?>> parserList) {
+	public ParserSelectionModel(ParserConfigList parserList) {
 		this.parserList = parserList;
+		parserList.addChangeListener(() -> fireContentsChanged(this, 0, getSize()));
 	}
 
-	void saveInSelectionModel(List<ConfiguredLogParser<?>> newLogParser) {
-		parserList.clear();
-		parserList.addAll(newLogParser);
-		fireContentsChanged(this, 0, parserList.size());
-	}
-	
 	@Override
 	public int getSize() {
 		return parserList.size();
