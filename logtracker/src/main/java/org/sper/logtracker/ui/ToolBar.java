@@ -17,7 +17,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
+import org.sper.logtracker.config.Global;
+import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.compat.ConfigFileAction;
 import org.sper.logtracker.config.compat.ConfigFileOpenButton;
 import org.sper.logtracker.config.compat.ConfigFileSaveButton;
@@ -48,7 +53,7 @@ public class ToolBar extends JToolBar {
 			
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
-//				logTracker.getConfiguration().safeToFile(selectedFile);
+				saveXMLConfig(selectedFile);
 			}
 		});
 		btnSaveConfig.setToolTipText("Save Config File");
@@ -112,6 +117,20 @@ public class ToolBar extends JToolBar {
 		txtLogtracker.setColumns(20);
 		btnInfo.setHorizontalAlignment(SwingConstants.LEFT);
 		add(btnInfo);
+	}
+
+	private void saveXMLConfig(File selectedFile) {
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(LogTrackerConfig.class);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			LogTrackerConfig config = new LogTrackerConfig();
+			Global global = new Global();
+			global.setTitle(txtLogtracker.getText());
+			config.setGlobal(global);
+			marshaller.marshal(config, selectedFile);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setText(String title) {
