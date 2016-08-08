@@ -90,7 +90,6 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 		}
 	}
 
-	@Override
 	public Serializable getConfig() {
 		HashMap<String, Boolean> filterMap = new HashMap<String, Boolean>();
 		for (int i = 0; i < userTableModel.getRowCount(); i++) {

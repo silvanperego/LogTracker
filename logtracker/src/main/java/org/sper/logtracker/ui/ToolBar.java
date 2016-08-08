@@ -21,7 +21,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.sper.logtracker.config.Global;
 import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.compat.ConfigFileAction;
 import org.sper.logtracker.config.compat.ConfigFileOpenButton;
@@ -121,12 +120,13 @@ public class ToolBar extends JToolBar {
 
 	private void saveXMLConfig(File selectedFile) {
 		try {
+			String suffix = ".ltc";
+			if (!selectedFile.getAbsolutePath().endsWith(suffix))
+				selectedFile = new File(selectedFile + suffix);
 			JAXBContext jaxbContext = JAXBContext.newInstance(LogTrackerConfig.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
-			LogTrackerConfig config = new LogTrackerConfig();
-			Global global = new Global();
-			global.setTitle(txtLogtracker.getText());
-			config.setGlobal(global);
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			LogTrackerConfig config = logTracker.getConfig();
 			marshaller.marshal(config, selectedFile);
 		} catch (JAXBException e) {
 			e.printStackTrace();

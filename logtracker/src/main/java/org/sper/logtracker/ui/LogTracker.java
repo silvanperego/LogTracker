@@ -12,6 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.sper.logtracker.config.FileControl;
+import org.sper.logtracker.config.Global;
+import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.logreader.LogSource;
 
@@ -19,6 +22,8 @@ import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.event.CVetoClosingEvent;
+import bibliothek.gui.dock.common.event.CVetoClosingListener;
 
 public class LogTracker {
 
@@ -29,6 +34,7 @@ public class LogTracker {
 	private CControl control;
 	private LogFilePanel logFilePanel;
 	private ParserConfigCatalog parserConfigCatalog = new ParserConfigCatalog();
+	private List<FileControlPanel> fileControlPanelList = new ArrayList<>();
 
 	/**
 	 * Launch the application.
@@ -127,12 +133,25 @@ public class LogTracker {
 	}
 
 	FileControlPanel addNewFileControl(CLocation location, Configuration configuration, List<LogSource> fnameList) {
-		FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, configuration, parserConfigCatalog);
+		final FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, configuration, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
 		fileSelectionDockable.setLocation(location);
 		fileSelectionDockable.setCloseable(true);
 		fileSelectionDockable.setVisible(true);
+		this.fileControlPanelList.add(fileControlPanel);
+		fileSelectionDockable.addVetoClosingListener(new CVetoClosingListener() {
+			
+			@Override
+			public void closing(CVetoClosingEvent event) {
+			}
+			
+			@Override
+			public void closed(CVetoClosingEvent event) {
+				fileControlPanel.cascadeDelete();
+				LogTracker.this.fileControlPanelList.remove(fileControlPanel);
+			}
+		});
 		return fileControlPanel;
 	}
 
@@ -154,6 +173,21 @@ public class LogTracker {
 
 	public CControl getControl() {
 		return control;
+	}
+
+	/**
+	 * Erstelle ein Konfigurationsobjekt für die gesamte Log-Tracker Instanz.
+	 * @return
+	 */
+	public LogTrackerConfig getConfig() {
+		LogTrackerConfig config = new LogTrackerConfig();
+		Global global = new Global();
+		global.setTitle(frame.getTitle());
+		config.setGlobal(global);
+		for (FileControlPanel fcp : fileControlPanelList) {
+			config.addFileControl(fcp.getConfig());
+		}
+		return config;
 	}
 
 }

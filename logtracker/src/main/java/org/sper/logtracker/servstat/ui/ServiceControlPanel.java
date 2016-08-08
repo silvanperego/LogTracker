@@ -174,7 +174,6 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public Serializable getConfig() {
 		ConfData confData = new ConfData();
 		confData.data = new Vector<Vector<Object>>();

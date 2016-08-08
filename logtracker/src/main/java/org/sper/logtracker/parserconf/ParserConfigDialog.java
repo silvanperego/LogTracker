@@ -400,7 +400,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 						
 						@Override
 						public void execConfigFileOperation(File selectedFile) throws Exception {
-							config.safeToFile(selectedFile);
+//							config.safeToFile(selectedFile);
 						}
 					}, new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -597,7 +597,6 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		parserConfigModel.addParsers(logParserList);
 	}
 	
-	@Override
 	public Serializable getConfig() {
 		ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
 		for (int row : logParserTable.getSelectedRows()) {

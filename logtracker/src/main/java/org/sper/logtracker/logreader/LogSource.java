@@ -2,6 +2,8 @@ package org.sper.logtracker.logreader;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 /**
  * Repräsentiert eine Log-File-Quelle
  * @author sper
@@ -24,6 +26,7 @@ public class LogSource implements Serializable {
 		this.fileName = fileName;
 	}
 
+	@XmlAttribute
 	public String getFileName() {
 		return fileName;
 	}
@@ -32,6 +35,7 @@ public class LogSource implements Serializable {
 		this.fileName = fname;
 	}
 
+	@XmlAttribute
 	public String getSourceName() {
 		if (sourceName == null && fileName != null) {
 			int pos = fileName.lastIndexOf('/');

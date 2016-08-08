@@ -2,10 +2,8 @@ package org.sper.logtracker.config.compat;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,27 +33,6 @@ public class Configuration {
 	
 	public void unregisterModule(ConfigurationAware module) {
 		configModule.remove(module.getCompKey());
-	}
-	
-	public void safeToFile(File f) throws IOException {
-		Map<String, Serializable> configMap = new HashMap<String, Serializable>();
-		for (ConfigurationAware module : configModule.values()) {
-			Serializable modconf = module.getConfig();
-			if (modconf != null)
-				configMap.put(module.getCompKey(), modconf);
-		}
-		ObjectOutputStream oos = null;
-		try {
-			String suffix = ".ltc";
-			if (!f.getAbsolutePath().endsWith(suffix))
-				f = new File(f + suffix);
-			FileOutputStream fos = new FileOutputStream(f);
-			oos = new ObjectOutputStream(fos);
-			oos.writeObject(configMap);
-		} finally {
-			if (oos != null)
-				oos.close();
-		}
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -32,6 +32,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.sper.logtracker.config.FileControl;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.data.Console;
@@ -65,7 +66,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		String parserConfig;
 	}
 	
-	private static class ConfObj2 implements Serializable {
+	public static class ConfObj2 implements Serializable {
 		private static final long serialVersionUID = 1L;
 		LogSource[] logSource;
 		Integer obsVal;
@@ -247,7 +248,6 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		if (config != null)
 			config.registerModule(new ConfigurationAware() {
 
-				@Override
 				public Serializable getConfig() {
 					ConfiguredLogParser<?> parserConfig = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 					if (parserConfig != null && parserConfig.isEditable()) {
@@ -327,17 +327,14 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		}
 	}
 
-	@Override
-	public Serializable getConfig() {
-		ConfObj2 conf = new ConfObj2();
-		conf.logSource = new LogSource[logFileTableModel.getRowCount()];
+	public FileControl getConfig() {
+		FileControl conf = new FileControl();
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++)
-			conf.logSource[i] = new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1));
-		conf.obsVal = useObsVal.isSelected() ? (Integer) obsValSpinner.getValue() : null;
-		conf.title = toolBar.getText();
+			conf.addLogSource(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
+		conf.setObsVal(useObsVal.isSelected() ? (Integer) obsValSpinner.getValue() : null);
 		ConfiguredLogParser<?> selectedItem = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 		if (selectedItem != null)
-			conf.parserConfig = selectedItem.getName();
+			conf.setParserConfig(selectedItem.getName());
 		return conf;
 	}
 
@@ -381,5 +378,10 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	@Override
 	public boolean isDynamicModule() {
 		return false;
+	}
+
+	public void cascadeDelete() {
+		if (activeLogFileType != null)
+			activeLogFileType.removeDockables(logTracker.getControl());
 	}
 }

@@ -20,12 +20,6 @@ public interface ConfigurationAware {
 	void applyConfig(Serializable cfg);
 	
 	/**
-	 * Erstelle und retourniere ein Konfigurationsobjekt.
-	 * @return das Konfigurationsobjekt.
-	 */
-	Serializable getConfig();
-	
-	/**
 	 * @return true, falls dies ein dynamisches Modul ist, welches erst im Verlauf der Operationen nachgeladen wird.
 	 */
 	boolean isDynamicModule();
