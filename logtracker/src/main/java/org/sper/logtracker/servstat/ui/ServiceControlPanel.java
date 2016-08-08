@@ -30,7 +30,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
 import org.jfree.chart.plot.XYPlot;
-import org.sper.logtracker.config.ConfigurationAware;
+import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
 import org.sper.logtracker.servstat.proc.NewPointExtractor;

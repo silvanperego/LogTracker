@@ -2,7 +2,7 @@ package org.sper.logtracker.servstat.parserconf;
 
 import java.util.List;
 
-import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;

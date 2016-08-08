@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
-import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogParser;

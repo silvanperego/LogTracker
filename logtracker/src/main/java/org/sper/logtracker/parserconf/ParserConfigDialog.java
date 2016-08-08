@@ -40,11 +40,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.sper.logtracker.config.ConfigFileAction;
-import org.sper.logtracker.config.ConfigFileOpenButton;
-import org.sper.logtracker.config.ConfigFileSaveButton;
-import org.sper.logtracker.config.Configuration;
-import org.sper.logtracker.config.ConfigurationAware;
+import org.sper.logtracker.config.compat.ConfigFileAction;
+import org.sper.logtracker.config.compat.ConfigFileOpenButton;
+import org.sper.logtracker.config.compat.ConfigFileSaveButton;
+import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.logreader.LogParser;
 
 public class ParserConfigDialog extends JDialog implements ConfigurationAware {

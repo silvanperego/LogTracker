@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-import org.sper.logtracker.config.ConfigurationAware;
+import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
 

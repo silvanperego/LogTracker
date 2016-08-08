@@ -32,8 +32,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.sper.logtracker.config.Configuration;
-import org.sper.logtracker.config.ConfigurationAware;
+import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
 import org.sper.logtracker.logreader.LogParser;
@@ -147,39 +147,6 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		parserModel = new ParserSelectionModel(parserConfigCatalog);
 		logFileFormatBox.setModel(parserModel);
 		logFileFormatBox.setToolTipText("Choose an appropriate Parser for your Log-Files");
-		config.registerModule(new ConfigurationAware() {
-			
-			@Override
-			public Serializable getConfig() {
-				ConfiguredLogParser<?> parserConfig = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
-				if (parserConfig != null && parserConfig.isEditable()) {
-					ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
-					configList.add(parserConfig);
-					return configList;
-				}
-				return null;
-			}
-			
-			@Override
-			public String getCompKey() {
-				return ConfiguredLogParser.CONFIG_NAME;
-			}
-			
-			@Override
-			public void applyConfig(Serializable cfg) {
-				@SuppressWarnings("unchecked")
-				ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
-				if (logParserList != null && !logParserList.isEmpty()) {
-					parserModel.addParsers(logParserList);
-					logFileFormatBox.setSelectedItem(logParserList.get(0));
-				}
-			}
-
-			@Override
-			public boolean isDynamicModule() {
-				return false;
-			}
-		});
 		obsvalPanel.add(logFileFormatBox);
 		
 		JPanel considerOnlyPanel = new JPanel();
@@ -277,6 +244,40 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		logFileTable.getColumnModel().getColumn(2).setResizable(false);
 		logFileTable.getColumnModel().getColumn(2).setPreferredWidth(30);
 		Console.setListener(listener);
+		if (config != null)
+			config.registerModule(new ConfigurationAware() {
+
+				@Override
+				public Serializable getConfig() {
+					ConfiguredLogParser<?> parserConfig = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
+					if (parserConfig != null && parserConfig.isEditable()) {
+						ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
+						configList.add(parserConfig);
+						return configList;
+					}
+					return null;
+				}
+
+				@Override
+				public String getCompKey() {
+					return ConfiguredLogParser.CONFIG_NAME;
+				}
+
+				@Override
+				public void applyConfig(Serializable cfg) {
+					@SuppressWarnings("unchecked")
+					ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
+					if (logParserList != null && !logParserList.isEmpty()) {
+						parserModel.addParsers(logParserList);
+						logFileFormatBox.setSelectedItem(logParserList.get(0));
+					}
+				}
+
+				@Override
+				public boolean isDynamicModule() {
+					return false;
+				}
+			});
 	}
 
 	@Override

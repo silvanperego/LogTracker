@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.logreader.LogSource;
 
 import bibliothek.gui.dock.common.CControl;
@@ -110,20 +110,24 @@ public class LogTracker {
 		control.addDockable(logFileDockable);
 		logFileDockable.setLocation(CLocation.base().normal().stack());
 		logFileDockable.setVisible(true);
+		openFileControlWithConfiguration(CLocation.base().normal().stack(), cfgFile != null ? new File(cfgFile) : null, fnameList);
+	}
+
+	void openFileControlWithConfiguration(CLocation location, File selectedFile, List<LogSource> fnameList) {
 		Configuration configuration = new Configuration();
-		FileControlPanel fileControlPanel = addNewFileControl(configuration, CLocation.base().normal().stack(), fnameList);
+		FileControlPanel fileControlPanel = addNewFileControl(location, configuration, fnameList);
 		configuration.registerModule(fileControlPanel);
-		if (cfgFile != null) {
+		if (selectedFile != null) {
 			try {
-				configuration.loadConfiguration(new File(cfgFile));
+				configuration.loadConfiguration(selectedFile);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(frame, "Error when loading Config-File", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 
-	FileControlPanel addNewFileControl(Configuration config, CLocation location, List<LogSource> fnameList) {
-		FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, config, parserConfigCatalog);
+	FileControlPanel addNewFileControl(CLocation location, Configuration configuration, List<LogSource> fnameList) {
+		FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, configuration, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
 		fileSelectionDockable.setLocation(location);

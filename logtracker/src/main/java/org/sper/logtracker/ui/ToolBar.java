@@ -18,10 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.sper.logtracker.config.ConfigFileAction;
-import org.sper.logtracker.config.ConfigFileOpenButton;
-import org.sper.logtracker.config.ConfigFileSaveButton;
-import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.config.compat.ConfigFileAction;
+import org.sper.logtracker.config.compat.ConfigFileOpenButton;
+import org.sper.logtracker.config.compat.ConfigFileSaveButton;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 
 import bibliothek.gui.dock.common.CLocation;
@@ -39,7 +38,7 @@ public class ToolBar extends JToolBar {
 		JButton btnLoadConfig = new ConfigFileOpenButton(logTracker.getFrame(), null, new ConfigFileAction() {
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
-//				logTracker.getConfiguration().loadConfiguration(selectedFile);
+				logTracker.openFileControlWithConfiguration(CLocation.base().normalSouth(0.5), selectedFile, null);
 			}
 		});
 		btnLoadConfig.setToolTipText("Open Config File");
@@ -58,7 +57,7 @@ public class ToolBar extends JToolBar {
 		JButton newFileControlBtn = new JButton(new ImageIcon(ToolBar.class.getResource("/newFileConfig.png")));
 		newFileControlBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
-				logTracker.addNewFileControl(new Configuration(), CLocation.base().normalSouth(0.5), null);
+				logTracker.addNewFileControl(CLocation.base().normalSouth(0.5), null, null);
 			}
 		});
 		newFileControlBtn.setToolTipText("Add new Log-File Source Config Box");

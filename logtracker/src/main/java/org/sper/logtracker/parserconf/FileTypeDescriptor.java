@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.sper.logtracker.config.Configuration;
+import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.logreader.LogSource;
 
 import bibliothek.gui.dock.common.CControl;
