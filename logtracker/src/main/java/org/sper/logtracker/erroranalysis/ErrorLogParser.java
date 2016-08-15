@@ -68,7 +68,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 
 	@Override
 	protected void extractData(LogLineParser<RawErrorDataPoint> logLineParser, Long obsStart, Matcher m, FileSnippet fileSnippet) throws ParseException {
-		Long time = occTimeIdx != null ? getOccTime(m) : null;
+		Long time = getOccTime().getFieldIdx() != null ? getOccTime(m) : null;
 		if (time == null || obsStart == null || time.longValue() > obsStart.longValue()) {
 			String msg = m.group(msgIdx);
 			String severity = severityIdx != null && m.group(severityIdx) != null ? m.group(severityIdx).toUpperCase() : null;
@@ -92,7 +92,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	}
 
 	public void setOccTimeTimezone(String occTimeTimezone) {
-		this.occTimeTimezone = occTimeTimezone;
+		getOccTime().setTimezone(occTimeTimezone);
 	}
 
 }

@@ -31,8 +31,8 @@ public class ParserConfigCatalog extends ParserConfigList {
 		wlsAccessLogParser.setIncludeLines(false);
 		wlsAccessLogParser.setIncludeContaining(true);
 		wlsAccessLogParser.setDataExtractionPattern(Pattern.compile("([-\\d]+\\t[:\\d\\.]+)\\t(?:[^\\t]+\\t){3}[-/\\w]*?/([^/\\t?]+)(?:\\?[^\\t]*)?\\t(?:[^\\t]+\\t){2}([\\d\\.]+)"));
-		wlsAccessLogParser.setOccTimeFormatString("yyyy-MM-dd\tkk:mm:ss.SSS");
-		wlsAccessLogParser.setOccTimeIdx(1);
+		wlsAccessLogParser.getOccTime().setFormatString("yyyy-MM-dd\tkk:mm:ss.SSS");
+		wlsAccessLogParser.getOccTime().setFieldIdx(1);
 		wlsAccessLogParser.setServiceIdx(2);
 		wlsAccessLogParser.setResponseTimeIdx(3);
 		wlsAccessLogParser.setResponseTimeFactor(1.d);
@@ -41,9 +41,9 @@ public class ParserConfigCatalog extends ParserConfigList {
 		tomcatAccessLogParser.setIncludeLines(false);
 		tomcatAccessLogParser.setIncludeContaining(true);
 		tomcatAccessLogParser.setDataExtractionPattern(Pattern.compile("[\\d\\.]+ \\S (\\S+) \\[(\\S+) \\S+ \"\\w+ (?:/[^/]*)*?/([^/]*?)(?:\\?\\S*)? \\S+ \\d+ (\\d+)"));
-		tomcatAccessLogParser.setOccTimeFormatString("dd/MMM/yyyy:kk:mm:ss");
-		tomcatAccessLogParser.setOccTimeIdx(2);
-		tomcatAccessLogParser.setOccTimeLanguage("en");
+		tomcatAccessLogParser.getOccTime().setFormatString("dd/MMM/yyyy:kk:mm:ss");
+		tomcatAccessLogParser.getOccTime().setFieldIdx(2);
+		tomcatAccessLogParser.getOccTime().setLanguage("en");
 		tomcatAccessLogParser.setServiceIdx(3);
 		tomcatAccessLogParser.setResponseTimeIdx(4);
 		tomcatAccessLogParser.setResponseTimeFactor(0.001d);
@@ -53,9 +53,9 @@ public class ParserConfigCatalog extends ParserConfigList {
 		diagLogParser.setIncludeLines(false);
 		diagLogParser.setIncludeContaining(false);
 		diagLogParser.setDataExtractionPattern(Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3})\\+\\d{2}:\\d{2}\\] \\[\\S+\\] \\[(\\w+)(?::\\w+)?\\].*?\\[userId: ([^\\]]+)\\] (?:\\[[^\\]]*\\] *){1,7}(.*)"));
-		diagLogParser.setOccTimeIdx(1);
-		diagLogParser.setOccTimeFormatString("yyyy-MM-dd'T'kk:mm:ss.SSS");
-		diagLogParser.setOccTimeLanguage("en");
+		diagLogParser.getOccTime().setFieldIdx(1);
+		diagLogParser.getOccTime().setFormatString("yyyy-MM-dd'T'kk:mm:ss.SSS");
+		diagLogParser.getOccTime().setLanguage("en");
 		diagLogParser.setUserIdIdx(3);
 		diagLogParser.setSeverityIdx(2);
 		diagLogParser.setMsgIdx(4);

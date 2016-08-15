@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.sper.logtracker.parserconf.ConfiguredLogParser.OccTimeFieldDescription;
+
 /**
  * Hilfsklasse für die Darstellung der Felder zur Konfiguration der Occurrence-Time.
  * @author silvan.perego
@@ -141,11 +143,11 @@ public class OccurrenceTimeFieldsHelper {
 		}
 	}
 
-	public void saveLoadedParser(ConfiguredLogParser<?> loadedParser) {
-		loadedParser.setOccTimeIdx((Integer) occTimeGroupCombo.getSelectedItem());
-		loadedParser.setOccTimeFormatString(occTimeFormatString.getText());
-		loadedParser.setOccTimeLanguage(occTimeLanguage.getText());
-		loadedParser.setOccTimeTimezone(occTimeTimezone.getText());
+	public void saveLoadedParser(OccTimeFieldDescription occTime) {
+		occTime.setFieldIdx((Integer) occTimeGroupCombo.getSelectedItem());
+		occTime.setFormatString(occTimeFormatString.getText());
+		occTime.setLanguage(occTimeLanguage.getText());
+		occTime.setTimezone(occTimeTimezone.getText());
 	}
 
 	public void enableDetailFields(boolean b) {
@@ -155,11 +157,11 @@ public class OccurrenceTimeFieldsHelper {
 		occTimeTimezone.setEnabled(b);
 	}
 
-	public void loadEditingFields(ConfiguredLogParser<?> logParser) {
-		occTimeGroupCombo.setSelectedItem(logParser.getOccTimeIdx());
-		occTimeFormatString.setText(logParser.getOccTimeFormatString());
-		occTimeLanguage.setText(logParser.getOccTimeLanguage());
-		occTimeTimezone.setText(logParser.getOccTimeTimezone());
+	public void loadEditingFields(OccTimeFieldDescription occTime) {
+		occTimeGroupCombo.setSelectedItem(occTime.getFieldIdx());
+		occTimeFormatString.setText(occTime.getFormatString());
+		occTimeLanguage.setText(occTime.getLanguage());
+		occTimeTimezone.setText(occTime.getTimezone());
 	}
 
 	public void removeErrorMarks() {

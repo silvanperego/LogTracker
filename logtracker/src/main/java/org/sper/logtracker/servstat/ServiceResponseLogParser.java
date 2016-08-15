@@ -3,6 +3,10 @@ package org.sper.logtracker.servstat;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
@@ -10,6 +14,7 @@ import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 
+@XmlType(name = "ServiceResponseLogParser")
 public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPoint> {
 
 	private static final long serialVersionUID = 1L;
@@ -67,22 +72,27 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 		this.responseTimeFactor = responseTimeFactor;
 	}
 
+	@XmlElement
 	public String getIgnoreServiceList() {
 		return ignoreServiceList;
 	}
 
+	@XmlAttribute
 	public int getServiceIdx() {
 		return serviceIdx;
 	}
 
+	@XmlAttribute
 	public int getResponseTimeIdx() {
 		return responseTimeIdx;
 	}
 
+	@XmlAttribute
 	public Integer getUserIdx() {
 		return userIdx;
 	}
 
+	@XmlAttribute
 	public double getResponseTimeFactor() {
 		return responseTimeFactor;
 	}
@@ -126,10 +136,12 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 		ServiceResponseLogParser.fileTypeDescriptor = fileTypeDescriptor;
 	}
 
+	@XmlAttribute
 	public Integer getReturnCodeIdx() {
 		return returnCodeIdx;
 	}
 
+	@XmlAttribute
 	public Integer getSuccessCode() {
 		return successCode;
 	}

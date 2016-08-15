@@ -143,7 +143,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 		ErrorLogParser loadedParser = (ErrorLogParser) parser;
 		if (loadedParser != null) {
 			loadedParser.setSeverityIdx((Integer) severityComboBox.getSelectedItem());
-			timeFieldsHelper.saveLoadedParser(parser);
+			timeFieldsHelper.saveLoadedParser(parser.getOccTime());
 			loadedParser.setUserIdIdx((Integer) userIdComboBox.getSelectedItem());
 			loadedParser.setMsgIdx((Integer) contentComboBox.getSelectedItem());
 			loadedParser.setEncoding(encodingField.getText());
@@ -174,7 +174,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	@Override
 	public void loadEditingFields(ConfiguredLogParser<?> parser) {
 		ErrorLogParser logParser = (ErrorLogParser) parser;
-		timeFieldsHelper.loadEditingFields(parser);
+		timeFieldsHelper.loadEditingFields(parser.getOccTime());
 		severityComboBox.setSelectedItem(logParser.getSeverityIdx());
 		userIdComboBox.setSelectedItem(logParser.getUserIdIdx());
 		contentComboBox.setSelectedItem(logParser.getMsgIdx());

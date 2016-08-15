@@ -260,7 +260,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
 		ServiceResponseLogParser loadedParser = (ServiceResponseLogParser) parser;
 		if (loadedParser != null) {
-			timeFieldsHelper.saveLoadedParser(parser);
+			timeFieldsHelper.saveLoadedParser(parser.getOccTime());
 			loadedParser.setServiceIdx((Integer) serviceComboBox.getSelectedItem());
 			loadedParser.setIgnoreServiceList(serviceExcludeField.getText());
 			loadedParser.setResponseTimeIdx((Integer) executionTimeBox.getSelectedItem());
@@ -291,7 +291,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	@Override
 	public void loadEditingFields(ConfiguredLogParser<?> parser) {
 		ServiceResponseLogParser logParser = (ServiceResponseLogParser) parser;
-		timeFieldsHelper.loadEditingFields(parser);
+		timeFieldsHelper.loadEditingFields(parser.getOccTime());
 		serviceComboBox.setSelectedItem(logParser.getServiceIdx());
 		serviceExcludeField.setText(logParser.getIgnoreServiceList());
 		executionTimeBox.setSelectedItem(logParser.getResponseTimeIdx());

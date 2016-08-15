@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.sper.logtracker.config.FileControl;
 import org.sper.logtracker.config.Global;
 import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.compat.Configuration;
@@ -184,9 +183,8 @@ public class LogTracker {
 		Global global = new Global();
 		global.setTitle(frame.getTitle());
 		config.setGlobal(global);
-		for (FileControlPanel fcp : fileControlPanelList) {
-			config.addFileControl(fcp.getConfig());
-		}
+		parserConfigCatalog.stream().filter(p -> p.isEditable()).forEach(p -> global.getLogParser().add(p));;
+		fileControlPanelList.stream().forEach(fcp -> config.addFileControl(fcp.getConfig()));
 		return config;
 	}
 
