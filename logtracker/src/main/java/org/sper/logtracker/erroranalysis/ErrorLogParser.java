@@ -3,6 +3,8 @@ package org.sper.logtracker.erroranalysis;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
@@ -21,6 +23,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	private String encoding;
 
 	@Override
+	@XmlAttribute
 	public String getEncoding() {
 		return encoding != null ? encoding : super.getEncoding();
 	}
@@ -37,6 +40,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 		super(other);
 	}
 	
+	@XmlAttribute
 	public Integer getSeverityIdx() {
 		return severityIdx;
 	}
@@ -50,6 +54,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 		return false;
 	}
 
+	@XmlAttribute
 	public Integer getUserIdIdx() {
 		return userIdIdx;
 	}
@@ -58,6 +63,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 		this.userIdIdx = userIdIdx;
 	}
 
+	@XmlAttribute
 	public Integer getMsgIdx() {
 		return msgIdx;
 	}

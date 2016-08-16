@@ -5,6 +5,7 @@ import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.COLOR_COL
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.FIRST_STAT_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.FIRST_SWITCH_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.LAST_STAT_COL;
+import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.LAST_SWITCH_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEAN_RESPONSE_TIME_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEDIAN_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.NCOLS;
@@ -15,6 +16,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -28,6 +31,11 @@ import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.jfree.chart.plot.XYPlot;
 import org.sper.logtracker.config.compat.ConfigurationAware;
@@ -71,6 +79,39 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 
 		Object magFact;
 		
+	}
+
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static class ServiceControlDataRow {
+		@XmlValue
+		String serviceName;
+		@XmlAttribute
+		Boolean withScatter, withPerSecond, withMean, withPercentile;
+		@XmlAttribute
+		Integer color;
+	}
+	
+	public static class ServiceControlData {
+		private List<ServiceControlDataRow> controlData = new ArrayList<>();
+		private Double magFact;
+
+		@XmlElement
+		public List<ServiceControlDataRow> getControlData() {
+			return controlData;
+		}
+		
+		public void addControlData(ServiceControlDataRow row) {
+			controlData.add(row);
+		}
+
+		@XmlAttribute
+		public Double getMagFact() {
+			return magFact;
+		}
+
+		public void setMagFact(Double magFact) {
+			this.magFact = magFact;
+		}
 	}
 
 	public ServiceControlPanel(ServiceStatsTabs serviceStatsTabs) {
@@ -167,22 +208,35 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 	 */
 	private boolean rowHoldsConfig(Vector<Object> row) {
 		boolean storeRow = false;
-		for (int i = FIRST_SWITCH_COL; i <= LAST_STAT_COL; i++)
+		for (int i = FIRST_SWITCH_COL; i <= LAST_SWITCH_COL; i++)
 			storeRow |= (Boolean) row.get(i);
-		storeRow |= row.get(10) != null;
+		storeRow |= row.get(COLOR_COL) != null;
 		return storeRow;
 	}
 
 	@SuppressWarnings("unchecked")
-	public Serializable getConfig() {
-		ConfData confData = new ConfData();
-		confData.data = new Vector<Vector<Object>>();
+	public ServiceControlData getConfig() {
+		ServiceControlData scd = new ServiceControlData();
 		for (Vector<Object> row : (Vector<Vector<Object>>) controlTableModel.getDataVector()) {
-			if (rowHoldsConfig(row))
-				confData.data.add(row);
+			if (rowHoldsConfig(row)) {
+				ServiceControlDataRow sdr = new ServiceControlDataRow();
+				sdr.serviceName = (String) row.get(ServiceControlTableModel.SERVICE_NAME_COL);
+				sdr.withScatter = (Boolean) row.get(ServiceControlTableModel.DO_SCATTER_COL);
+				sdr.withMean = (Boolean) row.get(ServiceControlTableModel.DO_MEAN_TIME_COL);
+				sdr.withPerSecond = (Boolean) row.get(ServiceControlTableModel.DO_PER_SECOND_COL);
+				scd.controlData.add(sdr);
+			}
 		}
-		confData.magFact = magFactSpinner.getValue();
-		return confData;
+		scd.magFact = (Double) magFactSpinner.getValue();
+		return scd;
+//		ConfData confData = new ConfData();
+//		confData.data = new Vector<Vector<Object>>();
+//		for (Vector<Object> row : (Vector<Vector<Object>>) controlTableModel.getDataVector()) {
+//			if (rowHoldsConfig(row))
+//				confData.data.add(row);
+//		}
+//		confData.magFact = magFactSpinner.getValue();
+//		return confData;
 	}
 
 	/**

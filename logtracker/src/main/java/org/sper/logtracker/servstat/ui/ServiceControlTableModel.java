@@ -21,7 +21,8 @@ public class ServiceControlTableModel extends AbstractTableModel {
 	public static final int SERVICE_NAME_COL = 0, NUMBER_OF_CALLS_COL = 1, NUMBER_OF_ERRORS_COL = 2,
 			CALLS_PER_MINUTE_COL = 3, MEAN_RESPONSE_TIME_COL = 4, MEDIAN_COL = 5, PERCENTILE_COL = 6,
 			DO_SCATTER_COL = 7, DO_PER_SECOND_COL = 8, DO_MEAN_TIME_COL = 9, DO_MEDIAN_TIME_COL = 10, COLOR_COL = 11,
-			NCOLS = 12, FIRST_STAT_COL = NUMBER_OF_CALLS_COL, LAST_STAT_COL = PERCENTILE_COL, FIRST_SWITCH_COL = DO_SCATTER_COL;
+			NCOLS = 12, FIRST_STAT_COL = NUMBER_OF_CALLS_COL, LAST_STAT_COL = PERCENTILE_COL, FIRST_SWITCH_COL = DO_SCATTER_COL, 
+			LAST_SWITCH_COL = DO_MEDIAN_TIME_COL;
 	
 	Class<?>[] columnTypes = new Class[] { String.class, Long.class, Long.class, Double.class,
 			Double.class, Double.class, Double.class, Boolean.class,

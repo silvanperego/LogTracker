@@ -38,4 +38,6 @@ public interface FileTypeDescriptor {
 
 	void removeDockables(CControl cControl);
 
+	Object getControlDataConfig();
+
 }

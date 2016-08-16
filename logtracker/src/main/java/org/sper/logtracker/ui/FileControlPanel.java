@@ -335,6 +335,8 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		ConfiguredLogParser<?> selectedItem = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
 		if (selectedItem != null)
 			conf.setParserConfig(selectedItem.getName());
+		if (activeLogFileType != null)
+			conf.setControlData(activeLogFileType.getControlDataConfig());
 		return conf;
 	}
 

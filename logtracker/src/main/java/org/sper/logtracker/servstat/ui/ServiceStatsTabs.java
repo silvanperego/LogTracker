@@ -138,4 +138,8 @@ public class ServiceStatsTabs {
 			control.removeDockable(userDockable);
 	}
 
+	public Object getControlDataConfig() {
+		return serviceControlPanel.getConfig();
+	}
+
 }

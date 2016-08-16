@@ -90,4 +90,9 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 		logLineDockable = null;
 	}
 
+	@Override
+	public Object getControlDataConfig() {
+		return null;
+	}
+
 }

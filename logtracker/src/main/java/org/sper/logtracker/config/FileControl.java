@@ -5,14 +5,17 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 
 import org.sper.logtracker.logreader.LogSource;
+import org.sper.logtracker.servstat.ui.ServiceControlPanel.ServiceControlData;
 
 public class FileControl {
 
 	private List<LogSource> logSource = new ArrayList<>();
 	private Integer obsVal;
 	private String parserConfig;
+	private Object controlData;
 
 	@XmlElement
 	public List<LogSource> getLogSource() {
@@ -34,6 +37,14 @@ public class FileControl {
 	}
 	public void setParserConfig(String parserConfig) {
 		this.parserConfig = parserConfig;
+	}
+	
+	@XmlElements(value = {@XmlElement(name = "ServiceControlData", type = ServiceControlData.class)})
+	public Object getControlData() {
+		return controlData;
+	}
+	public void setControlData(Object controlData) {
+		this.controlData = controlData;
 	}
 
 }

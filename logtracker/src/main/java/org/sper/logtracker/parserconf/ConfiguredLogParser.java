@@ -167,7 +167,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	
 	@Override
 	synchronized public void scanLine(FileSnippet lineInFile, LogLineParser<T> logLineParser, Long obsStart) {
-		if (occTime.formatString == null) {
+		if (getOccTime().formatString == null) {
 			this.occTime.formatString = 
 					occTime.language != null && !occTime.language.isEmpty() ? 
 							new SimpleDateFormat(occTime.dateFormat, new Locale(occTime.language)) :
@@ -199,7 +199,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	}
 
 	public long getOccTime(Matcher m) throws ParseException {
-		long time = occTime.formatString.parse(m.group(occTime.fieldIdx)).getTime();
+		long time = getOccTime().formatString.parse(m.group(getOccTime().fieldIdx)).getTime();
 		if (timezoneOffset != null)
 			time += timezoneOffset.longValue();
 		return time;

@@ -60,4 +60,9 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 		serviceStatsTabs.removeDockables(control);
 	}
 
+	@Override
+	public Object getControlDataConfig() {
+		return serviceStatsTabs.getControlDataConfig();
+	}
+
 }
