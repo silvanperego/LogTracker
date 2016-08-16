@@ -40,6 +40,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.sper.logtracker.config.Global;
+import org.sper.logtracker.config.LogTrackerConfig;
+import org.sper.logtracker.config.XMLConfigSupport;
 import org.sper.logtracker.config.compat.ConfigFileAction;
 import org.sper.logtracker.config.compat.ConfigFileOpenButton;
 import org.sper.logtracker.config.compat.ConfigFileSaveButton;
@@ -400,8 +403,9 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 						
 						@Override
 						public void execConfigFileOperation(File selectedFile) throws Exception {
-//							config.safeToFile(selectedFile);
+							safeConfigToFile(selectedFile);
 						}
+
 					}, new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							saveLoadedParser();
@@ -606,6 +610,19 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			}
 		}
 		return configList;
+	}
+
+	protected void safeConfigToFile(File selectedFile) {
+		LogTrackerConfig config = new LogTrackerConfig();
+		Global global = new Global();
+		config.setGlobal(global);
+		for (int row : logParserTable.getSelectedRows()) {
+			ConfiguredLogParser<?> parserConfig = parserConfigModel.getParser(row);
+			if (parserConfig.isEditable()) {
+				global.getLogParser().add(parserConfig);
+			}
+		}
+		new XMLConfigSupport().saveXMLConfig(selectedFile, config);
 	}
 
 	@Override
