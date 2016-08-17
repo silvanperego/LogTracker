@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 import org.sper.logtracker.logreader.LogSource;
-import org.sper.logtracker.servstat.ui.ServiceControlPanel.ServiceControlData;
+import org.sper.logtracker.servstat.ui.ServiceControlData;
 
 public class FileControl {
 

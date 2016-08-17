@@ -143,11 +143,17 @@ public class ServiceStatsTabs {
 	}
 
 	public Object getControlDataConfig() {
-		return serviceControlPanel.getConfig();
+		final ServiceControlData config = serviceControlPanel.getConfig();
+		if (userPanel != null)
+			userPanel.addUserExludes(config);
+		return config;
 	}
 
 	public void applyConfig(Object controlData) {
-		serviceControlPanel.applyXmlConfig(controlData);
+		ServiceControlData scd = (ServiceControlData) controlData;
+		serviceControlPanel.applyXmlConfig(scd);
+		if (userPanel != null)
+			userPanel.applyConfig(scd);
 	}
 
 }

@@ -21,8 +21,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -39,7 +37,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlValue;
 
 import org.jfree.chart.plot.XYPlot;
@@ -96,29 +93,6 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		Integer color;
 	}
 	
-	public static class ServiceControlData {
-		private List<ServiceControlDataRow> controlData = new ArrayList<>();
-		private Double magFact;
-
-		@XmlElement
-		public List<ServiceControlDataRow> getControlData() {
-			return controlData;
-		}
-		
-		public void addControlData(ServiceControlDataRow row) {
-			controlData.add(row);
-		}
-
-		@XmlAttribute
-		public Double getMagFact() {
-			return magFact;
-		}
-
-		public void setMagFact(Double magFact) {
-			this.magFact = magFact;
-		}
-	}
-
 	public ServiceControlPanel(ServiceStatsTabs serviceStatsTabs) {
 		super();
 		controlTable = new JTable();
@@ -206,11 +180,10 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		magFactSpinner.setValue(confData.magFact);
 	}
 
-	public void applyXmlConfig(Object controlData) {
-		ServiceControlData scd = (ServiceControlData) controlData;
+	public void applyXmlConfig(ServiceControlData scd) {
 		controlTableModel.setRowCount(0);
 		keepConfig = true;
-		for (ServiceControlDataRow sdr : scd.controlData) {
+		for (ServiceControlDataRow sdr : scd.getControlData()) {
 			Object[] row = new Object[NCOLS];
 			row[SERVICE_NAME_COL] = sdr.serviceName;
 			row[DO_SCATTER_COL] = sdr.withScatter;
@@ -221,28 +194,28 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 				row[COLOR_COL] = new Color(sdr.color);
 			controlTableModel.addRow(row);
 		}
-		magFactSpinner.setValue(scd.magFact);
+		magFactSpinner.setValue(scd.getMagFact());
 	}
 
 	@SuppressWarnings("unchecked")
-		public ServiceControlData getConfig() {
-			ServiceControlData scd = new ServiceControlData();
-			for (Vector<Object> row : (Vector<Vector<Object>>) controlTableModel.getDataVector()) {
-				if (rowHoldsConfig(row)) {
-					ServiceControlDataRow sdr = new ServiceControlDataRow();
-					sdr.serviceName = (String) row.get(SERVICE_NAME_COL);
-					sdr.withScatter = (Boolean) row.get(DO_SCATTER_COL);
-					sdr.withMean = (Boolean) row.get(DO_MEAN_TIME_COL);
-					sdr.withMedian = (Boolean) row.get(DO_MEDIAN_TIME_COL);
-					sdr.withPerSecond = (Boolean) row.get(DO_PER_SECOND_COL);
-					final Color color = (Color) row.get(COLOR_COL);
-					sdr.color = color != null ? color.getRGB() : null;
-					scd.controlData.add(sdr);
-				}
+	public ServiceControlData getConfig() {
+		ServiceControlData scd = new ServiceControlData();
+		for (Vector<Object> row : (Vector<Vector<Object>>) controlTableModel.getDataVector()) {
+			if (rowHoldsConfig(row)) {
+				ServiceControlDataRow sdr = new ServiceControlDataRow();
+				sdr.serviceName = (String) row.get(SERVICE_NAME_COL);
+				sdr.withScatter = (Boolean) row.get(DO_SCATTER_COL);
+				sdr.withMean = (Boolean) row.get(DO_MEAN_TIME_COL);
+				sdr.withMedian = (Boolean) row.get(DO_MEDIAN_TIME_COL);
+				sdr.withPerSecond = (Boolean) row.get(DO_PER_SECOND_COL);
+				final Color color = (Color) row.get(COLOR_COL);
+				sdr.color = color != null ? color.getRGB() : null;
+				scd.addControlData(sdr);
 			}
-			scd.magFact = (Double) magFactSpinner.getValue();
-			return scd;
 		}
+		scd.setMagFact((Double) magFactSpinner.getValue());
+		return scd;
+	}
 
 	/**
 	 * Überprüft, ob in einer Row-Config-Element vorhanden sind.

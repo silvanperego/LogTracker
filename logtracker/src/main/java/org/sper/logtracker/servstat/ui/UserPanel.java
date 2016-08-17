@@ -84,12 +84,23 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 		keepConfig = true;
 		for (Entry<String, Boolean> entry : filterMap.entrySet()) {
 			Object[] obj = new Object[] {
-					entry.getKey(), null, null, null, null, null, entry.getValue()
+					entry.getKey(), null, null, null, null, null, null, entry.getValue()
 			};
 			userTableModel.addRow(obj);
 		}
 	}
 
+	public void applyConfig(ServiceControlData scd) {
+		userTableModel.setRowCount(0);
+		keepConfig = true;
+		for (String entry : scd.getUserExclude()) {
+			Object[] obj = new Object[] {
+					entry, null, null, null, null, null, null, Boolean.FALSE
+			};
+			userTableModel.addRow(obj);
+		}
+	}
+	
 	public Serializable getConfig() {
 		HashMap<String, Boolean> filterMap = new HashMap<String, Boolean>();
 		for (int i = 0; i < userTableModel.getRowCount(); i++) {
@@ -107,5 +118,13 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 	@Override
 	public boolean isDynamicModule() {
 		return true;
+	}
+
+	public void addUserExludes(ServiceControlData config) {
+		for (int i = 0; i < userTableModel.getRowCount(); i++) {
+			Boolean selected = (Boolean) userTableModel.getValueAt(i, 7);
+			if (!selected)		// Beim User-Filter werden nur diejenigen User gespeichert, welche *nicht* angezeigt werden sollen.
+				config.addUserExclude((String) userTableModel.getValueAt(i, 0));
+		}
 	}
 }
