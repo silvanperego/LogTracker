@@ -39,8 +39,7 @@ public class ToolBar extends JToolBar {
 		JButton btnLoadConfig = new ConfigFileOpenButton(logTracker.getFrame(), null, new ConfigFileAction() {
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
-				// Das war wohl kein XML-File. Wir versuchen mit dem 
-				logTracker.openFileControlWithConfiguration(CLocation.base().normalSouth(0.5), selectedFile, null);
+				logTracker.applyConfigurationFile(selectedFile);
 			}
 		});
 		btnLoadConfig.setToolTipText("Open Config File");
@@ -59,7 +58,7 @@ public class ToolBar extends JToolBar {
 		JButton newFileControlBtn = new JButton(new ImageIcon(ToolBar.class.getResource("/newFileConfig.png")));
 		newFileControlBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
-				logTracker.addNewFileControl(CLocation.base().normalSouth(0.5), null, null);
+				logTracker.addNewFileControl(CLocation.base().normalSouth(0.5));
 			}
 		});
 		newFileControlBtn.setToolTipText("Add new Log-File Source Config Box");

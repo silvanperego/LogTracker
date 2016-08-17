@@ -73,11 +73,10 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		String parserConfig, title;
 	}
 
-	public FileControlPanel(final LogTracker logTracker, List<LogSource> fnameList, MessageListener listener, ToolBar toolBar, Configuration config, ParserConfigList parserConfigCatalog) {
+	public FileControlPanel(final LogTracker logTracker, MessageListener listener, ToolBar toolBar, ParserConfigList parserConfigCatalog) {
 		super();
 		this.logTracker = logTracker;
 		this.toolBar = toolBar;
-		this.config = config;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -214,10 +213,6 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			}
 		};
 		checkEnableApplyButton();
-		if (fnameList != null)
-			for (LogSource source : fnameList) {
-				logFileTableModel.addRow(source.modelEntry());
-			}
 		logFileTable.setModel(logFileTableModel);
 		
 		logFileTableModel.addTableModelListener(new TableModelListener() {
@@ -245,39 +240,14 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		logFileTable.getColumnModel().getColumn(2).setResizable(false);
 		logFileTable.getColumnModel().getColumn(2).setPreferredWidth(30);
 		Console.setListener(listener);
-		if (config != null)
-			config.registerModule(new ConfigurationAware() {
-
-				public Serializable getConfig() {
-					ConfiguredLogParser<?> parserConfig = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
-					if (parserConfig != null && parserConfig.isEditable()) {
-						ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
-						configList.add(parserConfig);
-						return configList;
-					}
-					return null;
-				}
-
-				@Override
-				public String getCompKey() {
-					return ConfiguredLogParser.CONFIG_NAME;
-				}
-
-				@Override
-				public void applyConfig(Serializable cfg) {
-					@SuppressWarnings("unchecked")
-					ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
-					if (logParserList != null && !logParserList.isEmpty()) {
-						parserModel.addParsers(logParserList);
-						logFileFormatBox.setSelectedItem(logParserList.get(0));
-					}
-				}
-
-				@Override
-				public boolean isDynamicModule() {
-					return false;
-				}
-			});
+	}
+	
+	public void addFileNames(List<LogSource> fnameList) {
+		if (fnameList != null)
+			for (LogSource source : fnameList) {
+				logFileTableModel.addRow(source.modelEntry());
+			}
+		logFileTableModel.fireTableDataChanged();
 	}
 
 	@Override
@@ -285,6 +255,9 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		return "FileControl";
 	}
 
+	/**
+	 * Legacy Config.
+	 */
 	@Override
 	public void applyConfig(Serializable cfg) {
 		logFileTableModel.setRowCount(0);
@@ -317,14 +290,36 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			if (conf.obsVal != null) {
 				obsValSpinner.setValue(conf.obsVal);
 			}
-			if (logFileFormatBox.getSelectedIndex() < 0 && conf.parserConfig != null)
-				for (int i = parserModel.getSize(); --i >= 0; ) {
-					LogParser<?> logParser = parserModel.getElementAt(i);
-					if (conf.parserConfig.equals(logParser.getName())) {
-						logFileFormatBox.setSelectedIndex(i);;
-					}
-				}
+			setSelectedParser(conf.parserConfig);
 		}
+	}
+
+	/**
+	 * Neue XML-basierte Config anwenden.
+	 * @param fileControlConfig
+	 */
+	public void applyConfig(FileControl fileControlConfig) {
+		for (LogSource logSource : fileControlConfig.getLogSource())
+			logFileTableModel.addRow(new Object[] {logSource.getFileName(), logSource.getSourceName()});
+		useObsVal.setSelected(fileControlConfig.getObsVal() != null);
+		if (fileControlConfig.getObsVal() != null) {
+			obsValSpinner.setValue(fileControlConfig.getObsVal());
+		}
+		setSelectedParser(fileControlConfig.getParserConfig());
+	}
+
+	/**
+	 * Setze die Dropdownbox auf den selektierten Parser.
+	 * @param parserName der Name des gesuchten Parsers.
+	 */
+	private void setSelectedParser(String parserName) {
+		if (logFileFormatBox.getSelectedIndex() < 0 && parserName != null)
+			for (int i = parserModel.getSize(); --i >= 0; ) {
+				LogParser<?> logParser = parserModel.getElementAt(i);
+				if (parserName.equals(logParser.getName())) {
+					logFileFormatBox.setSelectedIndex(i);;
+				}
+			}
 	}
 
 	public FileControl getConfig() {
@@ -338,6 +333,32 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		if (activeLogFileType != null)
 			conf.setControlData(activeLogFileType.getControlDataConfig());
 		return conf;
+	}
+
+	public void setConfig(Configuration config) {
+		this.config = config;
+		config.registerModule(new ConfigurationAware() {
+
+			@Override
+			public String getCompKey() {
+				return ConfiguredLogParser.CONFIG_NAME;
+			}
+
+			@Override
+			public void applyConfig(Serializable cfg) {
+				@SuppressWarnings("unchecked")
+				ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
+				if (logParserList != null && !logParserList.isEmpty()) {
+					parserModel.addParsers(logParserList);
+					logFileFormatBox.setSelectedItem(logParserList.get(0));
+				}
+			}
+
+			@Override
+			public boolean isDynamicModule() {
+				return false;
+			}
+		});
 	}
 
 	void setupFileProcessing() throws InterruptedException {

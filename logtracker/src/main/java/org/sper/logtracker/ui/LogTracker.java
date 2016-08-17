@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.sper.logtracker.config.FileControl;
 import org.sper.logtracker.config.Global;
 import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.XMLConfigSupport;
@@ -117,29 +118,14 @@ public class LogTracker {
 		control.addDockable(logFileDockable);
 		logFileDockable.setLocation(CLocation.base().normal().stack());
 		logFileDockable.setVisible(true);
-		openFileControlWithConfiguration(CLocation.base().normal().stack(), cfgFile != null ? new File(cfgFile) : null, fnameList);
+		if (cfgFile != null)
+			applyConfigurationFile(new File(cfgFile));
+		else
+			addNewFileControl(CLocation.base().normal().stack());
 	}
 
-	public void openFileControlWithConfiguration(CLocation location, File selectedFile, List<LogSource> fnameList) {
-		Configuration configuration = new Configuration();
-		FileControlPanel fileControlPanel = addNewFileControl(location, configuration, fnameList);
-		configuration.registerModule(fileControlPanel);
-		if (selectedFile != null) {
-			try {
-				LogTrackerConfig xmlConfig = new XMLConfigSupport().loadConfiguration(selectedFile);
-				if (xmlConfig == null)
-					// Das war wohl kein XML-File. Versuche alte Konfiguration mit Java Deserialisierung zu laden.
-					configuration.loadConfiguration(selectedFile);
-				else
-					applyConfig(xmlConfig);
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(frame, "Error when loading Config-File: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
-	FileControlPanel addNewFileControl(CLocation location, Configuration configuration, List<LogSource> fnameList) {
-		final FileControlPanel fileControlPanel = new FileControlPanel(this, fnameList, logFilePanel, toolBar, configuration, parserConfigCatalog);
+	FileControlPanel addNewFileControl(CLocation location) {
+		final FileControlPanel fileControlPanel = new FileControlPanel(this, logFilePanel, toolBar, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
 		fileSelectionDockable.setLocation(location);
@@ -161,16 +147,29 @@ public class LogTracker {
 		return fileControlPanel;
 	}
 
+	public void applyConfigurationFile(File selectedFile) {
+		try {
+			LogTrackerConfig xmlConfig = new XMLConfigSupport().loadConfiguration(selectedFile);
+			if (xmlConfig == null) {
+				// Das war wohl kein XML-File. Versuche alte Konfiguration mit Java Deserialisierung zu laden.
+				Configuration configuration = new Configuration();
+				FileControlPanel fileControlPanel = addNewFileControl(CLocation.base().normal());
+				fileControlPanel.setConfig(configuration);
+				configuration.registerModule(fileControlPanel);
+				configuration.loadConfiguration(selectedFile);
+			} else
+				applyConfig(xmlConfig);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame, "Error when loading Config-File: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	public JFrame getFrame() {
 		return frame;
 	}
 	
 	public static void setCfgFile(String cfgFile) {
 		LogTracker.cfgFile = cfgFile;
-	}
-
-	public void setTabIdx(int idx) {
-//		tabbedPane.setSelectedIndex(idx);
 	}
 
 	void setTitle(String title) {
@@ -204,6 +203,10 @@ public class LogTracker {
 				logParser.setEditable(true);
 				parserConfigCatalog.add(logParser);
 			}
+		}
+		for (FileControl fileControlConfig : config.getFileControl()) {
+			FileControlPanel fileControlPanel = addNewFileControl(CLocation.base().normalSouth(0.5));
+			fileControlPanel.applyConfig(fileControlConfig);
 		}
 	}
 
