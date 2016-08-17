@@ -138,6 +138,8 @@ public class ServiceStatsTabs {
 		control.removeDockable(graphDockable);
 		if (userDockable != null)
 			control.removeDockable(userDockable);
+		if (terminationPointer != null)
+			terminationPointer.endOfLife();
 	}
 
 	public Object getControlDataConfig() {

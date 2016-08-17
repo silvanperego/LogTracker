@@ -88,6 +88,8 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	public void removeDockables(CControl control) {
 		control.removeDockable(logLineDockable);
 		logLineDockable = null;
+		if (keepAliveElement != null)
+			keepAliveElement.endOfLife();
 	}
 
 	@Override
@@ -97,7 +99,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 
 	@Override
 	public void applyConfig(Object controlData) {
-		// Es gibt keine spezifische Konfiguration für diesen File-Typ. (Die Methode sollte eigentlich gar nie aufgerufen werden.
+		// Es gibt keine spezifische Konfiguration für diesen File-Typ. (Die Methode sollte eigentlich gar nie aufgerufen werden).
 	}
 
 }
