@@ -10,7 +10,6 @@ import java.util.TimeZone;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -20,20 +19,28 @@ import javax.swing.JTextField;
 import org.sper.logtracker.parserconf.ConfiguredLogParser.OccTimeFieldDescription;
 
 /**
- * Hilfsklasse für die Darstellung der Felder zur Konfiguration der Occurrence-Time.
+ * Hilfsklasse für die Darstellung der Felder zur Konfiguration der Konfigurationsfelder, die in allen Detail-Konfigurationen vorkommen..
  * @author silvan.perego
  *
  */
-public class OccurrenceTimeFieldsHelper {
+public class CommonFieldsHelper {
 
 	private JTextField occTimeFormatString;
-	private JComboBox occTimeGroupCombo;
+	private JComboBox<Integer> occTimeGroupCombo;
 	private JTextField occTimeLanguage;
 	private JTextField occTimeTimezone;
 	private InputVerifier occTimeVerifier;
 	private InputVerifier timezoneVerifier;
+	private JComboBox<Integer> correlationGroupCombo;
 
-	public void addOccurrenceStartTimeFields(final JPanel panel, final ParserConfigDialog configDialog) {
+	/**
+	 * Füge Standard-Konfigurationsfelder für Occurrence-Start-Time und Correlation-ID hinzu.
+	 * @param panel das Panel, dem die Felder hinzugefügt werden. Es sollte über einen Gridbag-Constraint verfügen.
+	 * @param configDialog der configDialog der den Feldern zugrunde liegt.
+	 * @param nIdxFields der maximale Wert des Index für die Index-Dropdowns.
+	 * @return die Anzahl Zeilen, die durch die Standard-Felder beansprucht werden.
+	 */
+	public int addOccurrenceStartTimeFields(final JPanel panel, final ParserConfigDialog configDialog, int nIdxFields) {
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
 			GridBagConstraints gbc_lblOccurenceTimeGroup = new GridBagConstraints();
@@ -44,10 +51,10 @@ public class OccurrenceTimeFieldsHelper {
 			panel.add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
 		}
 		{
-			occTimeGroupCombo = new JComboBox();
+			occTimeGroupCombo = new JComboBox<>();
 			occTimeGroupCombo.setToolTipText(
 					"the capturing group index of the group containing the service call occurrence time");
-			occTimeGroupCombo.setModel(new DefaultComboBoxModel(new Integer[] { null, 1, 2, 3, 4 }));
+			occTimeGroupCombo.setModel(new FieldIdxComboBoxModel(nIdxFields, false));
 			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
 			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
 			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
@@ -141,13 +148,36 @@ public class OccurrenceTimeFieldsHelper {
 				}
 			}
 		}
+		{
+			JLabel lblOccurenceTimeGroup = new JLabel("Correlation-ID Group Index:");
+			GridBagConstraints gbc_lblOccurenceTimeGroup = new GridBagConstraints();
+			gbc_lblOccurenceTimeGroup.insets = new Insets(0, 0, 5, 5);
+			gbc_lblOccurenceTimeGroup.anchor = GridBagConstraints.WEST;
+			gbc_lblOccurenceTimeGroup.gridx = 0;
+			gbc_lblOccurenceTimeGroup.gridy = 1;
+			panel.add(lblOccurenceTimeGroup, gbc_lblOccurenceTimeGroup);
+		}
+		{
+			correlationGroupCombo = new JComboBox<>();
+			correlationGroupCombo.setToolTipText(
+					"the capturing group index of the group containing the message correlation ID.");
+			correlationGroupCombo.setModel(new FieldIdxComboBoxModel(nIdxFields, true));
+			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
+			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
+			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;
+			gbc_occTimeGroupCombo.gridx = 1;
+			gbc_occTimeGroupCombo.gridy = 1;
+			panel.add(correlationGroupCombo, gbc_occTimeGroupCombo);
+		}
+		return 2;
 	}
 
-	public void saveLoadedParser(OccTimeFieldDescription occTime) {
-		occTime.setFieldIdx((Integer) occTimeGroupCombo.getSelectedItem());
-		occTime.setFormatString(occTimeFormatString.getText());
-		occTime.setLanguage(occTimeLanguage.getText());
-		occTime.setTimezone(occTimeTimezone.getText());
+	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
+		parser.getOccTime().setFieldIdx((Integer) occTimeGroupCombo.getSelectedItem());
+		parser.getOccTime().setFormatString(occTimeFormatString.getText());
+		parser.getOccTime().setLanguage(occTimeLanguage.getText());
+		parser.getOccTime().setTimezone(occTimeTimezone.getText());
+		parser.setCorrelationIdIdx((Integer) correlationGroupCombo.getSelectedItem());
 	}
 
 	public void enableDetailFields(boolean b) {
@@ -155,13 +185,15 @@ public class OccurrenceTimeFieldsHelper {
 		occTimeFormatString.setEnabled(b);
 		occTimeLanguage.setEnabled(b);
 		occTimeTimezone.setEnabled(b);
+		correlationGroupCombo.setEnabled(b);
 	}
 
-	public void loadEditingFields(OccTimeFieldDescription occTime) {
-		occTimeGroupCombo.setSelectedItem(occTime.getFieldIdx());
-		occTimeFormatString.setText(occTime.getFormatString());
-		occTimeLanguage.setText(occTime.getLanguage());
-		occTimeTimezone.setText(occTime.getTimezone());
+	public void loadEditingFields(ConfiguredLogParser<?> parser) {
+		occTimeGroupCombo.setSelectedItem(parser.getOccTime().getFieldIdx());
+		occTimeFormatString.setText(parser.getOccTime().getFormatString());
+		occTimeLanguage.setText(parser.getOccTime().getLanguage());
+		occTimeTimezone.setText(parser.getOccTime().getTimezone());
+		correlationGroupCombo.setSelectedItem(parser.getCorrelationIdIdx());
 	}
 
 	public void removeErrorMarks() {

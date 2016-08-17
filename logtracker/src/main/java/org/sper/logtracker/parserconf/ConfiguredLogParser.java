@@ -33,6 +33,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	private boolean includeLines, includeContaining, editable;
 	private Long timezoneOffset;
 	private OccTimeFieldDescription occTime;
+	private Integer correlationIdIdx;
 
 	// Die nachfolgenden Felder sind nur vorhanden um die Rückwärtskompatibilität der Config-Files sicherzustellen.
 	private SimpleDateFormat occTimeFormatString = null;
@@ -305,6 +306,14 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 
 	public void setOccTime(OccTimeFieldDescription occTime) {
 		this.occTime = occTime;
+	}
+
+	public Integer getCorrelationIdIdx() {
+		return correlationIdIdx;
+	}
+
+	public void setCorrelationIdIdx(Integer correlationIdIdx) {
+		this.correlationIdIdx = correlationIdIdx;
 	}
 
 }
