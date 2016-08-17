@@ -415,6 +415,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	}
 
 	public void cascadeDelete() {
+		parserModel.unregister();
 		if (activeLogFileType != null)
 			activeLogFileType.removeDockables(logTracker.getControl());
 	}

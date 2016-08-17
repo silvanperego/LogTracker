@@ -85,6 +85,7 @@ public class ParserConfigModel extends AbstractTableModel {
 	public void saveInSelectionModel() {
 		logParserCatalog.clear();
 		logParserCatalog.addAll(logParserList.subList(STANDARD_PARSERS_COUNT, logParserList.size()));
+		logParserCatalog.markModelChanged();
 	}
 	
 	public ConfiguredLogParser<?> replaceRow(int rowIdx, FileTypeDescriptor fileTypeDesc) {

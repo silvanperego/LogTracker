@@ -7,20 +7,21 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 import org.sper.logtracker.logreader.LogParser;
+import org.sper.logtracker.parserconf.ParserConfigList.ChangeListener;
 
 /**
  * Führt eine Liste aller Verfügbaren Log-File-Parser und ihrer Eigenschaften.
  * @author silvan.perego
  */
-public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implements ComboBoxModel<LogParser<?>> {
+public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implements ComboBoxModel<LogParser<?>>, ChangeListener {
 	
 	private static final long serialVersionUID = 1L;
 	private Object selectedItem;
-	private List<ConfiguredLogParser<?>> parserList;
+	private ParserConfigList parserList;
 	
 	public ParserSelectionModel(ParserConfigList parserList) {
 		this.parserList = parserList;
-		parserList.addChangeListener(() -> fireContentsChanged(this, 0, getSize()));
+		parserList.addChangeListener(this);
 	}
 
 	@Override
@@ -50,6 +51,19 @@ public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implem
 	public void addParsers(ArrayList<ConfiguredLogParser<?>> parserList2) {
 		parserList.addAll(parserList2);
 		fireContentsChanged(this, 0, getSize());
+	}
+	
+	public void unregister() {
+		parserList.removeChangeListener(this);
+	}
+
+	@Override
+	public void modelChanged() {
+		fireContentsChanged(this, 0, getSize());
+		if (selectedItem != null) {
+			String name = ((ConfiguredLogParser<?>) selectedItem).getName();
+			selectedItem = parserList.stream().filter(p -> p.getName().equals(name)).findAny().orElse(null);
+		}
 	}
 
 }

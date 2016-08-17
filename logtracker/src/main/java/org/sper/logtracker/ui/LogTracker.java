@@ -204,6 +204,7 @@ public class LogTracker {
 				logParser.setEditable(true);
 				parserConfigCatalog.add(logParser);
 			}
+			parserConfigCatalog.markModelChanged();
 		}
 		for (FileControl fileControlConfig : config.getFileControl()) {
 			FileControlPanel fileControlPanel = addNewFileControl(CLocation.base().normalSouth(0.5));

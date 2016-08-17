@@ -19,22 +19,24 @@ public class ParserConfigList extends ArrayList<ConfiguredLogParser<?>> {
 	public void addChangeListener(ChangeListener listener) {
 		listenerList.add(listener);
 	}
+	
+	public void removeChangeListener(ChangeListener listener) {
+		listenerList.remove(listener);
+	}
 
 	@Override
 	public boolean add(ConfiguredLogParser<?> paramE) {
 		final boolean result = super.add(checkNameUnqiue(paramE));
-		markModelChanged();
 		return result;
 	}
 
-	private void markModelChanged() {
+	public void markModelChanged() {
 		listenerList.forEach(ChangeListener::modelChanged);
 	}
 
 	@Override
 	public void add(int paramInt, ConfiguredLogParser<?> paramE) {
 		super.add(paramInt, checkNameUnqiue(paramE));
-		markModelChanged();
 	}
 
 	@Override
@@ -43,7 +45,6 @@ public class ParserConfigList extends ArrayList<ConfiguredLogParser<?>> {
 			checkNameUnqiue(parser);
 		}
 		final boolean result = super.addAll(paramCollection);
-		markModelChanged();
 		return result;
 	}
 
