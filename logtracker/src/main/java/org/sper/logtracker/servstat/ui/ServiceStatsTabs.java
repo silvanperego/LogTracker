@@ -49,11 +49,13 @@ public class ServiceStatsTabs {
 		serviceControlPanel = new ServiceControlPanel(this);
 		int stackpos = 0;
 		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel);
-		configuration.registerModule(serviceControlPanel);
+		if (configuration != null)
+			configuration.registerModule(serviceControlPanel);
 		providesUsers = logParser.providesUsers();
 		if (providesUsers) {
 			userPanel = new UserPanel(this);
-			configuration.registerModule(userPanel);
+			if (configuration != null)
+				configuration.registerModule(userPanel);
 			userDockable = createDockable(control, stackpos++, "Users", userPanel);
 			userDockable.setVisible(true);
 		}
@@ -140,6 +142,10 @@ public class ServiceStatsTabs {
 
 	public Object getControlDataConfig() {
 		return serviceControlPanel.getConfig();
+	}
+
+	public void applyConfig(Object controlData) {
+		serviceControlPanel.applyXmlConfig(controlData);
 	}
 
 }

@@ -40,4 +40,10 @@ public interface FileTypeDescriptor {
 
 	Object getControlDataConfig();
 
+	/**
+	 * Wende Filetyp-spezifische Konfigurationen an.
+	 * @param controlData
+	 */
+	void applyConfig(Object controlData);
+
 }

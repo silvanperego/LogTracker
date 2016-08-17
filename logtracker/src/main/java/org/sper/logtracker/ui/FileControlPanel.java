@@ -306,6 +306,15 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			obsValSpinner.setValue(fileControlConfig.getObsVal());
 		}
 		setSelectedParser(fileControlConfig.getParserConfig());
+		Object controlData = fileControlConfig.getControlData();
+		if (controlData != null) {
+			try {
+				setupFileProcessing();
+				activeLogFileType.applyConfig(controlData);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -367,7 +376,8 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		if (activeLogFileType != logFileTypeDescriptor) {
 			if (activeLogFileType != null)
 				activeLogFileType.removeDockables(logTracker.getControl());
-			config.resetDynamicModules();
+			if (config != null)
+				config.resetDynamicModules();
 			logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser);
 			activeLogFileType = logFileTypeDescriptor;
 		}
@@ -376,7 +386,8 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			logSource.add(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
 		}
 		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart());
-		config.resetActiveConfig();
+		if (config != null)
+			config.resetActiveConfig();
 	}
 
 	public Long getObsStart() {

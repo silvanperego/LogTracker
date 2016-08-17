@@ -65,4 +65,9 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 		return serviceStatsTabs.getControlDataConfig();
 	}
 
+	@Override
+	public void applyConfig(Object controlData) {
+		serviceStatsTabs.applyConfig(controlData);
+	}
+
 }

@@ -95,4 +95,9 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 		return null;
 	}
 
+	@Override
+	public void applyConfig(Object controlData) {
+		// Es gibt keine spezifische Konfiguration für diesen File-Typ. (Die Methode sollte eigentlich gar nie aufgerufen werden.
+	}
+
 }

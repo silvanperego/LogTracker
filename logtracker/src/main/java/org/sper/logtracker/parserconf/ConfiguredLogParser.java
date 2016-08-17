@@ -165,7 +165,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	 * @param includeExcludePattern Mit diesem Pattern können Zeilen von vorneweg ignoriert oder aber berücksichtigt werden. (Siehe auch
 	 * {@link #setInclusionOperator(InclusionOperator)}.)
 	 */
-	public void setIncludeExcludePattern(String includeExcludePatternStr) {
+	public void setIncludeExcludePatternStr(String includeExcludePatternStr) {
 		this.includeExcludePattern = Pattern.compile(includeExcludePatternStr);
 	}
 	

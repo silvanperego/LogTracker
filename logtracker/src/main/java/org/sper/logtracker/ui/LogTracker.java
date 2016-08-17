@@ -160,6 +160,7 @@ public class LogTracker {
 			} else
 				applyConfig(xmlConfig);
 		} catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(frame, "Error when loading Config-File: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}

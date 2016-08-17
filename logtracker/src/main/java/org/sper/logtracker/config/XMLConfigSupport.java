@@ -43,9 +43,6 @@ public class XMLConfigSupport {
 				LogTrackerConfig logTrackerconfig = (LogTrackerConfig) unmarshaller.unmarshal(fr);
 				return logTrackerconfig;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
 		}
 		return null;
 	}
