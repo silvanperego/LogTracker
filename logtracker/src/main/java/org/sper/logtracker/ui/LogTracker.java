@@ -14,8 +14,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.sper.logtracker.config.Global;
 import org.sper.logtracker.config.LogTrackerConfig;
+import org.sper.logtracker.config.XMLConfigSupport;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.logreader.LogSource;
+import org.sper.logtracker.parserconf.ConfiguredLogParser;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
@@ -118,15 +120,20 @@ public class LogTracker {
 		openFileControlWithConfiguration(CLocation.base().normal().stack(), cfgFile != null ? new File(cfgFile) : null, fnameList);
 	}
 
-	void openFileControlWithConfiguration(CLocation location, File selectedFile, List<LogSource> fnameList) {
+	public void openFileControlWithConfiguration(CLocation location, File selectedFile, List<LogSource> fnameList) {
 		Configuration configuration = new Configuration();
 		FileControlPanel fileControlPanel = addNewFileControl(location, configuration, fnameList);
 		configuration.registerModule(fileControlPanel);
 		if (selectedFile != null) {
 			try {
-				configuration.loadConfiguration(selectedFile);
+				LogTrackerConfig xmlConfig = new XMLConfigSupport().loadConfiguration(selectedFile);
+				if (xmlConfig == null)
+					// Das war wohl kein XML-File. Versuche alte Konfiguration mit Java Deserialisierung zu laden.
+					configuration.loadConfiguration(selectedFile);
+				else
+					applyConfig(xmlConfig);
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(frame, "Error when loading Config-File", "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Error when loading Config-File: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -186,6 +193,18 @@ public class LogTracker {
 		parserConfigCatalog.stream().filter(p -> p.isEditable()).forEach(p -> global.getLogParser().add(p));;
 		fileControlPanelList.stream().forEach(fcp -> config.addFileControl(fcp.getConfig()));
 		return config;
+	}
+	
+	public void applyConfig(LogTrackerConfig config) {
+		Global global = config.getGlobal();
+		if (global != null) {
+			if (global.getTitle() != null)
+				toolBar.setText(global.getTitle());
+			for (ConfiguredLogParser<?> logParser : global.getLogParser()) {
+				logParser.setEditable(true);
+				parserConfigCatalog.add(logParser);
+			}
+		}
 	}
 
 }

@@ -27,6 +27,9 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 	private Integer successCode;
 	private Integer returnCodeIdx;
 	
+	public ServiceResponseLogParser() {
+	}
+	
 	public ServiceResponseLogParser(String parserName) {
 		super(parserName);
 	}

@@ -39,6 +39,7 @@ public class ToolBar extends JToolBar {
 		JButton btnLoadConfig = new ConfigFileOpenButton(logTracker.getFrame(), null, new ConfigFileAction() {
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
+				// Das war wohl kein XML-File. Wir versuchen mit dem 
 				logTracker.openFileControlWithConfiguration(CLocation.base().normalSouth(0.5), selectedFile, null);
 			}
 		});

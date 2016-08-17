@@ -22,6 +22,17 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	private transient ThreadLocal<FileSnippet> lastLineInFile = new ThreadLocal<FileSnippet>();
 	private String encoding;
 
+	public ErrorLogParser() {
+	}
+	
+	public ErrorLogParser(String parserName) {
+		super(parserName);
+	}
+	
+	public ErrorLogParser(ConfiguredLogParser<?> other) {
+		super(other);
+	}
+	
 	@Override
 	@XmlAttribute
 	public String getEncoding() {
@@ -32,14 +43,6 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 		this.encoding = encoding;
 	}
 
-	public ErrorLogParser(String parserName) {
-		super(parserName);
-	}
-	
-	public ErrorLogParser(ConfiguredLogParser<?> other) {
-		super(other);
-	}
-	
 	@XmlAttribute
 	public Integer getSeverityIdx() {
 		return severityIdx;

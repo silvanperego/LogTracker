@@ -39,7 +39,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	private String occTimeLanguage, occTimeTimezone;
 	private Integer occTimeIdx;
 	private String dateFormat;
-	
+
 	public static class OccTimeFieldDescription {
 		public OccTimeFieldDescription() {
 		}
@@ -69,7 +69,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		/**
 		 * @param occTimeIdx Der Gruppen-Index der Regex-Gruppe welche die Occurrence-Time liefert.
 		 */
-		public void setFieldIdx(int occTimeIdx) {
+		public void setFieldIdx(Integer occTimeIdx) {
 			this.fieldIdx = occTimeIdx;
 		}
 
@@ -107,9 +107,13 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		}
 	}
 	
-	public ConfiguredLogParser(String parserName) {
-		this.parserName = parserName;
+	public ConfiguredLogParser() {
 		occTime = new OccTimeFieldDescription();
+	}
+	
+	public ConfiguredLogParser(String parserName) {
+		this();
+		this.parserName = parserName;
 	}
 	
 	/**
