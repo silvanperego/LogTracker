@@ -21,9 +21,10 @@ public class RawErrorDataPoint extends RawDataPoint {
 	 * @param severity der Schweregrad der Meldung
 	 * @param msg der Meldungstext.
 	 * @param fileSnippet Der File-Ausschnitt, welcher diese Fehlermeldung repräsentiert.
+	 * @param correlationId die Korrelations-ID der Meldung.
 	 */
-	public RawErrorDataPoint(Long occTime, String user, String severity, String msg, String logSource, FileSnippet fileSnippet) {
-		super(occTime, user, logSource);
+	public RawErrorDataPoint(Long occTime, String user, String severity, String msg, String logSource, FileSnippet fileSnippet, String correlationId) {
+		super(occTime, user, logSource, correlationId);
 		this.severity = severity;
 		this.msg = msg;
 		this.fileSnippet = fileSnippet;

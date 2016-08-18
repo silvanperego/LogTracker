@@ -111,7 +111,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 				double execTime = Double.parseDouble(m.group(responseTimeIdx)) * responseTimeFactor;
 				String user = userIdx != null ? m.group(userIdx) : null;
 				Integer returnCode = returnCodeIdx != null && m.group(returnCodeIdx) != null ? Integer.valueOf(m.group(returnCodeIdx)) : null;
-				logLineParser.receiveData(new RawStatsDataPoint(time, execTime, service, user, returnCode, logLineParser.getLogSource()));
+				logLineParser.receiveData(new RawStatsDataPoint(time, execTime, service, user, returnCode, logLineParser.getLogSource(), getCorrelationId(m)));
 			}
 		}
 	}

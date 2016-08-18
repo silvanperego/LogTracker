@@ -82,7 +82,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 			String msg = m.group(msgIdx);
 			String severity = severityIdx != null && m.group(severityIdx) != null ? m.group(severityIdx).toUpperCase() : null;
 			String user = userIdIdx != null ? m.group(userIdIdx) : null;
-			logLineParser.receiveData(new RawErrorDataPoint(time, user, severity, msg, logLineParser.getLogSource(), fileSnippet));
+			logLineParser.receiveData(new RawErrorDataPoint(time, user, severity, msg, logLineParser.getLogSource(), fileSnippet, getCorrelationId(m)));
 			if (lastLineInFile == null)
 				lastLineInFile = new ThreadLocal<FileSnippet>();
 			if (lastLineInFile.get() != null)

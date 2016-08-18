@@ -10,12 +10,12 @@ import org.jfree.data.xy.XYDataItem;
 public class DataPoint extends XYDataItem {
 	
 	private static final long serialVersionUID = 1L;
-	final public Long occTime;
-	final public Double value;
-	final public String source;
-	final public Integer svcIdx;
-	final public Integer user;
-	final public Integer returnCode;
+	public final Long occTime;
+	public final Double value;
+	public final String source;
+	public final Integer svcIdx;
+	public final Integer user;
+	public final Integer returnCode;
 	
 	public DataPoint(Integer svcIdx, Long occTime, Double execTime, Integer user, Integer returnCode, String source) {
 		super(occTime, execTime);

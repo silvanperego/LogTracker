@@ -210,6 +210,10 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		return time;
 	}
 
+	protected String getCorrelationId(Matcher m) {
+		return correlationIdIdx != null ? m.group(correlationIdIdx) : null;
+	}
+
 	protected abstract void extractData(LogLineParser<T> logLineParser, Long obsStart,
 			Matcher m, FileSnippet lineInFile) throws ParseException;
 
