@@ -20,24 +20,29 @@ public class PipelineHelper {
 	 * @param fname eine Liste der Filenamen, welche überwacht werden sollen.
 	 * @param logLineInterpreter interpretiert die gelesenen Zeilen und erstellt Raw-Datensätze.
 	 * @param obsStart Daten ab diesem Zeitpunkt sollen interpretiert, ansonsten ignoriert werden.
-	 * @param rawDataListener der Daten-Listener, an welche die interpretierten und verarbeiteten Daten gesendet werden sollen.
+	 * @param rawDataListener die Daten-Listener, an welche die interpretierten und verarbeiteten Daten gesendet werden sollen.
 	 * @return ein KeepAliveElement. Mit diesem kann das Ende eine Lese-Operation signalisiert werden.
 	 * @throws FileNotFoundException
 	 */
+	@SafeVarargs
 	public static <T extends RawDataPoint> KeepAliveElement setupFileReaders(List<LogSource> logSource,
-			LogParser<T> logLineInterpreter, Long obsStart, DataListener<T> rawDataListener)
+			LogParser<T> logLineInterpreter, Long obsStart, DataListener<T>... rawDataListener)
 			throws FileNotFoundException {
 		KeepAliveElement terminationPointer = null;
 		if (logSource.size() == 1) {
 			LogLineParser<T> logLineParser = new LogLineParser<T>(logLineInterpreter, obsStart, logSource.get(0).getSourceName());
-			logLineParser.registerListener(rawDataListener);
+			for (DataListener<T> dataListener : rawDataListener) {
+				logLineParser.registerListener(dataListener);
+			}
 			KeepAliveLogReader keepAliveLogReader = new KeepAliveLogReader(new File(logSource.get(0).getFileName()), logLineParser, logLineInterpreter.getEncoding());
 			terminationPointer = keepAliveLogReader;
 			keepAliveLogReader.start();
 		} else {
 			// Bei mehreren Input-Files müssen die Daten durch einen MultiPipeCollector zusammengefasst werden.
 			MultiPipeCollector<T> pipeCollector = new MultiPipeCollector<T>();
-			pipeCollector.addListener(rawDataListener);
+			for (DataListener<T> dataListener : rawDataListener) {
+				pipeCollector.addListener(dataListener);
+			}
 			for (LogSource ls : logSource) {
 				LogLineParser<T> logLineParser = new LogLineParser<T>(logLineInterpreter, obsStart, ls.getSourceName());
 				KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(ls.getFileName()), logLineParser, logLineInterpreter.getEncoding());

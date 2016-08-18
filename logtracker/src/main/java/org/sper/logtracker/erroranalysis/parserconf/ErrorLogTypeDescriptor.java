@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.correlation.CorrelationCatalog;
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.data.LogLineCatalog;
@@ -78,7 +79,10 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
 			}
-			keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog);
+			if (logParser.getCorrelationIdIdx() != null)
+				keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog, CorrelationCatalog.getInstance());
+			else
+				keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(logLinePanel, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}

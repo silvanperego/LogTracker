@@ -3,7 +3,6 @@ package org.sper.logtracker.servstat.parserconf;
 import java.util.List;
 
 import org.sper.logtracker.config.compat.Configuration;
-import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
@@ -52,7 +51,7 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart) {
-		serviceStatsTabs.setupDataPipeLines(logSource, (LogParser<RawStatsDataPoint>) logParser, obsStart);
+		serviceStatsTabs.setupDataPipeLines(logSource, (ConfiguredLogParser<RawStatsDataPoint>) logParser, obsStart);
 	}
 
 	@Override

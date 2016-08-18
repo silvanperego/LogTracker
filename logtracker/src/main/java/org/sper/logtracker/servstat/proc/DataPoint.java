@@ -1,13 +1,14 @@
 package org.sper.logtracker.servstat.proc;
 
 import org.jfree.data.xy.XYDataItem;
+import org.sper.logtracker.correlation.CorrelatedMessage;
 
 /**
  * Repräsentiert einen einzelnen Request mit Auftretenszeit und Ausführungsdauer.
  * @author silvan.perego
  *
  */
-public class DataPoint extends XYDataItem {
+public class DataPoint extends XYDataItem implements CorrelatedMessage {
 	
 	private static final long serialVersionUID = 1L;
 	public final Long occTime;
@@ -27,6 +28,11 @@ public class DataPoint extends XYDataItem {
 		this.user = user;
 		this.returnCode = returnCode;
 		this.correlationId = correlationId;
+	}
+
+	@Override
+	public String getCorrelationId() {
+		return correlationId;
 	}
 
 }

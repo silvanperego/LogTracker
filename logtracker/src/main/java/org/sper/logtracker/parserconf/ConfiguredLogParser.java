@@ -312,6 +312,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		this.occTime = occTime;
 	}
 
+	@XmlAttribute
 	public Integer getCorrelationIdIdx() {
 		return correlationIdIdx;
 	}

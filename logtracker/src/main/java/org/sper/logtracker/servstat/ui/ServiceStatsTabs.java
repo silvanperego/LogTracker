@@ -11,10 +11,11 @@ import javax.swing.JOptionPane;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.correlation.CorrelationCatalog;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.logreader.KeepAliveElement;
-import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
+import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.proc.PipelineHelper;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
@@ -91,7 +92,7 @@ public class ServiceStatsTabs {
 		newPointExtractor.resendData();
 	}
 	
-	public void setupDataPipeLines(List<LogSource> logSource, LogParser<RawStatsDataPoint> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<RawStatsDataPoint> logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = new StatsDataPointFactorizer();
@@ -103,6 +104,8 @@ public class ServiceStatsTabs {
 				}
 			}, serviceControlPanel.getTable(), true, serviceControlPanel.getPublishingSemaphore(), serviceControlPanel.getApplyButton(), successRetCode);
 			factorizer.addListener(serviceStatsCalculator);
+			if (logParser.getCorrelationIdIdx() != null)
+				factorizer.addListener(CorrelationCatalog.getInstance());
 			if (userPanel != null)
 				userPanel.clearTable();
 			if (logParser.providesUsers()) {

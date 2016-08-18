@@ -1,5 +1,6 @@
 package org.sper.logtracker.erroranalysis.data;
 
+import org.sper.logtracker.correlation.CorrelatedMessage;
 import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 
@@ -10,7 +11,7 @@ import org.sper.logtracker.logreader.FileSnippet;
  * 
  * @author silvan.perego
  */
-public class RawErrorDataPoint extends RawDataPoint {
+public class RawErrorDataPoint extends RawDataPoint implements CorrelatedMessage {
 
 	final public String severity;
 	final public String msg;
@@ -33,6 +34,11 @@ public class RawErrorDataPoint extends RawDataPoint {
 	@Override
 	public String toString() {
 		return msg;
+	}
+
+	@Override
+	public String getCorrelationId() {
+		return correlationId;
 	}
 
 }
