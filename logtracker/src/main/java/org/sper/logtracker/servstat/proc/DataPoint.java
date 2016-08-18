@@ -16,8 +16,9 @@ public class DataPoint extends XYDataItem {
 	public final Integer svcIdx;
 	public final Integer user;
 	public final Integer returnCode;
+	public final String correlationId;
 	
-	public DataPoint(Integer svcIdx, Long occTime, Double execTime, Integer user, Integer returnCode, String source) {
+	public DataPoint(Integer svcIdx, Long occTime, Double execTime, Integer user, Integer returnCode, String source, String correlationId) {
 		super(occTime, execTime);
 		this.svcIdx = svcIdx;
 		this.source = source;
@@ -25,6 +26,7 @@ public class DataPoint extends XYDataItem {
 		this.value = execTime;
 		this.user = user;
 		this.returnCode = returnCode;
+		this.correlationId = correlationId;
 	}
 
 }

@@ -97,10 +97,10 @@ public class CategoryViewer extends JFrame {
 				}
 			) {
 				private static final long serialVersionUID = 1L;
-				Class[] columnTypes = new Class[] {
+				Class<?>[] columnTypes = new Class[] {
 					Object.class, String.class, String.class, Object.class
 				};
-				public Class getColumnClass(int columnIndex) {
+				public Class<?> getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 				}
 				public boolean isCellEditable(int row, int column) {

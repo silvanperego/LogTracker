@@ -16,8 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.sper.logtracker.parserconf.ConfiguredLogParser.OccTimeFieldDescription;
-
 /**
  * Hilfsklasse für die Darstellung der Felder zur Konfiguration der Konfigurationsfelder, die in allen Detail-Konfigurationen vorkommen..
  * @author silvan.perego

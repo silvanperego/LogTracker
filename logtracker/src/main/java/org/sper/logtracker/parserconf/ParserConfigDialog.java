@@ -102,8 +102,8 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private Configuration config;
 	private ExtractionFieldHandler extractionFields;
 	private JLabel lblLogFileType;
-	private JComboBox logFileTypeCombo;
-	private DefaultComboBoxModel logFileTypeComboModel;
+	private JComboBox<FileTypeDescriptor> logFileTypeCombo;
+	private DefaultComboBoxModel<FileTypeDescriptor> logFileTypeComboModel;
 	private JPanel dataExtractionPanel;
 	private FileTypeDescriptor fileTypeDesc;
 	private static Color standardBackgroundColor = new JTextField().getBackground();
@@ -211,7 +211,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 					editFields.add(lblLogFileType, gbc_lblLogFileType);
 				}
 				{
-					logFileTypeCombo = new JComboBox();
+					logFileTypeCombo = new JComboBox<>();
 					logFileTypeCombo.addItemListener(new ItemListener() {
 						public void itemStateChanged(ItemEvent e) {
 							if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -221,7 +221,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 							}
 						}
 					});
-					logFileTypeComboModel = new DefaultComboBoxModel();
+					logFileTypeComboModel = new DefaultComboBoxModel<>();
 					logFileTypeCombo.setModel(logFileTypeComboModel);
 					GridBagConstraints gbc_logFileTypeCombo = new GridBagConstraints();
 					gbc_logFileTypeCombo.gridwidth = 4;

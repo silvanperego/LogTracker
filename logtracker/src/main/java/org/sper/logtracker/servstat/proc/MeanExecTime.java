@@ -20,7 +20,7 @@ public class MeanExecTime extends AbstractDataListener<DataPointGroup, DataPoint
 		for (DataPoint dp : dpg) {
 			sum += dp.value;
 		}
-		sendToListeners(new DataPoint(null, dpg.getMidTime(), sum / dpg.size() * magFact, null, null, null));
+		sendToListeners(new DataPoint(null, dpg.getMidTime(), sum / dpg.size() * magFact, null, null, null, null));
 	}
 	
 }

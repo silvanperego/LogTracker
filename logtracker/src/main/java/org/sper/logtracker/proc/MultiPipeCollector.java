@@ -54,6 +54,7 @@ public class MultiPipeCollector<T extends RawDataPoint> extends AbstractDataList
 			markPublish(this);
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public boolean equals(Object o) {
 			return myId == ((CollectorFifo)o).myId;
