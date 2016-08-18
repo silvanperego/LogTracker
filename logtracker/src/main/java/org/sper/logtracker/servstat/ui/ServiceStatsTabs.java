@@ -23,6 +23,7 @@ import org.sper.logtracker.servstat.proc.CategoryCollection;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.NewPointExtractor;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
+import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer.CorrelatedStatsDataPointFactorizer;
 import org.sper.logtracker.servstat.scatter.ServiceScatterPlot;
 import org.sper.logtracker.servstat.scatter.TooltipGenerator;
 import org.sper.logtracker.servstat.stats.StatsCalculator;
@@ -35,7 +36,7 @@ import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 public class ServiceStatsTabs {
 	private ServiceScatterPlot plot;
 	private NewPointExtractor newPointExtractor;
-	private StatsDataPointFactorizer factorizer;
+	private StatsDataPointFactorizer<DataPoint> factorizer;
 	private ServiceControlPanel serviceControlPanel;
 	private UserPanel userPanel;
 	private StatsCalculator serviceStatsCalculator;
@@ -95,7 +96,7 @@ public class ServiceStatsTabs {
 	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<RawStatsDataPoint> logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
-			factorizer = new StatsDataPointFactorizer();
+			factorizer = createFactorizer(logParser);
 			serviceStatsCalculator = new StatsCalculator(factorizer.getService(), new CategoryExtractor() {
 
 				@Override
@@ -104,8 +105,6 @@ public class ServiceStatsTabs {
 				}
 			}, serviceControlPanel.getTable(), true, serviceControlPanel.getPublishingSemaphore(), serviceControlPanel.getApplyButton(), successRetCode);
 			factorizer.addListener(serviceStatsCalculator);
-			if (logParser.getCorrelationIdIdx() != null)
-				factorizer.addListener(CorrelationCatalog.getInstance());
 			if (userPanel != null)
 				userPanel.clearTable();
 			if (logParser.providesUsers()) {
@@ -134,6 +133,16 @@ public class ServiceStatsTabs {
 			JOptionPane.showMessageDialog(serviceControlPanel, sw.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 			pw.close();
 		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private StatsDataPointFactorizer<DataPoint> createFactorizer(ConfiguredLogParser<RawStatsDataPoint> logParser) {
+		if (logParser.getCorrelationIdIdx() != null) {
+			CorrelatedStatsDataPointFactorizer cfact = new StatsDataPointFactorizer.CorrelatedStatsDataPointFactorizer();
+			cfact.addListener(CorrelationCatalog.getInstance());
+			return (StatsDataPointFactorizer) cfact;
+		} else
+			return new StatsDataPointFactorizer.SimpleStatsDataPointFactorizer();
 	}
 
 	public void removeDockables(CControl control) {

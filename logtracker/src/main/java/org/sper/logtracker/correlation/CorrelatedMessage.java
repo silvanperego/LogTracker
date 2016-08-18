@@ -9,4 +9,13 @@ public interface CorrelatedMessage {
 
 	String getCorrelationId();
 	
+	Long getOccurrenceTime();
+	
+	String getLogSource();
+	
+	String getUser();
+	
+	String getDescription();
+	
+	String getDetail();
 }

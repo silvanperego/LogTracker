@@ -24,8 +24,8 @@ public class TooltipGenerator implements XYToolTipGenerator {
 	public String generateToolTip(XYDataset dataset, int seriesIdx, int itemIdx) {
 		DataPoint item = (DataPoint) ((XYSeriesCollection)dataset).getSeries(seriesIdx).getDataItem(itemIdx);
 		StringBuilder sb = new StringBuilder();
-		if (item.source != null) {
-			sb.append(item.source);
+		if (item.logSource != null) {
+			sb.append(item.logSource);
 			sb.append("-> ");
 		}
 		if (item.user != null) {

@@ -41,4 +41,29 @@ public class RawErrorDataPoint extends RawDataPoint implements CorrelatedMessage
 		return correlationId;
 	}
 
+	@Override
+	public Long getOccurrenceTime() {
+		return occTime;
+	}
+
+	@Override
+	public String getLogSource() {
+		return logSource;
+	}
+
+	@Override
+	public String getUser() {
+		return user;
+	}
+
+	@Override
+	public String getDescription() {
+		return msg;
+	}
+
+	@Override
+	public String getDetail() {
+		return fileSnippet.getContents();
+	}
+
 }

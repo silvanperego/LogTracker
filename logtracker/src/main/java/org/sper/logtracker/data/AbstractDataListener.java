@@ -19,7 +19,7 @@ public abstract class AbstractDataListener<RECEIVE,SEND> implements DataListener
 
 	@Override
 	public void publishData() {
-		for (DataListener<SEND> listener : listenerList) {
+		for (DataListener<? extends SEND> listener : listenerList) {
 			listener.publishData();
 		}
 	}
