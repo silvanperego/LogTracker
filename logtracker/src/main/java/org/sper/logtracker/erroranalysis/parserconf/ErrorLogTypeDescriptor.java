@@ -5,7 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.sper.logtracker.config.compat.Configuration;
-import org.sper.logtracker.correlation.CorrelationCatalog;
+import org.sper.logtracker.correlation.data.CorrelationCatalog;
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.data.LogLineCatalog;

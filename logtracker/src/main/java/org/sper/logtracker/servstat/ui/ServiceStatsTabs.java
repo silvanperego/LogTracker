@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.compat.Configuration;
-import org.sper.logtracker.correlation.CorrelationCatalog;
+import org.sper.logtracker.correlation.data.CorrelationCatalog;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogSource;

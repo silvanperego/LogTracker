@@ -1,4 +1,4 @@
-package org.sper.logtracker.correlation;
+package org.sper.logtracker.correlation.data;
 
 /**
  * Repräsentiert ein Datenpunkt mit Correlation-ID.

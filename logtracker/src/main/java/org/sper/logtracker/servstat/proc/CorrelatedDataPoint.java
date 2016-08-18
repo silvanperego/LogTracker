@@ -1,6 +1,6 @@
 package org.sper.logtracker.servstat.proc;
 
-import org.sper.logtracker.correlation.CorrelatedMessage;
+import org.sper.logtracker.correlation.data.CorrelatedMessage;
 
 /**
  * Ein {@link DataPoint} mit einer Referenz zum {@link StatsDataPointFactorizer}.

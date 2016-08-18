@@ -1,6 +1,6 @@
 package org.sper.logtracker.erroranalysis.data;
 
-import org.sper.logtracker.correlation.CorrelatedMessage;
+import org.sper.logtracker.correlation.data.CorrelatedMessage;
 import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 
