@@ -171,7 +171,7 @@ public class CommonFieldsHelper {
 		return 2;
 	}
 
-	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
+	public void saveLoadedParser(ConfiguredLogParser<?,?> parser) {
 		parser.getOccTime().setFieldIdx((Integer) occTimeGroupCombo.getSelectedItem());
 		parser.getOccTime().setFormatString(occTimeFormatString.getText());
 		parser.getOccTime().setLanguage(occTimeLanguage.getText());
@@ -187,7 +187,7 @@ public class CommonFieldsHelper {
 		correlationGroupCombo.setEnabled(b);
 	}
 
-	public void loadEditingFields(ConfiguredLogParser<?> parser) {
+	public void loadEditingFields(ConfiguredLogParser<?,?> parser) {
 		occTimeGroupCombo.setSelectedItem(parser.getOccTime().getFieldIdx());
 		occTimeFormatString.setText(parser.getOccTime().getFormatString());
 		occTimeLanguage.setText(parser.getOccTime().getLanguage());

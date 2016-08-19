@@ -69,7 +69,7 @@ public class ParserConfigCatalog extends ParserConfigList {
 	}
 	
 	
-	public List<FileTypeDescriptor> getParserTypeList(ParserConfigDialog dialog) {
+	public List<FileTypeDescriptor<?,?>> getParserTypeList(ParserConfigDialog dialog) {
 		return Arrays.asList(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR, ERROR_LOG_TYPE_DESCRIPTOR, CORRELATION_DATA_TYPE_DESCRIPTOR);
 	}
 

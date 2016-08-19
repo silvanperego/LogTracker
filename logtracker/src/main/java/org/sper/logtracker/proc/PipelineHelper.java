@@ -26,11 +26,12 @@ public class PipelineHelper {
 	 */
 	@SafeVarargs
 	public static <T extends RawDataPoint> KeepAliveElement setupFileReaders(List<LogSource> logSource,
-			LogParser<T> logLineInterpreter, Long obsStart, DataListener<T>... rawDataListener)
+			LogParser<?> logLineInterpreter, Long obsStart, DataListener<T>... rawDataListener)
 			throws FileNotFoundException {
 		KeepAliveElement terminationPointer = null;
 		if (logSource.size() == 1) {
-			LogLineParser<T> logLineParser = new LogLineParser<T>(logLineInterpreter, obsStart, logSource.get(0).getSourceName());
+			@SuppressWarnings("unchecked")
+			LogLineParser<T> logLineParser = new LogLineParser<T>((LogParser<T>) logLineInterpreter, obsStart, logSource.get(0).getSourceName());
 			for (DataListener<T> dataListener : rawDataListener) {
 				logLineParser.registerListener(dataListener);
 			}
@@ -44,7 +45,8 @@ public class PipelineHelper {
 				pipeCollector.addListener(dataListener);
 			}
 			for (LogSource ls : logSource) {
-				LogLineParser<T> logLineParser = new LogLineParser<T>(logLineInterpreter, obsStart, ls.getSourceName());
+				@SuppressWarnings("unchecked")
+				LogLineParser<T> logLineParser = new LogLineParser<T>((LogParser<T>) logLineInterpreter, obsStart, ls.getSourceName());
 				KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(ls.getFileName()), logLineParser, logLineInterpreter.getEncoding());
 				pipeCollector.addFeeder(logLineParser, keepAliveElement);
 			}

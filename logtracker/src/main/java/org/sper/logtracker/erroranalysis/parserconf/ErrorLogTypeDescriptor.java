@@ -13,7 +13,6 @@ import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
 import org.sper.logtracker.erroranalysis.ui.LogLineTableModel;
 import org.sper.logtracker.logreader.KeepAliveElement;
-import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
@@ -25,7 +24,7 @@ import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 
-public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
+public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser, RawErrorDataPoint> {
 
 	private ParserConfigDialog parserConfigDialog;
 	private ErrorLogExtractionFields fields;
@@ -38,7 +37,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ExtractionFieldHandler createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
+	public ExtractionFieldHandler<ErrorLogParser, RawErrorDataPoint> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
 		if (this.parserConfigDialog != parserConfigDialog)
 			fields = new ErrorLogExtractionFields(parserConfigDialog);
 		this.parserConfigDialog = parserConfigDialog;
@@ -46,7 +45,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?> logParser)
+	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser)
 			throws InterruptedException {
 		logLinePanel = new LogLinePanel();
 		logLineTableModel = logLinePanel.getTableModel();
@@ -62,27 +61,26 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ConfiguredLogParser<?> createParser(String name) {
+	public ErrorLogParser createParser(String name) {
 		return new ErrorLogParser(name);
 	}
 
 	@Override
-	public ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> other) {
+	public ErrorLogParser convertLogParser(ConfiguredLogParser<?,?> other) {
 		return new ErrorLogParser(other);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart) {
 		try {
 			DataListener<RawErrorDataPoint> logLineCatalog = new LogLineCatalog(logLineTableModel);
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
 			}
 			if (logParser.getCorrelationIdIdx() != null)
-				keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog, CorrelationCatalog.getInstance());
+				keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, logLineCatalog, CorrelationCatalog.getInstance());
 			else
-				keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawErrorDataPoint>) logParser, obsStart, logLineCatalog);
+				keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, logLineCatalog);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(logLinePanel, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}

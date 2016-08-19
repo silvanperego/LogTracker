@@ -55,7 +55,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private JSpinner obsValSpinner;
 	private JComboBox<LogParser<?>> logFileFormatBox;
 	private ParserSelectionModel parserModel;
-	private FileTypeDescriptor activeLogFileType;
+	private FileTypeDescriptor<?,?> activeLogFileType;
 	private ToolBar toolBar;
 	private Configuration config;
 	
@@ -336,7 +336,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++)
 			conf.addLogSource(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
 		conf.setObsVal(useObsVal.isSelected() ? (Integer) obsValSpinner.getValue() : null);
-		ConfiguredLogParser<?> selectedItem = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
+		ConfiguredLogParser<?,?> selectedItem = (ConfiguredLogParser<?,?>) logFileFormatBox.getSelectedItem();
 		if (selectedItem != null)
 			conf.setParserConfig(selectedItem.getName());
 		if (activeLogFileType != null)
@@ -356,7 +356,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			@Override
 			public void applyConfig(Serializable cfg) {
 				@SuppressWarnings("unchecked")
-				ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
+				ArrayList<ConfiguredLogParser<?,?>> logParserList = (ArrayList<ConfiguredLogParser<?,?>>) cfg;
 				if (logParserList != null && !logParserList.isEmpty()) {
 					parserModel.addParsers(logParserList);
 					logFileFormatBox.setSelectedItem(logParserList.get(0));
@@ -371,8 +371,8 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	}
 
 	void setupFileProcessing() throws InterruptedException {
-		ConfiguredLogParser<?> logParser = (ConfiguredLogParser<?>) logFileFormatBox.getSelectedItem();
-		FileTypeDescriptor logFileTypeDescriptor = logParser.getLogFileTypeDescriptor();
+		ConfiguredLogParser<?,?> logParser = (ConfiguredLogParser<?,?>) logFileFormatBox.getSelectedItem();
+		FileTypeDescriptor<?,?> logFileTypeDescriptor = logParser.getLogFileTypeDescriptor();
 		if (activeLogFileType != logFileTypeDescriptor) {
 			if (activeLogFileType != null)
 				activeLogFileType.removeDockables(logTracker.getControl());

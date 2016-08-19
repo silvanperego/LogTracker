@@ -15,10 +15,10 @@ import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 
 @XmlType(name = "ServiceResponseLogParser")
-public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPoint> {
+public class ServiceResponseLogParser extends ConfiguredLogParser<ServiceResponseLogParser, RawStatsDataPoint> {
 
 	private static final long serialVersionUID = 1L;
-	transient static FileTypeDescriptor fileTypeDescriptor;
+	transient static FileTypeDescriptor<ServiceResponseLogParser, RawStatsDataPoint> fileTypeDescriptor;
 	private String ignoreServiceList;
 	private int serviceIdx;
 	private int responseTimeIdx;
@@ -34,7 +34,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 		super(parserName);
 	}
 	
-	public ServiceResponseLogParser(ConfiguredLogParser<?> other) {
+	public ServiceResponseLogParser(ConfiguredLogParser<?,?> other) {
 		super(other);
 	}
 
@@ -131,11 +131,11 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<RawStatsDataPo
 	}
 
 	@Override
-	public FileTypeDescriptor getLogFileTypeDescriptor() {
+	public FileTypeDescriptor<ServiceResponseLogParser, RawStatsDataPoint> getLogFileTypeDescriptor() {
 		return fileTypeDescriptor;
 	}
 
-	public static void setFileTypeDescriptor(FileTypeDescriptor fileTypeDescriptor) {
+	public static void setFileTypeDescriptor(FileTypeDescriptor<ServiceResponseLogParser, RawStatsDataPoint> fileTypeDescriptor) {
 		ServiceResponseLogParser.fileTypeDescriptor = fileTypeDescriptor;
 	}
 

@@ -14,14 +14,14 @@ import org.sper.logtracker.servstat.ui.ServiceStatsTabs;
 
 import bibliothek.gui.dock.common.CControl;
 
-public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
+public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<ServiceResponseLogParser, RawStatsDataPoint> {
 
 	private ParserConfigDialog parserConfigDialog;
 	private ServiceResponseExtractionFields fields;
 	private ServiceStatsTabs serviceStatsTabs;
 
 	@Override
-	public ExtractionFieldHandler createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
+	public ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
 		if (this.parserConfigDialog != parserConfigDialog)
 			fields = new ServiceResponseExtractionFields(parserConfigDialog);
 		this.parserConfigDialog = parserConfigDialog;
@@ -29,7 +29,7 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?> logParser) throws InterruptedException {
+	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser) throws InterruptedException {
 		serviceStatsTabs = new ServiceStatsTabs(control, configuration, (ServiceResponseLogParser) logParser);
 	}
 
@@ -39,19 +39,18 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ConfiguredLogParser<RawStatsDataPoint> createParser(String string) {
+	public ServiceResponseLogParser createParser(String string) {
 		return new ServiceResponseLogParser(string);
 	}
 
 	@Override
-	public ConfiguredLogParser<RawStatsDataPoint> convertLogParser(ConfiguredLogParser<?> other) {
+	public ServiceResponseLogParser convertLogParser(ConfiguredLogParser<?,?> other) {
 		return new ServiceResponseLogParser(other);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart) {
-		serviceStatsTabs.setupDataPipeLines(logSource, (ConfiguredLogParser<RawStatsDataPoint>) logParser, obsStart);
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart) {
+		serviceStatsTabs.setupDataPipeLines(logSource, logParser, obsStart);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class ParserTableCellRenderer extends DefaultTableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
-		ConfiguredLogParser<?> logParser = ((ParserConfigModel)table.getModel()).getParser(row);
+		ConfiguredLogParser<?,?> logParser = ((ParserConfigModel)table.getModel()).getParser(row);
 		Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		comp.setEnabled(logParser.isEditable());
 		return comp;

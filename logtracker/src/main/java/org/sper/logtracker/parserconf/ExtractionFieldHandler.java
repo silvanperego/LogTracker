@@ -1,7 +1,7 @@
 package org.sper.logtracker.parserconf;
 
 
-public interface ExtractionFieldHandler<T extends ConfiguredLogParser<R>, R> {
+public interface ExtractionFieldHandler<T extends ConfiguredLogParser<T, R>, R> {
 
 	void saveLoadedParser(T loadedParser);
 

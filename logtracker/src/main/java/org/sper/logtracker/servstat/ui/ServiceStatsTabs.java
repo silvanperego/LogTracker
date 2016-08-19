@@ -18,7 +18,6 @@ import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.proc.PipelineHelper;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
-import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.NewPointExtractor;
@@ -93,10 +92,10 @@ public class ServiceStatsTabs {
 		newPointExtractor.resendData();
 	}
 	
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<RawStatsDataPoint> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart) {
 		try {
 			serviceControlPanel.cleanTable();
-			factorizer = createFactorizer(logParser);
+			factorizer = createFactorizer((ServiceResponseLogParser) logParser);
 			serviceStatsCalculator = new StatsCalculator(factorizer.getService(), new CategoryExtractor() {
 
 				@Override
@@ -136,7 +135,7 @@ public class ServiceStatsTabs {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private StatsDataPointFactorizer<DataPoint> createFactorizer(ConfiguredLogParser<RawStatsDataPoint> logParser) {
+	private StatsDataPointFactorizer<DataPoint> createFactorizer(ServiceResponseLogParser logParser) {
 		if (logParser.getCorrelationIdIdx() != null) {
 			CorrelatedStatsDataPointFactorizer cfact = new StatsDataPointFactorizer.CorrelatedStatsDataPointFactorizer();
 			cfact.addListener(CorrelationCatalog.getInstance());

@@ -29,7 +29,7 @@ public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implem
 		return parserList.size();
 	}
 
-	List<ConfiguredLogParser<?>> getparserList() {
+	List<ConfiguredLogParser<?,?>> getparserList() {
 		return parserList;
 	}
 
@@ -48,7 +48,7 @@ public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implem
 		return selectedItem;
 	}
 
-	public void addParsers(ArrayList<ConfiguredLogParser<?>> parserList2) {
+	public void addParsers(ArrayList<ConfiguredLogParser<?,?>> parserList2) {
 		parserList.addAll(parserList2);
 		fireContentsChanged(this, 0, getSize());
 	}
@@ -61,7 +61,7 @@ public class ParserSelectionModel extends AbstractListModel<LogParser<?>> implem
 	public void modelChanged() {
 		fireContentsChanged(this, 0, getSize());
 		if (selectedItem != null) {
-			String name = ((ConfiguredLogParser<?>) selectedItem).getName();
+			String name = ((ConfiguredLogParser<?,?>) selectedItem).getName();
 			selectedItem = parserList.stream().filter(p -> p.getName().equals(name)).findAny().orElse(null);
 		}
 	}

@@ -11,12 +11,13 @@ import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
-public class CorrelationLogParser extends ConfiguredLogParser<RawCorrelatedDataPoint> {
+public class CorrelationLogParser extends ConfiguredLogParser<CorrelationLogParser, RawCorrelatedDataPoint> {
 
 	private static final long serialVersionUID = 1L;
-	private static FileTypeDescriptor fileTypeDescriptor;
+	private static FileTypeDescriptor<CorrelationLogParser, RawCorrelatedDataPoint> fileTypeDescriptor;
 	protected Integer userIdIdx, serviceNameIdx;
 	protected transient ThreadLocal<FileSnippet> lastLineInFile = new ThreadLocal<FileSnippet>();
+	private String encoding;
 
 	public CorrelationLogParser() {
 		super();
@@ -26,12 +27,22 @@ public class CorrelationLogParser extends ConfiguredLogParser<RawCorrelatedDataP
 		super(parserName);
 	}
 
-	public CorrelationLogParser(ConfiguredLogParser<?> other) {
+	public CorrelationLogParser(ConfiguredLogParser<?,?> other) {
 		super(other);
 		if (other instanceof CorrelationLogParser) {
 			CorrelationLogParser otherCorr = (CorrelationLogParser) other;
 			userIdIdx = otherCorr.userIdIdx;
 		}
+	}
+
+	@Override
+	@XmlAttribute
+	public String getEncoding() {
+		return encoding != null ? encoding : super.getEncoding();
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 
 	@Override
@@ -48,12 +59,12 @@ public class CorrelationLogParser extends ConfiguredLogParser<RawCorrelatedDataP
 		this.userIdIdx = userIdIdx;
 	}
 
-	public static void setFileTypeDescriptor(FileTypeDescriptor fileTypeDescriptor) {
+	public static void setFileTypeDescriptor(FileTypeDescriptor<CorrelationLogParser, RawCorrelatedDataPoint> fileTypeDescriptor) {
 		CorrelationLogParser.fileTypeDescriptor = fileTypeDescriptor;
 	}
 
 	@Override
-	public FileTypeDescriptor getLogFileTypeDescriptor() {
+	public FileTypeDescriptor<CorrelationLogParser, RawCorrelatedDataPoint> getLogFileTypeDescriptor() {
 		return fileTypeDescriptor;
 	}
 
@@ -68,6 +79,15 @@ public class CorrelationLogParser extends ConfiguredLogParser<RawCorrelatedDataP
 			if (lastLineInFile == null)
 				lastLineInFile = new ThreadLocal<FileSnippet>();
 		}
+	}
+
+	@XmlAttribute
+	public Integer getServiceNameIdx() {
+		return serviceNameIdx;
+	}
+
+	public void setServiceNameIdx(Integer serviceNameIdx) {
+		this.serviceNameIdx = serviceNameIdx;
 	}
 
 }

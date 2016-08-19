@@ -89,7 +89,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JRadioButton rdbtnIncluded;
 	private JRadioButton rdbtnExcluded;
 	private JLabel errorText;
-	private ConfiguredLogParser<?> loadedParser;
+	private ConfiguredLogParser<?,?> loadedParser;
 	private JButton okButton;
 	private boolean isNewParser = false;
 	private JButton btnCopy;
@@ -100,12 +100,13 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JButton btnSave;
 	private JButton btnLoadFromFile;
 	private Configuration config;
-	private ExtractionFieldHandler<?,?> extractionFields;
+	@SuppressWarnings("rawtypes")
+	private ExtractionFieldHandler extractionFields;
 	private JLabel lblLogFileType;
-	private JComboBox<FileTypeDescriptor> logFileTypeCombo;
-	private DefaultComboBoxModel<FileTypeDescriptor> logFileTypeComboModel;
+	private JComboBox<FileTypeDescriptor<?,?>> logFileTypeCombo;
+	private DefaultComboBoxModel<FileTypeDescriptor<?,?>> logFileTypeComboModel;
 	private JPanel dataExtractionPanel;
-	private FileTypeDescriptor fileTypeDesc;
+	private FileTypeDescriptor<?,?> fileTypeDesc;
 	private static Color standardBackgroundColor = new JTextField().getBackground();
 	/**
 	 * Create the dialog.
@@ -369,7 +370,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 
 					public void actionPerformed(ActionEvent e) {
 						saveLoadedParser();
-						ConfiguredLogParser<?> logParser = fileTypeDesc.createParser("New Parser");
+						ConfiguredLogParser<?,?> logParser = fileTypeDesc.createParser("New Parser");
 						logParser.setEditable(true);
 						int newRowIdx = parserConfigModel.addParser(logParser);
 						logParserTable.getSelectionModel().setSelectionInterval(newRowIdx, newRowIdx);
@@ -424,7 +425,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 						saveLoadedParser();
 						int selectedRow = logParserTable.getSelectedRow();
 						LogParser<?> oldParser = parserConfigModel.getParser(selectedRow);
-						ConfiguredLogParser<?> newParser = (ConfiguredLogParser<?>) oldParser.clone();
+						ConfiguredLogParser<?,?> newParser = (ConfiguredLogParser<?,?>) oldParser.clone();
 						newParser.setName(oldParser.getName() + " - Copy");
 						int newRowIdx = parserConfigModel.addParser(newParser);
 						logParserTable.getSelectionModel().setSelectionInterval(newRowIdx, newRowIdx);
@@ -483,8 +484,8 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		enableComponents();
 	}
 	
-	public void setLogFileTypeList(List<FileTypeDescriptor> list) {
-		for (FileTypeDescriptor typeDescriptor : list) {
+	public void setLogFileTypeList(List<FileTypeDescriptor<?,?>> list) {
+		for (FileTypeDescriptor<?,?> typeDescriptor : list) {
 			logFileTypeComboModel.addElement(typeDescriptor);
 		}
 		logFileTypeCombo.setSelectedIndex(0);
@@ -494,16 +495,16 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	}
 
 	private void setLogFileType() {
-		fileTypeDesc = (FileTypeDescriptor)logFileTypeCombo.getSelectedItem();
-		ExtractionFieldHandler panel = fileTypeDesc.createExtractionFieldPanel(this);
-		extractionFields = (ExtractionFieldHandler) panel;
+		fileTypeDesc = (FileTypeDescriptor<?,?>)logFileTypeCombo.getSelectedItem();
+		extractionFields = fileTypeDesc.createExtractionFieldPanel(this);
 		if (dataExtractionPanel.getComponentCount() == 4) {
 			dataExtractionPanel.remove(2);
 		}
-		dataExtractionPanel.add((Component) panel, 2);
+		dataExtractionPanel.add((Component) extractionFields, 2);
 		dataExtractionPanel.revalidate();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void saveLoadedParser() {
 		if (loadedParser != null) {
 			loadedParser.setIncludeLines(rdbtnIncluded.isSelected());
@@ -523,11 +524,12 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			extractionFields.enableDetailFields(b);
 	}
 
-	private void loadEditingFields(ConfiguredLogParser<?> logParser) {
+	@SuppressWarnings("unchecked")
+	private void loadEditingFields(ConfiguredLogParser<?,?> logParser) {
 		for (int i = 0; i < logFileTypeCombo.getItemCount(); i++) {
 			if (logFileTypeCombo.getItemAt(i) == logParser.getLogFileTypeDescriptor()) {
 				logFileTypeCombo.setSelectedIndex(i);
-				extractionFields = (ExtractionFieldHandler) ((FileTypeDescriptor) logFileTypeCombo.getSelectedItem()).createExtractionFieldPanel(this);
+				extractionFields = ((FileTypeDescriptor<?,?>) logFileTypeCombo.getSelectedItem()).createExtractionFieldPanel(this);
 				break;
 			}
 		}
@@ -581,7 +583,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		btnLoadFromFile.setEnabled(!inError && !isNewParser);
 		boolean editableConfigs = logParserTable.getSelectedRowCount() > 0;
 		for (int rowIdx : logParserTable.getSelectedRows()) {
-			ConfiguredLogParser<?> logParser = parserConfigModel.getParser(rowIdx);
+			ConfiguredLogParser<?,?> logParser = parserConfigModel.getParser(rowIdx);
 			editableConfigs &= logParser.isEditable();
 		}
 		btnSave.setEnabled(editableConfigs);
@@ -597,14 +599,14 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	@Override
 	public void applyConfig(Serializable cfg) {
 		@SuppressWarnings("unchecked")
-		ArrayList<ConfiguredLogParser<?>> logParserList = (ArrayList<ConfiguredLogParser<?>>) cfg;
+		ArrayList<ConfiguredLogParser<?,?>> logParserList = (ArrayList<ConfiguredLogParser<?,?>>) cfg;
 		parserConfigModel.addParsers(logParserList);
 	}
 	
 	public Serializable getConfig() {
-		ArrayList<ConfiguredLogParser<?>> configList = new ArrayList<ConfiguredLogParser<?>>();
+		ArrayList<ConfiguredLogParser<?,?>> configList = new ArrayList<ConfiguredLogParser<?,?>>();
 		for (int row : logParserTable.getSelectedRows()) {
-			ConfiguredLogParser<?> parserConfig = parserConfigModel.getParser(row);
+			ConfiguredLogParser<?,?> parserConfig = parserConfigModel.getParser(row);
 			if (parserConfig.isEditable()) {
 				configList.add(parserConfig);
 			}
@@ -617,7 +619,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		Global global = new Global();
 		config.setGlobal(global);
 		for (int row : logParserTable.getSelectedRows()) {
-			ConfiguredLogParser<?> parserConfig = parserConfigModel.getParser(row);
+			ConfiguredLogParser<?,?> parserConfig = parserConfigModel.getParser(row);
 			if (parserConfig.isEditable()) {
 				global.getLogParser().add(parserConfig);
 			}

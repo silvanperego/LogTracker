@@ -11,11 +11,11 @@ import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
-public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
+public class ErrorLogParser extends ConfiguredLogParser<ErrorLogParser, RawErrorDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	public static final String LOG_FILE_TYPE_NAME = "Error Log File";
-	private static FileTypeDescriptor fileTypeDescriptor;
+	private static FileTypeDescriptor<ErrorLogParser, RawErrorDataPoint> fileTypeDescriptor;
 	private Integer severityIdx;
 	private Integer userIdIdx;
 	private Integer msgIdx;
@@ -29,7 +29,7 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 		super(parserName);
 	}
 	
-	public ErrorLogParser(ConfiguredLogParser<?> other) {
+	public ErrorLogParser(ConfiguredLogParser<?,?> other) {
 		super(other);
 	}
 	
@@ -92,11 +92,11 @@ public class ErrorLogParser extends ConfiguredLogParser<RawErrorDataPoint> {
 	}
 
 	@Override
-	public FileTypeDescriptor getLogFileTypeDescriptor() {
+	public FileTypeDescriptor<ErrorLogParser, RawErrorDataPoint> getLogFileTypeDescriptor() {
 		return fileTypeDescriptor;
 	}
 
-	public static void setFileTypeDescriptor(FileTypeDescriptor fileTypeDescriptor) {
+	public static void setFileTypeDescriptor(FileTypeDescriptor<ErrorLogParser, RawErrorDataPoint> fileTypeDescriptor) {
 		ErrorLogParser.fileTypeDescriptor = fileTypeDescriptor;
 	}
 

@@ -13,7 +13,7 @@ import bibliothek.gui.dock.common.CControl;
  * Eine Beschreibung einer spezifischen Log-File-Typs, wie z.B. ServiceResponseTime-Logs oder Error-Logs.
  * @author silvan.perego
  */
-public interface FileTypeDescriptor {
+public interface FileTypeDescriptor<T extends ConfiguredLogParser<T,R>,R> {
 
 
 	/**
@@ -21,20 +21,20 @@ public interface FileTypeDescriptor {
 	 * @param ein JPanel mit den notwendigen ExtractionFields. Das JPanel implementiert das {@link JPanel} Interface.
 	 * @return
 	 */
-	ExtractionFieldHandler createExtractionFieldPanel(ParserConfigDialog parserConfigDialog);
+	ExtractionFieldHandler<T,R> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog);
 	
 	/**
 	 * Kreiere die JTabs, die für diesen FileType angemessen sind.
 	 * @param logTracker
 	 * @throws InterruptedException 
 	 */
-	void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?> logParser) throws InterruptedException;
+	void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser) throws InterruptedException;
 
-	ConfiguredLogParser<?> createParser(String string);
+	T createParser(String string);
 
-	ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> configuredLogParser);
+	T convertLogParser(ConfiguredLogParser<?,?> configuredLogParser);
 
-	void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart);
+	void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart);
 
 	void removeDockables(CControl cControl);
 

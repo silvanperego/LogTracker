@@ -200,7 +200,7 @@ public class LogTracker {
 		if (global != null) {
 			if (global.getTitle() != null)
 				toolBar.setText(global.getTitle());
-			for (ConfiguredLogParser<?> logParser : global.getLogParser()) {
+			for (ConfiguredLogParser<?,?> logParser : global.getLogParser()) {
 				logParser.setEditable(true);
 				parserConfigCatalog.add(logParser);
 			}

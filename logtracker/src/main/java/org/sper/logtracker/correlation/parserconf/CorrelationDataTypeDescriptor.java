@@ -5,15 +5,14 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.correlation.CorrelationLogParser;
 import org.sper.logtracker.correlation.data.CorrelatedDataPoint;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
 import org.sper.logtracker.correlation.data.CorrelationFactors;
 import org.sper.logtracker.correlation.data.RawCorrelatedDataPoint;
 import org.sper.logtracker.data.DataListener;
-import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
 import org.sper.logtracker.logreader.KeepAliveElement;
-import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
@@ -31,7 +30,7 @@ import bibliothek.gui.dock.common.CControl;
  * @author silvan.perego
  *
  */
-public class CorrelationDataTypeDescriptor implements FileTypeDescriptor {
+public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<CorrelationLogParser, RawCorrelatedDataPoint> {
 
 	private ParserConfigDialog parserConfigDialog;
 	private CorrelationDataFields fields;
@@ -42,7 +41,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ExtractionFieldHandler createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
+	public ExtractionFieldHandler<CorrelationLogParser, RawCorrelatedDataPoint> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
 		if (this.parserConfigDialog != parserConfigDialog)
 			fields = new CorrelationDataFields(parserConfigDialog);
 		this.parserConfigDialog = parserConfigDialog;
@@ -51,7 +50,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor {
 
 	@Override
 	public void createAndRegisterDockables(CControl control, Configuration configuration,
-			ConfiguredLogParser<?> logParser) throws InterruptedException {
+			ConfiguredLogParser<?, ?> logParser) throws InterruptedException {
 		// Es werden keine Dockables erzeugt, sondern der User wird informiert,
 		// dass der Prozess gestartet wurde.
 		JOptionPane.showMessageDialog(control.getContentArea(), "Log files are being monitored", "Information",
@@ -64,18 +63,17 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor {
 	}
 
 	@Override
-	public ConfiguredLogParser<?> createParser(String name) {
-		return new ErrorLogParser(name);
+	public CorrelationLogParser createParser(String name) {
+		return new CorrelationLogParser(name);
 	}
 
 	@Override
-	public ConfiguredLogParser<?> convertLogParser(ConfiguredLogParser<?> other) {
-		return new ErrorLogParser(other);
+	public CorrelationLogParser convertLogParser(ConfiguredLogParser<?,?> other) {
+		return new CorrelationLogParser(other);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart) {
 		try {
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
@@ -98,8 +96,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor {
 				public void publishData() {
 				}
 			};
-			keepAliveElement = PipelineHelper.setupFileReaders(logSource, (LogParser<RawCorrelatedDataPoint>) logParser,
-					obsStart, categoryListener);
+			keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, categoryListener);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(logLinePanel, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}

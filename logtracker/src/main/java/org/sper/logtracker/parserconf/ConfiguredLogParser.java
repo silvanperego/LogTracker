@@ -23,7 +23,7 @@ import org.sper.logtracker.logreader.LogParser;
  * @author silvan.perego
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializable, Cloneable {
+public abstract class ConfiguredLogParser<T extends ConfiguredLogParser<T, R>,R> implements LogParser<R>, Serializable, Cloneable {
 
 	public static final String CONFIG_NAME = "ParserConfig";
 	private static final long serialVersionUID = 1L;
@@ -121,7 +121,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	 * Erstellt einen neuen ConfiguredLogParser und übernimmt die wichtigsten Einträge
 	 * @param orig
 	 */
-	public ConfiguredLogParser(ConfiguredLogParser<?> orig) {
+	public ConfiguredLogParser(ConfiguredLogParser<?,?> orig) {
 		linePattern = orig.linePattern;
 		includeExcludePattern = orig.includeExcludePattern;
 		parserName = orig.parserName;
@@ -171,7 +171,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	}
 	
 	@Override
-	synchronized public void scanLine(FileSnippet lineInFile, LogLineParser<T> logLineParser, Long obsStart) {
+	synchronized public void scanLine(FileSnippet lineInFile, LogLineParser<R> logLineParser, Long obsStart) {
 		if (getOccTime().formatString == null) {
 			this.occTime.formatString = 
 					occTime.language != null && !occTime.language.isEmpty() ? 
@@ -214,7 +214,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 		return correlationIdIdx != null ? m.group(correlationIdIdx) : null;
 	}
 
-	protected abstract void extractData(LogLineParser<T> logLineParser, Long obsStart,
+	protected abstract void extractData(LogLineParser<R> logLineParser, Long obsStart,
 			Matcher m, FileSnippet lineInFile) throws ParseException;
 
 	@Override
@@ -292,7 +292,7 @@ public abstract class ConfiguredLogParser<T> implements LogParser<T>, Serializab
 	}
 
 
-	public abstract FileTypeDescriptor getLogFileTypeDescriptor();
+	public abstract FileTypeDescriptor<T,R> getLogFileTypeDescriptor();
 
 	@XmlElement
 	public OccTimeFieldDescription getOccTime() {

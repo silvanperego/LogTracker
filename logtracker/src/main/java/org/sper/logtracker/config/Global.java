@@ -19,7 +19,7 @@ import org.sper.logtracker.servstat.ServiceResponseLogParser;
 public class Global {
 
 	private String title;
-	private List<ConfiguredLogParser<?>> logParser = new ArrayList<>();
+	private List<ConfiguredLogParser<?,?>> logParser = new ArrayList<>();
 
 	@XmlAttribute
 	public String getTitle() {
@@ -34,11 +34,11 @@ public class Global {
 			{@XmlElement(name = "ServiceResponseLogParser", type = ServiceResponseLogParser.class),
 			@XmlElement(name = "ErrorLogParser", type = ErrorLogParser.class)}
 	)
-	public List<ConfiguredLogParser<?>> getLogParser() {
+	public List<ConfiguredLogParser<?,?>> getLogParser() {
 		return logParser;
 	}
 	
-	public void addLogParser(ConfiguredLogParser<?> logParser) {
+	public void addLogParser(ConfiguredLogParser<?,?> logParser) {
 		this.logParser.add(logParser);
 	}
 	
