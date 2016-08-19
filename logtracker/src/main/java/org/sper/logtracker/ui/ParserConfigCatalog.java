@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.sper.logtracker.correlation.CorrelationLogParser;
+import org.sper.logtracker.correlation.parserconf.CorrelationDataTypeDescriptor;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
@@ -18,10 +20,12 @@ public class ParserConfigCatalog extends ParserConfigList {
 	private static final long serialVersionUID = 1L;
 	private static final ErrorLogTypeDescriptor ERROR_LOG_TYPE_DESCRIPTOR = new ErrorLogTypeDescriptor();
 	private static final ServiceResponseFileTypeDescriptor SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR = new ServiceResponseFileTypeDescriptor();
+	private static final CorrelationDataTypeDescriptor CORRELATION_DATA_TYPE_DESCRIPTOR = new CorrelationDataTypeDescriptor();
 	
 	ParserConfigCatalog() {
 		ServiceResponseLogParser.setFileTypeDescriptor(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);
 		ErrorLogParser.setFileTypeDescriptor(ERROR_LOG_TYPE_DESCRIPTOR);
+		CorrelationLogParser.setFileTypeDescriptor(CORRELATION_DATA_TYPE_DESCRIPTOR);
 		setDefaultParsers();
 	}
 
@@ -66,7 +70,7 @@ public class ParserConfigCatalog extends ParserConfigList {
 	
 	
 	public List<FileTypeDescriptor> getParserTypeList(ParserConfigDialog dialog) {
-		return Arrays.asList(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR, ERROR_LOG_TYPE_DESCRIPTOR);
+		return Arrays.asList(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR, ERROR_LOG_TYPE_DESCRIPTOR, CORRELATION_DATA_TYPE_DESCRIPTOR);
 	}
 
 	@Override

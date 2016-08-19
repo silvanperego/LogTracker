@@ -501,7 +501,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 			dataExtractionPanel.remove(2);
 		}
 		dataExtractionPanel.add((Component) panel, 2);
-		dataExtractionPanel.repaint();
+		dataExtractionPanel.revalidate();
 	}
 
 	protected void saveLoadedParser() {

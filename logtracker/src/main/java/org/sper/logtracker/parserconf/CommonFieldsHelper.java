@@ -36,9 +36,10 @@ public class CommonFieldsHelper {
 	 * @param panel das Panel, dem die Felder hinzugefügt werden. Es sollte über einen Gridbag-Constraint verfügen.
 	 * @param configDialog der configDialog der den Feldern zugrunde liegt.
 	 * @param nIdxFields der maximale Wert des Index für die Index-Dropdowns.
+	 * @param correlationIdIsOptional TODO
 	 * @return die Anzahl Zeilen, die durch die Standard-Felder beansprucht werden.
 	 */
-	public int addOccurrenceStartTimeFields(final JPanel panel, final ParserConfigDialog configDialog, int nIdxFields) {
+	public int addOccurrenceStartTimeFields(final JPanel panel, final ParserConfigDialog configDialog, int nIdxFields, boolean correlationIdIsOptional) {
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
 			GridBagConstraints gbc_lblOccurenceTimeGroup = new GridBagConstraints();
@@ -159,7 +160,7 @@ public class CommonFieldsHelper {
 			correlationGroupCombo = new JComboBox<>();
 			correlationGroupCombo.setToolTipText(
 					"the capturing group index of the group containing the message correlation ID.");
-			correlationGroupCombo.setModel(new FieldIdxComboBoxModel(nIdxFields, true));
+			correlationGroupCombo.setModel(new FieldIdxComboBoxModel(nIdxFields, correlationIdIsOptional));
 			GridBagConstraints gbc_occTimeGroupCombo = new GridBagConstraints();
 			gbc_occTimeGroupCombo.insets = new Insets(0, 0, 5, 5);
 			gbc_occTimeGroupCombo.anchor = GridBagConstraints.WEST;

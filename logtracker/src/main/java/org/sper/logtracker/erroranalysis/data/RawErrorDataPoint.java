@@ -1,7 +1,6 @@
 package org.sper.logtracker.erroranalysis.data;
 
-import org.sper.logtracker.correlation.data.CorrelatedMessage;
-import org.sper.logtracker.data.RawDataPoint;
+import org.sper.logtracker.correlation.data.RawCorrelatedDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 
 /**
@@ -11,11 +10,10 @@ import org.sper.logtracker.logreader.FileSnippet;
  * 
  * @author silvan.perego
  */
-public class RawErrorDataPoint extends RawDataPoint implements CorrelatedMessage {
+public class RawErrorDataPoint extends RawCorrelatedDataPoint {
 
 	final public String severity;
 	final public String msg;
-	final public FileSnippet fileSnippet;
 	/**
 	 * @param occTime der Zeitstempel der Meldung
 	 * @param user die User-ID, falls vorhanden
@@ -25,35 +23,9 @@ public class RawErrorDataPoint extends RawDataPoint implements CorrelatedMessage
 	 * @param correlationId die Korrelations-ID der Meldung.
 	 */
 	public RawErrorDataPoint(Long occTime, String user, String severity, String msg, String logSource, FileSnippet fileSnippet, String correlationId) {
-		super(occTime, user, logSource, correlationId);
+		super(occTime, user, logSource, correlationId, fileSnippet);
 		this.severity = severity;
 		this.msg = msg;
-		this.fileSnippet = fileSnippet;
-	}
-
-	@Override
-	public String toString() {
-		return msg;
-	}
-
-	@Override
-	public String getCorrelationId() {
-		return correlationId;
-	}
-
-	@Override
-	public Long getOccurrenceTime() {
-		return occTime;
-	}
-
-	@Override
-	public String getLogSource() {
-		return logSource;
-	}
-
-	@Override
-	public String getUser() {
-		return user;
 	}
 
 	@Override
@@ -62,8 +34,8 @@ public class RawErrorDataPoint extends RawDataPoint implements CorrelatedMessage
 	}
 
 	@Override
-	public String getDetail() {
-		return fileSnippet.getContents();
+	public String toString() {
+		return msg;
 	}
 
 }

@@ -48,7 +48,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		gbl_extractionFields.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0};
 		gbl_extractionFields.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
 		setLayout(gbl_extractionFields);
-		int gridy = timeFieldsHelper.addOccurrenceStartTimeFields(this, configDialog, N_IDXFIELDS);
+		int gridy = timeFieldsHelper.addOccurrenceStartTimeFields(this, configDialog, N_IDXFIELDS, true);
 		{
 			JLabel lblServiceNameGroup = new JLabel("Service Name Group Index:");
 			GridBagConstraints gbc_lblServiceNameGroup = new GridBagConstraints();
