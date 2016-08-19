@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
+import org.sper.logtracker.correlation.CorrelationLogParser;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
@@ -32,7 +33,8 @@ public class Global {
 
 	@XmlElements(
 			{@XmlElement(name = "ServiceResponseLogParser", type = ServiceResponseLogParser.class),
-			@XmlElement(name = "ErrorLogParser", type = ErrorLogParser.class)}
+			@XmlElement(name = "ErrorLogParser", type = ErrorLogParser.class),
+			@XmlElement(name ="CorrelationLogParser", type = CorrelationLogParser.class)}
 	)
 	public List<ConfiguredLogParser<?,?>> getLogParser() {
 		return logParser;

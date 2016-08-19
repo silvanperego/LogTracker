@@ -45,7 +45,6 @@ public class CategoryViewer extends JFrame {
 	private JTextArea fullMessage;
 	private JCheckBox showDistributionBox;
 	private ChartPanel chartPanel;
-	private ErrorCategory cat;
 
 	/**
 	 * Create the dialog.
@@ -54,7 +53,6 @@ public class CategoryViewer extends JFrame {
 	 */
 	CategoryViewer(JComponent owner, ErrorCategory cat) {
 		super("Message Category Detail View");
-		this.cat = cat;
 		setBounds(100, 100, 1200, 759);
 		getContentPane().setLayout(new BorderLayout());
 		{
@@ -149,9 +147,9 @@ public class CategoryViewer extends JFrame {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					int r = catMessageTable.rowAtPoint(e.getPoint());
-					if (r >= 0 && r < catMessageTable.getRowCount()) {
-						if (e.isPopupTrigger()) {
+					if (e.isPopupTrigger()) {
+						int r = catMessageTable.rowAtPoint(e.getPoint());
+						if (r >= 0 && r < catMessageTable.getRowCount()) {
 							JPopupMenu popup = new JPopupMenu();
 							final JMenuItem menuItem = new JMenuItem("Search for correlated Messages");
 							menuItem.addActionListener(aev -> showCorrelationTableForId(r));
@@ -184,7 +182,7 @@ public class CategoryViewer extends JFrame {
 	}
 	
 	private void showCorrelationTableForId(int rowNum) {
-		RawErrorDataPoint dataPoint = cat.getErrorsAsList().get(rowNum);
+		RawErrorDataPoint dataPoint = (RawErrorDataPoint) tableModel.getValueAt(rowNum, 3);
 		new CorrelatedMessagesViewer(catMessageTable, dataPoint.correlationId).setVisible(true);
 	}
 	

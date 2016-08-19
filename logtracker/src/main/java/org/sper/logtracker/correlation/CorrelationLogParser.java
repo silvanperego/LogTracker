@@ -20,7 +20,6 @@ public class CorrelationLogParser extends ConfiguredLogParser<CorrelationLogPars
 	private String encoding;
 
 	public CorrelationLogParser() {
-		super();
 	}
 
 	public CorrelationLogParser(String parserName) {
@@ -78,14 +77,17 @@ public class CorrelationLogParser extends ConfiguredLogParser<CorrelationLogPars
 			logLineParser.receiveData(new RawCorrelatedDataPoint(time, serviceName, user, logLineParser.getLogSource(), getCorrelationId(m), lineInFile));
 			if (lastLineInFile == null)
 				lastLineInFile = new ThreadLocal<FileSnippet>();
+			if (lastLineInFile.get() != null)
+				lastLineInFile.get().setEndPos(lineInFile);
+			lastLineInFile.set(lineInFile);
 		}
 	}
 
-	@XmlAttribute
 	public Integer getServiceNameIdx() {
 		return serviceNameIdx;
 	}
 
+	@XmlAttribute
 	public void setServiceNameIdx(Integer serviceNameIdx) {
 		this.serviceNameIdx = serviceNameIdx;
 	}
