@@ -7,11 +7,11 @@ import org.sper.logtracker.correlation.data.CorrelatedMessage;
  * Er ist in der Lage User und Service mit Klarnamen auszugeben.
  * @author silvan.perego
  */
-public class CorrelatedDataPoint extends DataPoint implements CorrelatedMessage {
+public class CorrelatedServiceDataPoint extends DataPoint implements CorrelatedMessage {
 
 	private StatsDataPointFactorizer<?> factorizer;
 
-	public CorrelatedDataPoint(Integer svcIdx, Long occTime, Double execTime, Integer user, Integer returnCode,
+	public CorrelatedServiceDataPoint(Integer svcIdx, Long occTime, Double execTime, Integer user, Integer returnCode,
 			String source, String correlationId, StatsDataPointFactorizer<?> factorizer) {
 		super(svcIdx, occTime, execTime, user, returnCode, source, correlationId);
 		this.factorizer = factorizer;

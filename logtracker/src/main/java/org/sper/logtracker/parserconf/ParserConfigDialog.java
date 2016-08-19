@@ -100,7 +100,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private JButton btnSave;
 	private JButton btnLoadFromFile;
 	private Configuration config;
-	private ExtractionFieldHandler extractionFields;
+	private ExtractionFieldHandler<?,?> extractionFields;
 	private JLabel lblLogFileType;
 	private JComboBox<FileTypeDescriptor> logFileTypeCombo;
 	private DefaultComboBoxModel<FileTypeDescriptor> logFileTypeComboModel;

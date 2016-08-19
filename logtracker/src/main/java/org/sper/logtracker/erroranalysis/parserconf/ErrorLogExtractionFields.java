@@ -13,14 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
+import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
-import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.TextVerifier;
 
-public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldHandler {
+public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldHandler<ErrorLogParser, RawErrorDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	private static final int N_IDXFIELDS = 5;
@@ -140,7 +140,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	 * saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
+	public void saveLoadedParser(ErrorLogParser parser) {
 		ErrorLogParser loadedParser = (ErrorLogParser) parser;
 		if (loadedParser != null) {
 			loadedParser.setSeverityIdx((Integer) severityComboBox.getSelectedItem());
@@ -173,7 +173,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	 * loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void loadEditingFields(ConfiguredLogParser<?> parser) {
+	public void loadEditingFields(ErrorLogParser parser) {
 		ErrorLogParser logParser = (ErrorLogParser) parser;
 		timeFieldsHelper.loadEditingFields(parser);
 		severityComboBox.setSelectedItem(logParser.getSeverityIdx());

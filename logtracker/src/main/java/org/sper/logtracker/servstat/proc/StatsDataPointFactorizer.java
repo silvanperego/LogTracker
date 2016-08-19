@@ -19,11 +19,11 @@ public abstract class StatsDataPointFactorizer<T extends DataPoint> extends Abst
 		}
 	}
 
-	public static class CorrelatedStatsDataPointFactorizer extends StatsDataPointFactorizer<CorrelatedDataPoint> {
+	public static class CorrelatedStatsDataPointFactorizer extends StatsDataPointFactorizer<CorrelatedServiceDataPoint> {
 
 		@Override
 		public void receiveData(RawStatsDataPoint data) {
-			sendToListeners(new CorrelatedDataPoint(getService().addString(data.service), data.occTime, data.value,
+			sendToListeners(new CorrelatedServiceDataPoint(getService().addString(data.service), data.occTime, data.value,
 					data.user != null ? getUser().addString(data.user) : null, data.returnCode, data.logSource,
 					data.correlationId, this));
 		}

@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.sper.logtracker.correlation.CorrelationLogParser;
+import org.sper.logtracker.correlation.data.RawCorrelatedDataPoint;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -18,16 +20,16 @@ import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 
-public class CorrelationDataFields extends JPanel implements ExtractionFieldHandler {
+public class CorrelationDataFields extends JPanel implements ExtractionFieldHandler<CorrelationLogParser, RawCorrelatedDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	private static final int N_IDXFIELDS = 5;
-	private JComboBox<Integer> severityComboBox;
 	private JComboBox<Integer> userIdComboBox;
 	private JComboBox<Integer> contentComboBox;
 	private JTextField encodingField;
 	private InputVerifier encodingVerifier;
-	private CommonFieldsHelper timeFieldsHelper = new CommonFieldsHelper();;
+	private CommonFieldsHelper timeFieldsHelper = new CommonFieldsHelper();
+	private JComboBox<Integer> serviceComboBox;;
 	
 	public CorrelationDataFields(final ParserConfigDialog configDialog) {
 		super();
@@ -39,6 +41,26 @@ public class CorrelationDataFields extends JPanel implements ExtractionFieldHand
 		gbl_extractionFields.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		setLayout(gbl_extractionFields);
 		int gridy = timeFieldsHelper.addOccurrenceStartTimeFields(this, configDialog, N_IDXFIELDS, false);
+		{
+			JLabel lblServiceNameGroup = new JLabel("Service Name Group Index:");
+			GridBagConstraints gbc_lblServiceNameGroup = new GridBagConstraints();
+			gbc_lblServiceNameGroup.anchor = GridBagConstraints.WEST;
+			gbc_lblServiceNameGroup.insets = new Insets(0, 0, 5, 5);
+			gbc_lblServiceNameGroup.gridx = 0;
+			gbc_lblServiceNameGroup.gridy = gridy;
+			add(lblServiceNameGroup, gbc_lblServiceNameGroup);
+		}
+		{
+			serviceComboBox = new JComboBox<>();
+			serviceComboBox.setToolTipText("the capturing group index of the group containing the service name");
+			serviceComboBox.setModel(new FieldIdxComboBoxModel(N_IDXFIELDS, true));
+			GridBagConstraints gbc_serviceComboBox = new GridBagConstraints();
+			gbc_serviceComboBox.anchor = GridBagConstraints.WEST;
+			gbc_serviceComboBox.insets = new Insets(0, 0, 5, 5);
+			gbc_serviceComboBox.gridx = 1;
+			gbc_serviceComboBox.gridy = gridy++;
+			add(serviceComboBox, gbc_serviceComboBox);
+		}
 		{
 			JLabel lblUserId = new JLabel("User Id");
 			GridBagConstraints gbc_lblUserId = new GridBagConstraints();
@@ -67,8 +89,7 @@ public class CorrelationDataFields extends JPanel implements ExtractionFieldHand
 	 * saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
-		ErrorLogParser loadedParser = (ErrorLogParser) parser;
+	public void saveLoadedParser(CorrelationLogParser loadedParser) {
 		if (loadedParser != null) {
 			loadedParser.setSeverityIdx((Integer) severityComboBox.getSelectedItem());
 			timeFieldsHelper.saveLoadedParser(parser);
@@ -100,10 +121,11 @@ public class CorrelationDataFields extends JPanel implements ExtractionFieldHand
 	 * loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void loadEditingFields(ConfiguredLogParser<?> parser) {
-		ErrorLogParser logParser = (ErrorLogParser) parser;
+	public void loadEditingFields(CorrelationLogParser parser) {
+		CorrelationLogParser logParser = (CorrelationLogParser) parser;
 		timeFieldsHelper.loadEditingFields(parser);
 		severityComboBox.setSelectedItem(logParser.getSeverityIdx());
+		
 		userIdComboBox.setSelectedItem(logParser.getUserIdIdx());
 		contentComboBox.setSelectedItem(logParser.getMsgIdx());
 		encodingField.setText(logParser.getEncoding());

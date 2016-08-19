@@ -16,14 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
-import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
 import org.sper.logtracker.parserconf.ParserConfigDialog;
 import org.sper.logtracker.parserconf.TextVerifier;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
+import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 
-public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler {
+public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	private static final int N_IDXFIELDS = 6;
@@ -247,7 +247,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#saveLoadedParser(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void saveLoadedParser(ConfiguredLogParser<?> parser) {
+	public void saveLoadedParser(ServiceResponseLogParser parser) {
 		ServiceResponseLogParser loadedParser = (ServiceResponseLogParser) parser;
 		if (loadedParser != null) {
 			timeFieldsHelper.saveLoadedParser(parser);
@@ -279,7 +279,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	 * @see org.sper.logtracker.logreader.servstat.ExtractionFieldHandler#loadEditingFields(org.sper.logtracker.logreader.ConfiguredLogParser)
 	 */
 	@Override
-	public void loadEditingFields(ConfiguredLogParser<?> parser) {
+	public void loadEditingFields(ServiceResponseLogParser parser) {
 		ServiceResponseLogParser logParser = (ServiceResponseLogParser) parser;
 		timeFieldsHelper.loadEditingFields(parser);
 		serviceComboBox.setSelectedItem(logParser.getServiceIdx());

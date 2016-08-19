@@ -11,11 +11,11 @@ import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
-public class CorrelationLogParser<T extends RawCorrelatedDataPoint> extends ConfiguredLogParser<T> {
+public class CorrelationLogParser extends ConfiguredLogParser<RawCorrelatedDataPoint> {
 
 	private static final long serialVersionUID = 1L;
 	private static FileTypeDescriptor fileTypeDescriptor;
-	protected Integer userIdIdx;
+	protected Integer userIdIdx, serviceNameIdx;
 	protected transient ThreadLocal<FileSnippet> lastLineInFile = new ThreadLocal<FileSnippet>();
 
 	public CorrelationLogParser() {
@@ -29,7 +29,7 @@ public class CorrelationLogParser<T extends RawCorrelatedDataPoint> extends Conf
 	public CorrelationLogParser(ConfiguredLogParser<?> other) {
 		super(other);
 		if (other instanceof CorrelationLogParser) {
-			CorrelationLogParser<?> otherCorr = (CorrelationLogParser<?>) other;
+			CorrelationLogParser otherCorr = (CorrelationLogParser) other;
 			userIdIdx = otherCorr.userIdIdx;
 		}
 	}
@@ -57,14 +57,14 @@ public class CorrelationLogParser<T extends RawCorrelatedDataPoint> extends Conf
 		return fileTypeDescriptor;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected void extractData(LogLineParser<T> logLineParser, Long obsStart, Matcher m,
+	protected void extractData(LogLineParser<RawCorrelatedDataPoint> logLineParser, Long obsStart, Matcher m,
 			FileSnippet lineInFile) throws ParseException {
 		Long time = getOccTime().getFieldIdx() != null ? getOccTime(m) : null;
 		if (time == null || obsStart == null || time.longValue() > obsStart.longValue()) {
 			String user = userIdIdx != null ? m.group(userIdIdx) : null;
-			logLineParser.receiveData((T) new RawCorrelatedDataPoint(time, user, logLineParser.getLogSource(), getCorrelationId(m), lineInFile));
+			String serviceName = serviceNameIdx != null ? m.group(serviceNameIdx) : null;
+			logLineParser.receiveData(new RawCorrelatedDataPoint(time, serviceName, user, logLineParser.getLogSource(), getCorrelationId(m), lineInFile));
 			if (lastLineInFile == null)
 				lastLineInFile = new ThreadLocal<FileSnippet>();
 		}
