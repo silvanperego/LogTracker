@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
@@ -27,6 +28,7 @@ import org.sper.logtracker.servstat.scatter.ServiceScatterPlot;
 import org.sper.logtracker.servstat.scatter.TooltipGenerator;
 import org.sper.logtracker.servstat.stats.StatsCalculator;
 import org.sper.logtracker.servstat.stats.StatsCalculator.CategoryExtractor;
+import org.sper.logtracker.servstat.ui.detail.ServiceCallDetailViewer;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
@@ -165,6 +167,23 @@ public class ServiceStatsTabs {
 		serviceControlPanel.applyXmlConfig(scd);
 		if (userPanel != null)
 			userPanel.applyConfig(scd);
+	}
+
+	StatsDataPointFactorizer<DataPoint> getFactorizer() {
+		return factorizer;
+	}
+
+	public void showServiceDetailView(String serviceName) {
+		int stringIndex = factorizer.getService().getStringIndex(serviceName);
+		List<DataPoint> filteredList;
+		synchronized (newPointExtractor) {
+			filteredList = newPointExtractor.stream()
+					.filter(p -> p.svcIdx.intValue() == stringIndex)
+					.sorted((a, b) -> b.occTime.compareTo(a.occTime))
+					.limit(1000)
+					.collect(Collectors.toList());
+		}
+		new ServiceCallDetailViewer(serviceName, filteredList, factorizer).setVisible(true);
 	}
 
 }

@@ -18,7 +18,7 @@ public class MedianExecTime extends AbstractDataListener<DataPointGroup, DataPoi
 	public void receiveData(DataPointGroup dpg) {
 		dpg.sort();
 		int halfSize = dpg.size() / 2;
-		double median = dpg.size() % 1 == 0 ? dpg.get(halfSize).value : 0.5 * (dpg.get(halfSize).value + dpg.get(halfSize + 1).value);
+		double median = dpg.size() % 1 == 0 ? dpg.get(halfSize).responseTime : 0.5 * (dpg.get(halfSize).responseTime + dpg.get(halfSize + 1).responseTime);
 		sendToListeners(new DataPoint(null, dpg.getMidTime(), median * magFact, null, null, null, null));
 	}
 	

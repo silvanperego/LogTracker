@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.Vector;
 
@@ -33,6 +34,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.TableCellRenderer;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -93,7 +95,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		Integer color;
 	}
 	
-	public ServiceControlPanel(ServiceStatsTabs serviceStatsTabs) {
+	public ServiceControlPanel(final ServiceStatsTabs serviceStatsTabs) {
 		super();
 		controlTable = new JTable();
 		controlTableModel = new ServiceControlTableModel();
@@ -107,7 +109,17 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		controlTable.getColumnModel().getColumn(COLOR_COL).setCellRenderer(new ColorCellRenderer());
 		controlTable.setAutoCreateRowSorter(true);
 		setLayout(new BorderLayout(0, 0));
-		
+		controlTable.addMouseListener(new MouseInputAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = controlTable.rowAtPoint(e.getPoint());
+				int col = controlTable.columnAtPoint(e.getPoint());
+				if (col >= 0 && col < controlTableModel.getColumnCount() && row >= 0 && row < controlTableModel.getRowCount()) {
+					serviceStatsTabs.showServiceDetailView((String) controlTableModel.getValueAt(row, SERVICE_NAME_COL));
+				}
+			}
+		});
 		JLabel lblNewLabel = new JLabel("Service Call Statistics and Display Properties");
 		add(lblNewLabel, BorderLayout.NORTH);
 		

@@ -83,7 +83,7 @@ public class ServiceStats {
 	private void calcMeanExecTime() {
 		double totExecTime = 0.;
 		for (DataPoint pt : data) {
-			totExecTime += pt.value;
+			totExecTime += pt.responseTime;
 		}
 		meanExecTime = totExecTime / data.size();
 	}
@@ -98,19 +98,19 @@ public class ServiceStats {
 
 			@Override
 			public int compare(DataPoint o1, DataPoint o2) {
-				return o1.value.compareTo(o2.value);
+				return o1.responseTime.compareTo(o2.responseTime);
 			}
 		});
 		int size = data.size();
 		int halfsize = size / 2;
 		if (size == 1)
-			execMedian = data.get(0).value;
+			execMedian = data.get(0).responseTime;
 		else if (size % 2 == 0)
-			execMedian = data.get(halfsize).value;
+			execMedian = data.get(halfsize).responseTime;
 		else
-			execMedian = (data.get(halfsize).value + data.get(halfsize + 1).value) / 2.;
+			execMedian = (data.get(halfsize).responseTime + data.get(halfsize + 1).responseTime) / 2.;
 		if (size > 9)
-			percentile = data.get((int)(0.9 * size + 0.5)).value;
+			percentile = data.get((int)(0.9 * size + 0.5)).responseTime;
 	}
 
 	public void fillTableModelRow(Object[] row) {

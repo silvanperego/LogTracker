@@ -32,7 +32,7 @@ public class DataPointGroup extends ArrayList<DataPoint> {
 
 			@Override
 			public int compare(DataPoint o1, DataPoint o2) {
-				return o1.value.compareTo(o2.value);
+				return o1.responseTime.compareTo(o2.responseTime);
 			}
 		});
 	}

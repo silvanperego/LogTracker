@@ -2,6 +2,7 @@ package org.sper.logtracker.servstat.proc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.sper.logtracker.data.AbstractDataListener;
 import org.sper.logtracker.data.DataListener;
@@ -23,7 +24,9 @@ public class NewPointExtractor extends AbstractDataListener<DataPoint, DataPoint
 
 	@Override
 	public void receiveData(DataPoint dp) {
-		data.add(dp);
+		synchronized (this) {
+			data.add(dp);
+		}
 		if (userOk(dp)) {
 			sendToListeners(dp);
 			newData = true;
@@ -40,11 +43,17 @@ public class NewPointExtractor extends AbstractDataListener<DataPoint, DataPoint
 	}
 	
 	public void resendData() {
-		for (DataPoint dp : data) {
-			if (userOk(dp))
-				sendToListeners(dp);
+		synchronized (this) {
+			for (DataPoint dp : data) {
+				if (userOk(dp))
+					sendToListeners(dp);
+			}
 		}
 		super.publishData();
+	}
+	
+	public Stream<DataPoint> stream() {
+		return data.stream();
 	}
 
 	@Override

@@ -11,7 +11,7 @@ public class DataPoint extends XYDataItem {
 	
 	private static final long serialVersionUID = 1L;
 	public final Long occTime;
-	public final Double value;
+	public final Double responseTime;
 	public final String logSource;
 	public final Integer svcIdx;
 	public final Integer user;
@@ -23,7 +23,7 @@ public class DataPoint extends XYDataItem {
 		this.svcIdx = svcIdx;
 		this.logSource = source;
 		this.occTime = occTime;
-		this.value = execTime;
+		this.responseTime = execTime;
 		this.user = user;
 		this.returnCode = returnCode;
 		this.correlationId = correlationId;
