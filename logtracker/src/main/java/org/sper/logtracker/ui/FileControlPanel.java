@@ -37,6 +37,7 @@ import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.data.Console.MessageListener;
+import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -58,6 +59,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private FileTypeDescriptor<?,?> activeLogFileType;
 	private ToolBar toolBar;
 	private Configuration config;
+  private ActivityMonitor activityMonitor;
 	
 	private static class ConfObj implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -176,6 +178,9 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		FlowLayout flowLayout_3 = (FlowLayout) buttonPanel.getLayout();
 		flowLayout_3.setAlignment(FlowLayout.RIGHT);
 		outerObsvalPanel.add(buttonPanel);
+		
+		activityMonitor = new ActivityMonitor();
+		buttonPanel.add(activityMonitor.getActivityLabel());
 
 		applyFilesButton = new JButton("Apply");
 		buttonPanel.add(applyFilesButton);
@@ -385,7 +390,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++) {
 			logSource.add(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
 		}
-		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart());
+		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart(), activityMonitor);
 		if (config != null)
 			config.resetActiveConfig();
 	}

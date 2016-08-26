@@ -12,6 +12,7 @@ import org.sper.logtracker.erroranalysis.data.LogLineCatalog;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
 import org.sper.logtracker.erroranalysis.ui.LogLineTableModel;
+import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -71,16 +72,16 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser
 	}
 
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
 		try {
 			DataListener<RawErrorDataPoint> logLineCatalog = new LogLineCatalog(logLineTableModel);
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
 			}
 			if (logParser.getCorrelationIdIdx() != null)
-				keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, logLineCatalog, CorrelationCatalog.getInstance());
+				keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, activityMonitor, logLineCatalog, CorrelationCatalog.getInstance());
 			else
-				keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, logLineCatalog);
+				keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, activityMonitor, logLineCatalog);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(logLinePanel, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}

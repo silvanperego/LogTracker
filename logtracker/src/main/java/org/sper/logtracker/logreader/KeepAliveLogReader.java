@@ -18,12 +18,14 @@ import java.io.InputStream;
  */
 public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 
+  private ActivityMonitor.ActivityLevel activityLevel = ActivityMonitor.ActivityLevel.INACTIVE;
 	private LogLineParser<?> listener;
 	private boolean keepAlive = true;
 	private File logFile;
 	private long lastPos = 0;
 	private String encoding;
 	private long lastLength;
+  private ActivityMonitor activityMonitor;
 
 	/**
 	 * Konstruktor.
@@ -35,11 +37,13 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 	 * @throws FileNotFoundException
 	 *             falls das gewünschte File nicht gefunden werden kann.
 	 */
-	public KeepAliveLogReader(File logFile, LogLineParser<?> listener, String encoding)
+	public KeepAliveLogReader(File logFile, LogLineParser<?> listener, String encoding, ActivityMonitor activityMonitor)
 			throws FileNotFoundException {
-		this.logFile = logFile;
+    this.logFile = logFile;
 		this.listener = listener;
 		this.encoding = encoding;
+		this.activityMonitor = activityMonitor;
+		activityMonitor.registerReader(this);
 	}
 	
 	private class CountingInputStream extends BufferedInputStream {
@@ -87,9 +91,11 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 		CountingInputStream cis = null;
 		try {
 			do {
+			  activityLevel = ActivityMonitor.ActivityLevel.ACTIVE;
+			  activityMonitor.notifyStatusChange();
 				FileInputStream fis = new FileInputStream(logFile);
 				long fileLength = logFile.length();
-				if (fileLength < lastLength) {  // Hier könnte ein Roll-Over passiert sein. Wie lesen die Datei noch einmal von Anfang.
+				if (fileLength < lastLength) {  // Hier könnte ein Roll-Over passiert sein. Wir lesen die Datei noch einmal von Anfang.
 					lastPos = 0;
 				}
 				lastLength = fileLength;
@@ -106,6 +112,8 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 					cis.close();
 				if (keepAlive)
 					try {
+					  activityLevel = ActivityMonitor.ActivityLevel.SLEEPING;
+		        activityMonitor.notifyStatusChange();
 						Thread.sleep(15000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -114,6 +122,7 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+      activityMonitor.removeReader(this);
 			if (cis != null)
 				try {
 					cis.close();
@@ -132,5 +141,9 @@ public class KeepAliveLogReader extends Thread implements KeepAliveElement {
 	public void endOfLife() {
 		keepAlive = false;
 	}
+
+  public ActivityMonitor.ActivityLevel getActivityLevel() {
+    return activityLevel;
+  }
 
 }

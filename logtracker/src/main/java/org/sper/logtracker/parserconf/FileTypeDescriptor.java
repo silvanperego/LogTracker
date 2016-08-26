@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.LogSource;
 
 import bibliothek.gui.dock.common.CControl;
@@ -34,7 +35,7 @@ public interface FileTypeDescriptor<T extends ConfiguredLogParser<T,R>,R> {
 
 	T convertLogParser(ConfiguredLogParser<?,?> configuredLogParser);
 
-	void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart);
+	void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart, ActivityMonitor activityMonitor);
 
 	void removeDockables(CControl cControl);
 

@@ -3,6 +3,7 @@ package org.sper.logtracker.servstat.parserconf;
 import java.util.List;
 
 import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
@@ -49,8 +50,8 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<Ser
 	}
 
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart) {
-		serviceStatsTabs.setupDataPipeLines(logSource, logParser, obsStart);
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
+		serviceStatsTabs.setupDataPipeLines(logSource, logParser, obsStart, activityMonitor);
 	}
 
 	@Override

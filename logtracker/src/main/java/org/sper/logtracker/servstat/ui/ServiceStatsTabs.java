@@ -18,6 +18,7 @@ import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
 import org.sper.logtracker.data.Factor;
+import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -135,7 +136,7 @@ public class ServiceStatsTabs {
 		newPointExtractor.resendData();
 	}
 	
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = createFactorizer((ServiceResponseLogParser) logParser);
@@ -161,7 +162,7 @@ public class ServiceStatsTabs {
 			factorizer.addListener(newPointExtractor);
 			if (terminationPointer != null)
 				terminationPointer.endOfLife();
-			terminationPointer = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, factorizer);
+			terminationPointer = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, activityMonitor, factorizer);
 
 			Factor services = factorizer.getService();
 			Factor users = factorizer.getUser();

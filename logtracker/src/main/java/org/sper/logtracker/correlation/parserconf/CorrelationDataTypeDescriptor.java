@@ -12,6 +12,7 @@ import org.sper.logtracker.correlation.data.CorrelationFactors;
 import org.sper.logtracker.correlation.data.RawCorrelatedDataPoint;
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.erroranalysis.ui.LogLinePanel;
+import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -51,10 +52,6 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<Correla
 	@Override
 	public void createAndRegisterDockables(CControl control, Configuration configuration,
 			ConfiguredLogParser<?, ?> logParser) throws InterruptedException {
-		// Es werden keine Dockables erzeugt, sondern der User wird informiert,
-		// dass der Prozess gestartet wurde.
-		JOptionPane.showMessageDialog(control.getContentArea(), "Log files are being monitored", "Information",
-				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
@@ -73,7 +70,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<Correla
 	}
 
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
 		try {
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
@@ -96,7 +93,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<Correla
 				public void publishData() {
 				}
 			};
-			keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, categoryListener);
+			keepAliveElement = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, activityMonitor, categoryListener);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(logLinePanel, e, "Error", JOptionPane.ERROR_MESSAGE);
 		}
