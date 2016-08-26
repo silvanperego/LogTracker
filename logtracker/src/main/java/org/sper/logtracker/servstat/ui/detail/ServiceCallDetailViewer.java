@@ -8,18 +8,18 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.TableModel;
 
+import org.sper.logtracker.erroranalysis.ui.CorrelatedPopupMenuAction;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
-import javax.swing.JScrollPane;
 
 public class ServiceCallDetailViewer extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTable serviceDetailTable;
-	private TableModel serviceDetailTableModel;
+	private ServiceCallDetailTableModel serviceDetailTableModel;
 
 	public ServiceCallDetailViewer(String frameTitle, List<DataPoint> dataPointList, StatsDataPointFactorizer<DataPoint> factorizer) {
 		super(frameTitle);		
@@ -31,6 +31,7 @@ public class ServiceCallDetailViewer extends JFrame {
 		serviceDetailTable.getColumnModel().getColumn(0).setPreferredWidth(200);
 		serviceDetailTable.getColumnModel().getColumn(1).setPreferredWidth(240);
 		
+		serviceDetailTable.addMouseListener(new CorrelatedPopupMenuAction(serviceDetailTable, r -> serviceDetailTableModel.getDataPointAt(r)));
 		JScrollPane scrollPane = new JScrollPane(serviceDetailTable);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
@@ -44,4 +45,5 @@ public class ServiceCallDetailViewer extends JFrame {
 		buttonPanel.add(btnOk);
 		setBounds(400, 100, 800, 859);
 	}
+
 }

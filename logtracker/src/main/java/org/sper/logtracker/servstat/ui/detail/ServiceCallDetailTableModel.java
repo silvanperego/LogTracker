@@ -44,6 +44,10 @@ public class ServiceCallDetailTableModel extends AbstractTableModel {
 		}
 		return null;
 	}
+	
+	DataPoint getDataPointAt(int rowIndex) {
+	  return dataPointList.get(rowIndex);
+	}
 
 	@Override
 	public String getColumnName(int column) {

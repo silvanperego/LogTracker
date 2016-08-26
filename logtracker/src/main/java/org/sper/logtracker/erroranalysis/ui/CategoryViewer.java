@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Date;
 
 import javax.swing.Box;
@@ -17,9 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -32,7 +28,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.jfree.chart.ChartPanel;
-import org.sper.logtracker.correlation.ui.CorrelatedMessagesViewer;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
@@ -143,22 +138,7 @@ public class CategoryViewer extends JFrame {
 						fullMessage.setText(null);
 				}
 			});
-			catMessageTable.addMouseListener(new MouseAdapter() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					if (e.isPopupTrigger()) {
-						int r = catMessageTable.rowAtPoint(e.getPoint());
-						if (r >= 0 && r < catMessageTable.getRowCount()) {
-							JPopupMenu popup = new JPopupMenu();
-							final JMenuItem menuItem = new JMenuItem("Search for correlated Messages");
-							menuItem.addActionListener(aev -> showCorrelationTableForId(r));
-							popup.add(menuItem);
-							popup.show(e.getComponent(), e.getX(), e.getY());
-						}
-					}
-				}
-			});
+			catMessageTable.addMouseListener(new CorrelatedPopupMenuAction(catMessageTable, r -> tableModel.getValueAt(r, 3)));
 			JScrollPane scrollPane = new JScrollPane(catMessageTable);
 			scrollPane.setPreferredSize(new Dimension(700, 120));
 			fullMessage = new JTextArea();
@@ -179,11 +159,6 @@ public class CategoryViewer extends JFrame {
 
 	DefaultTableModel getTableModel() {
 		return tableModel;
-	}
-	
-	private void showCorrelationTableForId(int rowNum) {
-		RawErrorDataPoint dataPoint = (RawErrorDataPoint) tableModel.getValueAt(rowNum, 3);
-		new CorrelatedMessagesViewer(catMessageTable, dataPoint.correlationId).setVisible(true);
 	}
 	
 }
