@@ -23,6 +23,7 @@ public class ServiceCallDetailViewer extends JFrame {
 
 	public ServiceCallDetailViewer(String frameTitle, List<DataPoint> dataPointList, StatsDataPointFactorizer<DataPoint> factorizer) {
 		super(frameTitle);		
+    setBounds(400, 100, 800, 859);
 		JLabel lblServiceCallDetails = new JLabel("Service Call Details of Service " + frameTitle);
 		getContentPane().add(lblServiceCallDetails, BorderLayout.NORTH);
 		
@@ -43,7 +44,6 @@ public class ServiceCallDetailViewer extends JFrame {
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(e -> setVisible(false));
 		buttonPanel.add(btnOk);
-		setBounds(400, 100, 800, 859);
 	}
 
 }

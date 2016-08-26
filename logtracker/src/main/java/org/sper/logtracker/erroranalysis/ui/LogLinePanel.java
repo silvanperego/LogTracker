@@ -2,8 +2,8 @@ package org.sper.logtracker.erroranalysis.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,7 +28,8 @@ public class LogLinePanel extends JPanel {
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				final Component comp = super.prepareRenderer(renderer, row, column);
-				logLineTableModel.setRowColor(comp, row);
+				if (row != logLineTable.getSelectedRow())
+				  logLineTableModel.setRowColor(comp, row);
 				return comp;
 			}
 			
@@ -40,24 +41,7 @@ public class LogLinePanel extends JPanel {
 		logLineTable.getColumnModel().getColumn(2).setPreferredWidth(98);
 		logLineTable.getColumnModel().getColumn(3).setPreferredWidth(625);
 		logLineTable.getColumnModel().getColumn(3).setCellRenderer(new LogMessageRenderer());		
-		logLineTable.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-			
+		logLineTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int rowAtPoint = logLineTable.rowAtPoint(e.getPoint());

@@ -26,6 +26,15 @@ public class CorrelatedPopupMenuAction extends MouseAdapter {
   
   @Override
   public void mouseReleased(MouseEvent e) {
+    processPopUp(e);
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e) {
+    processPopUp(e);
+  }
+
+  private void processPopUp(MouseEvent e) {
     if (e.isPopupTrigger()) {
       int r = table.rowAtPoint(e.getPoint());
       if (r >= 0 && r < table.getRowCount()) {
