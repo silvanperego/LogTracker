@@ -38,6 +38,11 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 		userTable.setAutoCreateRowSorter(true);
 		setLayout(new BorderLayout(0, 0));
 		
+		userTable.addMouseListener(
+        serviceStatsTabs.new ShowServiceDetailAction(userTable, "User", 
+            r -> (String) userTableModel.getValueAt(r, 0), 
+            f -> f.getUser(), 
+            dp -> dp.user));
 		JLabel lblNewLabel = new JLabel("Service Call Statistics per User");
 		add(lblNewLabel, BorderLayout.NORTH);
 		

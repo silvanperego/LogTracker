@@ -24,7 +24,7 @@ public class ServiceCallDetailViewer extends JFrame {
 	public ServiceCallDetailViewer(String frameTitle, List<DataPoint> dataPointList, StatsDataPointFactorizer<DataPoint> factorizer) {
 		super(frameTitle);		
     setBounds(400, 100, 800, 859);
-		JLabel lblServiceCallDetails = new JLabel("Service Call Details of Service " + frameTitle);
+		JLabel lblServiceCallDetails = new JLabel("Service Call Details of " + frameTitle);
 		getContentPane().add(lblServiceCallDetails, BorderLayout.NORTH);
 		
 		serviceDetailTableModel = new ServiceCallDetailTableModel(dataPointList, factorizer);

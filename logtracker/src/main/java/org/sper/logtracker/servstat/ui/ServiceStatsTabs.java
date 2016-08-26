@@ -3,12 +3,16 @@ package org.sper.logtracker.servstat.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.MouseInputAdapter;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.compat.Configuration;
@@ -48,7 +52,52 @@ public class ServiceStatsTabs {
 	private DefaultMultipleCDockable graphDockable;
 	private DefaultMultipleCDockable userDockable;
 
-	public ServiceStatsTabs(CControl control, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
+	public final class ApplyControlAction implements ActionListener {
+  	public void actionPerformed(ActionEvent e) {
+  		setupDataSeries();
+  		plot.setMaxRange(20.);
+  		graphDockable.toFront();
+  	}
+  }
+
+  class ShowServiceDetailAction extends MouseInputAdapter {
+    private JTable controlTable;
+    private Function<Integer, String> rowToFilterVal;
+    private Function<DataPoint, Integer> dataPointToIndex;
+    private String filterQualifier;
+    private Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor;
+    
+    public ShowServiceDetailAction(JTable controlTable, String filterQualifier, 
+        Function<Integer, String> rowToFilterVal, Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor, Function<DataPoint, Integer> dataPointToIndex) {
+      this.controlTable = controlTable;
+      this.filterQualifier = filterQualifier;
+      this.rowToFilterVal = rowToFilterVal;
+      this.getRelevantFactor = getRelevantFactor;
+      this.dataPointToIndex = dataPointToIndex;
+    }
+  
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    	int row = controlTable.rowAtPoint(e.getPoint());
+    	int col = controlTable.columnAtPoint(e.getPoint());
+    	if (col >= 0 && col < controlTable.getColumnCount() && row >= 0 && row < controlTable.getRowCount()) {
+    	  String filterVal = rowToFilterVal.apply(row);
+    	  Integer filterIdx = getRelevantFactor.apply(factorizer).getStringIndex(filterVal);
+        List<DataPoint> filteredList;
+        synchronized (newPointExtractor) {
+          filteredList = newPointExtractor.stream()
+              .filter(p -> {Integer val = dataPointToIndex.apply(p); return val != null && val.intValue() == filterIdx;})
+              .sorted((a, b) -> b.occTime.compareTo(a.occTime))
+              .limit(1000)
+              .collect(Collectors.toList());
+        }
+        new ServiceCallDetailViewer(filterQualifier + ' ' + filterVal, filteredList, factorizer).setVisible(true);
+    	}
+    }
+    
+  }
+  
+  public ServiceStatsTabs(CControl control, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
 		serviceControlPanel = new ServiceControlPanel(this);
 		int stackpos = 0;
 		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel);
@@ -74,14 +123,6 @@ public class ServiceStatsTabs {
 		control.addDockable(dockable);
 		dockable.setLocation(CLocation.base().normalEast(0.6).stack(stackpos));
 		return dockable;
-	}
-
-	public final class ApplyControlAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			setupDataSeries();
-			plot.setMaxRange(20.);
-			graphDockable.toFront();
-		}
 	}
 
 	public void setupDataSeries() {
@@ -171,19 +212,6 @@ public class ServiceStatsTabs {
 
 	StatsDataPointFactorizer<DataPoint> getFactorizer() {
 		return factorizer;
-	}
-
-	public void showServiceDetailView(String serviceName) {
-		int stringIndex = factorizer.getService().getStringIndex(serviceName);
-		List<DataPoint> filteredList;
-		synchronized (newPointExtractor) {
-			filteredList = newPointExtractor.stream()
-					.filter(p -> p.svcIdx.intValue() == stringIndex)
-					.sorted((a, b) -> b.occTime.compareTo(a.occTime))
-					.limit(1000)
-					.collect(Collectors.toList());
-		}
-		new ServiceCallDetailViewer(serviceName, filteredList, factorizer).setVisible(true);
 	}
 
 }
