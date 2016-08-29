@@ -27,11 +27,11 @@ import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import bibliothek.gui.dock.common.event.CVetoClosingEvent;
 import bibliothek.gui.dock.common.event.CVetoClosingListener;
 
-public class LogTracker {
+public class LogTracker extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private static String cfgFile;
 	private static List<LogSource> fnameList = new ArrayList<LogSource>();
-	private JFrame frame;
 	private ToolBar toolBar;
 	private CControl control;
 	private LogFilePanel logFilePanel;
@@ -70,7 +70,7 @@ public class LogTracker {
 			public void run() {
 				try {
 					LogTracker window = new LogTracker();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -103,16 +103,15 @@ public class LogTracker {
 	 */
 	private void initialize() throws IOException,
 			InterruptedException {
-		frame = new JFrame();
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(LogTracker.class.getResource("/LogTrackerLogo.png")));
-		frame.setBounds(100, 100, 986, 804);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout(0, 2));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(LogTracker.class.getResource("/LogTrackerLogo.png")));
+		setBounds(100, 100, 986, 804);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new BorderLayout(0, 2));
 		toolBar = new ToolBar(this, parserConfigCatalog);
-		frame.add(toolBar, BorderLayout.NORTH);
+		add(toolBar, BorderLayout.NORTH);
 
-		control = new CControl(frame);
-		frame.add(control.getContentArea(), BorderLayout.CENTER);
+		control = new CControl(this);
+		add(control.getContentArea(), BorderLayout.CENTER);
 		logFilePanel = new LogFilePanel();
 		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
 		control.addDockable(logFileDockable);
@@ -125,7 +124,7 @@ public class LogTracker {
 	}
 
 	FileControlPanel addNewFileControl(CLocation location) {
-		final FileControlPanel fileControlPanel = new FileControlPanel(this, logFilePanel, toolBar, parserConfigCatalog);
+		final FileControlPanel fileControlPanel = new FileControlPanel(this, logFilePanel, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
 		fileSelectionDockable.setLocation(location);
@@ -161,20 +160,12 @@ public class LogTracker {
 				applyConfig(xmlConfig);
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error when loading Config-File: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error when loading Config-File: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	public JFrame getFrame() {
-		return frame;
-	}
-	
 	public static void setCfgFile(String cfgFile) {
 		LogTracker.cfgFile = cfgFile;
-	}
-
-	void setTitle(String title) {
-		frame.setTitle(title);
 	}
 
 	public CControl getControl() {
@@ -188,7 +179,7 @@ public class LogTracker {
 	public LogTrackerConfig getConfig() {
 		LogTrackerConfig config = new LogTrackerConfig();
 		Global global = new Global();
-		global.setTitle(frame.getTitle());
+		global.setTitle(getTitle());
 		config.setGlobal(global);
 		parserConfigCatalog.stream().filter(p -> p.isEditable()).forEach(p -> global.getLogParser().add(p));;
 		fileControlPanelList.stream().forEach(fcp -> config.addFileControl(fcp.getConfig()));
@@ -199,7 +190,7 @@ public class LogTracker {
 		Global global = config.getGlobal();
 		if (global != null) {
 			if (global.getTitle() != null)
-				toolBar.setText(global.getTitle());
+				setTitle(global.getTitle());
 			for (ConfiguredLogParser<?,?> logParser : global.getLogParser()) {
 				logParser.setEditable(true);
 				parserConfigCatalog.add(logParser);

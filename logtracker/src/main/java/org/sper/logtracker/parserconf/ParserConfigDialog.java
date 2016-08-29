@@ -108,12 +108,14 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 	private JPanel dataExtractionPanel;
 	private FileTypeDescriptor<?,?> fileTypeDesc;
 	private static Color standardBackgroundColor = new JTextField().getBackground();
+	private JDialog dialog;
 	/**
 	 * Create the dialog.
 	 * @param parserConfigList Die Liste der vorhandenen Parserkonfigurationen.
 	 * @param dialog der {@link JDialog} der diese Config-Panel beinhaltet.
 	 */
-	public ParserConfigDialog(ParserConfigList parserConfigList, final JDialog dialog) {
+	public ParserConfigDialog(ParserConfigList parserConfigList, final JDialog dialog, final ActionListener submitAction) {
+		this.dialog = dialog;
 		setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(contentPanel, BorderLayout.CENTER);
@@ -451,19 +453,9 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 			{
 				okButton = new JButton("OK");
 				okButton.setToolTipText("Activate the Configuration Changes.");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						verifyFormDataIsValid();
-						if (!inError()) {
-							saveLoadedParser();
-							parserConfigModel.saveInSelectionModel();
-							dialog.setVisible(false);
-						}
-					}
-				});
+				okButton.addActionListener(submitAction);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
-				dialog.getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -556,7 +548,7 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 		verifierList.add(vpart);
 	}
 	
-	private boolean verifyFormDataIsValid() {
+	public boolean verifyFormDataIsValid() {
 		boolean valid = true;
 		for (VerifyingPart part : verifierList)
 			valid &= part.verify();
@@ -628,6 +620,17 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 
 	public static Color getStandardBackgroundColor() {
 		return standardBackgroundColor;
+	}
+
+	public void submit() {
+		if (!inError()) {
+			saveLoadedParser();
+			parserConfigModel.saveInSelectionModel();
+		}
+	}
+
+	public void setDefaultButton() {
+		dialog.getRootPane().setDefaultButton(okButton);
 	}
 	
 }

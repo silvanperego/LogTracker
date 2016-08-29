@@ -57,7 +57,6 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private JComboBox<LogParser<?>> logFileFormatBox;
 	private ParserSelectionModel parserModel;
 	private FileTypeDescriptor<?,?> activeLogFileType;
-	private ToolBar toolBar;
 	private Configuration config;
   private ActivityMonitor activityMonitor;
 	
@@ -75,10 +74,9 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		String parserConfig, title;
 	}
 
-	public FileControlPanel(final LogTracker logTracker, MessageListener listener, ToolBar toolBar, ParserConfigList parserConfigCatalog) {
+	public FileControlPanel(final LogTracker logTracker, MessageListener listener, ParserConfigList parserConfigCatalog) {
 		super();
 		this.logTracker = logTracker;
-		this.toolBar = toolBar;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -106,7 +104,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		addLogFileButton.setIcon(new ImageIcon(FileControlPanel.class.getResource("/addFile.png")));
 		addLogFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File[] logFile = LogFileTableEditor.selectLogFile(logTracker.getFrame(), null, true);
+				File[] logFile = LogFileTableEditor.selectLogFile(logTracker, null, true);
 				if (logFile != null)
 					for (File file : logFile) {
 						LogSource source = new LogSource(file.getPath());
@@ -234,7 +232,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 			}
 		});
 		TableColumn fileCol = logFileTable.getColumn("File Name");
-		fileCol.setCellEditor(new LogFileTableEditor(logTracker.getFrame()));
+		fileCol.setCellEditor(new LogFileTableEditor(logTracker));
 		TableColumn delCol = logFileTable.getColumn("Del");
 		delCol.setCellRenderer(cellRenderer);
 		delCol.setCellEditor(cellRenderer);
@@ -286,7 +284,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		} else if (cfg instanceof ConfObj2) {
 			ConfObj2 conf = (ConfObj2) cfg;
 			if (conf.title != null) {
-				toolBar.setText(conf.title);
+				logTracker.setTitle(conf.title);
 			}
 			for (LogSource source : conf.logSource) {
 				logFileTableModel.addRow(source.modelEntry());
