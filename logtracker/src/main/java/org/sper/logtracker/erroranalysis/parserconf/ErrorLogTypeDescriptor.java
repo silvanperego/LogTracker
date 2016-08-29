@@ -18,7 +18,7 @@ import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.proc.PipelineHelper;
 
 import bibliothek.gui.dock.common.CControl;
@@ -27,7 +27,7 @@ import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 
 public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser, RawErrorDataPoint> {
 
-	private ParserConfigDialog parserConfigDialog;
+	private ParserConfigPanel parserConfigDialog;
 	private ErrorLogExtractionFields fields;
 	private KeepAliveElement keepAliveElement;
 	private LogLineTableModel logLineTableModel;
@@ -38,7 +38,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser
 	}
 
 	@Override
-	public ExtractionFieldHandler<ErrorLogParser, RawErrorDataPoint> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
+	public ExtractionFieldHandler<ErrorLogParser, RawErrorDataPoint> createExtractionFieldPanel(ParserConfigPanel parserConfigDialog) {
 		if (this.parserConfigDialog != parserConfigDialog)
 			fields = new ErrorLogExtractionFields(parserConfigDialog);
 		this.parserConfigDialog = parserConfigDialog;

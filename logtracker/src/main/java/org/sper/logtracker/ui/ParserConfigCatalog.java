@@ -9,7 +9,7 @@ import org.sper.logtracker.correlation.parserconf.CorrelationDataTypeDescriptor;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.parserconf.ParserConfigList;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.parserconf.ServiceResponseFileTypeDescriptor;
@@ -69,7 +69,7 @@ public class ParserConfigCatalog extends ParserConfigList {
 	}
 	
 	
-	public List<FileTypeDescriptor<?,?>> getParserTypeList(ParserConfigDialog dialog) {
+	public List<FileTypeDescriptor<?,?>> getParserTypeList(ParserConfigPanel dialog) {
 		return Arrays.asList(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR, ERROR_LOG_TYPE_DESCRIPTOR, CORRELATION_DATA_TYPE_DESCRIPTOR);
 	}
 

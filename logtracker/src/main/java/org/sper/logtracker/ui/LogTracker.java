@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.sper.logtracker.config.FileControl;
-import org.sper.logtracker.config.Global;
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.XMLConfigSupport;
 import org.sper.logtracker.config.compat.Configuration;
@@ -37,6 +37,7 @@ public class LogTracker extends JFrame {
 	private LogFilePanel logFilePanel;
 	private ParserConfigCatalog parserConfigCatalog = new ParserConfigCatalog();
 	private List<FileControlPanel> fileControlPanelList = new ArrayList<>();
+	private GlobalConfig globalConfig = new GlobalConfig();
 
 	/**
 	 * Launch the application.
@@ -173,21 +174,22 @@ public class LogTracker extends JFrame {
 	}
 
 	/**
-	 * Erstelle ein Konfigurationsobjekt für die gesamte Log-Tracker Instanz.
-	 * @return
+	 * Erstelle ein Konfigurationsobjekt, welches die aktuelle Konfiguration der Applikation beschreibt, inklusive
+	 * der Konfigurierten Fenster.
+	 * @return das Konfigurationsobjekt.
 	 */
-	public LogTrackerConfig getConfig() {
+	public LogTrackerConfig createConfigurationTree() {
 		LogTrackerConfig config = new LogTrackerConfig();
-		Global global = new Global();
-		global.setTitle(getTitle());
-		config.setGlobal(global);
-		parserConfigCatalog.stream().filter(p -> p.isEditable()).forEach(p -> global.getLogParser().add(p));;
+		globalConfig.setTitle(getTitle());
+		config.setGlobal(globalConfig);
+		globalConfig.getLogParser().clear();
+		parserConfigCatalog.stream().filter(p -> p.isEditable()).forEach(p -> globalConfig.getLogParser().add(p));;
 		fileControlPanelList.stream().forEach(fcp -> config.addFileControl(fcp.getConfig()));
 		return config;
 	}
 	
 	public void applyConfig(LogTrackerConfig config) {
-		Global global = config.getGlobal();
+		GlobalConfig global = config.getGlobal();
 		if (global != null) {
 			if (global.getTitle() != null)
 				setTitle(global.getTitle());
@@ -201,6 +203,14 @@ public class LogTracker extends JFrame {
 			FileControlPanel fileControlPanel = addNewFileControl(CLocation.base().normalSouth(0.5));
 			fileControlPanel.applyConfig(fileControlConfig);
 		}
+	}
+
+	/**
+	 * Liefere das globale Konfigurationsobjekt, welches applikationsweite Konfigurationen beinhaltet.
+	 * @return das Globale-Konfigurationsobjekt.
+	 */
+	public GlobalConfig getGlobalConfig() {
+		return globalConfig;
 	}
 
 }

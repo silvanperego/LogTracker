@@ -18,7 +18,7 @@ import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.proc.PipelineHelper;
 
 import bibliothek.gui.dock.common.CControl;
@@ -33,7 +33,7 @@ import bibliothek.gui.dock.common.CControl;
  */
 public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<CorrelationLogParser, RawCorrelatedDataPoint> {
 
-	private ParserConfigDialog parserConfigDialog;
+	private ParserConfigPanel parserConfigDialog;
 	private CorrelationDataFields fields;
 	private KeepAliveElement keepAliveElement;
 	private LogLinePanel logLinePanel;
@@ -42,7 +42,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<Correla
 	}
 
 	@Override
-	public ExtractionFieldHandler<CorrelationLogParser, RawCorrelatedDataPoint> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
+	public ExtractionFieldHandler<CorrelationLogParser, RawCorrelatedDataPoint> createExtractionFieldPanel(ParserConfigPanel parserConfigDialog) {
 		if (this.parserConfigDialog != parserConfigDialog)
 			fields = new CorrelationDataFields(parserConfigDialog);
 		this.parserConfigDialog = parserConfigDialog;

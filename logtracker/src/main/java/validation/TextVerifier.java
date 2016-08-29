@@ -1,10 +1,12 @@
-package org.sper.logtracker.parserconf;
+package validation;
 
 import java.awt.Color;
 
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.text.JTextComponent;
+
+import org.sper.logtracker.parserconf.ParserConfigPanel;
 
 /**
  * Verifiziert ein Textfeld. Zeigt die Meldung an und färbt das Feld Orange, falls ein Fehler aufgetreten ist.
@@ -13,9 +15,9 @@ import javax.swing.text.JTextComponent;
  */
 public abstract class TextVerifier extends InputVerifier {
 
-	private ParserConfigDialog configDialog;
+	private ConfigurationSubPanel configDialog;
 	
-	public TextVerifier(ParserConfigDialog configDialog) {
+	public TextVerifier(ConfigurationSubPanel configDialog) {
 		this.configDialog = configDialog;
 	}
 
@@ -32,7 +34,7 @@ public abstract class TextVerifier extends InputVerifier {
 		String error = verifyText(textField.getText());
 		boolean result = error == null;
 		configDialog.setError(error);
-		input.setBackground(result ? ParserConfigDialog.getStandardBackgroundColor() : Color.ORANGE);
+		input.setBackground(result ? ParserConfigPanel.getStandardBackgroundColor() : Color.ORANGE);
 		return result;
 	}
 

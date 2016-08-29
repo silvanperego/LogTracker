@@ -17,10 +17,11 @@ import org.sper.logtracker.servstat.ServiceResponseLogParser;
  * @author silvan.perego
  *
  */
-public class Global {
+public class GlobalConfig {
 
 	private String title;
 	private List<ConfiguredLogParser<?,?>> logParser = new ArrayList<>();
+	private String timestampFormatStr;
 
 	@XmlAttribute
 	public String getTitle() {
@@ -42,6 +43,15 @@ public class Global {
 	
 	public void addLogParser(ConfiguredLogParser<?,?> logParser) {
 		this.logParser.add(logParser);
+	}
+
+	@XmlElement
+	public String getTimestampFormatStr() {
+		return timestampFormatStr != null ? timestampFormatStr : "yyyy-MM-dd hh:mm:ss.SSS";
+	}
+
+	public void setTimestampFormatStr(String timestampFormatStr) {
+		this.timestampFormatStr = timestampFormatStr;
 	}
 	
 }

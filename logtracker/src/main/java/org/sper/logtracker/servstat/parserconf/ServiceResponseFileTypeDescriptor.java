@@ -8,7 +8,7 @@ import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.servstat.ui.ServiceStatsTabs;
@@ -17,12 +17,12 @@ import bibliothek.gui.dock.common.CControl;
 
 public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<ServiceResponseLogParser, RawStatsDataPoint> {
 
-	private ParserConfigDialog parserConfigDialog;
+	private ParserConfigPanel parserConfigDialog;
 	private ServiceResponseExtractionFields fields;
 	private ServiceStatsTabs serviceStatsTabs;
 
 	@Override
-	public ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog) {
+	public ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> createExtractionFieldPanel(ParserConfigPanel parserConfigDialog) {
 		if (this.parserConfigDialog != parserConfigDialog)
 			fields = new ServiceResponseExtractionFields(parserConfigDialog);
 		this.parserConfigDialog = parserConfigDialog;

@@ -9,15 +9,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "LogTrackerConfig")
 public class LogTrackerConfig {
 
-	private Global global;
+	private GlobalConfig global;
 	private List<FileControl> fileControl = new ArrayList<>();
 
 	@XmlElement
-	public Global getGlobal() {
+	public GlobalConfig getGlobal() {
 		return global;
 	}
 
-	public void setGlobal(Global global) {
+	public void setGlobal(GlobalConfig global) {
 		this.global = global;
 	}
 

@@ -17,8 +17,9 @@ import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.parserconf.TextVerifier;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
+
+import validation.TextVerifier;
 
 public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldHandler<ErrorLogParser, RawErrorDataPoint> {
 
@@ -31,7 +32,7 @@ public class ErrorLogExtractionFields extends JPanel implements ExtractionFieldH
 	private InputVerifier encodingVerifier;
 	private CommonFieldsHelper timeFieldsHelper = new CommonFieldsHelper();;
 	
-	public ErrorLogExtractionFields(final ParserConfigDialog configDialog) {
+	public ErrorLogExtractionFields(final ParserConfigPanel configDialog) {
 		super();
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();

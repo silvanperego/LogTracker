@@ -18,10 +18,11 @@ import javax.swing.JTextField;
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.parserconf.TextVerifier;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
+
+import validation.TextVerifier;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> {
 
@@ -39,7 +40,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	private CommonFieldsHelper timeFieldsHelper = new CommonFieldsHelper();;
 
 	
-	public ServiceResponseExtractionFields(final ParserConfigDialog configDialog) {
+	public ServiceResponseExtractionFields(final ParserConfigPanel configDialog) {
 		super();
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();
@@ -297,9 +298,9 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	@Override
 	public void removeErrorMarks() {
 		timeFieldsHelper.removeErrorMarks();
-		serviceExcludeField.setBackground(ParserConfigDialog.getStandardBackgroundColor());
-		conversionFactorField.setBackground(ParserConfigDialog.getStandardBackgroundColor());
-		successCodeField.setBackground(ParserConfigDialog.getStandardBackgroundColor());
+		serviceExcludeField.setBackground(ParserConfigPanel.getStandardBackgroundColor());
+		conversionFactorField.setBackground(ParserConfigPanel.getStandardBackgroundColor());
+		successCodeField.setBackground(ParserConfigPanel.getStandardBackgroundColor());
 	}
 
 	@Override

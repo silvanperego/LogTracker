@@ -22,7 +22,7 @@ public interface FileTypeDescriptor<T extends ConfiguredLogParser<T,R>,R> {
 	 * @param ein JPanel mit den notwendigen ExtractionFields. Das JPanel implementiert das {@link JPanel} Interface.
 	 * @return
 	 */
-	ExtractionFieldHandler<T,R> createExtractionFieldPanel(ParserConfigDialog parserConfigDialog);
+	ExtractionFieldHandler<T,R> createExtractionFieldPanel(ParserConfigPanel parserConfigDialog);
 	
 	/**
 	 * Kreiere die JTabs, die für diesen FileType angemessen sind.

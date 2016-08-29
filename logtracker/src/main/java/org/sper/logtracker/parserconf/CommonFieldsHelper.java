@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.TimeZone;
 
@@ -15,6 +14,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import validation.SimpleDateFormatVerifier;
+import validation.TextVerifier;
 
 /**
  * Hilfsklasse für die Darstellung der Felder zur Konfiguration der Konfigurationsfelder, die in allen Detail-Konfigurationen vorkommen..
@@ -36,10 +38,10 @@ public class CommonFieldsHelper {
 	 * @param panel das Panel, dem die Felder hinzugefügt werden. Es sollte über einen Gridbag-Constraint verfügen.
 	 * @param configDialog der configDialog der den Feldern zugrunde liegt.
 	 * @param nIdxFields der maximale Wert des Index für die Index-Dropdowns.
-	 * @param correlationIdIsOptional TODO
+	 * @param correlationIdIsOptional true, falls die correlationId vom User leergelassen werden darf.
 	 * @return die Anzahl Zeilen, die durch die Standard-Felder beansprucht werden.
 	 */
-	public int addOccurrenceStartTimeFields(final JPanel panel, final ParserConfigDialog configDialog, int nIdxFields, boolean correlationIdIsOptional) {
+	public int addOccurrenceStartTimeFields(final JPanel panel, final ParserConfigPanel configDialog, int nIdxFields, boolean correlationIdIsOptional) {
 		{
 			JLabel lblOccurenceTimeGroup = new JLabel("Occurence Time Group Index:");
 			GridBagConstraints gbc_lblOccurenceTimeGroup = new GridBagConstraints();
@@ -78,22 +80,7 @@ public class CommonFieldsHelper {
 			panel.add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
 		}
 		{
-			occTimeVerifier = new TextVerifier(configDialog) {
-				
-				@Override
-				protected String verifyText(String text) {
-					if (text != null && text.length() > 0) {
-						try {
-							new SimpleDateFormat(text);
-						} catch (IllegalArgumentException e) {
-							return "Not a valid SimpleDateFormat pattern";
-						}
-					} else {
-						return "Date Format is mandatory";
-					}
-					return null;
-				}
-			};
+			occTimeVerifier = new SimpleDateFormatVerifier(configDialog);
 			timezoneVerifier = new TextVerifier(configDialog) {
 	
 				@Override
@@ -196,9 +183,9 @@ public class CommonFieldsHelper {
 	}
 
 	public void removeErrorMarks() {
-		occTimeFormatString.setBackground(ParserConfigDialog.getStandardBackgroundColor());
-		occTimeLanguage.setBackground(ParserConfigDialog.getStandardBackgroundColor());
-		occTimeTimezone.setBackground(ParserConfigDialog.getStandardBackgroundColor());
+		occTimeFormatString.setBackground(ParserConfigPanel.getStandardBackgroundColor());
+		occTimeLanguage.setBackground(ParserConfigPanel.getStandardBackgroundColor());
+		occTimeTimezone.setBackground(ParserConfigPanel.getStandardBackgroundColor());
 	}
 
 	public boolean verifyFormDataIsValid() {

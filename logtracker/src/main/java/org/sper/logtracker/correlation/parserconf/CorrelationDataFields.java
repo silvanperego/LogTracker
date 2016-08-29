@@ -17,8 +17,9 @@ import org.sper.logtracker.correlation.data.RawCorrelatedDataPoint;
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
-import org.sper.logtracker.parserconf.TextVerifier;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
+
+import validation.TextVerifier;
 
 public class CorrelationDataFields extends JPanel implements ExtractionFieldHandler<CorrelationLogParser, RawCorrelatedDataPoint> {
 
@@ -30,7 +31,7 @@ public class CorrelationDataFields extends JPanel implements ExtractionFieldHand
 	private CommonFieldsHelper timeFieldsHelper = new CommonFieldsHelper();
 	private JComboBox<Integer> serviceComboBox;;
 	
-	public CorrelationDataFields(final ParserConfigDialog configDialog) {
+	public CorrelationDataFields(final ParserConfigPanel configDialog) {
 		super();
 		setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagLayout gbl_extractionFields = new GridBagLayout();

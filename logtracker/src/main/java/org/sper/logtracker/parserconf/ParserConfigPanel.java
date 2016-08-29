@@ -40,7 +40,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.sper.logtracker.config.Global;
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.XMLConfigSupport;
 import org.sper.logtracker.config.compat.ConfigFileAction;
@@ -50,14 +50,17 @@ import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.logreader.LogParser;
 
-public class ParserConfigDialog extends JPanel implements ConfigurationAware {
+import validation.ConfigurationSubPanel;
+import validation.TextVerifier;
+
+public class ParserConfigPanel extends JPanel implements ConfigurationAware, ConfigurationSubPanel {
 	
 	private class PatternInputVerifier extends TextVerifier {
 		
 		private boolean nullable;
 
 		PatternInputVerifier(boolean nullable) {
-			super(ParserConfigDialog.this);
+			super(ParserConfigPanel.this);
 			this.nullable = nullable;
 		}
 		
@@ -108,14 +111,12 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 	private JPanel dataExtractionPanel;
 	private FileTypeDescriptor<?,?> fileTypeDesc;
 	private static Color standardBackgroundColor = new JTextField().getBackground();
-	private JDialog dialog;
 	/**
 	 * Create the dialog.
 	 * @param parserConfigList Die Liste der vorhandenen Parserkonfigurationen.
 	 * @param dialog der {@link JDialog} der diese Config-Panel beinhaltet.
 	 */
-	public ParserConfigDialog(ParserConfigList parserConfigList, final JDialog dialog, final ActionListener submitAction) {
-		this.dialog = dialog;
+	public ParserConfigPanel(ParserConfigList parserConfigList, final JDialog dialog, final ActionListener submitAction) {
 		setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(contentPanel, BorderLayout.CENTER);
@@ -138,7 +139,7 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 							boolean toggle, boolean extend) {
 						if (logParserTable.getSelectedRow() != rowIndex) {
 							if (isNewParser && !verifyFormDataIsValid()) {
-								if (JOptionPane.showConfirmDialog(ParserConfigDialog.this, "This Configuration is not valid and will be discarded!", "Confirm Discard", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+								if (JOptionPane.showConfirmDialog(ParserConfigPanel.this, "This Configuration is not valid and will be discarded!", "Confirm Discard", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 									int selRowIdx = logParserTable.getSelectedRow();
 									parserConfigModel.deleteRow(selRowIdx);
 									isNewParser = false;
@@ -146,7 +147,7 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 									super.changeSelection(rowIndex, columnIndex, toggle, extend);
 								}
 							} else if (inError()) {
-								if (JOptionPane.showConfirmDialog(ParserConfigDialog.this, "Edits for this Configuration are discarded!", "Confirm Discard", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+								if (JOptionPane.showConfirmDialog(ParserConfigPanel.this, "Edits for this Configuration are discarded!", "Confirm Discard", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 									loadEditingFields(loadedParser);
 									removeErrorMarks();
 									super.changeSelection(rowIndex, columnIndex, toggle, extend);								
@@ -535,6 +536,10 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 		setError(null);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.sper.logtracker.parserconf.ConfigurationSubPanel#setError(java.lang.String)
+	 */
+	@Override
 	public void setError(String txt) {
 		errorText.setText(txt);
 		enableComponents();
@@ -548,6 +553,10 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 		verifierList.add(vpart);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.sper.logtracker.parserconf.ConfigurationSubPanel#verifyFormDataIsValid()
+	 */
+	@Override
 	public boolean verifyFormDataIsValid() {
 		boolean valid = true;
 		for (VerifyingPart part : verifierList)
@@ -602,7 +611,7 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 
 	protected void safeConfigToFile(File selectedFile) {
 		LogTrackerConfig config = new LogTrackerConfig();
-		Global global = new Global();
+		GlobalConfig global = new GlobalConfig();
 		config.setGlobal(global);
 		for (int row : logParserTable.getSelectedRows()) {
 			ConfiguredLogParser<?,?> parserConfig = parserConfigModel.getParser(row);
@@ -622,6 +631,10 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 		return standardBackgroundColor;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sper.logtracker.parserconf.ConfigurationSubPanel#submit()
+	 */
+	@Override
 	public void submit() {
 		if (!inError()) {
 			saveLoadedParser();
@@ -629,8 +642,9 @@ public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 		}
 	}
 
-	public void setDefaultButton() {
-		dialog.getRootPane().setDefaultButton(okButton);
+	@Override
+	public JButton defaultButton() {
+		return okButton;
 	}
 	
 }

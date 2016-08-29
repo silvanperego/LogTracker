@@ -41,7 +41,7 @@ public class ToolBar extends JToolBar {
 			
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
-				new XMLConfigSupport().saveXMLConfig(selectedFile, logTracker.getConfig());
+				new XMLConfigSupport().saveXMLConfig(selectedFile, logTracker.createConfigurationTree());
 			}
 		});
 		btnSaveConfig.setToolTipText("Save Config File");
@@ -59,7 +59,7 @@ public class ToolBar extends JToolBar {
 		JButton btnConfigLogParsers = new JButton(new ImageIcon(ToolBar.class.getResource("/Zahnrad.png")));
 		btnConfigLogParsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
-				ConfigurationDialog dialog = new ConfigurationDialog(parserConfigList, logTracker);
+				ConfigurationDialog dialog = new ConfigurationDialog(parserConfigList, logTracker, logTracker.getGlobalConfig());
 				dialog.getParserConfig().setLogFileTypeList(parserConfigList.getParserTypeList(dialog.getParserConfig()));
 				dialog.setVisible(true);
 			}
