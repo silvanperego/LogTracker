@@ -50,7 +50,7 @@ import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.logreader.LogParser;
 
-public class ParserConfigDialog extends JDialog implements ConfigurationAware {
+public class ParserConfigDialog extends JPanel implements ConfigurationAware {
 	
 	private class PatternInputVerifier extends TextVerifier {
 		
@@ -110,15 +110,13 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 	private static Color standardBackgroundColor = new JTextField().getBackground();
 	/**
 	 * Create the dialog.
-	 * @param parserSelectionModel 
+	 * @param parserConfigList Die Liste der vorhandenen Parserkonfigurationen.
+	 * @param dialog der {@link JDialog} der diese Config-Panel beinhaltet.
 	 */
-	public ParserConfigDialog(ParserConfigList parserConfigList) {
-		setTitle("Log-Files Parser Configuration");
-		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 909, 681);
-		getContentPane().setLayout(new BorderLayout());
+	public ParserConfigDialog(ParserConfigList parserConfigList, final JDialog dialog) {
+		setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
 			JLabel lblAvailableLogparsers = new JLabel("Available Log-Parsers");
@@ -362,7 +360,7 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnCreateNew = new JButton("Create New");
 				btnCreateNew.setToolTipText("Create a new, empty Log-File-Configuration entry.");
@@ -459,22 +457,18 @@ public class ParserConfigDialog extends JDialog implements ConfigurationAware {
 						if (!inError()) {
 							saveLoadedParser();
 							parserConfigModel.saveInSelectionModel();
-							setVisible(false);
+							dialog.setVisible(false);
 						}
 					}
 				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				dialog.getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setToolTipText("Undo all configuration edits.");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						setVisible(false);
-					}
-				});
+				cancelButton.addActionListener(e ->dialog.setVisible(false));
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

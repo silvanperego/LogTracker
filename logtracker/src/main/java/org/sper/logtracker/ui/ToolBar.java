@@ -22,7 +22,6 @@ import org.sper.logtracker.config.XMLConfigSupport;
 import org.sper.logtracker.config.compat.ConfigFileAction;
 import org.sper.logtracker.config.compat.ConfigFileOpenButton;
 import org.sper.logtracker.config.compat.ConfigFileSaveButton;
-import org.sper.logtracker.parserconf.ParserConfigDialog;
 
 import bibliothek.gui.dock.common.CLocation;
 
@@ -67,8 +66,8 @@ public class ToolBar extends JToolBar {
 		JButton btnConfigLogParsers = new JButton(new ImageIcon(ToolBar.class.getResource("/Zahnrad.png")));
 		btnConfigLogParsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
-				ParserConfigDialog dialog = new ParserConfigDialog(parserConfigList);
-				dialog.setLogFileTypeList(parserConfigList.getParserTypeList(dialog));
+				ConfigurationDialog dialog = new ConfigurationDialog(parserConfigList);
+				dialog.getParserConfig().setLogFileTypeList(parserConfigList.getParserTypeList(dialog.getParserConfig()));
 				dialog.setVisible(true);
 			}
 		});
