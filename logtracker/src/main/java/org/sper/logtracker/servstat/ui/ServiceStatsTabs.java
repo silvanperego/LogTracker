@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.MouseInputAdapter;
 
-import org.jfree.chart.labels.XYToolTipGenerator;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
@@ -31,7 +30,6 @@ import org.sper.logtracker.servstat.proc.NewPointExtractor;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer.CorrelatedStatsDataPointFactorizer;
 import org.sper.logtracker.servstat.scatter.ServiceScatterPlot;
-import org.sper.logtracker.servstat.scatter.TooltipGenerator;
 import org.sper.logtracker.servstat.stats.StatsCalculator;
 import org.sper.logtracker.servstat.stats.StatsCalculator.CategoryExtractor;
 import org.sper.logtracker.servstat.ui.detail.ServiceCallDetailViewer;
@@ -115,7 +113,7 @@ public class ServiceStatsTabs {
 			userDockable = createDockable(control, stackpos++, "Users", userPanel);
 			userDockable.setVisible(true);
 		}
-		plot = new ServiceScatterPlot();
+		plot = new ServiceScatterPlot(this, globalConfig);
 		graphDockable = createDockable(control, stackpos++, "Graph", plot.getPanel());
 		successRetCode = logParser.getSuccessCode();
 		graphDockable.setVisible(true);
@@ -167,10 +165,6 @@ public class ServiceStatsTabs {
 				terminationPointer.endOfLife();
 			terminationPointer = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, activityMonitor, factorizer);
 
-			Factor services = factorizer.getService();
-			Factor users = factorizer.getUser();
-			XYToolTipGenerator toolTipGenerator = new TooltipGenerator(services, users);
-			plot.getXyPlot().getRenderer().setBaseToolTipGenerator(toolTipGenerator);
 			serviceControlDockable.toFront();
 		} catch (Exception e1) {
 			StringWriter sw = new StringWriter();
@@ -214,7 +208,7 @@ public class ServiceStatsTabs {
 			userPanel.applyConfig(scd);
 	}
 
-	StatsDataPointFactorizer<DataPoint> getFactorizer() {
+	public StatsDataPointFactorizer<DataPoint> getFactorizer() {
 		return factorizer;
 	}
 
