@@ -47,7 +47,7 @@ public class GlobalConfig {
 
 	@XmlElement
 	public String getTimestampFormatStr() {
-		return timestampFormatStr != null ? timestampFormatStr : "yyyy-MM-dd hh:mm:ss.SSS";
+		return timestampFormatStr != null ? timestampFormatStr : "yyyy-MM-dd kk:mm:ss.SSS";
 	}
 
 	public void setTimestampFormatStr(String timestampFormatStr) {

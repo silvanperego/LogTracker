@@ -1,7 +1,10 @@
 package org.sper.logtracker.servstat.scatter;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -34,6 +37,39 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 	private Long lastOccTime = null;
 	private SimpleDateFormat sdf;
 	private ServiceStatsTabs tabs;
+	private BestItem bestItem;
+	
+	private class BestItem {
+		DataPoint dataItem;
+		private Point screenPoint;
+		
+		BestItem(DataPoint dataItem) {
+			this.dataItem = dataItem;
+		}
+		
+		Point screenPoint() {
+			if (screenPoint == null)
+				screenPoint = convertToScreenPoint(dataItem);
+			return screenPoint;
+		}
+		
+		void repaint() {
+			Point pt = screenPoint();
+			chartPanel.repaint(pt.x - 9, pt.y - 9, 18, 18);
+		}
+		
+		void paint(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			Point pt = screenPoint();
+			g.setColor(new Color(0xa0a000a0, true));
+			g2.setStroke(new BasicStroke((float) 2.5));
+			g.drawLine(pt.x - 5, pt.y - 5, pt.x - 3, pt.y - 3);
+			g.drawLine(pt.x + 5, pt.y - 5, pt.x + 3, pt.y - 3);
+			g.drawLine(pt.x - 5, pt.y + 5, pt.x - 3, pt.y + 3);
+			g.drawLine(pt.x + 5, pt.y + 5, pt.x + 3, pt.y + 3);
+			g.drawOval(pt.x - 8, pt.y - 8, 16, 16);
+		}
+	}
 
 	public ServiceScatterPlot(ServiceStatsTabs tabs, GlobalConfig globalConfig) {
 		this.tabs = tabs;
@@ -50,14 +86,33 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 		ValueAxis rangeAxis = xyPlot.getRangeAxis();
 		chartPanel = new ChartPanel(jfreechart) {
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void paint(Graphics g) {
+				super.paint(g);
+				if (bestItem != null) {
+					bestItem.paint(g);
+				}
+			}
 		};
 		chartPanel.addChartMouseListener(new ChartMouseListener() {
 			
 			@Override
 			public void chartMouseMoved(ChartMouseEvent chartEv) {
 				if (chartEv.getEntity() instanceof PlotEntity) {
-					DataPoint dp = findClosestDataPoint(chartEv.getTrigger().getPoint());
-					chartEv.getEntity().setToolTipText(dp != null ? calculateToolTip(dp) : null);
+					BestItem dp = findClosestDataPoint(chartEv.getTrigger().getPoint());
+					chartEv.getEntity().setToolTipText(dp != null ? calculateToolTip(dp.dataItem) : null);
+					if (dp != null) {
+						if  (bestItem == null || dp.dataItem != bestItem.dataItem) {
+							if (bestItem != null)
+								bestItem.repaint();
+							dp.repaint();
+							bestItem = dp;
+						}
+					} else if (bestItem != null) {
+						bestItem.repaint();
+						bestItem = null;
+					}
 				}
 			}
 			
@@ -68,30 +123,36 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 		rangeAxis.setAutoRange(false);
 	}
 
-	private DataPoint findClosestDataPoint(Point mousePoint) {
+	private BestItem findClosestDataPoint(Point mousePoint) {
 		XYDataset dataset = xyPlot.getDataset();
-		Rectangle2D plotArea = chartPanel.getScreenDataArea();
 		double bestDistance = 50;
-		DataPoint bestItem = null;
+		BestItem bestItem = null;
 		for (int i = 0; i < dataset.getSeriesCount(); i++) {
 			XYSeries series = ((XYSeriesCollection)dataset).getSeries(i);
 			for (int j = 0; j < series.getItemCount(); j++) {
 				DataPoint item = (DataPoint) series.getDataItem(j);
-				final Point2D.Double java2dPoint = new Point2D.Double(
-						domain.valueToJava2D(item.getXValue(), plotArea, xyPlot.getDomainAxisEdge()), 
-						xyPlot.getRangeAxis().valueToJava2D(item.getYValue(), plotArea, xyPlot.getRangeAxisEdge()));
-				if (plotArea.contains(java2dPoint)) {
-					Point screenPoint = chartPanel.translateJava2DToScreen(java2dPoint);
+				Point screenPoint = convertToScreenPoint(item);
+				if (screenPoint != null) {
 					double dist = screenPoint.distance(mousePoint);
 					if (dist < bestDistance) {
 						bestDistance = dist;
-						bestItem = item;
-						System.out.println("Best Item: " + item);
+						bestItem = new BestItem(item);
 					}
 				}
 			}
 		}
 		return bestItem;
+	}
+
+	private Point convertToScreenPoint(DataPoint item) {
+		Rectangle2D plotArea = chartPanel.getScreenDataArea();
+		Point2D.Double java2dPoint = new Point2D.Double(
+				domain.valueToJava2D(item.getXValue(), plotArea, xyPlot.getDomainAxisEdge()), 
+				xyPlot.getRangeAxis().valueToJava2D(item.getYValue(), plotArea, xyPlot.getRangeAxisEdge()));
+		Point screenPoint = null;
+		if (plotArea.contains(java2dPoint))
+			screenPoint = chartPanel.translateJava2DToScreen(java2dPoint);
+		return screenPoint;
 	}
 
 	private String calculateToolTip(DataPoint item) {
