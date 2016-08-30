@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.event.MouseInputAdapter;
 
 import org.jfree.chart.labels.XYToolTipGenerator;
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
 import org.sper.logtracker.data.Factor;
@@ -52,6 +53,7 @@ public class ServiceStatsTabs {
 	private DefaultMultipleCDockable serviceControlDockable;
 	private DefaultMultipleCDockable graphDockable;
 	private DefaultMultipleCDockable userDockable;
+	private GlobalConfig globalConfig;
 
 	public final class ApplyControlAction implements ActionListener {
   	public void actionPerformed(ActionEvent e) {
@@ -82,23 +84,24 @@ public class ServiceStatsTabs {
     	int row = controlTable.rowAtPoint(e.getPoint());
     	int col = controlTable.columnAtPoint(e.getPoint());
     	if (col >= 0 && col < controlTable.getColumnCount() && row >= 0 && row < controlTable.getRowCount()) {
-    	  String filterVal = rowToFilterVal.apply(row);
-    	  Integer filterIdx = getRelevantFactor.apply(factorizer).getStringIndex(filterVal);
-        List<DataPoint> filteredList;
-        synchronized (newPointExtractor) {
-          filteredList = newPointExtractor.stream()
-              .filter(p -> {Integer val = dataPointToIndex.apply(p); return val != null && val.intValue() == filterIdx;})
-              .sorted((a, b) -> b.occTime.compareTo(a.occTime))
-              .limit(1000)
-              .collect(Collectors.toList());
-        }
-        new ServiceCallDetailViewer(filterQualifier + ' ' + filterVal, filteredList, factorizer).setVisible(true);
+    		String filterVal = rowToFilterVal.apply(row);
+    		Integer filterIdx = getRelevantFactor.apply(factorizer).getStringIndex(filterVal);
+    		List<DataPoint> filteredList;
+    		synchronized (newPointExtractor) {
+    			filteredList = newPointExtractor.stream()
+    					.filter(p -> {Integer val = dataPointToIndex.apply(p); return val != null && val.intValue() == filterIdx;})
+    					.sorted((a, b) -> b.occTime.compareTo(a.occTime))
+    					.limit(1000)
+    					.collect(Collectors.toList());
+    		}
+    		new ServiceCallDetailViewer(filterQualifier + ' ' + filterVal, filteredList, factorizer, globalConfig).setVisible(true);
     	}
     }
-    
+
   }
   
-  public ServiceStatsTabs(CControl control, Configuration configuration, ServiceResponseLogParser logParser) throws InterruptedException {
+  public ServiceStatsTabs(CControl control, Configuration configuration, ServiceResponseLogParser logParser, GlobalConfig globalConfig) throws InterruptedException {
+		this.globalConfig = globalConfig;
 		serviceControlPanel = new ServiceControlPanel(this);
 		int stackpos = 0;
 		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel);

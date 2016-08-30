@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.CorrelationLogParser;
 import org.sper.logtracker.correlation.data.CorrelatedDataPoint;
@@ -51,7 +52,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<Correla
 
 	@Override
 	public void createAndRegisterDockables(CControl control, Configuration configuration,
-			ConfiguredLogParser<?, ?> logParser) throws InterruptedException {
+			ConfiguredLogParser<?, ?> logParser, GlobalConfig globalConfig) throws InterruptedException {
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<Correla
 	}
 
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart, ActivityMonitor activityMonitor, GlobalConfig globalConfig) {
 		try {
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();

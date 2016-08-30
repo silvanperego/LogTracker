@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
 import org.sper.logtracker.data.DataListener;
@@ -46,9 +47,9 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser
 	}
 
 	@Override
-	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser)
+	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig)
 			throws InterruptedException {
-		logLinePanel = new LogLinePanel();
+		logLinePanel = new LogLinePanel(globalConfig);
 		logLineTableModel = logLinePanel.getTableModel();
 		logLineDockable = new DefaultMultipleCDockable(null, "Error Log-Messages", logLinePanel);
 		control.addDockable(logLineDockable);
@@ -72,9 +73,9 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser
 	}
 
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart, ActivityMonitor activityMonitor, GlobalConfig globalConfig) {
 		try {
-			DataListener<RawErrorDataPoint> logLineCatalog = new LogLineCatalog(logLineTableModel);
+			DataListener<RawErrorDataPoint> logLineCatalog = new LogLineCatalog(logLineTableModel, globalConfig);
 			if (keepAliveElement != null) {
 				keepAliveElement.endOfLife();
 			}

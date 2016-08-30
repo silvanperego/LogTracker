@@ -2,6 +2,7 @@ package org.sper.logtracker.servstat.parserconf;
 
 import java.util.List;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.LogSource;
@@ -30,8 +31,8 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<Ser
 	}
 
 	@Override
-	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser) throws InterruptedException {
-		serviceStatsTabs = new ServiceStatsTabs(control, configuration, (ServiceResponseLogParser) logParser);
+	public void createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig) throws InterruptedException {
+		serviceStatsTabs = new ServiceStatsTabs(control, configuration, (ServiceResponseLogParser) logParser, globalConfig);
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<Ser
 	}
 
 	@Override
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart, ActivityMonitor activityMonitor, GlobalConfig globalConfig) {
 		serviceStatsTabs.setupDataPipeLines(logSource, logParser, obsStart, activityMonitor);
 	}
 

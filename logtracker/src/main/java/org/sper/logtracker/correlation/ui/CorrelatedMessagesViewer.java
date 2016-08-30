@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
 
 public class CorrelatedMessagesViewer extends JFrame {
@@ -29,7 +30,7 @@ public class CorrelatedMessagesViewer extends JFrame {
 	private JTextArea fullMessage;
 	private CorrelatedMessagesTableModel tableModel;
 
-	public CorrelatedMessagesViewer(JComponent owner, String correlationId) {
+	public CorrelatedMessagesViewer(JComponent owner, String correlationId, GlobalConfig globalConfig) {
 		super("Correlated Messages");
 		setBounds(100, 100, 1200, 759);
 		getContentPane().setLayout(new BorderLayout());
@@ -54,7 +55,7 @@ public class CorrelatedMessagesViewer extends JFrame {
 			getContentPane().add(lblErrorMessagesWithin, BorderLayout.NORTH);
 		}
 		{
-			tableModel = new CorrelatedMessagesTableModel(correlationId);
+			tableModel = new CorrelatedMessagesTableModel(correlationId, globalConfig);
 		}
 		{
 			corrTable = new JTable();

@@ -11,11 +11,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 
 public class LogLinePanel extends JPanel {
 	
-	public LogLinePanel() {
+	public LogLinePanel(GlobalConfig globalConfig) {
 		setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblMostRelevantErrors = new JLabel("Most relevant Errors");
@@ -45,7 +46,7 @@ public class LogLinePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int rowAtPoint = logLineTable.rowAtPoint(e.getPoint());
-				CategoryViewer viewer = new CategoryViewer(logLineTable, (ErrorCategory) logLineTableModel.getValueAt(rowAtPoint, 3));
+				CategoryViewer viewer = new CategoryViewer(logLineTable, (ErrorCategory) logLineTableModel.getValueAt(rowAtPoint, 3), globalConfig);
 				viewer.setVisible(true);
 			}
 		});

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
 
@@ -13,13 +14,14 @@ public class CorrelatedMessagesTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	private static final String[] COL_NAMES = {"Time", "Log-Source", "User", "Description"};
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm.ss.SSS");
+	private final SimpleDateFormat sdf;
 	
 	private List<? extends CorrelatedMessage> msgList;
 
-	public CorrelatedMessagesTableModel(String correlationId) {
+	public CorrelatedMessagesTableModel(String correlationId, GlobalConfig globalConfig) {
 		CorrelationCatalog<?> catalog = CorrelationCatalog.getInstance();
 		msgList = catalog.getMessagesForCategory(correlationId);
+		sdf = new SimpleDateFormat(globalConfig.getTimestampFormatStr());
 	}
 	
 	@Override

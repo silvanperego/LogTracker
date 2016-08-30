@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.Box;
@@ -28,6 +29,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.jfree.chart.ChartPanel;
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
@@ -40,15 +42,17 @@ public class CategoryViewer extends JFrame {
 	private JTextArea fullMessage;
 	private JCheckBox showDistributionBox;
 	private ChartPanel chartPanel;
+	private SimpleDateFormat sdf;
 
 	/**
 	 * Create the dialog.
 	 * @param cat 
 	 * @param table 
 	 */
-	CategoryViewer(JComponent owner, ErrorCategory cat) {
+	CategoryViewer(JComponent owner, ErrorCategory cat, GlobalConfig globalConfig) {
 		super("Message Category Detail View");
 		setBounds(100, 100, 1200, 759);
+		sdf = new SimpleDateFormat(globalConfig.getTimestampFormatStr());
 		getContentPane().setLayout(new BorderLayout());
 		{
 			TemporalDistributionPlot temporalDistributionPlot = new TemporalDistributionPlot();
@@ -98,7 +102,7 @@ public class CategoryViewer extends JFrame {
 			) {
 				private static final long serialVersionUID = 1L;
 				Class<?>[] columnTypes = new Class[] {
-					Object.class, String.class, String.class, Object.class
+					String.class, String.class, String.class, Object.class
 				};
 				public Class<?> getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
@@ -111,7 +115,7 @@ public class CategoryViewer extends JFrame {
 				for (int i = cat.getNumMessages(); --i >= 0; ) {
 					RawErrorDataPoint dp = cat.getErrorsAsList().get(i);
 					tableModel.addRow(new Object[] {
-							new Date(dp.occTime),
+							sdf.format(new Date(dp.occTime)),
 							dp.user,
 							dp.logSource,
 							dp
@@ -138,7 +142,7 @@ public class CategoryViewer extends JFrame {
 						fullMessage.setText(null);
 				}
 			});
-			catMessageTable.addMouseListener(new CorrelatedPopupMenuAction(catMessageTable, r -> tableModel.getValueAt(r, 3)));
+			catMessageTable.addMouseListener(new CorrelatedPopupMenuAction(catMessageTable, r -> tableModel.getValueAt(r, 3), globalConfig));
 			JScrollPane scrollPane = new JScrollPane(catMessageTable);
 			scrollPane.setPreferredSize(new Dimension(700, 120));
 			fullMessage = new JTextArea();

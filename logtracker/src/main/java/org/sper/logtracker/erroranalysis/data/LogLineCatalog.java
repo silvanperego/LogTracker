@@ -1,5 +1,6 @@
 package org.sper.logtracker.erroranalysis.data;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.data.DataListener;
 
 /**
@@ -18,9 +20,11 @@ public class LogLineCatalog implements DataListener<RawErrorDataPoint> {
 	private List<ErrorCategory> catalog = new ArrayList<ErrorCategory>();
 	private DefaultTableModel tableModel;
 	private boolean needsRefresh = false;
+	private SimpleDateFormat sdf;
 	
-	public LogLineCatalog(DefaultTableModel tableModel) {
+	public LogLineCatalog(DefaultTableModel tableModel, GlobalConfig config) {
 		this.tableModel = tableModel;
+		sdf = new SimpleDateFormat(config.getTimestampFormatStr());
 	}
 	
 	@Override
@@ -57,7 +61,7 @@ public class LogLineCatalog implements DataListener<RawErrorDataPoint> {
 				RawErrorDataPoint latestMessage = cat.getLatestMessage();
 				tableModel.addRow(new Object[] {
 						latestMessage.severity,
-						new Date(latestMessage.occTime),
+						sdf.format(new Date(latestMessage.occTime)),
 						cat.getNumMessages(),
 						cat
 				});

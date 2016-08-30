@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.erroranalysis.ui.CorrelatedPopupMenuAction;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
@@ -21,18 +22,18 @@ public class ServiceCallDetailViewer extends JFrame {
 	private JTable serviceDetailTable;
 	private ServiceCallDetailTableModel serviceDetailTableModel;
 
-	public ServiceCallDetailViewer(String frameTitle, List<DataPoint> dataPointList, StatsDataPointFactorizer<DataPoint> factorizer) {
+	public ServiceCallDetailViewer(String frameTitle, List<DataPoint> dataPointList, StatsDataPointFactorizer<DataPoint> factorizer, GlobalConfig globalConfig) {
 		super(frameTitle);		
     setBounds(400, 100, 800, 859);
 		JLabel lblServiceCallDetails = new JLabel("Service Call Details of " + frameTitle);
 		getContentPane().add(lblServiceCallDetails, BorderLayout.NORTH);
 		
-		serviceDetailTableModel = new ServiceCallDetailTableModel(dataPointList, factorizer);
+		serviceDetailTableModel = new ServiceCallDetailTableModel(dataPointList, factorizer, globalConfig);
 		serviceDetailTable = new JTable(serviceDetailTableModel);
 		serviceDetailTable.getColumnModel().getColumn(0).setPreferredWidth(200);
 		serviceDetailTable.getColumnModel().getColumn(1).setPreferredWidth(240);
 		
-		serviceDetailTable.addMouseListener(new CorrelatedPopupMenuAction(serviceDetailTable, r -> serviceDetailTableModel.getDataPointAt(r)));
+		serviceDetailTable.addMouseListener(new CorrelatedPopupMenuAction(serviceDetailTable, r -> serviceDetailTableModel.getDataPointAt(r), globalConfig));
 		JScrollPane scrollPane = new JScrollPane(serviceDetailTable);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		

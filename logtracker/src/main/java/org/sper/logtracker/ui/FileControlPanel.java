@@ -381,14 +381,14 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 				activeLogFileType.removeDockables(logTracker.getControl());
 			if (config != null)
 				config.resetDynamicModules();
-			logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser);
+			logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser, logTracker.getGlobalConfig());
 			activeLogFileType = logFileTypeDescriptor;
 		}
 		List<LogSource> logSource = new ArrayList<LogSource>();
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++) {
 			logSource.add(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
 		}
-		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart(), activityMonitor);
+		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart(), activityMonitor, logTracker.getGlobalConfig());
 		if (config != null)
 			config.resetActiveConfig();
 	}
