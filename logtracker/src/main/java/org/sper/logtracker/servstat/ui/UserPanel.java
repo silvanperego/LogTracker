@@ -42,7 +42,7 @@ public class UserPanel extends JPanel implements ConfigurationAware {
         serviceStatsTabs.new ShowServiceDetailAction(userTable, "User", 
             r -> (String) userTableModel.getValueAt(r, 0), 
             f -> f.getUser(), 
-            dp -> dp.user));
+            dp -> dp.user, 4));
 		JLabel lblNewLabel = new JLabel("Service Call Statistics per User");
 		add(lblNewLabel, BorderLayout.NORTH);
 		

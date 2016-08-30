@@ -111,7 +111,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		    serviceStatsTabs.new ShowServiceDetailAction(controlTable, "Service", 
 		        r -> (String) controlTableModel.getValueAt(r, SERVICE_NAME_COL), 
 		        f -> f.getService(), 
-		        dp -> dp.svcIdx));
+		        dp -> dp.svcIdx, ServiceControlTableModel.LAST_STAT_COL));
 		JLabel lblNewLabel = new JLabel("Service Call Statistics and Display Properties");
 		add(lblNewLabel, BorderLayout.NORTH);
 		

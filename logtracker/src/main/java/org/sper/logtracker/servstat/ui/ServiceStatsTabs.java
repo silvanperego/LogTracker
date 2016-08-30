@@ -67,21 +67,24 @@ public class ServiceStatsTabs {
     private Function<DataPoint, Integer> dataPointToIndex;
     private String filterQualifier;
     private Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor;
+	private int maxRelevCol;
     
     public ShowServiceDetailAction(JTable controlTable, String filterQualifier, 
-        Function<Integer, String> rowToFilterVal, Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor, Function<DataPoint, Integer> dataPointToIndex) {
+        Function<Integer, String> rowToFilterVal, Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor, Function<DataPoint, Integer> dataPointToIndex,
+        int maxRelevCol) {
       this.controlTable = controlTable;
       this.filterQualifier = filterQualifier;
       this.rowToFilterVal = rowToFilterVal;
       this.getRelevantFactor = getRelevantFactor;
       this.dataPointToIndex = dataPointToIndex;
+	this.maxRelevCol = maxRelevCol;
     }
   
     @Override
     public void mouseClicked(MouseEvent e) {
     	int row = controlTable.rowAtPoint(e.getPoint());
     	int col = controlTable.columnAtPoint(e.getPoint());
-    	if (col >= 0 && col < controlTable.getColumnCount() && row >= 0 && row < controlTable.getRowCount()) {
+    	if (col >= 0 && col < maxRelevCol && row >= 0 && row < controlTable.getRowCount()) {
     		String filterVal = rowToFilterVal.apply(row);
     		Integer filterIdx = getRelevantFactor.apply(factorizer).getStringIndex(filterVal);
     		List<DataPoint> filteredList;
