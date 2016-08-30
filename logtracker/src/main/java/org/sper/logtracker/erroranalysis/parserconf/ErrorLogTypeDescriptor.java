@@ -53,7 +53,7 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser
 		logLineTableModel = logLinePanel.getTableModel();
 		logLineDockable = new DefaultMultipleCDockable(null, "Error Log-Messages", logLinePanel);
 		control.addDockable(logLineDockable);
-		logLineDockable.setLocation(CLocation.base().normalEast(0.6));
+		logLineDockable.setLocation(CLocation.base().normalSouth(0.4));
 		logLineDockable.setVisible(true);
 	}
 

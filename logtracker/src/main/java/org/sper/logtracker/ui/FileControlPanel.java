@@ -310,13 +310,13 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		}
 		setSelectedParser(fileControlConfig.getParserConfig());
 		Object controlData = fileControlConfig.getControlData();
-		if (controlData != null) {
-			try {
-				setupFileProcessing();
+		try {
+			setupFileProcessing();
+			if (controlData != null) {
 				activeLogFileType.applyConfig(controlData);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
