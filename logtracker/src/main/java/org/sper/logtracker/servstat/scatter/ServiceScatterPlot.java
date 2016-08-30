@@ -11,6 +11,10 @@ import java.awt.geom.Rectangle2D;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
@@ -24,6 +28,8 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.sper.logtracker.config.GlobalConfig;
+import org.sper.logtracker.correlation.data.CorrelatedMessage;
+import org.sper.logtracker.correlation.ui.CorrelatedMessagesViewer;
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.ui.ServiceStatsTabs;
@@ -38,36 +44,37 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 	private SimpleDateFormat sdf;
 	private ServiceStatsTabs tabs;
 	private BestItem bestItem;
+	private JMenuItem menuItem;
 	
 	private class BestItem {
 		DataPoint dataItem;
-		private Point screenPoint;
 		
 		BestItem(DataPoint dataItem) {
 			this.dataItem = dataItem;
 		}
 		
 		Point screenPoint() {
-			if (screenPoint == null)
-				screenPoint = convertToScreenPoint(dataItem);
-			return screenPoint;
+			return convertToScreenPoint(dataItem);
 		}
 		
 		void repaint() {
 			Point pt = screenPoint();
-			chartPanel.repaint(pt.x - 9, pt.y - 9, 18, 18);
+			if (pt != null)
+				chartPanel.repaint(pt.x - 9, pt.y - 9, 18, 18);
 		}
 		
 		void paint(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 			Point pt = screenPoint();
-			g.setColor(new Color(0xa0a000a0, true));
-			g2.setStroke(new BasicStroke((float) 2.5));
-			g.drawLine(pt.x - 5, pt.y - 5, pt.x - 3, pt.y - 3);
-			g.drawLine(pt.x + 5, pt.y - 5, pt.x + 3, pt.y - 3);
-			g.drawLine(pt.x - 5, pt.y + 5, pt.x - 3, pt.y + 3);
-			g.drawLine(pt.x + 5, pt.y + 5, pt.x + 3, pt.y + 3);
-			g.drawOval(pt.x - 8, pt.y - 8, 16, 16);
+			if (pt != null) {
+				g.setColor(new Color(0xa0a000a0, true));
+				g2.setStroke(new BasicStroke((float) 2.5));
+				g.drawLine(pt.x - 5, pt.y - 5, pt.x - 3, pt.y - 3);
+				g.drawLine(pt.x + 5, pt.y - 5, pt.x + 3, pt.y - 3);
+				g.drawLine(pt.x - 5, pt.y + 5, pt.x - 3, pt.y + 3);
+				g.drawLine(pt.x + 5, pt.y + 5, pt.x + 3, pt.y + 3);
+				g.drawOval(pt.x - 8, pt.y - 8, 16, 16);
+			}
 		}
 	}
 
@@ -95,11 +102,16 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 				}
 			}
 		};
+		JPopupMenu popupMenu = chartPanel.getPopupMenu();
+		menuItem = new JMenuItem("Show correlated Messages");
+		menuItem.addActionListener(aev -> new CorrelatedMessagesViewer(chartPanel, ((CorrelatedMessage)bestItem.dataItem).getCorrelationId(), globalConfig).setVisible(true));
+		popupMenu.add(new JSeparator());
+		popupMenu.add(menuItem);
 		chartPanel.addChartMouseListener(new ChartMouseListener() {
 			
 			@Override
 			public void chartMouseMoved(ChartMouseEvent chartEv) {
-				if (chartEv.getEntity() instanceof PlotEntity) {
+				if (!popupMenu.isVisible() && chartEv.getEntity() instanceof PlotEntity) {
 					BestItem dp = findClosestDataPoint(chartEv.getTrigger().getPoint());
 					chartEv.getEntity().setToolTipText(dp != null ? calculateToolTip(dp.dataItem) : null);
 					if (dp != null) {
@@ -107,7 +119,7 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 							if (bestItem != null)
 								bestItem.repaint();
 							dp.repaint();
-							bestItem = dp;
+							setBestItem(dp);
 						}
 					} else if (bestItem != null) {
 						bestItem.repaint();
@@ -115,7 +127,7 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 					}
 				}
 			}
-			
+
 			@Override
 			public void chartMouseClicked(ChartMouseEvent arg0) {
 			}
@@ -123,6 +135,11 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 		rangeAxis.setAutoRange(false);
 	}
 
+	private void setBestItem(BestItem dp) {
+		bestItem = dp;
+		menuItem.setVisible(bestItem != null && bestItem.dataItem instanceof CorrelatedMessage);
+	}
+	
 	private BestItem findClosestDataPoint(Point mousePoint) {
 		XYDataset dataset = xyPlot.getDataset();
 		double bestDistance = 50;

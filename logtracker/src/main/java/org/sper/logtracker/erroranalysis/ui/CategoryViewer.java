@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.chart.ChartPanel;
 import org.sper.logtracker.config.GlobalConfig;
+import org.sper.logtracker.correlation.ui.CorrelatedPopupMenuAction;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;

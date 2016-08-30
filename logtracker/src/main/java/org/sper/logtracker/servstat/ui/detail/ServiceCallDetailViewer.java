@@ -12,7 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import org.sper.logtracker.config.GlobalConfig;
-import org.sper.logtracker.erroranalysis.ui.CorrelatedPopupMenuAction;
+import org.sper.logtracker.correlation.ui.CorrelatedPopupMenuAction;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
 

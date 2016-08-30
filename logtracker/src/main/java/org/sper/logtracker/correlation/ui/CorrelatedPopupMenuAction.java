@@ -1,4 +1,4 @@
-package org.sper.logtracker.erroranalysis.ui;
+package org.sper.logtracker.correlation.ui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,7 +9,6 @@ import javax.swing.JTable;
 
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
-import org.sper.logtracker.correlation.ui.CorrelatedMessagesViewer;
 
 public class CorrelatedPopupMenuAction extends MouseAdapter {
 
@@ -45,7 +44,7 @@ public class CorrelatedPopupMenuAction extends MouseAdapter {
 				Object dataPoint = dataPointProvider.getDataPointForRow(r);
 				if (dataPoint instanceof CorrelatedMessage) {
 					JPopupMenu popup = new JPopupMenu();
-					final JMenuItem menuItem = new JMenuItem("Search for correlated Messages");
+					final JMenuItem menuItem = new JMenuItem("Show correlated Messages");
 					menuItem.addActionListener(aev -> showCorrelationTableForId((CorrelatedMessage) dataPoint));
 					popup.add(menuItem);
 					popup.show(e.getComponent(), e.getX(), e.getY());
