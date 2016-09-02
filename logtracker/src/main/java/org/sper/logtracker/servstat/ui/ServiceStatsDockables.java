@@ -140,7 +140,7 @@ public class ServiceStatsDockables implements TrackingDockables {
 		newPointExtractor.removeListeners();
 		newPointExtractor.addListener(plot);
 		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users, successRetCode);
-  		plot.setMaxRange(20.);
+  		plot.setMaxRange(globalConfig.getRangeAxisMax());
 		newPointExtractor.resendData();
 	}
 	

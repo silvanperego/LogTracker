@@ -22,6 +22,7 @@ public class GlobalConfig {
 	private String title;
 	private List<ConfiguredLogParser<?,?>> logParser = new ArrayList<>();
 	private String timestampFormatStr;
+	private double rangeAxisMax = 20.;
 
 	@XmlAttribute
 	public String getTitle() {
@@ -52,6 +53,15 @@ public class GlobalConfig {
 
 	public void setTimestampFormatStr(String timestampFormatStr) {
 		this.timestampFormatStr = timestampFormatStr;
+	}
+
+	@XmlAttribute
+	public double getRangeAxisMax() {
+		return rangeAxisMax;
+	}
+
+	public void setRangeAxisMax(double rangeAxisMax) {
+		this.rangeAxisMax = rangeAxisMax;
 	}
 	
 }

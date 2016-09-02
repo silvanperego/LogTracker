@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import validation.ConfigurationSubPanel;
 import validation.SimpleDateFormatVerifier;
+import validation.TextVerifier;
 
 public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 
@@ -29,6 +30,8 @@ public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 	private JLabel errorText;
 	private SimpleDateFormatVerifier inputVerifier;
 	private GlobalConfig globalConfig;
+	private JTextField rangeAxisMaxField;
+	private TextVerifier rangeAxisMaxVerifier;
 	
 	public GlobalConfigPanel(JFrame parentFrame, final JDialog parentDialog, ActionListener submitAction, GlobalConfig globalConfig) {
 		this.parentFrame = parentFrame;
@@ -40,9 +43,9 @@ public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 		add(dialogFieldsPanel);
 		GridBagLayout gbl_dialogFieldsPanel = new GridBagLayout();
 		gbl_dialogFieldsPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_dialogFieldsPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_dialogFieldsPanel.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_dialogFieldsPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_dialogFieldsPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_dialogFieldsPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0};
 		dialogFieldsPanel.setLayout(gbl_dialogFieldsPanel);
 		
 		JLabel lblWindowTitle = new JLabel("Window Title:");
@@ -85,14 +88,54 @@ public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 		inputVerifier = new SimpleDateFormatVerifier(this);
 		timestampFormatTextField.setInputVerifier(inputVerifier);
 		
+		JLabel lblInitalTimeRange = new JLabel("Inital Time Range Max:");
+		GridBagConstraints gbc_lblInitalTimeRange = new GridBagConstraints();
+		gbc_lblInitalTimeRange.anchor = GridBagConstraints.WEST;
+		gbc_lblInitalTimeRange.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInitalTimeRange.gridx = 0;
+		gbc_lblInitalTimeRange.gridy = 2;
+		dialogFieldsPanel.add(lblInitalTimeRange, gbc_lblInitalTimeRange);
+		
+		JPanel panel = new JPanel();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.insets = new Insets(0, 0, 5, 0);
+		gbc_panel.gridx = 1;
+		gbc_panel.gridy = 2;
+		dialogFieldsPanel.add(panel, gbc_panel);
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		
+		rangeAxisMaxField = new JTextField();
+		rangeAxisMaxField.setToolTipText("this value will be taken as the inital RangeAxis Maximum in Scatter Plots.");
+		panel.add(rangeAxisMaxField);
+		rangeAxisMaxField.setColumns(4);
+		rangeAxisMaxField.setText(Double.toString(globalConfig.getRangeAxisMax()));
+		rangeAxisMaxVerifier = new TextVerifier(this) {
+			
+			@Override
+			protected String verifyText(String text) {
+				if (text == null || text.length() == 0)
+					return "Field is mandatory";
+				try {
+					double max = Double.parseDouble(text);
+					if (max <= 0.)
+						return "Only positive values are allowed.";
+				} catch (NumberFormatException e) {
+					return "This is not a valid floating point number";
+				}
+				
+				return null;
+			}
+		};
+		rangeAxisMaxField.setInputVerifier(rangeAxisMaxVerifier);
+		
 		errorText = new JLabel("");
 		errorText.setForeground(Color.RED);
 		GridBagConstraints gbc_errorText = new GridBagConstraints();
 		gbc_errorText.gridwidth = 2;
 		gbc_errorText.anchor = GridBagConstraints.WEST;
-		gbc_errorText.insets = new Insets(0, 0, 0, 5);
 		gbc_errorText.gridx = 0;
-		gbc_errorText.gridy = 3;
+		gbc_errorText.gridy = 4;
 		dialogFieldsPanel.add(errorText, gbc_errorText);
 		
 		JPanel buttonPanel = new JPanel();
@@ -130,13 +173,14 @@ public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 
 	@Override
 	public boolean verifyFormDataIsValid() {
-		return inputVerifier.verify(timestampFormatTextField);
+		return inputVerifier.verify(timestampFormatTextField) && rangeAxisMaxVerifier.verify(rangeAxisMaxField);
 	}
 
 	@Override
 	public void submit() {
 		parentFrame.setTitle(titleTextField.getText());
 		globalConfig.setTimestampFormatStr(timestampFormatTextField.getText());
+		globalConfig.setRangeAxisMax(Double.parseDouble(rangeAxisMaxField.getText()));
 	}
 
 	@Override
