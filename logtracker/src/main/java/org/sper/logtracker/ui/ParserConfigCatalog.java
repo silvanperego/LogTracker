@@ -20,7 +20,7 @@ public class ParserConfigCatalog extends ParserConfigList {
 	private static final long serialVersionUID = 1L;
 	private static final ErrorLogTypeDescriptor ERROR_LOG_TYPE_DESCRIPTOR = new ErrorLogTypeDescriptor();
 	private static final ServiceResponseFileTypeDescriptor SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR = new ServiceResponseFileTypeDescriptor();
-	private static final CorrelationDataTypeDescriptor CORRELATION_DATA_TYPE_DESCRIPTOR = new CorrelationDataTypeDescriptor();
+	static final CorrelationDataTypeDescriptor CORRELATION_DATA_TYPE_DESCRIPTOR = new CorrelationDataTypeDescriptor();
 	
 	ParserConfigCatalog() {
 		ServiceResponseLogParser.setFileTypeDescriptor(SERVICE_RESPONSE_FILE_TYPE_DESCRIPTOR);

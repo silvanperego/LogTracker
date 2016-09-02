@@ -48,7 +48,7 @@ public class ToolBar extends JToolBar {
 		JButton newFileControlBtn = new JButton(new ImageIcon(ToolBar.class.getResource("/newFileConfig.png")));
 		newFileControlBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
-				logTracker.addNewFileControl();
+				logTracker.addNewFileControl(0.3);
 			}
 		});
 		newFileControlBtn.setToolTipText("Add new Log-File Source Config Box");

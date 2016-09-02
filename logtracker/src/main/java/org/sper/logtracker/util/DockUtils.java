@@ -19,8 +19,8 @@ public class DockUtils {
 			CLocation parent = parentLocation.getParent();
 			return ((AbstractTreeLocation) parent).east(SPLIT_RATIO);
 		} else if (parentLocation instanceof AbstractTreeLocation)
-			return ((AbstractTreeLocation) parentLocation).east(0.5);
-		return CLocation.base().normalEast(0.5);
+			return ((AbstractTreeLocation) parentLocation).east(SPLIT_RATIO);
+		return CLocation.base().normalEast(SPLIT_RATIO);
 	}
 
 }

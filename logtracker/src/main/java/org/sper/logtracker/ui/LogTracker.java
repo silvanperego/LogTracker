@@ -20,6 +20,7 @@ import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
+import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
@@ -38,6 +39,7 @@ public class LogTracker extends JFrame {
 	private LogFilePanel logFilePanel;
 	private ParserConfigCatalog parserConfigCatalog = new ParserConfigCatalog();
 	private List<FileControlPanel> fileControlPanelList = new ArrayList<>();
+	private List<FileControlPanel> fileControlPanelInRow = new ArrayList<>();
 	private GlobalConfig globalConfig = new GlobalConfig();
 
 	/**
@@ -118,23 +120,25 @@ public class LogTracker extends JFrame {
 		Console.setListener(logFilePanel);
 		if (cfgFile != null)
 			applyConfigurationFile(new File(cfgFile));
-		else
-			addNewFileControl();
 		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
 		control.addDockable(logFileDockable);
-		logFileDockable.setLocation(fileControlPanelList.get(0).getDockableLocation());
+		logFileDockable.setLocation(fileControlPanelList.isEmpty() ? CLocation.base().normal() : fileControlPanelList.get(0).getDockableLocation());
 		logFileDockable.setVisible(true);
 	}
 
-	FileControlPanel addNewFileControl() {
+	FileControlPanel addNewFileControl(Double share) {
 		final FileControlPanel fileControlPanel = new FileControlPanel(this, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
-		this.fileControlPanelList.add(fileControlPanel);
-		fileSelectionDockable.setLocation(fileControlPanelList.size() > 1 ? CLocation.base().normalSouth(0.8 / fileControlPanelList.size()) : CLocation.base().normal());
+		if (share != null) {
+			fileControlPanelInRow.add(fileControlPanel);
+			fileSelectionDockable.setLocation(fileControlPanelInRow.size() > 1 ? CLocation.base().normalSouth(share) : CLocation.base().normal());
+		} else
+			fileSelectionDockable.setLocation(fileControlPanelList.isEmpty() ? CLocation.base().normal() : fileControlPanelList.get(fileControlPanelList.size() - 1).getDockableLocation());
+		fileControlPanelList.add(fileControlPanel);
+		fileControlPanel.setParentDockable(fileSelectionDockable);
 		fileSelectionDockable.setCloseable(true);
 		fileSelectionDockable.setVisible(true);
-		fileControlPanel.setParentDockable(fileSelectionDockable);
 		fileSelectionDockable.addVetoClosingListener(new CVetoClosingListener() {
 			
 			@Override
@@ -145,6 +149,7 @@ public class LogTracker extends JFrame {
 			public void closed(CVetoClosingEvent event) {
 				fileControlPanel.cascadeDelete();
 				LogTracker.this.fileControlPanelList.remove(fileControlPanel);
+				LogTracker.this.fileControlPanelInRow.remove(fileControlPanel);
 			}
 		});
 		return fileControlPanel;
@@ -156,7 +161,7 @@ public class LogTracker extends JFrame {
 			if (xmlConfig == null) {
 				// Das war wohl kein XML-File. Versuche alte Konfiguration mit Java Deserialisierung zu laden.
 				Configuration configuration = new Configuration();
-				FileControlPanel fileControlPanel = addNewFileControl();
+				FileControlPanel fileControlPanel = addNewFileControl(null);
 				fileControlPanel.setConfig(configuration);
 				configuration.registerModule(fileControlPanel);
 				configuration.loadConfiguration(selectedFile);
@@ -202,10 +207,18 @@ public class LogTracker extends JFrame {
 			}
 			parserConfigCatalog.markModelChanged();
 		}
+		int nfc = (int)config.getFileControl().stream().filter(fc -> checkForNewRow(fc)).count();
 		for (FileControl fileControlConfig : config.getFileControl()) {
-			FileControlPanel fileControlPanel = addNewFileControl();
+			final boolean useNewRow = checkForNewRow(fileControlConfig);
+			FileControlPanel fileControlPanel = addNewFileControl(useNewRow ? (double)(nfc - fileControlPanelInRow.size()) / nfc : null);
 			fileControlPanel.applyConfig(fileControlConfig);
 		}
+	}
+
+	private boolean checkForNewRow(FileControl fileControlConfig) {
+		FileTypeDescriptor<?, ?> logFileTypeDescriptor = parserConfigCatalog.stream().filter(p -> p.getParserName().equals(fileControlConfig.getParserConfig())).findAny().get().getLogFileTypeDescriptor();
+		final boolean useNewRow = logFileTypeDescriptor != ParserConfigCatalog.CORRELATION_DATA_TYPE_DESCRIPTOR;
+		return useNewRow;
 	}
 
 	/**

@@ -216,6 +216,7 @@ public class ServiceStatsDockables implements TrackingDockables {
 		serviceControlPanel.applyXmlConfig(scd);
 		if (userPanel != null)
 			userPanel.applyConfig(scd);
+		setupDataSeries();
 	}
 
 	public StatsDataPointFactorizer<DataPoint> getFactorizer() {
