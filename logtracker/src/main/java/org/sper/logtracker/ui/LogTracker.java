@@ -116,21 +116,21 @@ public class LogTracker extends JFrame {
 		add(control.getContentArea(), BorderLayout.CENTER);
 		logFilePanel = new LogFilePanel();
 		Console.setListener(logFilePanel);
+		if (cfgFile != null)
+			applyConfigurationFile(new File(cfgFile));
+		else
+			addNewFileControl();
 		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
 		control.addDockable(logFileDockable);
 		logFileDockable.setLocation(CLocation.base().normal().stack());
 		logFileDockable.setVisible(true);
-		if (cfgFile != null)
-			applyConfigurationFile(new File(cfgFile));
-		else
-			addNewFileControl(CLocation.base().normal().stack());
 	}
 
-	FileControlPanel addNewFileControl(CLocation location) {
+	FileControlPanel addNewFileControl() {
 		final FileControlPanel fileControlPanel = new FileControlPanel(this, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
-		fileSelectionDockable.setLocation(location);
+		fileSelectionDockable.setLocation(CLocation.base().normalSouth(0.3));
 		fileSelectionDockable.setCloseable(true);
 		fileSelectionDockable.setVisible(true);
 		this.fileControlPanelList.add(fileControlPanel);
@@ -155,7 +155,7 @@ public class LogTracker extends JFrame {
 			if (xmlConfig == null) {
 				// Das war wohl kein XML-File. Versuche alte Konfiguration mit Java Deserialisierung zu laden.
 				Configuration configuration = new Configuration();
-				FileControlPanel fileControlPanel = addNewFileControl(CLocation.base().normal());
+				FileControlPanel fileControlPanel = addNewFileControl();
 				fileControlPanel.setConfig(configuration);
 				configuration.registerModule(fileControlPanel);
 				configuration.loadConfiguration(selectedFile);
@@ -202,7 +202,7 @@ public class LogTracker extends JFrame {
 			parserConfigCatalog.markModelChanged();
 		}
 		for (FileControl fileControlConfig : config.getFileControl()) {
-			FileControlPanel fileControlPanel = addNewFileControl(CLocation.base().normalSouth(0.5));
+			FileControlPanel fileControlPanel = addNewFileControl();
 			fileControlPanel.applyConfig(fileControlConfig);
 		}
 	}

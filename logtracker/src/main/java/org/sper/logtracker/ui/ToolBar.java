@@ -19,8 +19,6 @@ import org.sper.logtracker.config.compat.ConfigFileAction;
 import org.sper.logtracker.config.compat.ConfigFileOpenButton;
 import org.sper.logtracker.config.compat.ConfigFileSaveButton;
 
-import bibliothek.gui.dock.common.CLocation;
-
 public class ToolBar extends JToolBar {
 	
 	private static final long serialVersionUID = 1L;
@@ -50,7 +48,7 @@ public class ToolBar extends JToolBar {
 		JButton newFileControlBtn = new JButton(new ImageIcon(ToolBar.class.getResource("/newFileConfig.png")));
 		newFileControlBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent paramActionEvent) {
-				logTracker.addNewFileControl(CLocation.base().normalSouth(0.5));
+				logTracker.addNewFileControl();
 			}
 		});
 		newFileControlBtn.setToolTipText("Add new Log-File Source Config Box");
