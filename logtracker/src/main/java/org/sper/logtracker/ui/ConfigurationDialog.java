@@ -53,7 +53,7 @@ public class ConfigurationDialog extends JDialog {
 			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				GlobalConfigPanel panel = (GlobalConfigPanel) configTabPane.getSelectedComponent();
+				ConfigurationSubPanel panel = (ConfigurationSubPanel) configTabPane.getSelectedComponent();
 				getRootPane().setDefaultButton(panel.defaultButton());
 			}
 		});
