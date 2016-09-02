@@ -11,6 +11,7 @@ import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.servstat.ui.ServiceStatsDockables;
 
 import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
 
 public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<ServiceResponseLogParser, RawStatsDataPoint> {
 
@@ -26,8 +27,8 @@ public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<Ser
 	}
 
 	@Override
-	public ServiceStatsDockables createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig) throws InterruptedException {
-		return new ServiceStatsDockables(control, configuration, (ServiceResponseLogParser) logParser, globalConfig);
+	public ServiceStatsDockables createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig, CLocation parentLocation) throws InterruptedException {
+		return new ServiceStatsDockables(control, configuration, (ServiceResponseLogParser) logParser, globalConfig, parentLocation);
 	}
 
 	@Override

@@ -34,6 +34,7 @@ import org.sper.logtracker.servstat.scatter.ServiceScatterPlot;
 import org.sper.logtracker.servstat.stats.StatsCalculator;
 import org.sper.logtracker.servstat.stats.StatsCalculator.CategoryExtractor;
 import org.sper.logtracker.servstat.ui.detail.ServiceCallDetailViewer;
+import org.sper.logtracker.util.DockUtils;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
@@ -102,11 +103,11 @@ public class ServiceStatsDockables implements TrackingDockables {
 
   }
   
-  public ServiceStatsDockables(CControl control, Configuration configuration, ServiceResponseLogParser logParser, GlobalConfig globalConfig) throws InterruptedException {
+  public ServiceStatsDockables(CControl control, Configuration configuration, ServiceResponseLogParser logParser, GlobalConfig globalConfig, CLocation parentLocation) throws InterruptedException {
 		this.globalConfig = globalConfig;
 		serviceControlPanel = new ServiceControlPanel(this);
 		int stackpos = 0;
-		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel);
+		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel, parentLocation);
 		if (configuration != null)
 			configuration.registerModule(serviceControlPanel);
 		providesUsers = logParser.providesUsers();
@@ -114,20 +115,20 @@ public class ServiceStatsDockables implements TrackingDockables {
 			userPanel = new UserPanel(this);
 			if (configuration != null)
 				configuration.registerModule(userPanel);
-			userDockable = createDockable(control, stackpos++, "Users", userPanel);
+			userDockable = createDockable(control, stackpos++, "Users", userPanel, parentLocation);
 			userDockable.setVisible(true);
 		}
+		serviceControlDockable.setVisible(true);
 		plot = new ServiceScatterPlot(this, globalConfig);
-		graphDockable = createDockable(control, stackpos++, "Graph", plot.getPanel());
+		graphDockable = createDockable(control, stackpos++, "Graph", plot.getPanel(), DockUtils.aside(parentLocation));
 		successRetCode = logParser.getSuccessCode();
 		graphDockable.setVisible(true);
-		serviceControlDockable.setVisible(true);
 	}
 
-	private DefaultMultipleCDockable createDockable(CControl control, int stackpos, String title, Component comp) {
+	private DefaultMultipleCDockable createDockable(CControl control, int stackpos, String title, Component comp, CLocation location) {
 		final DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null, title, comp);
 		control.addDockable(dockable);
-		dockable.setLocation(CLocation.base().normalEast(0.6).stack(stackpos));
+		dockable.setLocation(location);
 		return dockable;
 	}
 

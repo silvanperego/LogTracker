@@ -106,7 +106,7 @@ public class LogTracker extends JFrame {
 	private void initialize() throws IOException,
 			InterruptedException {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogTracker.class.getResource("/LogTrackerLogo.png")));
-		setBounds(100, 100, 986, 804);
+		setBounds(100, 100, 1400, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout(0, 2));
 		toolBar = new ToolBar(this, parserConfigCatalog);
@@ -122,7 +122,7 @@ public class LogTracker extends JFrame {
 			addNewFileControl();
 		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
 		control.addDockable(logFileDockable);
-		logFileDockable.setLocation(CLocation.base().normal().stack());
+		logFileDockable.setLocation(fileControlPanelList.get(0).getDockableLocation());
 		logFileDockable.setVisible(true);
 	}
 
@@ -130,10 +130,11 @@ public class LogTracker extends JFrame {
 		final FileControlPanel fileControlPanel = new FileControlPanel(this, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
-		fileSelectionDockable.setLocation(CLocation.base().normalSouth(0.3));
+		this.fileControlPanelList.add(fileControlPanel);
+		fileSelectionDockable.setLocation(fileControlPanelList.size() > 1 ? CLocation.base().normalSouth(0.8 / fileControlPanelList.size()) : CLocation.base().normal());
 		fileSelectionDockable.setCloseable(true);
 		fileSelectionDockable.setVisible(true);
-		this.fileControlPanelList.add(fileControlPanel);
+		fileControlPanel.setParentDockable(fileSelectionDockable);
 		fileSelectionDockable.addVetoClosingListener(new CVetoClosingListener() {
 			
 			@Override

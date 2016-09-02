@@ -10,6 +10,7 @@ import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
 
 import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
 
 /**
  * Beschreibt einen File-Typ mit Daten, welche nur über Correlation geladen
@@ -37,7 +38,7 @@ public class CorrelationDataTypeDescriptor implements FileTypeDescriptor<Correla
 
 	@Override
 	public CorrelationDataTypeDockables createAndRegisterDockables(CControl control, Configuration configuration,
-			ConfiguredLogParser<?, ?> logParser, GlobalConfig globalConfig) throws InterruptedException {
+			ConfiguredLogParser<?, ?> logParser, GlobalConfig globalConfig, CLocation parentLocation) throws InterruptedException {
 		return new CorrelationDataTypeDockables();
 	}
 

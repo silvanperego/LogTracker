@@ -45,6 +45,9 @@ import org.sper.logtracker.parserconf.ParserSelectionModel;
 import org.sper.logtracker.parserconf.TrackingDockables;
 import org.sper.logtracker.servstat.ui.ButtonColumn;
 
+import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.intern.CDockable;
+
 public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private static final long serialVersionUID = 1L;
 	private JTable logFileTable;
@@ -59,6 +62,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private Configuration config;
 	private ActivityMonitor activityMonitor;
 	private TrackingDockables dockables;
+	private CDockable dockable;
 	
 	private static class ConfObj implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -380,7 +384,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 				dockables.removeDockables(logTracker.getControl());
 			if (config != null)
 				config.resetDynamicModules();
-			dockables = logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser, logTracker.getGlobalConfig());
+			dockables = logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser, logTracker.getGlobalConfig(), getDockableLocation());
 			activeLogFileType = logFileTypeDescriptor;
 		}
 		List<LogSource> logSource = new ArrayList<LogSource>();
@@ -420,5 +424,13 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		parserModel.unregister();
 		if (dockables != null)
 			dockables.removeDockables(logTracker.getControl());
+	}
+
+	public void setParentDockable(CDockable dockable) {
+		this.dockable = dockable;
+	}
+
+	public CLocation getDockableLocation() {
+		return dockable.getBaseLocation();
 	}
 }

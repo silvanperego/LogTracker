@@ -18,6 +18,7 @@ import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.TrackingDockables;
 import org.sper.logtracker.proc.PipelineHelper;
+import org.sper.logtracker.util.DockUtils;
 
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
@@ -30,15 +31,16 @@ public class ErrorLogTypeDockables implements TrackingDockables {
 	private LogLineTableModel logLineTableModel;
 	private LogLinePanel logLinePanel;
 	
-	public ErrorLogTypeDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig) {
+	public ErrorLogTypeDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig, CLocation parentLocation) {
 		logLinePanel = new LogLinePanel(globalConfig);
 		logLineTableModel = logLinePanel.getTableModel();
 		logLineDockable = new DefaultMultipleCDockable(null, "Error Log-Messages", logLinePanel);
 		control.addDockable(logLineDockable);
-		logLineDockable.setLocation(CLocation.base().normalSouth(0.4));
+		parentLocation = DockUtils.aside(parentLocation);
+		logLineDockable.setLocation(parentLocation);
 		logLineDockable.setVisible(true);
 	}
-	
+
 	@Override
 	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart, ActivityMonitor activityMonitor, GlobalConfig globalConfig) {
 		try {

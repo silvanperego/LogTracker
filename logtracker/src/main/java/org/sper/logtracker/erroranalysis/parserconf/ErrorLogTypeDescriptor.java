@@ -10,6 +10,7 @@ import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
 
 import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
 
 public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser, RawErrorDataPoint> {
 
@@ -28,9 +29,9 @@ public class ErrorLogTypeDescriptor implements FileTypeDescriptor<ErrorLogParser
 	}
 
 	@Override
-	public ErrorLogTypeDockables createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig)
+	public ErrorLogTypeDockables createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig, CLocation parentLocation)
 			throws InterruptedException {
-		return new ErrorLogTypeDockables(control, configuration, logParser, globalConfig);
+		return new ErrorLogTypeDockables(control, configuration, logParser, globalConfig, parentLocation);
 	}
 
 	@Override

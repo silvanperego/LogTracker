@@ -6,6 +6,7 @@ import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 
 import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
 
 /**
  * Eine Beschreibung einer spezifischen Log-File-Typs, wie z.B. ServiceResponseTime-Logs oder Error-Logs.
@@ -26,7 +27,7 @@ public interface FileTypeDescriptor<T extends ConfiguredLogParser<T,R>,R> {
 	 * @param logTracker
 	 * @throws InterruptedException 
 	 */
-	TrackingDockables createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig) throws InterruptedException;
+	TrackingDockables createAndRegisterDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig, CLocation parentLocation) throws InterruptedException;
 
 	T createParser(String string);
 
