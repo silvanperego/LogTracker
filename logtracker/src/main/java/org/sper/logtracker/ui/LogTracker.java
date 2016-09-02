@@ -17,6 +17,7 @@ import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.LogTrackerConfig;
 import org.sper.logtracker.config.XMLConfigSupport;
 import org.sper.logtracker.config.compat.Configuration;
+import org.sper.logtracker.data.Console;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 
@@ -114,6 +115,7 @@ public class LogTracker extends JFrame {
 		control = new CControl(this);
 		add(control.getContentArea(), BorderLayout.CENTER);
 		logFilePanel = new LogFilePanel();
+		Console.setListener(logFilePanel);
 		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
 		control.addDockable(logFileDockable);
 		logFileDockable.setLocation(CLocation.base().normal().stack());
@@ -125,7 +127,7 @@ public class LogTracker extends JFrame {
 	}
 
 	FileControlPanel addNewFileControl(CLocation location) {
-		final FileControlPanel fileControlPanel = new FileControlPanel(this, logFilePanel, parserConfigCatalog);
+		final FileControlPanel fileControlPanel = new FileControlPanel(this, parserConfigCatalog);
 		final DefaultMultipleCDockable fileSelectionDockable = new DefaultMultipleCDockable(null, "File Selection", fileControlPanel);
 		control.addDockable(fileSelectionDockable);
 		fileSelectionDockable.setLocation(location);

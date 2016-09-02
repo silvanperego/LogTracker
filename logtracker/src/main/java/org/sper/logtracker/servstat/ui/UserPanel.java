@@ -27,7 +27,7 @@ public class UserPanel extends JPanel implements ConfigurationAware {
 	private boolean keepConfig = false;
 	private JButton btnApply;
 
-	public UserPanel(ServiceStatsTabs serviceStatsTabs) {
+	public UserPanel(ServiceStatsDockables serviceStatsTabs) {
 		userTableModel = new UserTableModel();
 		userTable = new JTable();
 		userTable.setModel(userTableModel);

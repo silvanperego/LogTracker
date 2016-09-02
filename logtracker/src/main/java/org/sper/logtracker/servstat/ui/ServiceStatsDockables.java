@@ -22,6 +22,7 @@ import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
+import org.sper.logtracker.parserconf.TrackingDockables;
 import org.sper.logtracker.proc.PipelineHelper;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
@@ -38,7 +39,7 @@ import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 
-public class ServiceStatsTabs {
+public class ServiceStatsDockables implements TrackingDockables {
 	private ServiceScatterPlot plot;
 	private NewPointExtractor newPointExtractor;
 	private StatsDataPointFactorizer<DataPoint> factorizer;
@@ -101,7 +102,7 @@ public class ServiceStatsTabs {
 
   }
   
-  public ServiceStatsTabs(CControl control, Configuration configuration, ServiceResponseLogParser logParser, GlobalConfig globalConfig) throws InterruptedException {
+  public ServiceStatsDockables(CControl control, Configuration configuration, ServiceResponseLogParser logParser, GlobalConfig globalConfig) throws InterruptedException {
 		this.globalConfig = globalConfig;
 		serviceControlPanel = new ServiceControlPanel(this);
 		int stackpos = 0;
@@ -140,7 +141,9 @@ public class ServiceStatsTabs {
 		newPointExtractor.resendData();
 	}
 	
-	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?,?> logParser, Long obsStart, ActivityMonitor activityMonitor) {
+	@Override
+	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart,
+			ActivityMonitor activityMonitor, GlobalConfig globalConfig) {
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = createFactorizer((ServiceResponseLogParser) logParser);
@@ -188,6 +191,7 @@ public class ServiceStatsTabs {
 			return new StatsDataPointFactorizer.SimpleStatsDataPointFactorizer();
 	}
 
+	@Override
 	public void removeDockables(CControl control) {
 		control.removeDockable(serviceControlDockable);
 		control.removeDockable(graphDockable);
@@ -197,6 +201,7 @@ public class ServiceStatsTabs {
 			terminationPointer.endOfLife();
 	}
 
+	@Override
 	public Object getControlDataConfig() {
 		final ServiceControlData config = serviceControlPanel.getConfig();
 		if (userPanel != null)
@@ -204,6 +209,7 @@ public class ServiceStatsTabs {
 		return config;
 	}
 
+	@Override
 	public void applyConfig(Object controlData) {
 		ServiceControlData scd = (ServiceControlData) controlData;
 		serviceControlPanel.applyXmlConfig(scd);

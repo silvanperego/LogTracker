@@ -29,5 +29,5 @@ public class LogTrackerConfig {
 	public void addFileControl(FileControl fileControl) {
 		this.fileControl.add(fileControl);
 	}
-	
+
 }

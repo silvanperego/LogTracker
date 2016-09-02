@@ -32,7 +32,7 @@ import org.sper.logtracker.correlation.data.CorrelatedMessage;
 import org.sper.logtracker.correlation.ui.CorrelatedMessagesViewer;
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.servstat.proc.DataPoint;
-import org.sper.logtracker.servstat.ui.ServiceStatsTabs;
+import org.sper.logtracker.servstat.ui.ServiceStatsDockables;
 
 public class ServiceScatterPlot implements DataListener<DataPoint> {
 
@@ -42,7 +42,7 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 	private long maxOccTime = 0;
 	private Long lastOccTime = null;
 	private SimpleDateFormat sdf;
-	private ServiceStatsTabs tabs;
+	private ServiceStatsDockables tabs;
 	private BestItem bestItem;
 	private JMenuItem menuItem;
 	
@@ -78,7 +78,7 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 		}
 	}
 
-	public ServiceScatterPlot(ServiceStatsTabs tabs, GlobalConfig globalConfig) {
+	public ServiceScatterPlot(ServiceStatsDockables tabs, GlobalConfig globalConfig) {
 		this.tabs = tabs;
 		sdf = new SimpleDateFormat(globalConfig.getTimestampFormatStr());
 		XYSeriesCollection xySeriesCollection = new XYSeriesCollection();

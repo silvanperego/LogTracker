@@ -93,7 +93,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		Integer color;
 	}
 	
-	public ServiceControlPanel(final ServiceStatsTabs serviceStatsTabs) {
+	public ServiceControlPanel(final ServiceStatsDockables serviceStatsTabs) {
 		super();
 		controlTable = new JTable();
 		controlTableModel = new ServiceControlTableModel();

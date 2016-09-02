@@ -35,8 +35,6 @@ import javax.swing.table.TableColumn;
 import org.sper.logtracker.config.FileControl;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.config.compat.ConfigurationAware;
-import org.sper.logtracker.data.Console;
-import org.sper.logtracker.data.Console.MessageListener;
 import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
@@ -44,6 +42,7 @@ import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigList;
 import org.sper.logtracker.parserconf.ParserSelectionModel;
+import org.sper.logtracker.parserconf.TrackingDockables;
 import org.sper.logtracker.servstat.ui.ButtonColumn;
 
 public class FileControlPanel extends JPanel implements ConfigurationAware {
@@ -58,7 +57,8 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 	private ParserSelectionModel parserModel;
 	private FileTypeDescriptor<?,?> activeLogFileType;
 	private Configuration config;
-  private ActivityMonitor activityMonitor;
+	private ActivityMonitor activityMonitor;
+	private TrackingDockables dockables;
 	
 	private static class ConfObj implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -74,7 +74,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		String parserConfig, title;
 	}
 
-	public FileControlPanel(final LogTracker logTracker, MessageListener listener, ParserConfigList parserConfigCatalog) {
+	public FileControlPanel(final LogTracker logTracker, ParserConfigList parserConfigCatalog) {
 		super();
 		this.logTracker = logTracker;
 		
@@ -242,7 +242,6 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		logFileTable.getColumnModel().getColumn(1).setPreferredWidth(200);
 		logFileTable.getColumnModel().getColumn(2).setResizable(false);
 		logFileTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-		Console.setListener(listener);
 	}
 	
 	public void addFileNames(List<LogSource> fnameList) {
@@ -313,7 +312,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		try {
 			setupFileProcessing();
 			if (controlData != null) {
-				activeLogFileType.applyConfig(controlData);
+				dockables.applyConfig(controlData);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -343,7 +342,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		if (selectedItem != null)
 			conf.setParserConfig(selectedItem.getName());
 		if (activeLogFileType != null)
-			conf.setControlData(activeLogFileType.getControlDataConfig());
+			conf.setControlData(dockables.getControlDataConfig());
 		return conf;
 	}
 
@@ -377,18 +376,18 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 		ConfiguredLogParser<?,?> logParser = (ConfiguredLogParser<?,?>) logFileFormatBox.getSelectedItem();
 		FileTypeDescriptor<?,?> logFileTypeDescriptor = logParser.getLogFileTypeDescriptor();
 		if (activeLogFileType != logFileTypeDescriptor) {
-			if (activeLogFileType != null)
-				activeLogFileType.removeDockables(logTracker.getControl());
+			if (dockables != null)
+				dockables.removeDockables(logTracker.getControl());
 			if (config != null)
 				config.resetDynamicModules();
-			logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser, logTracker.getGlobalConfig());
+			dockables = logFileTypeDescriptor.createAndRegisterDockables(logTracker.getControl(), config, logParser, logTracker.getGlobalConfig());
 			activeLogFileType = logFileTypeDescriptor;
 		}
 		List<LogSource> logSource = new ArrayList<LogSource>();
 		for (int i = 0; i < logFileTableModel.getRowCount(); i++) {
 			logSource.add(new LogSource((String) logFileTableModel.getValueAt(i, 0), (String) logFileTableModel.getValueAt(i, 1)));
 		}
-		logFileTypeDescriptor.setupDataPipeLines(logSource, logParser, getObsStart(), activityMonitor, logTracker.getGlobalConfig());
+		dockables.setupDataPipeLines(logSource, logParser, getObsStart(), activityMonitor, logTracker.getGlobalConfig());
 		if (config != null)
 			config.resetActiveConfig();
 	}
@@ -419,7 +418,7 @@ public class FileControlPanel extends JPanel implements ConfigurationAware {
 
 	public void cascadeDelete() {
 		parserModel.unregister();
-		if (activeLogFileType != null)
-			activeLogFileType.removeDockables(logTracker.getControl());
+		if (dockables != null)
+			dockables.removeDockables(logTracker.getControl());
 	}
 }
