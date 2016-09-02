@@ -13,7 +13,7 @@ import org.sper.logtracker.correlation.data.CorrelationCatalog;
 public class CorrelatedMessagesTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	private static final String[] COL_NAMES = {"Time", "Log-Source", "User", "Description"};
+	private static final String[] COL_NAMES = {"Time", "Log-Source", "User", "Response Time", "Description"};
 	private final SimpleDateFormat sdf;
 	
 	private List<? extends CorrelatedMessage> msgList;
@@ -41,7 +41,8 @@ public class CorrelatedMessagesTableModel extends AbstractTableModel {
 		case 0: return sdf.format(new Date(msg.getOccurrenceTime()));
 		case 1: return msg.getLogSource();
 		case 2: return msg.getUser();
-		case 3: return msg.getDescription();
+		case 3: return msg.getResponseTime();
+		case 4: return msg.getDescription();
 		}
 		return null;
 	}
@@ -53,7 +54,7 @@ public class CorrelatedMessagesTableModel extends AbstractTableModel {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return String.class;
+		return columnIndex == 3 ? Double.class : String.class;
 	}
 
 	public CorrelatedMessage getDataPoint(int selectedRow) {

@@ -18,4 +18,8 @@ public interface CorrelatedMessage {
 	String getDescription();
 	
 	String getDetail();
+	
+	default Double getResponseTime() {
+		return null;
+	}
 }

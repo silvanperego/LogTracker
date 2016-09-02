@@ -49,4 +49,9 @@ public class CorrelatedServiceDataPoint extends DataPoint implements CorrelatedM
 		return null;
 	}
 
+	@Override
+	public Double getResponseTime() {
+		return responseTime;
+	}
+
 }

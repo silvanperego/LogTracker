@@ -62,7 +62,7 @@ public class CorrelatedMessagesViewer extends JFrame {
 			corrTable.setModel(tableModel);
 			corrTable.getColumnModel().getColumn(0).setPreferredWidth(100);
 			corrTable.getColumnModel().getColumn(2).setPreferredWidth(80);
-			corrTable.getColumnModel().getColumn(3).setPreferredWidth(669);
+			corrTable.getColumnModel().getColumn(4).setPreferredWidth(669);
 			corrTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				@Override
 				public void valueChanged(ListSelectionEvent e) {

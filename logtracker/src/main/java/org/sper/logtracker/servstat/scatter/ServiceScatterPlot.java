@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +21,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.PlotEntity;
+import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYDataset;
@@ -111,7 +111,7 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 			
 			@Override
 			public void chartMouseMoved(ChartMouseEvent chartEv) {
-				if (!popupMenu.isVisible() && chartEv.getEntity() instanceof PlotEntity) {
+				if (!popupMenu.isVisible() && (chartEv.getEntity() instanceof PlotEntity || chartEv.getEntity() instanceof XYItemEntity)) {
 					BestItem dp = findClosestDataPoint(chartEv.getTrigger().getPoint());
 					chartEv.getEntity().setToolTipText(dp != null ? calculateToolTip(dp.dataItem) : null);
 					if (dp != null) {
@@ -137,7 +137,7 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 
 	private void setBestItem(BestItem dp) {
 		bestItem = dp;
-		menuItem.setVisible(bestItem != null && bestItem.dataItem instanceof CorrelatedMessage);
+		menuItem.setEnabled(bestItem != null && bestItem.dataItem instanceof CorrelatedMessage);
 	}
 	
 	private BestItem findClosestDataPoint(Point mousePoint) {
@@ -163,12 +163,12 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 
 	private Point convertToScreenPoint(DataPoint item) {
 		Rectangle2D plotArea = chartPanel.getScreenDataArea();
-		Point2D.Double java2dPoint = new Point2D.Double(
-				domain.valueToJava2D(item.getXValue(), plotArea, xyPlot.getDomainAxisEdge()), 
-				xyPlot.getRangeAxis().valueToJava2D(item.getYValue(), plotArea, xyPlot.getRangeAxisEdge()));
+		Point java2dPoint = new Point(
+				(int) domain.valueToJava2D(item.getXValue(), plotArea, xyPlot.getDomainAxisEdge()), 
+				(int) xyPlot.getRangeAxis().valueToJava2D(item.getYValue(), plotArea, xyPlot.getRangeAxisEdge()));
 		Point screenPoint = null;
 		if (plotArea.contains(java2dPoint))
-			screenPoint = chartPanel.translateJava2DToScreen(java2dPoint);
+			screenPoint = java2dPoint;
 		return screenPoint;
 	}
 
