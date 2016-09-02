@@ -1,6 +1,7 @@
 package org.sper.logtracker.servstat.ui;
 
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -17,6 +18,7 @@ import javax.swing.event.MouseInputAdapter;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
+import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.KeepAliveElement;
@@ -58,7 +60,6 @@ public class ServiceStatsDockables implements TrackingDockables {
 	public final class ApplyControlAction implements ActionListener {
   	public void actionPerformed(ActionEvent e) {
   		setupDataSeries();
-  		plot.setMaxRange(20.);
   		graphDockable.toFront();
   	}
   }
@@ -139,6 +140,7 @@ public class ServiceStatsDockables implements TrackingDockables {
 		newPointExtractor.removeListeners();
 		newPointExtractor.addListener(plot);
 		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users, successRetCode);
+  		plot.setMaxRange(20.);
 		newPointExtractor.resendData();
 	}
 	
@@ -216,7 +218,16 @@ public class ServiceStatsDockables implements TrackingDockables {
 		serviceControlPanel.applyXmlConfig(scd);
 		if (userPanel != null)
 			userPanel.applyConfig(scd);
-		setupDataSeries();
+		newPointExtractor.addListener(new DataListener<DataPoint>() {
+			@Override
+			public void receiveData(DataPoint data) {
+			}
+			
+			@Override
+			public void publishData() {
+				EventQueue.invokeLater(() -> setupDataSeries());
+			}
+		});
 	}
 
 	public StatsDataPointFactorizer<DataPoint> getFactorizer() {
