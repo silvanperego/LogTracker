@@ -6,9 +6,11 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -31,10 +33,12 @@ import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
 import org.sper.logtracker.correlation.ui.CorrelatedMessagesViewer;
 import org.sper.logtracker.data.DataListener;
+import org.sper.logtracker.logreader.LogSource;
+import org.sper.logtracker.logreader.LogSource.DataPointSelectionAction;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.ui.ServiceStatsDockables;
 
-public class ServiceScatterPlot implements DataListener<DataPoint> {
+public class ServiceScatterPlot implements DataListener<DataPoint>, DataPointSelectionAction {
 
 	private ChartPanel chartPanel;
 	private ValueAxis domain;
@@ -45,6 +49,8 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 	private ServiceStatsDockables tabs;
 	private BestItem bestItem;
 	private JMenuItem menuItem;
+	private List<LogSource> logSource;
+	private BestItem selectedItem;
 	
 	private class BestItem {
 		DataPoint dataItem;
@@ -60,19 +66,23 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 		void repaint() {
 			Point pt = screenPoint();
 			if (pt != null)
-				chartPanel.repaint(pt.x - 9, pt.y - 9, 18, 18);
+				chartPanel.repaint(pt.x - 10, pt.y - 10, 20, 20);
 		}
 		
-		void paint(Graphics g) {
+		void paint(Graphics g, int color) {
 			Graphics2D g2 = (Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			Point pt = screenPoint();
 			if (pt != null) {
-				g.setColor(new Color(0xa0a000a0, true));
-				g2.setStroke(new BasicStroke((float) 2.5));
+				g.setColor(new Color(color, true));
+				g.fillOval(pt.x - 8, pt.y - 8, 16, 16);
+				g.setColor(new Color(color | 0xff000000, true));
+				g2.setStroke(new BasicStroke((float) 1.5));
 				g.drawLine(pt.x - 5, pt.y - 5, pt.x - 3, pt.y - 3);
 				g.drawLine(pt.x + 5, pt.y - 5, pt.x + 3, pt.y - 3);
 				g.drawLine(pt.x - 5, pt.y + 5, pt.x - 3, pt.y + 3);
 				g.drawLine(pt.x + 5, pt.y + 5, pt.x + 3, pt.y + 3);
+				g2.setStroke(new BasicStroke((float) 2.2));
 				g.drawOval(pt.x - 8, pt.y - 8, 16, 16);
 			}
 		}
@@ -97,9 +107,10 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 			@Override
 			public void paint(Graphics g) {
 				super.paint(g);
-				if (bestItem != null) {
-					bestItem.paint(g);
-				}
+				if (bestItem != null)
+					bestItem.paint(g, 0x25a000a0);
+				if (selectedItem != null)
+					selectedItem.paint(g, 0x2500a0a0);
 			}
 		};
 		JPopupMenu popupMenu = chartPanel.getPopupMenu();
@@ -111,17 +122,21 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 			
 			@Override
 			public void chartMouseMoved(ChartMouseEvent chartEv) {
-				if (!popupMenu.isVisible() && (chartEv.getEntity() instanceof PlotEntity || chartEv.getEntity() instanceof XYItemEntity)) {
-					BestItem dp = findClosestDataPoint(chartEv.getTrigger().getPoint());
-					chartEv.getEntity().setToolTipText(dp != null ? calculateToolTip(dp.dataItem) : null);
-					if (dp != null) {
-						if  (bestItem == null || dp.dataItem != bestItem.dataItem) {
-							if (bestItem != null)
-								bestItem.repaint();
-							dp.repaint();
-							setBestItem(dp);
+				if (!popupMenu.isVisible()) {
+					if (chartEv.getEntity() instanceof PlotEntity || chartEv.getEntity() instanceof XYItemEntity) {
+						BestItem dp = findClosestDataPoint(chartEv.getTrigger().getPoint());
+						chartEv.getEntity().setToolTipText(dp != null ? calculateToolTip(dp.dataItem) : null);
+						if (dp != null) {
+							if  (bestItem == null || dp.dataItem != bestItem.dataItem) {
+								if (bestItem != null)
+									bestItem.repaint();
+								dp.repaint();
+								setBestItem(dp);
+								return;
+							}
 						}
-					} else if (bestItem != null) {
+					}
+					if (bestItem != null) {
 						bestItem.repaint();
 						bestItem = null;
 					}
@@ -221,6 +236,32 @@ public class ServiceScatterPlot implements DataListener<DataPoint> {
 			domain.setRange(Range.shift(domain.getRange(), maxOccTime - lastOccTime + 
 					(upperBound - domain.getLowerBound())*0.05));
 		lastOccTime = maxOccTime;
+	}
+
+	public void setLogSources(List<LogSource> logSource) {
+		deregisterLogSources();
+		this.logSource = logSource;
+		logSource.stream().forEach(ls -> ls.addSelectionAction(this));
+	}
+
+	private void deregisterLogSources() {
+		if (this.logSource != null)
+			this.logSource.stream().forEach(ls -> ls.removeSelectionAction(this));
+	}
+
+	public void cascadeDelete() {
+		deregisterLogSources();
+	}
+	
+	@Override
+	public void pointSelected(CorrelatedMessage dp) {
+		if (selectedItem != null && selectedItem.dataItem != dp)
+			selectedItem.repaint();
+		if (dp instanceof DataPoint) {
+			selectedItem = new BestItem((DataPoint) dp);
+			selectedItem.repaint();
+		} else
+			selectedItem = null;
 	}
 
 }

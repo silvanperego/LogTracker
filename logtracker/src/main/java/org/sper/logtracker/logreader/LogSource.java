@@ -1,8 +1,12 @@
 package org.sper.logtracker.logreader;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
+
+import org.sper.logtracker.correlation.data.CorrelatedMessage;
 
 /**
  * Repräsentiert eine Log-File-Quelle
@@ -13,7 +17,12 @@ public class LogSource implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String fileName;
 	private String sourceName;
+	private static Set<DataPointSelectionAction> selectionActionList = new HashSet<>();
 
+	public static interface DataPointSelectionAction {
+		void pointSelected(CorrelatedMessage dp);
+	}
+	
 	public LogSource() {
 	}
 	
@@ -50,6 +59,32 @@ public class LogSource implements Serializable {
 	
 	public Object[] modelEntry() {
 		return new Object[] { fileName, getSourceName(), null };
+	}
+
+	/**
+	 * Registriere eine Action, die aufgerufen werden soll, wenn eine Data-Point dieser
+	 * Source-Selektiert wurde.
+	 * @param action
+	 */
+	public void addSelectionAction(DataPointSelectionAction action) {
+		selectionActionList.add(action);
+	}
+
+	/**
+	 * Lösche eine registrierte Action.
+	 * @param action
+	 */
+	public void removeSelectionAction(DataPointSelectionAction action) {
+		selectionActionList.remove(action);
+	}
+	
+	public void triggerSelectionActions(CorrelatedMessage dp) {
+		selectionActionList.stream().forEach(sa -> sa.pointSelected(dp));
+	}
+
+	@Override
+	public String toString() {
+		return getSourceName();
 	}
 	
 }

@@ -1,16 +1,18 @@
 package org.sper.logtracker.correlation.data;
 
 import org.sper.logtracker.logreader.FileSnippet;
+import org.sper.logtracker.logreader.LogSource;
 
 public class CorrelatedDataPoint implements CorrelatedMessage {
 
-	public Integer serviceName, user, logSource;
+	public final Integer serviceName, user;
+	private LogSource logSource;
 	private Long occTime;
 	private String correlationId;
 	private FileSnippet fileSnippet;
 	private CorrelationFactors factors;
 
-	public CorrelatedDataPoint(Long occTime, Integer serviceName, Integer user, Integer logSource, String correlationId,
+	public CorrelatedDataPoint(Long occTime, Integer serviceName, Integer user, LogSource logSource, String correlationId,
 			FileSnippet fileSnippet, CorrelationFactors factors) {
 		this.occTime = occTime;
 		this.serviceName = serviceName;
@@ -32,8 +34,8 @@ public class CorrelatedDataPoint implements CorrelatedMessage {
 	}
 
 	@Override
-	public String getLogSource() {
-		return logSource != null ? factors.getLogSource().getLabel(logSource) : null;
+	public LogSource getLogSource() {
+		return logSource != null ? logSource : null;
 	}
 
 	@Override

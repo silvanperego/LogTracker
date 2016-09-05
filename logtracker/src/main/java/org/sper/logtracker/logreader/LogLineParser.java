@@ -15,9 +15,9 @@ public class LogLineParser<T> implements DataListener<T> {
 	private List<DataListener<T>> dataListeners = new ArrayList<DataListener<T>>();
 	private LogParser<T> logParser;
 	private Long obsStart;
-	private String logSource;
+	private LogSource logSource;
 
-	public LogLineParser(LogParser<T> logParser, Long obsStart, String logSource) {
+	public LogLineParser(LogParser<T> logParser, Long obsStart, LogSource logSource) {
 		this.logParser = logParser;
 		this.obsStart = obsStart;
 		this.logSource = logSource;
@@ -49,7 +49,7 @@ public class LogLineParser<T> implements DataListener<T> {
 		logParser.scanLine(lineInFile, this, obsStart);
 	}
 
-	public String getLogSource() {
+	public LogSource getLogSource() {
 		return logSource;
 	}
 

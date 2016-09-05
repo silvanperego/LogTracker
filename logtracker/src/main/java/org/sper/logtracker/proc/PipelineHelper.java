@@ -33,7 +33,7 @@ public class PipelineHelper {
 		KeepAliveElement terminationPointer = null;
 		if (logSource.size() == 1) {
 			@SuppressWarnings("unchecked")
-			LogLineParser<T> logLineParser = new LogLineParser<T>((LogParser<T>) logLineInterpreter, obsStart, logSource.get(0).getSourceName());
+			LogLineParser<T> logLineParser = new LogLineParser<T>((LogParser<T>) logLineInterpreter, obsStart, logSource.get(0));
 			for (DataListener<T> dataListener : rawDataListener) {
 				logLineParser.registerListener(dataListener);
 			}
@@ -48,7 +48,7 @@ public class PipelineHelper {
 			}
 			for (LogSource ls : logSource) {
 				@SuppressWarnings("unchecked")
-				LogLineParser<T> logLineParser = new LogLineParser<T>((LogParser<T>) logLineInterpreter, obsStart, ls.getSourceName());
+				LogLineParser<T> logLineParser = new LogLineParser<T>((LogParser<T>) logLineInterpreter, obsStart, ls);
 				KeepAliveLogReader keepAliveElement = new KeepAliveLogReader(new File(ls.getFileName()), logLineParser, logLineInterpreter.getEncoding(), activityMonitor);
 				pipeCollector.addFeeder(logLineParser, keepAliveElement);
 			}

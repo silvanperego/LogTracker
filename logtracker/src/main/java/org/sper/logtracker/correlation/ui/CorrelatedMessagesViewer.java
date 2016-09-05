@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -29,6 +31,7 @@ public class CorrelatedMessagesViewer extends JFrame {
 	private JTable corrTable;
 	private JTextArea fullMessage;
 	private CorrelatedMessagesTableModel tableModel;
+	protected CorrelatedMessage selectedDataPoint;
 
 	public CorrelatedMessagesViewer(JComponent owner, String correlationId, GlobalConfig globalConfig) {
 		super("Correlated Messages");
@@ -66,12 +69,13 @@ public class CorrelatedMessagesViewer extends JFrame {
 			corrTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
-					CorrelatedMessage rdp = tableModel.getDataPoint(corrTable.getSelectedRow());
-					if (rdp != null) {
-						fullMessage.setText(rdp.getDetail());
+					selectedDataPoint = tableModel.getDataPoint(corrTable.getSelectedRow());
+					if (selectedDataPoint != null) {
+						fullMessage.setText(selectedDataPoint.getDetail());
 						fullMessage.setCaretPosition(0);
 					} else
 						fullMessage.setText(null);
+					selectedDataPoint.getLogSource().triggerSelectionActions(selectedDataPoint);
 				}
 			});
 			JScrollPane scrollPane = new JScrollPane(corrTable);
@@ -87,6 +91,19 @@ public class CorrelatedMessagesViewer extends JFrame {
 			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			splitPane.setResizeWeight(0.4);
 		}
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				selectedDataPoint.getLogSource().triggerSelectionActions(null);
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				if (selectedDataPoint != null)
+					selectedDataPoint.getLogSource().triggerSelectionActions(selectedDataPoint);
+			}
+		});
 	}
 	
 }

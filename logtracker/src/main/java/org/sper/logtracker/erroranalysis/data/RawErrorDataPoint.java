@@ -3,6 +3,7 @@ package org.sper.logtracker.erroranalysis.data;
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
 import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
+import org.sper.logtracker.logreader.LogSource;
 
 /**
  * Beinhaltet eine gefundene Fehlermeldung. Ein Objekt dieser Klasse beinhaltet nur die erste Zeile
@@ -24,7 +25,7 @@ public class RawErrorDataPoint extends RawDataPoint implements CorrelatedMessage
 	 * @param fileSnippet Der File-Ausschnitt, welcher diese Fehlermeldung repräsentiert.
 	 * @param correlationId die Korrelations-ID der Meldung.
 	 */
-	public RawErrorDataPoint(Long occTime, String user, String severity, String msg, String logSource, FileSnippet fileSnippet, String correlationId) {
+	public RawErrorDataPoint(Long occTime, String user, String severity, String msg, LogSource logSource, FileSnippet fileSnippet, String correlationId) {
 		super(occTime, user, logSource, correlationId);
 		this.severity = severity;
 		this.msg = msg;
@@ -47,7 +48,7 @@ public class RawErrorDataPoint extends RawDataPoint implements CorrelatedMessage
 	}
 
 	@Override
-	public String getLogSource() {
+	public LogSource getLogSource() {
 		return logSource;
 	}
 

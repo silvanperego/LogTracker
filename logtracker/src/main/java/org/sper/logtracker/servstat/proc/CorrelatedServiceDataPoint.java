@@ -1,6 +1,7 @@
 package org.sper.logtracker.servstat.proc;
 
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
+import org.sper.logtracker.logreader.LogSource;
 
 /**
  * Ein {@link DataPoint} mit einer Referenz zum {@link StatsDataPointFactorizer}.
@@ -12,7 +13,7 @@ public class CorrelatedServiceDataPoint extends DataPoint implements CorrelatedM
 	private StatsDataPointFactorizer<?> factorizer;
 
 	public CorrelatedServiceDataPoint(Integer svcIdx, Long occTime, Double execTime, Integer user, Integer returnCode,
-			String source, String correlationId, StatsDataPointFactorizer<?> factorizer) {
+			LogSource source, String correlationId, StatsDataPointFactorizer<?> factorizer) {
 		super(svcIdx, occTime, execTime, user, returnCode, source, correlationId);
 		this.factorizer = factorizer;
 	}
@@ -30,7 +31,7 @@ public class CorrelatedServiceDataPoint extends DataPoint implements CorrelatedM
 	}
 
 	@Override
-	public String getLogSource() {
+	public LogSource getLogSource() {
 		return logSource;
 	}
 

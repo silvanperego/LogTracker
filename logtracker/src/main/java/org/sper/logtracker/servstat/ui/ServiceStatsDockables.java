@@ -41,6 +41,8 @@ import org.sper.logtracker.util.DockUtils;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
+import bibliothek.gui.dock.common.event.CVetoClosingEvent;
+import bibliothek.gui.dock.common.event.CVetoClosingListener;
 
 public class ServiceStatsDockables implements TrackingDockables {
 	private ServiceScatterPlot plot;
@@ -56,6 +58,7 @@ public class ServiceStatsDockables implements TrackingDockables {
 	private DefaultMultipleCDockable graphDockable;
 	private DefaultMultipleCDockable userDockable;
 	private GlobalConfig globalConfig;
+	private List<LogSource> logSource;
 
 	public final class ApplyControlAction implements ActionListener {
   	public void actionPerformed(ActionEvent e) {
@@ -123,6 +126,17 @@ public class ServiceStatsDockables implements TrackingDockables {
 		plot = new ServiceScatterPlot(this, globalConfig);
 		graphDockable = createDockable(control, stackpos++, "Graph", plot.getPanel(), DockUtils.aside(parentLocation));
 		successRetCode = logParser.getSuccessCode();
+		serviceControlDockable.addVetoClosingListener(new CVetoClosingListener() {
+			
+			@Override
+			public void closing(CVetoClosingEvent event) {
+			}
+			
+			@Override
+			public void closed(CVetoClosingEvent event) {
+				plot.cascadeDelete();
+			}
+		});
 		graphDockable.setVisible(true);
 	}
 
@@ -141,12 +155,14 @@ public class ServiceStatsDockables implements TrackingDockables {
 		newPointExtractor.addListener(plot);
 		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users, successRetCode);
   		plot.setMaxRange(globalConfig.getRangeAxisMax());
+  		plot.setLogSources(logSource);
 		newPointExtractor.resendData();
 	}
 	
 	@Override
 	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart,
 			ActivityMonitor activityMonitor, GlobalConfig globalConfig) {
+		this.logSource = logSource;
 		try {
 			serviceControlPanel.cleanTable();
 			factorizer = createFactorizer((ServiceResponseLogParser) logParser);

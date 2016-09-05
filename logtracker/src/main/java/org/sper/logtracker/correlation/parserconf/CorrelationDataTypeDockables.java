@@ -38,7 +38,7 @@ public class CorrelationDataTypeDockables implements TrackingDockables {
 				public void receiveData(RawCorrelatedDataPoint data) {
 					catalog.receiveData(new CorrelatedDataPoint(data.occTime,
 							factors.getServiceName().addString(data.serviceName), 
-							factors.getUser().addString(data.user), factors.getLogSource().addString(data.logSource), 
+							factors.getUser().addString(data.user), data.logSource, 
 							data.correlationId, data.fileSnippet, 
 							factors));
 				}

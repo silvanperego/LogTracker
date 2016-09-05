@@ -1,10 +1,12 @@
 package org.sper.logtracker.data;
 
+import org.sper.logtracker.logreader.LogSource;
+
 public class RawDataPoint {
 
 	public final Long occTime;
 	public final String user;
-	public final String logSource;
+	public final LogSource logSource;
 	public final String correlationId;
 
 	/**
@@ -14,7 +16,7 @@ public class RawDataPoint {
 	 * @param logSource der Name der Quelle der Meldung gemäss Konfiguration.
 	 * @param correlationId die Korrelations-ID der Meldung. Diese dient der Zuordnung von Meldungen zu Abläufen im System.
 	 */
-	public RawDataPoint(Long occTime, String user, String logSource, String correlationId) {
+	public RawDataPoint(Long occTime, String user, LogSource logSource, String correlationId) {
 		this.occTime = occTime;
 		this.user = user;
 		this.logSource = logSource;
