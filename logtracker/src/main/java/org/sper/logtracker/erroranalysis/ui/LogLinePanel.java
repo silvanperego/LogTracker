@@ -45,7 +45,7 @@ public class LogLinePanel extends JPanel {
 		logLineTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int rowAtPoint = logLineTable.rowAtPoint(e.getPoint());
+				int rowAtPoint = logLineTable.convertRowIndexToModel(logLineTable.rowAtPoint(e.getPoint()));
 				CategoryViewer viewer = new CategoryViewer(logLineTable, (ErrorCategory) logLineTableModel.getValueAt(rowAtPoint, 3), globalConfig);
 				viewer.setVisible(true);
 			}

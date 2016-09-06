@@ -61,57 +61,60 @@ public class ServiceStatsDockables implements TrackingDockables {
 	private List<LogSource> logSource;
 
 	public final class ApplyControlAction implements ActionListener {
-  	public void actionPerformed(ActionEvent e) {
-  		setupDataSeries();
-  		graphDockable.toFront();
-  	}
-  }
+		public void actionPerformed(ActionEvent e) {
+			setupDataSeries();
+			graphDockable.toFront();
+		}
+	}
 
-  class ShowServiceDetailAction extends MouseInputAdapter {
-    private JTable controlTable;
-    private Function<Integer, String> rowToFilterVal;
-    private Function<DataPoint, Integer> dataPointToIndex;
-    private String filterQualifier;
-    private Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor;
-	private int maxRelevCol;
-    
-    public ShowServiceDetailAction(JTable controlTable, String filterQualifier, 
-        Function<Integer, String> rowToFilterVal, Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor, Function<DataPoint, Integer> dataPointToIndex,
-        int maxRelevCol) {
-      this.controlTable = controlTable;
-      this.filterQualifier = filterQualifier;
-      this.rowToFilterVal = rowToFilterVal;
-      this.getRelevantFactor = getRelevantFactor;
-      this.dataPointToIndex = dataPointToIndex;
-	this.maxRelevCol = maxRelevCol;
-    }
-  
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    	int row = controlTable.rowAtPoint(e.getPoint());
-    	int col = controlTable.columnAtPoint(e.getPoint());
-    	if (col >= 0 && col < maxRelevCol && row >= 0 && row < controlTable.getRowCount()) {
-    		String filterVal = rowToFilterVal.apply(row);
-    		Integer filterIdx = getRelevantFactor.apply(factorizer).getStringIndex(filterVal);
-    		List<DataPoint> filteredList;
-    		synchronized (newPointExtractor) {
-    			filteredList = newPointExtractor.stream()
-    					.filter(p -> {Integer val = dataPointToIndex.apply(p); return val != null && val.intValue() == filterIdx;})
-    					.sorted((a, b) -> b.occTime.compareTo(a.occTime))
-    					.limit(1000)
-    					.collect(Collectors.toList());
-    		}
-    		new ServiceCallDetailViewer(filterQualifier + ' ' + filterVal, filteredList, factorizer, globalConfig).setVisible(true);
-    	}
-    }
+	class ShowServiceDetailAction extends MouseInputAdapter {
+		private JTable controlTable;
+		private Function<Integer, String> rowToFilterVal;
+		private Function<DataPoint, Integer> dataPointToIndex;
+		private String filterQualifier;
+		private Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor;
+		private int maxRelevCol;
 
-  }
-  
-  public ServiceStatsDockables(CControl control, Configuration configuration, ServiceResponseLogParser logParser, GlobalConfig globalConfig, CLocation parentLocation) throws InterruptedException {
+		public ShowServiceDetailAction(JTable controlTable, String filterQualifier,
+				Function<Integer, String> rowToFilterVal,
+				Function<StatsDataPointFactorizer<DataPoint>, Factor> getRelevantFactor,
+				Function<DataPoint, Integer> dataPointToIndex, int maxRelevCol) {
+			this.controlTable = controlTable;
+			this.filterQualifier = filterQualifier;
+			this.rowToFilterVal = rowToFilterVal;
+			this.getRelevantFactor = getRelevantFactor;
+			this.dataPointToIndex = dataPointToIndex;
+			this.maxRelevCol = maxRelevCol;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int row = controlTable.convertRowIndexToModel(controlTable.rowAtPoint(e.getPoint()));
+			int col = controlTable.columnAtPoint(e.getPoint());
+			if (col >= 0 && col < maxRelevCol && row >= 0 && row < controlTable.getRowCount()) {
+				String filterVal = rowToFilterVal.apply(row);
+				Integer filterIdx = getRelevantFactor.apply(factorizer).getStringIndex(filterVal);
+				List<DataPoint> filteredList;
+				synchronized (newPointExtractor) {
+					filteredList = newPointExtractor.stream().filter(p -> {
+						Integer val = dataPointToIndex.apply(p);
+						return val != null && val.intValue() == filterIdx;
+					}).sorted((a, b) -> b.occTime.compareTo(a.occTime)).limit(1000).collect(Collectors.toList());
+				}
+				new ServiceCallDetailViewer(filterQualifier + ' ' + filterVal, filteredList, factorizer, globalConfig)
+						.setVisible(true);
+			}
+		}
+
+	}
+
+	public ServiceStatsDockables(CControl control, Configuration configuration, ServiceResponseLogParser logParser,
+			GlobalConfig globalConfig, CLocation parentLocation) throws InterruptedException {
 		this.globalConfig = globalConfig;
 		serviceControlPanel = new ServiceControlPanel(this);
 		int stackpos = 0;
-		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel, parentLocation);
+		serviceControlDockable = createDockable(control, stackpos++, "Services/Filter", serviceControlPanel,
+				parentLocation);
 		if (configuration != null)
 			configuration.registerModule(serviceControlPanel);
 		providesUsers = logParser.providesUsers();
@@ -140,7 +143,8 @@ public class ServiceStatsDockables implements TrackingDockables {
 		graphDockable.setVisible(true);
 	}
 
-	private DefaultMultipleCDockable createDockable(CControl control, int stackpos, String title, Component comp, CLocation location) {
+	private DefaultMultipleCDockable createDockable(CControl control, int stackpos, String title, Component comp,
+			CLocation location) {
 		final DefaultMultipleCDockable dockable = new DefaultMultipleCDockable(null, title, comp);
 		control.addDockable(dockable);
 		dockable.setLocation(location);
@@ -153,12 +157,13 @@ public class ServiceStatsDockables implements TrackingDockables {
 			users = userPanel.createUsersFilter(factorizer.getUser());
 		newPointExtractor.removeListeners();
 		newPointExtractor.addListener(plot);
-		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users, successRetCode);
-  		plot.setMaxRange(globalConfig.getRangeAxisMax());
+		serviceControlPanel.applyToSeriesCollection(newPointExtractor, factorizer.getService(), plot.getXyPlot(), users,
+				successRetCode);
+		plot.setMaxRange(globalConfig.getRangeAxisMax());
   		plot.setLogSources(logSource);
 		newPointExtractor.resendData();
 	}
-	
+
 	@Override
 	public void setupDataPipeLines(List<LogSource> logSource, ConfiguredLogParser<?, ?> logParser, Long obsStart,
 			ActivityMonitor activityMonitor, GlobalConfig globalConfig) {
@@ -172,7 +177,8 @@ public class ServiceStatsDockables implements TrackingDockables {
 				public Integer cat(DataPoint dp) {
 					return dp.svcIdx;
 				}
-			}, serviceControlPanel.getTable(), true, serviceControlPanel.getPublishingSemaphore(), serviceControlPanel.getApplyButton(), successRetCode);
+			}, serviceControlPanel.getTable(), true, serviceControlPanel.getPublishingSemaphore(),
+					serviceControlPanel.getApplyButton(), successRetCode);
 			factorizer.addListener(serviceStatsCalculator);
 			if (userPanel != null)
 				userPanel.clearTable();
@@ -188,7 +194,8 @@ public class ServiceStatsDockables implements TrackingDockables {
 			factorizer.addListener(newPointExtractor);
 			if (terminationPointer != null)
 				terminationPointer.endOfLife();
-			terminationPointer = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, activityMonitor, factorizer);
+			terminationPointer = PipelineHelper.setupFileReaders(logSource, logParser, obsStart, activityMonitor,
+					factorizer);
 
 			serviceControlDockable.toFront();
 		} catch (Exception e1) {
@@ -238,7 +245,7 @@ public class ServiceStatsDockables implements TrackingDockables {
 			@Override
 			public void receiveData(DataPoint data) {
 			}
-			
+
 			@Override
 			public void publishData() {
 				EventQueue.invokeLater(() -> setupDataSeries());

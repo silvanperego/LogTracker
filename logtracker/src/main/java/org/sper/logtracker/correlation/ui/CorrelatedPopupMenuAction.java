@@ -39,7 +39,7 @@ public class CorrelatedPopupMenuAction extends MouseAdapter {
 
 	private void processPopUp(MouseEvent e) {
 		if (e.isPopupTrigger()) {
-			int r = table.rowAtPoint(e.getPoint());
+			int r = table.convertRowIndexToModel(table.rowAtPoint(e.getPoint()));
 			if (r >= 0 && r < table.getRowCount()) {
 				Object dataPoint = dataPointProvider.getDataPointForRow(r);
 				if (dataPoint instanceof CorrelatedMessage) {
