@@ -3,6 +3,8 @@ package org.sper.logtracker.parserconf;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,6 +18,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -34,11 +37,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.LogTrackerConfig;
@@ -80,6 +89,8 @@ public class ParserConfigPanel extends JPanel implements ConfigurationAware, Con
 	}
 
 	private static final long serialVersionUID = 1L;
+	private static final String MATCHING = "machingChars";
+	private static final String GROUP_STYLE = "groupStyle";
 	private final JPanel contentPanel = new JPanel();
 	private JTable logParserTable;
 	private JTextField inclusionPattern;
@@ -111,6 +122,10 @@ public class ParserConfigPanel extends JPanel implements ConfigurationAware, Con
 	private JPanel dataExtractionPanel;
 	private FileTypeDescriptor<?,?> fileTypeDesc;
 	private static Color standardBackgroundColor = new JTextField().getBackground();
+	private JTextPane sampleTextPane;
+	private Style machtingStyle;
+	private Style defaultStyle;
+	private Style groupStyle;
 	/**
 	 * Create the dialog.
 	 * @param parserConfigList Die Liste der vorhandenen Parserkonfigurationen.
@@ -199,9 +214,9 @@ public class ParserConfigPanel extends JPanel implements ConfigurationAware, Con
 				editFields.setAlignmentX(Component.LEFT_ALIGNMENT);
 				GridBagLayout gbl_editFields = new GridBagLayout();
 				gbl_editFields.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-				gbl_editFields.rowHeights = new int[]{0, 0, 0};
+				gbl_editFields.rowHeights = new int[]{0, 0, 0, 0};
 				gbl_editFields.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 0.0};
-				gbl_editFields.rowWeights = new double[]{0.0, 1.0, 0.0};
+				gbl_editFields.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0};
 				editFields.setLayout(gbl_editFields);
 				{
 					lblLogFileType = new JLabel("Log File Type");
@@ -323,16 +338,33 @@ public class ParserConfigPanel extends JPanel implements ConfigurationAware, Con
 				{
 					JLabel lblExtractionPattern = new JLabel("Extraction Pattern");
 					GridBagConstraints gbc_lblExtractionPattern = new GridBagConstraints();
-					gbc_lblExtractionPattern.anchor = GridBagConstraints.EAST;
-					gbc_lblExtractionPattern.insets = new Insets(0, 0, 0, 5);
+					gbc_lblExtractionPattern.anchor = GridBagConstraints.WEST;
+					gbc_lblExtractionPattern.insets = new Insets(0, 0, 5, 5);
 					gbc_lblExtractionPattern.gridx = 0;
 					gbc_lblExtractionPattern.gridy = 2;
 					editFields.add(lblExtractionPattern, gbc_lblExtractionPattern);
 				}
+				DocumentListener documentListener = new DocumentListener() {
+					
+					@Override
+					public void removeUpdate(DocumentEvent e) {
+						colorSampleText();
+					}
+					
+					@Override
+					public void insertUpdate(DocumentEvent e) {
+						colorSampleText();
+					}
+					
+					@Override
+					public void changedUpdate(DocumentEvent e) {
+					}
+				};
 				{
 					JScrollPane extractScrollPane = new JScrollPane();
 					extractScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 					GridBagConstraints gbc_extractScrollPane = new GridBagConstraints();
+					gbc_extractScrollPane.insets = new Insets(0, 0, 5, 0);
 					gbc_extractScrollPane.fill = GridBagConstraints.BOTH;
 					gbc_extractScrollPane.gridwidth = 5;
 					gbc_extractScrollPane.gridx = 1;
@@ -347,7 +379,38 @@ public class ParserConfigPanel extends JPanel implements ConfigurationAware, Con
 						PatternInputVerifier inputVerifier = new PatternInputVerifier(false);
 						dataExtractionPatField.setInputVerifier(inputVerifier);
 						addVerifier(new VerifyingPart(dataExtractionPatField, inputVerifier));
+						dataExtractionPatField.getDocument().addDocumentListener(documentListener);
 					}
+				}
+				{
+					JLabel lblLogFileSamleText = new JLabel("Sample Log Line");
+					GridBagConstraints gbc_lblLogFileSamleText = new GridBagConstraints();
+					gbc_lblLogFileSamleText.anchor = GridBagConstraints.WEST;
+					gbc_lblLogFileSamleText.insets = new Insets(0, 0, 0, 5);
+					gbc_lblLogFileSamleText.gridx = 0;
+					gbc_lblLogFileSamleText.gridy = 3;
+					editFields.add(lblLogFileSamleText, gbc_lblLogFileSamleText);
+				}
+				{
+					sampleTextPane = new JTextPane();
+					sampleTextPane.setBackground(new Color(224, 255, 255));
+					sampleTextPane.setPreferredSize(new Dimension(6, 60));
+					sampleTextPane.setToolTipText("Enter some sample text from you log files and check the effects of your extraction pattern."
+							+ "The matched region is marked yellow. Groups are marked green. The pattern must match the full line");
+					GridBagConstraints gbc_sampleTextPane = new GridBagConstraints();
+					gbc_sampleTextPane.gridwidth = 5;
+					gbc_sampleTextPane.insets = new Insets(0, 0, 0, 5);
+					gbc_sampleTextPane.fill = GridBagConstraints.BOTH;
+					gbc_sampleTextPane.gridx = 1;
+					gbc_sampleTextPane.gridy = 3;
+					StyledDocument styledDoc = sampleTextPane.getStyledDocument();
+					defaultStyle = styledDoc.getLogicalStyle(0);
+					machtingStyle = styledDoc.addStyle(MATCHING, null);
+					StyleConstants.setBackground(machtingStyle, Color.YELLOW);
+					groupStyle = styledDoc.addStyle(GROUP_STYLE, null);
+					StyleConstants.setBackground(groupStyle, Color.GREEN);
+					styledDoc.addDocumentListener(documentListener);
+					editFields.add(sampleTextPane, gbc_sampleTextPane);
 				}
 			}
 			{
@@ -471,6 +534,32 @@ public class ParserConfigPanel extends JPanel implements ConfigurationAware, Con
 		enableComponents();
 	}
 	
+	protected void colorSampleText() {
+		EventQueue.invokeLater(() -> {
+			String pat = dataExtractionPatField.getText();
+			String sampleText = sampleTextPane.getText();
+			if (sampleText != null && sampleText.length() > 0) {
+				StyledDocument styledDoc = sampleTextPane.getStyledDocument();
+				styledDoc.setCharacterAttributes(0, sampleText.length(), defaultStyle, true);
+				if (pat != null && pat.length() > 0) {
+					try {
+						Pattern compat = Pattern.compile(pat);
+						Matcher m = compat.matcher(sampleText);
+						if (m.find(0) && m.start() == 0) {
+							styledDoc.setCharacterAttributes(0, m.end(), machtingStyle, true);
+							for (int i = 1; i <= m.groupCount(); i++) {
+								styledDoc.setCharacterAttributes(m.start(i), m.end(i) - m.start(i), groupStyle, false);
+							}
+							return;
+						}
+					} catch (PatternSyntaxException e) {
+						// Ignore, if the pattern is not in an appropriate state at the moment.
+					}
+				}
+			}
+		});
+	}
+
 	public void setLogFileTypeList(List<FileTypeDescriptor<?,?>> list) {
 		for (FileTypeDescriptor<?,?> typeDescriptor : list) {
 			logFileTypeComboModel.addElement(typeDescriptor);
