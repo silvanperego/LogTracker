@@ -23,6 +23,7 @@ import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 
 import validation.TextVerifier;
+import javax.swing.JCheckBox;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> {
 
@@ -37,7 +38,8 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 	private JTextField successCodeField;
 	private JComboBox<Integer> returnCodeGroupBox;
 	private InputVerifier successCodeVerifier;
-	private CommonFieldsHelper timeFieldsHelper = new CommonFieldsHelper();;
+	private CommonFieldsHelper timeFieldsHelper = new CommonFieldsHelper();
+	private JCheckBox chckbxSubstract;;
 
 	
 	public ServiceResponseExtractionFields(final ParserConfigPanel configDialog) {
@@ -191,7 +193,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			JLabel lblReturnCode = new JLabel("Return Code:");
 			GridBagConstraints gbc_lblReturnCode = new GridBagConstraints();
 			gbc_lblReturnCode.anchor = GridBagConstraints.WEST;
-			gbc_lblReturnCode.insets = new Insets(0, 0, 0, 5);
+			gbc_lblReturnCode.insets = new Insets(0, 0, 5, 5);
 			gbc_lblReturnCode.gridx = 0;
 			gbc_lblReturnCode.gridy = gridy;
 			add(lblReturnCode, gbc_lblReturnCode);
@@ -211,7 +213,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			JLabel lblValueRepresentingok = new JLabel("Value representing \"OK\"");
 			GridBagConstraints gbc_lblValueRepresentingok = new GridBagConstraints();
 			gbc_lblValueRepresentingok.anchor = GridBagConstraints.WEST;
-			gbc_lblValueRepresentingok.insets = new Insets(0, 0, 0, 5);
+			gbc_lblValueRepresentingok.insets = new Insets(0, 0, 5, 5);
 			gbc_lblValueRepresentingok.gridx = 3;
 			gbc_lblValueRepresentingok.gridy = gridy;
 			add(lblValueRepresentingok, gbc_lblValueRepresentingok);
@@ -241,6 +243,24 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			add(successCodeField, gbc_textField);
 			successCodeField.setColumns(10);
 			successCodeField.setInputVerifier(successCodeVerifier);
+			{
+				JLabel lblSubtractResponseTime = new JLabel("Substract Response Time:");
+				GridBagConstraints gbc_lblSubtractResponseTime = new GridBagConstraints();
+				gbc_lblSubtractResponseTime.anchor = GridBagConstraints.WEST;
+				gbc_lblSubtractResponseTime.insets = new Insets(0, 0, 0, 5);
+				gbc_lblSubtractResponseTime.gridx = 0;
+				gbc_lblSubtractResponseTime.gridy = gridy;
+				add(lblSubtractResponseTime, gbc_lblSubtractResponseTime);
+			}
+			{
+				chckbxSubstract = new JCheckBox("");
+				chckbxSubstract.setToolTipText("In many service response log files, the log entry is created when the service returns. By activating this option you can substract the execution time from the event time and create a plot that shows the start times of the service requests.");
+				GridBagConstraints gbc_chckbxSubtract = new GridBagConstraints();
+				gbc_chckbxSubtract.insets = new Insets(0, 0, 0, 5);
+				gbc_chckbxSubtract.gridx = 1;
+				gbc_chckbxSubtract.gridy = gridy++;
+				add(chckbxSubstract, gbc_chckbxSubtract);
+			}
 		}
 	}
 	
@@ -259,6 +279,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 			loadedParser.setUserIdx((Integer) userGroupBox.getSelectedItem());
 			loadedParser.setReturnCodeIdx((Integer) returnCodeGroupBox.getSelectedItem());
 			loadedParser.setSuccessCode(successCodeField.getText() != null && successCodeField.getText().length() > 0 ? Integer.parseInt(successCodeField.getText()) : null);
+			loadedParser.setSubstract(chckbxSubstract.isSelected());
 		}
 	}
 

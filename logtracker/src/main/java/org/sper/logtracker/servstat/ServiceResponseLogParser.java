@@ -26,6 +26,7 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<ServiceRespons
 	private double responseTimeFactor = 1.d;
 	private Integer successCode;
 	private Integer returnCodeIdx;
+	private boolean substract;
 	
 	public ServiceResponseLogParser() {
 	}
@@ -112,6 +113,8 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<ServiceRespons
 				String user = userIdx != null ? m.group(userIdx) : null;
 				Integer returnCode = returnCodeIdx != null && m.group(returnCodeIdx) != null ? Integer.valueOf(m.group(returnCodeIdx)) : null;
 				logLineParser.receiveData(new RawStatsDataPoint(time, execTime, service, user, returnCode, logLineParser.getLogSource(), getCorrelationId(m)));
+				if (substract)
+					time -= 1000. * execTime;
 			}
 		}
 	}
@@ -155,6 +158,15 @@ public class ServiceResponseLogParser extends ConfiguredLogParser<ServiceRespons
 
 	public void setReturnCodeIdx(Integer returnCodeIdx) {
 		this.returnCodeIdx = returnCodeIdx;
+	}
+
+	public void setSubstract(boolean selected) {
+		this.substract = selected;
+	}
+
+	@XmlAttribute
+	public boolean isSubstract() {
+		return substract;
 	}
 	
 }
