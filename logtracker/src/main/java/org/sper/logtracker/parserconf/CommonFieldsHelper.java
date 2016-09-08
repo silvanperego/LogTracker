@@ -75,6 +75,7 @@ public class CommonFieldsHelper {
 			JLabel lblOccurrenceTimeFormat = new JLabel("Time Format String:");
 			GridBagConstraints gbc_lblOccurrenceTimeFormat = new GridBagConstraints();
 			gbc_lblOccurrenceTimeFormat.insets = new Insets(0, 0, 5, 5);
+			gbc_lblOccurrenceTimeFormat.anchor = GridBagConstraints.WEST;
 			gbc_lblOccurrenceTimeFormat.gridx = 3;
 			gbc_lblOccurrenceTimeFormat.gridy = 0;
 			panel.add(lblOccurrenceTimeFormat, gbc_lblOccurrenceTimeFormat);
@@ -109,6 +110,7 @@ public class CommonFieldsHelper {
 				occTimePanel.add(occTimeFormatString);
 				occTimeFormatString.setToolTipText(
 						"The date format of the occurrence time of the service call. The format must be specified as java - SimpleDateFormat pattern, as defined at http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDataFormat.html.");
+				occTimeFormatString.setColumns(20);
 				occTimeFormatString.setInputVerifier(occTimeVerifier);
 				{
 					JLabel lblLanguage = new JLabel("Language:");
