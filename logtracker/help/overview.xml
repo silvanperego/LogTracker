@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd">
+<?altova_sps http://www.altova.com/sps/Template/Publishing/docbook.sps?>
+<article>
+	<title>Article Title</title>
+	<sect1>
+		<title>Section1 Title</title>
+		<para>Text</para>
+	</sect1>
+</article>

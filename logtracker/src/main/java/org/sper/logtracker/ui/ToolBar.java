@@ -5,10 +5,15 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.URL;
 
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
+import javax.help.JHelp;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
@@ -72,7 +77,18 @@ public class ToolBar extends JToolBar {
 		JButton btnInfo = new JButton(new ImageIcon(FileControlPanel.class.getResource("/Info.png")));
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(logTracker, new JScrollPane(new WelcomePanel()), "About Log-Tracker", JOptionPane.PLAIN_MESSAGE);
+				try {
+					URL helpSetUrl = HelpSet.findHelpSet(getClass().getClassLoader(), "jhelpset.hs");
+					HelpSet helpSet = new HelpSet(getClass().getClassLoader(), helpSetUrl);
+					JHelp jHelp = new JHelp(helpSet);
+					JFrame helpFrame = new JFrame();
+					helpFrame.setSize(800, 800);
+					helpFrame.getContentPane().add(jHelp);
+					helpFrame.setVisible(true);
+				} catch (HelpSetException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(logTracker, new JScrollPane(new WelcomePanel()), "About Log-Tracker", JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 		});
 		String defaultTitle = "LogTracker";
