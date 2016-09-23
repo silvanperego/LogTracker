@@ -101,12 +101,14 @@
 						<id>add-source</id>
 						<phase>generate-sources</phase>
 						<goals>
-							<goal>add-source</goal>
+							<goal>add-resource</goal>
 						</goals>
 						<configuration>
-							<sources>
-								<source>target/help</source>
-							</sources>
+							<resources>
+								<resource>
+									<directory>target/help</directory>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>

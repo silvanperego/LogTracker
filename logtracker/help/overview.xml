@@ -18,10 +18,6 @@
 			<listitem><para>All processing is done in memory. While this imposes some limits onto the amount of data that can be analyzed, it leads to 
 					highly efficient processing.</para></listitem>
 		</itemizedlist>
-		<mediaobject>
-			<imageobject><imagedata fileref="LogTrackerOverview.png"/></imageobject>
-			<caption><para><emphasis>Instant Log-Tracker</emphasis>'s main screen. It shows a service response scatter plot and a log message overview.</para></caption>
-		</mediaobject>
 		<para><emphasis>Instant Log-Tracker</emphasis> supports the following flavors of log files:</para>
 		<variablelist>
 			<varlistentry><term><indexterm><primary>Service Call Statistics</primary></indexterm>Service Call Statistics Files</term>
