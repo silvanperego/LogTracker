@@ -14,6 +14,7 @@ Instant Log-Tracker supports the following flavors of log files:
 * __Message Logs__ typically contain messages about events that occurred within the server. They typically have an occurrence time stamp, a severity and a message text. Instant Log-Tracker uses some fuzzy logic to recognize "similar" messages and put them into the same categories. A special chart show the frequency of a certain type of messages.
 * __Correlation Logs__ contain some additional information that is bound to a service call via a correlation-ID. Payload-Logs normally are of this type. Instant Log-Tracker allows the correlation of log entries that are spread over various files and file types by correlation-ID.
 
+![Log Tracker Overview](LogTrackerOverview.png "Instant LogTracker's main screen")
 
 Copyright 2015, Silvan Perego
 
@@ -29,4 +30,4 @@ JFreeChart from Object Refinery
 Launch4J
 Axet Desktop
 
-Requirements: LogTracker Requires Java 1.6 SE Runtime.
+Requirements: LogTracker Requires Java 1.8 SE Runtime.
