@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 
+import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.HelpSetException;
 import javax.help.JHelp;
@@ -80,7 +81,9 @@ public class ToolBar extends JToolBar {
 				try {
 					URL helpSetUrl = HelpSet.findHelpSet(getClass().getClassLoader(), "jhelpset.hs");
 					HelpSet helpSet = new HelpSet(getClass().getClassLoader(), helpSetUrl);
+					helpSet.setHomeID("chap_Overview");
 					JHelp jHelp = new JHelp(helpSet);
+					HelpBroker helpBroker = helpSet.createHelpBroker();
 					JFrame helpFrame = new JFrame();
 					helpFrame.setSize(800, 800);
 					helpFrame.getContentPane().add(jHelp);

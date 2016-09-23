@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd">
 <?altova_sps http://www.altova.com/sps/Template/Publishing/docbook.sps?>
-<article>
-	<title>Article Title</title>
-	<sect1>
-		<title>Section1 Title</title>
+<book>
+	<title>Instant Log-Tracker</title>
+	<subtitle>On-line Help</subtitle>
+	<chapter id="chap_Overview">
+		<title>Instant Log-Tracker</title>
+		<subtitle>Overview</subtitle>
+		<para><emphasis>Instant Log-Tracker</emphasis> is an easy to use tool for ad-hoc analysis and monitoring of application server log files. 
+		Logtracker consists of a single executable (which requires a Java 8 runtime) and can be applied easily and straightforward as long as you have physical access to your log files.
+		</para>
+		<para>Special features are:</para>
+		<itemizedlist>
+			<listitem><para>Log-File formats are configurable by the use of regex expression. Almost any log-file format, therefore can be monitored after 
+					having specified its format.</para></listitem>
+			<listitem><para>Log-Files are constantly monitored. New data is processed immediately.</para></listitem>
+			<listitem><para>All processing is done in memory. While this imposes some limits onto the amount of data that can be analyzed, it leads to 
+					highly efficient processing.</para></listitem>
+		</itemizedlist>
+		<para><emphasis>Instant Log-Tracker</emphasis> supports the following flavors of log files:</para>
+		<variablelist>
+			<varlistentry><term><indexterm><primary>Service Call Statistics</primary></indexterm>Service Call Statistics Files</term>
+			<listitem><para>typically contain one or more lines per service call. The contain information about who called which service when and how 
+			long the server took to response. This file type may also contain a response code that indicates, if a service call was successful or not. 
+			<emphasis>Instant Log-Tracker</emphasis> calculates service call statistics and creates service scatter plots for the analysis of this type of data.</para></listitem>
+			</varlistentry>
+			<varlistentry><term><indexterm><primary>Message Logs</primary></indexterm>Message Logs</term>
+				<listitem><para>typically contain messages about events that occurred within the server. They typically have an occurrence time stamp, a severity and a message text. <emphasis>Instant Log-Tracker</emphasis> uses some fuzzy logic to recognize "similar" messages and put them into the same categories. A special chart show the frequency of a certain type of messages.</para></listitem>
+			</varlistentry>
+			<varlistentry><term><indexterm><primary>Correlation Logs</primary></indexterm>Correlation Logs</term>
+				<listitem><para>contain some additional information that is bound to a service call via a correlation-ID. Payload-Logs normally are of this type. <emphasis>Instant Log-Tracker</emphasis> allows the correlation of log entries that are spread over various files and file types by correlation-ID.</para></listitem>
+			</varlistentry>
+		</variablelist>
+	</chapter>
+	<chapter>
+		<title>Main Concepts</title>
 		<para>Text</para>
-	</sect1>
-</article>
+	</chapter>
+	<chapter>
+		<title>Configure Log-File Parsers</title>
+		<para>Text</para>
+	</chapter>
+	<chapter>
+		<title>Configure Log-Sources</title>
+		<para>Text</para>
+	</chapter>
+</book>

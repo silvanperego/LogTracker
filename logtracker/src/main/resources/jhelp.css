@@ -1,0 +1,15 @@
+@CHARSET "ISO-8859-1";
+
+.title {
+	color: blue;
+}
+
+body {
+	font-family: Lucia, Arial;
+}
+
+dt {
+	font-weight: bold;
+	margin-bottom : 2 em;
+	margin-top : 2 em;
+}

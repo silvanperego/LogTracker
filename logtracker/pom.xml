@@ -88,6 +88,8 @@
 					<includes>overview.xml</includes>
 					<sourceDirectory>help</sourceDirectory>
 					<targetDirectory>target/help</targetDirectory>
+					<chapterAutolabel>0</chapterAutolabel>
+					<htmlStylesheet>jhelp.css</htmlStylesheet>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -136,25 +138,6 @@
 											<goal>
 												generate-javahelp
 											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											build-helper-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.8,)
-										</versionRange>
-										<goals>
-											<goal>add-source</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
