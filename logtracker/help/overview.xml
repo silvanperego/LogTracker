@@ -33,8 +33,9 @@
 			</varlistentry>
 		</variablelist>
 	</chapter>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="install.xml" />
 	<chapter>
-		<title>Main Concepts</title>
+		<title>Concepts</title>
 		<para>Text</para>
 	</chapter>
 	<chapter>

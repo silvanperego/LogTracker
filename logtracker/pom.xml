@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.sper</groupId>
 	<artifactId>logtracker</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -90,6 +90,7 @@
 					<targetDirectory>target/help</targetDirectory>
 					<chapterAutolabel>0</chapterAutolabel>
 					<htmlStylesheet>jhelp.css</htmlStylesheet>
+					<xincludeSupported>true</xincludeSupported>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -227,18 +228,18 @@
 									</jar>
 									<errTitle>logtracker.exe Error</errTitle>
 									<jre>
-										<minVersion>1.6.0</minVersion>
+										<minVersion>1.8.0</minVersion>
 										<maxVersion>1.8.0</maxVersion>
 										<initialHeapSize>128</initialHeapSize>
 										<maxHeapSize>1024</maxHeapSize>
 									</jre>
 									<versionInfo>
-										<fileVersion>1.0.0.0</fileVersion>
-										<txtFileVersion>1.0</txtFileVersion>
+										<fileVersion>2.0.0.0</fileVersion>
+										<txtFileVersion>2.0</txtFileVersion>
 										<fileDescription>Log-Tracker</fileDescription>
-										<copyright>C Silvan Perego 2014</copyright>
-										<productVersion>1.0.0.0</productVersion>
-										<txtProductVersion>1.0</txtProductVersion>
+										<copyright>C Silvan Perego 2014-2016</copyright>
+										<productVersion>2.0.0.0</productVersion>
+										<txtProductVersion>2.0</txtProductVersion>
 										<productName>logtracker</productName>
 										<internalName>logtracker</internalName>
 										<originalFilename>logtracker.exe</originalFilename>
