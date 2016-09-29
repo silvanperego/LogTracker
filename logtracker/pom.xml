@@ -78,17 +78,34 @@
 				<version>2.0.17</version>
 				<executions>
 					<execution>
+						<id>javaHelp</id>
 						<goals>
 							<goal>generate-javahelp</goal>
 						</goals>
 						<phase>generate-sources</phase>
+						<configuration>
+							<targetDirectory>target/help</targetDirectory>
+							<chapterAutolabel>0</chapterAutolabel>
+						</configuration>
+					</execution>
+					<execution>
+						<id>PDF</id>
+						<goals>
+							<goal>generate-pdf</goal>
+						</goals>
+						<phase>install</phase>
+						<configuration>
+							<targetDirectory>target</targetDirectory>
+							<chapterAutolabel>1</chapterAutolabel>
+							<pageWidth>21cm</pageWidth>
+							<pageHeight>29.7cm</pageHeight>
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>
-					<includes>overview.xml</includes>
+					<includes>LogTrackerUserManual.xml</includes>
 					<sourceDirectory>help</sourceDirectory>
 					<targetDirectory>target/help</targetDirectory>
-					<chapterAutolabel>0</chapterAutolabel>
 					<htmlStylesheet>jhelp.css</htmlStylesheet>
 					<xincludeSupported>true</xincludeSupported>
 				</configuration>
@@ -138,9 +155,8 @@
 											[2.0.17,)
 										</versionRange>
 										<goals>
-											<goal>
-												generate-javahelp
-											</goal>
+											<goal>generate-javahelp</goal>
+											<goal>generate-pdf</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -224,12 +240,12 @@
 								<configuration>
 									<headerType>gui</headerType>
 									<outfile>target/logtracker.exe</outfile>
-									<jar>target/logtracker-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+									<jar>target/logtracker-2.0.0-SNAPSHOT-jar-with-dependencies.jar
 									</jar>
 									<errTitle>logtracker.exe Error</errTitle>
 									<jre>
 										<minVersion>1.8.0</minVersion>
-										<maxVersion>1.8.0</maxVersion>
+										<maxVersion>1.9.0</maxVersion>
 										<initialHeapSize>128</initialHeapSize>
 										<maxHeapSize>1024</maxHeapSize>
 									</jre>
