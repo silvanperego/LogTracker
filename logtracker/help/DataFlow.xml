@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
-<!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">
-	]>
+<!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
 <chapter>
-	<title>Concepts</title>
-	<sect1><title>The data flow</title>
+	<title>Log Tracker Data flow</title>
 	<para>&logtracker; reads and constantly monitors log files. The data that is found in the files constantly flows through the application
 		and is collected, processed, and evaluated in multiple steps.
 	</para>
 	<figure id="dataFlow"><title>The data flow in &logtracker;</title>
 		<mediaobject>
-			<imageobject if="pngImg" condition="fo"><imagedata fileref="Overview.png" format="PNG" width="15cm"/></imageobject>
-			<imageobject id="htmlImg" condition="html"><imagedata fileref="Overview.png" format="PNG"/></imageobject>
+			<imageobject condition="fo"><imagedata fileref="DataFlow.svg" format="SVG" width="15cm"/></imageobject>
+			<imageobject condition="html"><imagedata fileref="DataFlow.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>
 	<para>The principal stages are:</para>W
@@ -35,8 +33,10 @@
 			</para></listitem>
 		</varlistentry>
 		<varlistentry><term>Evaluate and visualize</term>
-			<listitem><para>&logtracker; supports the basic flavours of log files see <xref linkend="log_flavours"/>.</para></listitem>
+			<listitem><para>The data is evaluated and visualized in the next stage, eventually by showing up some additional panels. The
+			kind of panels depends on the flavor of the log files that are analyzed in this data line. More information can be found in
+				<xref linkend="call_stats"/>, <xref linkend="error_logs"/>, and <xref linkend="corr_data"/>.
+			</para></listitem>
 		</varlistentry>
 	</variablelist>
-	</sect1>
 </chapter>

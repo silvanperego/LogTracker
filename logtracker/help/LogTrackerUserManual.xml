@@ -7,10 +7,11 @@
 	<title>Instant Log-Tracker</title>
 	<subtitle>User's Manual</subtitle>
 	<chapter id="chap_Overview">
-		<title>Instant Log-Tracker</title>
+		<title id="log_flavours">Instant Log-Tracker</title>
 		<subtitle>Overview</subtitle>
 		<para>&logtracker; is an easy to use tool for ad-hoc analysis and monitoring of application server log files. 
-		Logtracker consists of a single executable (which requires a Java 8 runtime) and can be applied easily and straightforward as long as you have physical access to your log files.
+		Logtracker consists of a single executable (which requires a Java 8 runtime) and can be applied easily and 
+		straightforward as long as you have physical access to your log files.
 		</para>
 		<para>Special features are:</para>
 		<itemizedlist>
@@ -21,28 +22,47 @@
 					highly efficient processing.</para></listitem>
 		</itemizedlist>
 		<para>&logtracker; supports the following flavors of log files:</para>
-		<variablelist id="log_flavours">
+		<variablelist>
 			<varlistentry><term><indexterm><primary>Service Call Statistics</primary></indexterm>Service Call Statistics Files</term>
 			<listitem><para>typically contain one or more lines per service call. The contain information about who called which service when and how 
 			long the server took to response. This file type may also contain a response code that indicates, if a service call was successful or not. 
 			&logtracker; calculates service call statistics and creates service scatter plots for the analysis of this type of data.</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>Message Logs</primary></indexterm>Message Logs</term>
-				<listitem><para>typically contain messages about events that occurred within the server. They typically have an occurrence time stamp, a severity and a message text. &logtracker; uses some fuzzy logic to recognize "similar" messages and put them into the same categories. A special chart show the frequency of a certain type of messages.</para></listitem>
+				<listitem><para>typically contain messages about events that occurred within the server. They typically have an occurrence time stamp, a 
+				severity and a message text. &logtracker; uses some fuzzy logic to recognize "similar" messages and put them into the same categories. 
+				A special chart show the frequency of a certain type of messages.</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>Correlation Logs</primary></indexterm>Correlation Logs</term>
-				<listitem><para>contain some additional information that is bound to a service call via a correlation-ID. Payload-Logs normally are of this type. &logtracker; allows the correlation of log entries that are spread over various files and file types by correlation-ID.</para></listitem>
+				<listitem><para>contain some additional information that is bound to a service call via a correlation-ID. Payload-Logs normally are of this type.
+				&logtracker; allows the correlation of log entries that are spread over various files and file types by correlation-ID.</para></listitem>
 			</varlistentry>
 		</variablelist>
 	</chapter>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="install.xml" />
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="concepts.xml" />
+	<chapter>
+		<title>The user interface</title>
+		<para>Text</para>
+	</chapter>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="DataFlow.xml" />
 	<chapter>
 		<title>Configure Log-File Parsers</title>
 		<para>Text</para>
 	</chapter>
 	<chapter>
 		<title>Configure Log-Sources</title>
+		<para>Text</para>
+	</chapter>
+	<chapter><title>Configuration Files</title>
+		<para>Text</para>
+	</chapter>
+	<chapter id="call_stats"><title>Working with Service Call Statistics</title>
+		<para>Text</para>
+	</chapter>
+	<chapter id="error_logs"><title>Working with Message or Error-Logs</title>
+		<para>Text</para>
+	</chapter>
+	<chapter id="corr_data"><title>Working with Correlation Data</title>
 		<para>Text</para>
 	</chapter>
 </book>
