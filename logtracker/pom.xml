@@ -86,6 +86,9 @@
 						<configuration>
 							<targetDirectory>target/help</targetDirectory>
 							<chapterAutolabel>0</chapterAutolabel>
+							<profileCondition>html</profileCondition>
+							<htmlStylesheet>jhelp.css</htmlStylesheet>
+							<javahelpCustomization>help/profiling-render.xsl</javahelpCustomization>
 						</configuration>
 					</execution>
 					<execution>
@@ -99,6 +102,7 @@
 							<chapterAutolabel>1</chapterAutolabel>
 							<pageWidth>21cm</pageWidth>
 							<pageHeight>29.7cm</pageHeight>
+							<profileCondition>fo</profileCondition>
 						</configuration>
 					</execution>
 				</executions>
@@ -106,9 +110,32 @@
 					<includes>LogTrackerUserManual.xml</includes>
 					<sourceDirectory>help</sourceDirectory>
 					<targetDirectory>target/help</targetDirectory>
-					<htmlStylesheet>jhelp.css</htmlStylesheet>
 					<xincludeSupported>true</xincludeSupported>
+					<formalTitlePlacement>figure after</formalTitlePlacement>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/help</outputDirectory>
+							<resources>
+								<resource>
+									<directory>help</directory>
+									<include>*.png</include>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

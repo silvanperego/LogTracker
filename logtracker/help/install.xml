@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd">
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
+<!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">
+	]>
 <chapter>
 	<title>Install and Run</title>
 	<sect1><title>Prerequisites</title>
-	<para><emphasis>Instant Log Tracker</emphasis> requires a Java Run Time Environment of at least version 1.8. If your system does not yet have it, you can download
+	<para>&logtracker; requires a Java Run Time Environment of at least version 1.8. If your system does not yet have it, you can download
 		it from the <ulink url="http://www.java.com/de/download/" type="_blank">http://www.java.com/de/download/</ulink> Site.
 	</para>
 	</sect1>
 	<sect1>
 	<title>Install and Run</title>
-	<para><emphasis>Instant Log-Tracker</emphasis> basically consists of one single executable jar-file "<code>logtracker.jar</code>". Normally it's sufficient
+	<para>&logtracker; basically consists of one single executable jar-file "<code>logtracker.jar</code>". Normally it's sufficient
 		copy it onto a computer that has physical access to the log files that need to be investigated. On most platforms <code>logtracker.jar</code> can
 		be launched by the normal procedure as you would use for any program.
 	</para>
@@ -27,7 +29,7 @@
 	</para>
 	</sect1>
 	<sect1><title>Memory considerations</title>
-		<para><emphasis>Instant Log-Tracker</emphasis> keeps important parts of the investigated log files in its memory. Depending on the size of the file
+		<para>&logtracker; keeps important parts of the investigated log files in its memory. Depending on the size of the file
 			the memory that is needed can raise substantially. If there is not enough heap memory available, the application becomes slow and may output
 			"OutOfMemoryException"s. You can increase the heap memory size at startup by using:
 		</para>
