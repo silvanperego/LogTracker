@@ -5,7 +5,7 @@
 	<title>Install and Run</title>
 	<sect1><title>Prerequisites</title>
 	<para>&logtracker; requires a Java Run Time Environment of at least version 1.8. If your system does not yet have it, you can download
-		it from the <ulink url="http://www.java.com/de/download/" type="_blank">http://www.java.com/de/download/</ulink> Site.
+		it from the <ulink url="http://www.java.com/de/download/">http://www.java.com/de/download/</ulink> Site.
 	</para>
 	</sect1>
 	<sect1>
