@@ -9,7 +9,7 @@
 	</para>
 	</sect1>
 	<sect1>
-	<title>Install and Run</title>
+	<title id="runLogTracker">Install and Run</title>
 	<para>&logtracker; basically consists of one single executable jar-file "<code>logtracker.jar</code>". Normally it's sufficient
 		copy it onto a computer that has physical access to the log files that need to be investigated. On most platforms <code>logtracker.jar</code> can
 		be launched by the normal procedure as you would use for any program.

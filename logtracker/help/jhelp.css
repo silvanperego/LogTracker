@@ -9,7 +9,12 @@ body {
 }
 
 dt {
+	color: gray;
 	font-weight: bold;
 	margin-bottom : 2 em;
 	margin-top : 2 em;
+}
+
+.term {
+	color: gray;
 }

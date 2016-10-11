@@ -7,8 +7,7 @@
 	<title>Instant Log-Tracker</title>
 	<subtitle>User's Manual</subtitle>
 	<chapter id="chap_Overview">
-		<title id="log_flavours">Instant Log-Tracker</title>
-		<subtitle>Overview</subtitle>
+		<title id="log_flavours">Overview</title>
 		<para>&logtracker; is an easy to use tool for ad-hoc analysis and monitoring of application server log files. 
 		Logtracker consists of a single executable (which requires a Java 8 runtime) and can be applied easily and 
 		straightforward as long as you have physical access to your log files.
@@ -40,29 +39,32 @@
 		</variablelist>
 	</chapter>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="install.xml" />
-	<chapter>
-		<title>The user interface</title>
-		<para>Text</para>
+	<chapter><title>Concepts</title>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="UserInterface.xml" />
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="DataFlow.xml" />
 	</chapter>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="DataFlow.xml" />
-	<chapter>
-		<title>Configure Log-File Parsers</title>
-		<para>Text</para>
+	<chapter id="globalConfig"><title>Configuration</title>
+		<sect1>
+			<title id="confLogParsers">Configure Log-File Parsers</title>
+			<para>Text</para>
+		</sect1>
+		<sect1>
+			<title id="confLogSources">Configure Log-Sources</title>
+			<para>Text</para>
+		</sect1>
+		<sect1><title id="confFiles">Configuration Files</title>
+			<para>Text</para>
+		</sect1>
 	</chapter>
-	<chapter>
-		<title>Configure Log-Sources</title>
-		<para>Text</para>
-	</chapter>
-	<chapter><title>Configuration Files</title>
-		<para>Text</para>
-	</chapter>
-	<chapter id="call_stats"><title>Working with Service Call Statistics</title>
-		<para>Text</para>
-	</chapter>
-	<chapter id="error_logs"><title>Working with Message or Error-Logs</title>
-		<para>Text</para>
-	</chapter>
-	<chapter id="corr_data"><title>Working with Correlation Data</title>
-		<para>Text</para>
+	<chapter><title>Work with log file data</title>
+		<sect1 id="call_stats"><title>Working with Service Call Statistics</title>
+			<para>Text</para>
+		</sect1>
+		<sect1 id="error_logs"><title>Working with Message or Error-Logs</title>
+			<para>Text</para>
+		</sect1>
+		<sect1 id="corr_data"><title>Working with Correlation Data</title>
+			<para>Text</para>
+		</sect1>
 	</chapter>
 </book>

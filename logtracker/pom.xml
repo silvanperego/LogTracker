@@ -137,6 +137,7 @@
 								<resource>
 									<directory>help</directory>
 									<include>*.png</include>
+									<include>*.css</include>
 									<filtering>true</filtering>
 								</resource>
 							</resources>

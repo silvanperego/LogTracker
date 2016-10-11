@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
-<chapter>
+<sect1>
 	<title>Log Tracker Data flow</title>
 	<para>&logtracker; reads and constantly monitors log files. The data that is found in the files constantly flows through the application
 		and is collected, processed, and evaluated in multiple steps.
@@ -12,7 +12,7 @@
 			<imageobject condition="html"><imagedata fileref="DataFlow.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>
-	<para>The principal stages are:</para>W
+	<para>The principal stages are:</para>
 	<variablelist>
 		<varlistentry><term>Read</term>
 			<listitem><para>Log files are opened and read on a per line basis.
@@ -39,4 +39,7 @@
 			</para></listitem>
 		</varlistentry>
 	</variablelist>
-</chapter>
+	<para>&logtracker; configuration is organized along <emphasis>data pipelines</emphasis>. One data pipeline can collect data from exactly one 
+		type of log files. The log file type is associated with a log file type.
+	</para>
+</sect1>
