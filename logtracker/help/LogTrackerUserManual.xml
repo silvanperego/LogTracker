@@ -43,19 +43,7 @@
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="UserInterface.xml" />
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="DataFlow.xml" />
 	</chapter>
-	<chapter id="globalConfig"><title>Configuration</title>
-		<sect1>
-			<title id="confLogParsers">Configure Log-File Parsers</title>
-			<para>Text</para>
-		</sect1>
-		<sect1>
-			<title id="confLogSources">Configure Log-Sources</title>
-			<para>Text</para>
-		</sect1>
-		<sect1><title id="confFiles">Configuration Files</title>
-			<para>Text</para>
-		</sect1>
-	</chapter>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="Configuration.xml" />
 	<chapter><title>Work with log file data</title>
 		<sect1 id="call_stats"><title>Working with Service Call Statistics</title>
 			<para>Text</para>

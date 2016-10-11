@@ -2,7 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
 <sect1>
-	<title>The user interface</title>
+	<title>The User Interface</title>
 	<figure id="userInterface"><title>&logtracker;'s user interface</title>
 		<mediaobject>
 			<imageobject condition="fo"><imagedata fileref="UserInterface.svg" format="SVG" width="15cm"/></imageobject>

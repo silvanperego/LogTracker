@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
+<!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
+<chapter id="globalConfig">
+	<title>Configuration</title>
+	<sect1>
+		<title id="confLogParsers">Configure Log-File Parsers</title>
+		<para>&logtracker; interprets the contents of log files by applying regular expressions, which 
+			can be freely configured by the user. Defining those regular expressions is a bit tricky
+			but it makes &logtracker; very flexible.
+		</para>
+		<para>Log file format configurations can be edited by:</para>
+		<itemizedlist><listitem><para>Opening the Configuration Dialog Box</para>
+			<mediaobject>
+			<imageobject><imagedata fileref="OpenConfig.png"/></imageobject></mediaobject>
+			</listitem>
+			<listitem><para>Switching to the "Parser Configuration" Tab.</para>
+			</listitem>
+		</itemizedlist>
+	</sect1>
+	<sect1>
+		<title id="confLogSources">Configure Log-Sources</title>
+		<para>Text</para>
+	</sect1>
+	<sect1><title>Global Configuration Parameters</title>
+	</sect1>
+	<sect1>
+		<title id="confFiles">Configuration Files</title>
+		<para>Text</para>
+	</sect1>
+</chapter>
