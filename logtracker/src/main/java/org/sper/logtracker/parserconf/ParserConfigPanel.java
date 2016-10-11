@@ -448,7 +448,14 @@ public class ParserConfigPanel extends JPanel implements ConfigurationAware, Con
 						@Override
 						public void execConfigFileOperation(File selectedFile) throws Exception {
 							int before = parserConfigModel.getRowCount();
-							config.loadConfiguration(selectedFile);
+							LogTrackerConfig xmlConfig = new XMLConfigSupport().loadConfiguration(selectedFile);
+							if (xmlConfig == null) {
+								// Das war wohl kein XML-File. Versuche alte Konfiguration mit Java Deserialisierung zu laden.
+								config.loadConfiguration(selectedFile);
+							} else if (xmlConfig.getGlobal() != null) {
+								xmlConfig.getGlobal().getLogParser().stream().forEach(lp -> lp.setEditable(true));
+								parserConfigModel.addParsers(xmlConfig.getGlobal().getLogParser());
+							}
 							int after = parserConfigModel.getRowCount();
 							if (after > before) {
 								parserConfigModel.fireTableRowsInserted(before, after - 1);
