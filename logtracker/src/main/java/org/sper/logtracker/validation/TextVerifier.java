@@ -1,4 +1,4 @@
-package validation;
+package org.sper.logtracker.validation;
 
 import java.awt.Color;
 

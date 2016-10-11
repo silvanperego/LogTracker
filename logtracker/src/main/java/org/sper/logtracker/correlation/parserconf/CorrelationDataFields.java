@@ -18,8 +18,7 @@ import org.sper.logtracker.parserconf.CommonFieldsHelper;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
-
-import validation.TextVerifier;
+import org.sper.logtracker.validation.TextVerifier;
 
 public class CorrelationDataFields extends JPanel implements ExtractionFieldHandler<CorrelationLogParser, RawCorrelatedDataPoint> {
 

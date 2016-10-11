@@ -15,8 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import validation.SimpleDateFormatVerifier;
-import validation.TextVerifier;
+import org.sper.logtracker.validation.SimpleDateFormatVerifier;
+import org.sper.logtracker.validation.TextVerifier;
 
 /**
  * Hilfsklasse für die Darstellung der Felder zur Konfiguration der Konfigurationsfelder, die in allen Detail-Konfigurationen vorkommen..

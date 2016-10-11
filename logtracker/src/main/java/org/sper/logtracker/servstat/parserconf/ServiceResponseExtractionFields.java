@@ -21,8 +21,8 @@ import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
+import org.sper.logtracker.validation.TextVerifier;
 
-import validation.TextVerifier;
 import javax.swing.JCheckBox;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> {

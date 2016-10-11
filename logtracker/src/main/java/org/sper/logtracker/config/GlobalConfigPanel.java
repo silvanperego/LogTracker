@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import validation.ConfigurationSubPanel;
-import validation.SimpleDateFormatVerifier;
-import validation.TextVerifier;
+import org.sper.logtracker.validation.ConfigurationSubPanel;
+import org.sper.logtracker.validation.SimpleDateFormatVerifier;
+import org.sper.logtracker.validation.TextVerifier;
 
 public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 

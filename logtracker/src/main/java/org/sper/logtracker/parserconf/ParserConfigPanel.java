@@ -58,9 +58,8 @@ import org.sper.logtracker.config.compat.ConfigFileSaveButton;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.logreader.LogParser;
-
-import validation.ConfigurationSubPanel;
-import validation.TextVerifier;
+import org.sper.logtracker.validation.ConfigurationSubPanel;
+import org.sper.logtracker.validation.TextVerifier;
 
 public class ParserConfigPanel extends JPanel implements ConfigurationAware, ConfigurationSubPanel {
 	

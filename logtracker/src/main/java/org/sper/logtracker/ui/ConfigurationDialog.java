@@ -14,8 +14,7 @@ import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.GlobalConfigPanel;
 import org.sper.logtracker.parserconf.ParserConfigList;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
-
-import validation.ConfigurationSubPanel;
+import org.sper.logtracker.validation.ConfigurationSubPanel;
 
 public class ConfigurationDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
