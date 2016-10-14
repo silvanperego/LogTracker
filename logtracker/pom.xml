@@ -73,6 +73,28 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>net.trajano.mojo</groupId>
+				<artifactId>batik-maven-plugin</artifactId>
+				<version>1.0.1</version>
+				<executions>
+					<execution>
+						<id>svg_raster</id>
+						<goals><goal>rasterizer</goal></goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<destDir>target/help</destDir>
+							<mimeType>image/png</mimeType>
+							<svgResources>
+								<svgResource>
+									<directory>help</directory>
+									<include>*.svg</include>
+								</svgResource>
+							</svgResources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>com.agilejava.docbkx</groupId>
 				<artifactId>docbkx-maven-plugin</artifactId>
 				<version>2.0.17</version>
@@ -89,6 +111,7 @@
 							<profileCondition>html</profileCondition>
 							<htmlStylesheet>jhelp.css</htmlStylesheet>
 							<javahelpCustomization>help/profiling-render.xsl</javahelpCustomization>
+							<ulinkTarget>_new</ulinkTarget>
 						</configuration>
 					</execution>
 					<execution>
