@@ -80,7 +80,7 @@
 					<execution>
 						<id>svg_raster</id>
 						<goals><goal>rasterizer</goal></goals>
-						<phase>generate-resources</phase>
+						<phase>generate-sources</phase>
 						<configuration>
 							<destDir>target/help</destDir>
 							<mimeType>image/png</mimeType>

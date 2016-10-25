@@ -4,6 +4,10 @@
 	]>
 <?altova_sps http://www.altova.com/sps/Template/Publishing/docbook.sps?>
 <book>
+	<bookinfo>
+		<author>Silvan Perego</author>
+		<date>October 2016</date>
+	</bookinfo>
 	<title>Instant Log-Tracker</title>
 	<subtitle>User's Manual</subtitle>
 	<chapter id="chap_Overview">

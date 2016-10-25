@@ -8,7 +8,7 @@
 	.st2{font-family:'LucidaSans';}
 	.st3{font-size:8px;}
 </style>
-<image style="overflow:visible;" width="759" height="681" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEAlwCXAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMA
+<image style="overflow:visible;enable-background:new    ;" width="759" height="680" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEAlwCXAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMA
 EAMCAwYAABwPAABH3QAAzLj/2wCEABALCwsMCxAMDBAXDw0PFxsUEBAUGx8XFxcXFx8eFxoaGhoX
 Hh4jJSclIx4vLzMzLy9AQEBAQEBAQEBAQEBAQEABEQ8PERMRFRISFRQRFBEUGhQWFhQaJhoaHBoa
 JjAjHh4eHiMwKy4nJycuKzU1MDA1NUBAP0BAQEBAQEBAQEBAQP/CABEIAqgC9wMBIgACEQEDEQH/
@@ -927,7 +927,7 @@ pJ4Z7laSeGe5WknhnuVpJ4Z7laSeGe5WknhnuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJ
 qHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJ4Z7laSeGe5
 WknhnuVpJ4Z7laSeGe5WknhnuVpJ4Z7laSeGe5WknhnuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVp
 JqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHuVpJqHu
-VcOl/wCQ9yoooEk2KOJJ5ijBbJ2gBk58tf/Z" transform="matrix(0.4758 0 0 0.4758 108.1015 43.6673)">
+VcOl/wCQ9yoooEk2KOJJ5ijBbJ2gBk58tf/Z" transform="matrix(0.4758 0 0 0.4765 108.1015 44.2897)">
 </image>
 <line class="st0" x1="210" y1="96" x2="188.7" y2="30"/>
 <line class="st1" x1="171.3" y1="102.7" x2="138.7" y2="19.3"/>
@@ -936,14 +936,15 @@ VcOl/wCQ9yoooEk2KOJJ5ijBbJ2gBk58tf/Z" transform="matrix(0.4758 0 0 0.4758 108.10
 <line class="st1" x1="175.3" y1="196.7" x2="70.7" y2="199.3"/>
 <line class="st1" x1="430" y1="224.7" x2="506" y2="232"/>
 <line class="st1" x1="152" y1="288.7" x2="67.3" y2="282.7"/>
-<line class="st1" x1="176" y1="336.7" x2="79.3" y2="342"/>
 <line class="st1" x1="295.3" y1="356" x2="303.3" y2="384"/>
 <text transform="matrix(1 0 0 1 118.2262 10.6269)" class="st2 st3">Log File Format Table</text>
 <text transform="matrix(1 0 0 1 16.6618 145.4979)" class="st2 st3">Log File Type</text>
-<text transform="matrix(1 0 0 1 20.4987 199.4861)"><tspan x="0" y="0" class="st2 st3">Extractuion</tspan><tspan x="16.7" y="9.6" class="st2 st3">Pattern</tspan></text>
-<text transform="matrix(1 0 0 1 4.1874 278.3331)"><tspan x="0" y="0" class="st2 st3">Capture Group</tspan><tspan x="3.7" y="9.6" class="st2 st3">Configuration</tspan></text>
-<text transform="matrix(1 0 0 1 12.4619 339.3336)"><tspan x="0" y="0" class="st2 st3">Response Time</tspan><tspan x="5.4" y="9.6" class="st2 st3">Configuration</tspan></text>
+<text transform="matrix(1 0 0 1 28.0928 196.6998)" class="st2 st3">Extraction</text>
+<text transform="matrix(1 0 0 1 39.7805 206.2997)" class="st2 st3">Pattern</text>
+<text transform="matrix(1 0 0 1 4.1874 278.3331)" class="st2 st3">Capture Group</text>
+<text transform="matrix(1 0 0 1 7.8874 287.9331)" class="st2 st3">Configuration</text>
 <text transform="matrix(1 0 0 1 281.9132 396.0003)" class="st2 st3">Action Buttons</text>
 <text transform="matrix(1 0 0 1 510.0003 233.3337)" class="st2 st3">Sample Log Line</text>
-<text transform="matrix(1 0 0 1 495.333 157.9998)"><tspan x="0" y="0" class="st2 st3">Line Inclusion</tspan><tspan x="0" y="9.6" class="st2 st3">Configuration</tspan></text>
+<text transform="matrix(1 0 0 1 495.333 157.9998)" class="st2 st3">Line Inclusion</text>
+<text transform="matrix(1 0 0 1 495.333 167.5998)" class="st2 st3">Configuration</text>
 </svg>
