@@ -23,7 +23,7 @@
 	</para>
 	<figure id="parserConfig"><title>The parser configuration dialog box</title>
 		<mediaobject>
-			<imageobject condition="fo"><imagedata fileref="ParserConfiguration.svg" format="SVG" width="15cm"/></imageobject>
+			<imageobject condition="fo"><imagedata fileref="ParserConfiguration.svg" format="SVG" scalefit="1" width="100%"/></imageobject>
 			<imageobject condition="html"><imagedata fileref="ParserConfiguration.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>

@@ -5,7 +5,7 @@
 	<title>The User Interface</title>
 	<figure id="userInterface"><title>&logtracker;'s user interface</title>
 		<mediaobject>
-			<imageobject condition="fo"><imagedata fileref="UserInterface.svg" format="SVG" width="15cm"/></imageobject>
+			<imageobject condition="fo"><imagedata fileref="UserInterface.svg" format="SVG" width="100%" scalefit="1"/></imageobject>
 			<imageobject condition="html"><imagedata fileref="UserInterface.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>
