@@ -123,6 +123,8 @@
 						<configuration>
 							<targetDirectory>target</targetDirectory>
 							<chapterAutolabel>1</chapterAutolabel>
+							<sectionAutolabel>1</sectionAutolabel>
+							<sectionLabelIncludesComponentLabel>1</sectionLabelIncludesComponentLabel>
 							<pageWidth>21cm</pageWidth>
 							<pageHeight>29.7cm</pageHeight>
 							<profileCondition>fo</profileCondition>

@@ -3,10 +3,62 @@
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
 <chapter id="globalConfig">
 	<title>Configuration</title>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="LogParserConfig.xml" />
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="LogParserConfig.xml" />
 	<sect1>
 		<title id="confLogSources">Configure Log-Sources</title>
-		<para>Text</para>
+		<figure id="logFileSelDialog"><title>The Log File Selection Dialog</title>
+			<mediaobject>
+				<imageobject condition="fo"><imagedata fileref="LogFileSources.svg" format="SVG" scalefit="1" width="100%"/></imageobject>
+				<imageobject condition="html"><imagedata fileref="LogFileSources.png" format="PNG"/></imageobject>
+			</mediaobject>
+		</figure>
+		<para>Log files that are to monitored are specified using the <emphasis>Log File Selection Dialog</emphasis>(see <xref linkend="logFileSelDialog"/>)</para>
+		<variablelist>
+			<varlistentry><term>Add new File Selection Dialog</term>
+				<listitem><para>Press this button to create a new Log File Selection Dialog panel.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Close File Selection Dialog</term>
+				<listitem><para>Close the Log File Selection Dialog panel with this button. All dependent panels will be closed, as well and
+					the processing of the files is stopped.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Add new Log File Line</term>
+				<listitem><para>Open an "open File" dialog box and let the user choose one ore more log files. The selected log files will be
+					added to the log file table.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Edit Log File</term>
+				<listitem><para>Click onto a Log file path in order to modify the log file.</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Edit Log File Name</term>
+				<listitem><para>Double Click to edit the Log File Name. The Log File Name is used through the application for specifying the
+					source of a data item. A part of the log file path is used as default name.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Remove Log File</term>
+				<listitem><para>Remove a single log file from the list.</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Log File Format</term>
+				<listitem><para>Specify the log parser configuration that should be used for interpreting the log files. Log parser configurations
+					are specified in the Log Parser Configuration Dialog. See <xref linkend="confLogParsers"/>. 
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Limit Data</term>
+				<listitem><para>Filter the data that is processed by &logtracker;. Only consider lines with an occurrence time that is more recent
+					than the configured amount of time. This feature is useful when processing very large files, while only events that happened
+					recently are considered.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Start Processing</term>
+				<listitem><para>Apply the log file configuration, start reading the files and start processing. If data processing already active,
+					it is stopped and restarted based on the new configuration.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Activity Status</term>
+				<listitem><para>Shows processing of the files is active, inactive, or sleeping.</para></listitem>
+			</varlistentry>
+		</variablelist>
 	</sect1>
 	<sect1><title>Global Configuration Parameters</title>
 	</sect1>
