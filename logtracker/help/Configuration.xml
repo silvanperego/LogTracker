@@ -61,6 +61,31 @@
 		</variablelist>
 	</sect1>
 	<sect1><title>Global Configuration Parameters</title>
+		<para>Global configuration parameters are configured by opening the global configuration panel. Press the <emphasis>Open Configuration
+			 Dialog Box</emphasis> button for this purpose (<xref linkend="userInterface"/>).</para>
+		<figure id="globalConfigPanel"><title>Global Configuration Parameters</title>
+			<mediaobject>
+				<imageobject condition="fo"><imagedata fileref="GlobalConfig.png" format="PNG" scalefit="1" width="50%"/></imageobject>
+				<imageobject condition="html"><imagedata fileref="GlobalConfig.png" format="PNG"/></imageobject>
+			</mediaobject>
+		</figure>
+		<para>The configuration parameters and their meaning are:</para>
+		<variablelist>
+			<varlistentry><term>Window Title</term>
+				<listitem><para>Set the title of the main &logtracker; application window. This is especially useful, when multiple &logtracker;
+					instances are running.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Time Stamp Format String</term>
+				<listitem><para>Set the display format of time stamps throughout the application. The Java 
+					<ulink url="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</ulink>
+					notation is used.
+				</para></listitem>
+			</varlistentry>
+			<varlistentry><term>Initial Time Range Max</term>
+				<listitem><para>Is used as the maximum value for the time range for new scatter plots (see <xref linkend="call_stats"/>). </para></listitem>
+			</varlistentry>
+		</variablelist>
 	</sect1>
 	<sect1>
 		<title id="confFiles">Configuration Files</title>

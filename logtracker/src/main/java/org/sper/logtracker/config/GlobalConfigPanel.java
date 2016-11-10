@@ -67,7 +67,7 @@ public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 		titleTextField.setText(parentFrame.getTitle());
 		titleTextField.setColumns(20);
 		
-		JLabel lblTimestampFormatString = new JLabel("Timestamp Format String:");
+		JLabel lblTimestampFormatString = new JLabel("Time Stamp Format String:");
 		GridBagConstraints gbc_lblTimestampFormatString = new GridBagConstraints();
 		gbc_lblTimestampFormatString.anchor = GridBagConstraints.WEST;
 		gbc_lblTimestampFormatString.insets = new Insets(0, 0, 5, 5);
