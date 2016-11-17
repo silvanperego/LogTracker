@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
+<!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">
+	]>
+<sect1 id="call_stats"><title>Working with Service Call Statistics</title>
+	<para>Service call Statistics typically deals with questions such as:
+	</para>
+	<itemizedlist>
+		<listitem><para>What was/is the total load on our system?</para></listitem>
+		<listitem><para>What services were called when, how often, by whom?</para></listitem>
+		<listitem><para>What was the performance of the system, i.e. the response time to these services?</para></listitem>
+		<listitem><para>Have the been errors while processing the service calls? How many? When?</para></listitem>
+	</itemizedlist>
+	<para>The <emphasis>Service Call Statistics</emphasis> flavor is ideally suited for answering those questions. It can 
+		be initiated by
+	</para>
+	<itemizedlist>
+		<listitem><para>choosing appropriate log files in the <emphasis>Log File Selection Dialog</emphasis>
+		(see <xref linkend="confLogSources"/>)</para>. Such log files typically contain one or more log lines
+		per service call, which contain a time stamp, the name of the service, the response time, and optionally
+		the user who invoked the service and a return code.
+		</listitem>
+		<listitem><para>choosing a log parser configuration with a <emphasis>Service Calls and Response Times</emphasis>
+			Parser Type.
+		</para></listitem>
+		<listitem><para>pressing the <emphasis>Apply</emphasis> button</para></listitem>.
+	</itemizedlist>
+</sect1>

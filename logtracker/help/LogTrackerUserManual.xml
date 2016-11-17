@@ -5,11 +5,13 @@
 <?altova_sps http://www.altova.com/sps/Template/Publishing/docbook.sps?>
 <book>
 	<bookinfo>
-		<author>Silvan Perego</author>
-		<date>October 2016</date>
+		<title>Instant Log-Tracker</title>
+		<subtitle>User's Manual</subtitle>
+		<copyright><holder>Silvan Perego</holder><year>2016</year></copyright>
 	</bookinfo>
 	<title>Instant Log-Tracker</title>
 	<subtitle>User's Manual</subtitle>
+	
 	<chapter id="chap_Overview">
 		<title id="log_flavours">Overview</title>
 		<para>&logtracker; is an easy to use tool for ad-hoc analysis and monitoring of application server log files. 
@@ -42,16 +44,17 @@
 			</varlistentry>
 		</variablelist>
 	</chapter>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="install.xml" />
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="install.xml" />
 	<chapter><title>Concepts</title>
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="UserInterface.xml" />
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="DataFlow.xml" />
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="UserInterface.xml" />
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="DataFlow.xml" />
 	</chapter>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="Configuration.xml" />
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Configuration.xml" />
 	<chapter><title>Work with log file data</title>
-		<sect1 id="call_stats"><title>Working with Service Call Statistics</title>
-			<para>Text</para>
-		</sect1>
+		<para>As written in <xref linkend="log_flavours"/>, &logtracker; supports three basic flavors of log file analysis. Each flavor has its specialties
+			and &logtracker; provides adapted techniques for each of them.
+		</para>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ServiceCallStats.xml" />
 		<sect1 id="error_logs"><title>Working with Message or Error-Logs</title>
 			<para>Text</para>
 		</sect1>
