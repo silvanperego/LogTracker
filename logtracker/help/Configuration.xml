@@ -89,6 +89,28 @@
 	</sect1>
 	<sect1>
 		<title id="confFiles">Configuration Files</title>
-		<para>Text</para>
+		<para>&logtracker; configurations can be stored in configuration files. It supports two basic forms:</para>
+		<itemizedlist>
+			<listitem><para><emphasis>Complete configuration files</emphasis> contain information about all configurable parameters of a running
+				&logtracker; instance.<footnote><para>In the present version, the layout of the &logtracker;'s main window and its panels is 
+				not part of the configuration.</para></footnote>
+			</para></listitem>
+			<listitem><para><emphasis>Log Parser configuration files</emphasis> contain only log parser configuration data.</para></listitem>
+		</itemizedlist>
+		<para>Both types store their information in XML format<footnote><para>&logtracker; versions prior to 2.0 have used a binary format for the
+			configuration files. The actual version is still able to read and understand those binary files, but it can only store configuration
+			in the new XML-based format. Migration old config-files is easy: just open and store them with &logtracker;.
+		    </para></footnote> as an "*.ltc"-file (ltc = LogTracker Configuration). A <emphasis>complete</emphasis>
+			configuration file is created, when a user presses the <emphasis>Save LogTracker Configuration</emphasis> button at the top of the main 
+			application window (see <xref linkend="userInterface"/>). A <emphasis>Log Parser configuration file is created</emphasis> when a user 
+			presses the <emphasis>Save to file</emphasis>-button in the <emphasis>parser configuration dialog box</emphasis> (see <xref linkend="parserConfig"/>).
+			Only the configurations of the parsers that are selected in the parser configuration table are stored into the file. Multiple parsers can be
+			selected by Shift-Clicking multiple lines.
+		</para>
+		<para>The according <emphasis>Load Configuration Files</emphasis> and <emphasis>Load from File</emphasis> buttons have a corresponsing effect.
+			The first, loads a full configuration. The second loads only parser configurations. When loading, the existing application configuration
+			is not overwritten. The new configuration is rather added as additional information: New log parser configurations are added to the existing
+			ones. Additional log sources are added to new instances of <emphasis>Log file selection dialogs</emphasis>.
+		</para>
 	</sect1>
 </chapter>
