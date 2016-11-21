@@ -107,7 +107,7 @@
 			Only the configurations of the parsers that are selected in the parser configuration table are stored into the file. Multiple parsers can be
 			selected by Shift-Clicking multiple lines.
 		</para>
-		<para>The according <emphasis>Load Configuration Files</emphasis> and <emphasis>Load from File</emphasis> buttons have a corresponsing effect.
+		<para>The according <emphasis>Load Configuration Files</emphasis> and <emphasis>Load from File</emphasis> buttons have a corresponding effect.
 			The first, loads a full configuration. The second loads only parser configurations. When loading, the existing application configuration
 			is not overwritten. The new configuration is rather added as additional information: New log parser configurations are added to the existing
 			ones. Additional log sources are added to new instances of <emphasis>Log file selection dialogs</emphasis>.
