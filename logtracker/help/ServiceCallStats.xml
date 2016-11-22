@@ -78,7 +78,7 @@
 		</para>
 		<figure id="servDetailPanel"><title>The service call details panel</title>
 			<mediaobject>
-				<imageobject condition="fo"><imagedata fileref="ServiceCallDetails.png" format="PNG" scalefit="1" width="60%"/></imageobject>
+				<imageobject condition="fo"><imagedata fileref="ServiceCallDetails.png" format="PNG" scalefit="1" width="70%"/></imageobject>
 				<imageobject condition="html"><imagedata fileref="ServiceCallDetails.png" format="PNG"/></imageobject>
 			</mediaobject>
 		</figure>
@@ -105,5 +105,54 @@
 			The <emphasis>Statistics Magnification Factors</emphasis> allows an artificial steepening of the "Mean" and "Median" lines by multiplying
 			the according values with a factor. This can be useful, when those lines are hard to see behind the dots of the scatter plots.
 		</para>
+	</sect2>
+	<sect2><title>The user panel</title>
+		<para>When the configured log parser is specifying a user field, an additional panel, the "user panel" (<xref linkend="userStatPanel"/>) 
+		    is created by &logtracker;. The
+			user panel has similar fields as the service call statistics panel, but it organizes the numbers along the users instead of the services.
+			The logtracker user can choose not to consider service calls from specific tracked users in the service call scatter plot by unchecking the checkboxes
+			in the user panel.
+		</para>
+		<figure id="userStatPanel"><title>The service call statistics panel</title>
+			<mediaobject>
+				<imageobject condition="fo"><imagedata fileref="UserPanel.png" format="PNG" scalefit="1" width="70%"/></imageobject>
+				<imageobject condition="html"><imagedata fileref="UserPanel.png" format="PNG"/></imageobject>
+			</mediaobject>
+		</figure>
+	</sect2>
+	<sect2><title>The Service Call Scatter Plot</title>
+		<para>When the user presses the Apply button of either the <emphasis>service call statistics panel</emphasis> or the
+			<emphasis>user panel</emphasis> the service call scatter plot will be displayed. An example of such a plot is shown in
+			<xref linkend="scatterMouseOver"/>. Service call of various services are indicated as colored dots. The position
+			of the dot on the horizontal axis indicates the time of the occurrence of the service call. The position on the vertical
+			axis represents the response time.
+			Erroneous calls are represented by a small cross sign.
+			Statistical values,
+			such as mean, median and number of calls per minute are shown as colored lines.
+		</para>
+		<para>In order to get more information about a specific data point just hover the mouse close to it. As a consequence cross hairs
+			will focus  the closest data point and a tool tip will show some information about it.
+		</para>
+		<figure id="scatterMouseOver"><title>A sample service scatter plot</title>
+			<mediaobject>
+				<imageobject condition="fo"><imagedata fileref="ScatterPlotMouseOver.png" format="PNG" scalefit="1" width="100%"/></imageobject>
+				<imageobject condition="html"><imagedata fileref="ScatterPlotMouseOver.png" format="PNG"/></imageobject>
+			</mediaobject>
+		</figure>
+		<para>The user can zoom to to any section he likes. To zoom in, just use the mouse to select a rectangle. (<xref linkend="scatterZoom"/>)</para>
+		<figure id="scatterZoom"><title>Zoom into a selected area</title>
+			<mediaobject>
+				<imageobject condition="fo"><imagedata fileref="ScatterPlotZoom.png" format="PNG" scalefit="1" width="100%"/></imageobject>
+				<imageobject condition="html"><imagedata fileref="ScatterPlotZoom.png" format="PNG"/></imageobject>
+			</mediaobject>
+		</figure>
+		<para>To zoom out open a context menu by right clicking on the plot. The context menus also presents various other options.(<xref linkend="scatterContextMenu"/>)
+		</para>
+		<figure id="scatterContextMenu"><title>Right click to bring up a context menu.</title>
+			<mediaobject>
+				<imageobject condition="fo"><imagedata fileref="ScatterPlotContextMenu.png" format="PNG" scalefit="1" width="100%"/></imageobject>
+				<imageobject condition="html"><imagedata fileref="ScatterPlotContextMenu.png" format="PNG"/></imageobject>
+			</mediaobject>
+		</figure>
 	</sect2>
 </sect1>
