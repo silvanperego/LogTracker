@@ -34,7 +34,7 @@ public class ErrorLogTypeDockables implements TrackingDockables {
 	public ErrorLogTypeDockables(CControl control, Configuration configuration, ConfiguredLogParser<?,?> logParser, GlobalConfig globalConfig, CLocation parentLocation) {
 		logLinePanel = new LogLinePanel(globalConfig);
 		logLineTableModel = logLinePanel.getTableModel();
-		logLineDockable = new DefaultMultipleCDockable(null, "Error Log-Messages", logLinePanel);
+		logLineDockable = new DefaultMultipleCDockable(null, "Log-Messages", logLinePanel);
 		control.addDockable(logLineDockable);
 		parentLocation = DockUtils.aside(parentLocation);
 		logLineDockable.setLocation(parentLocation);

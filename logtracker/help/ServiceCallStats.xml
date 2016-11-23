@@ -105,6 +105,9 @@
 			The <emphasis>Statistics Magnification Factors</emphasis> allows an artificial steepening of the "Mean" and "Median" lines by multiplying
 			the according values with a factor. This can be useful, when those lines are hard to see behind the dots of the scatter plots.
 		</para>
+		<para>The column with of the table can be adjusted with the mouse. Click and drag the right border of a column header cell for that purpose.
+			Table columns can be sorted by left-clicking the column header cell.
+		</para>
 	</sect2>
 	<sect2><title>The user panel</title>
 		<para>When the configured log parser is specifying a user field, an additional panel, the "user panel" (<xref linkend="userStatPanel"/>) 

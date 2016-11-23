@@ -55,9 +55,7 @@
 			and &logtracker; provides adapted techniques for each of them.
 		</para>
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ServiceCallStats.xml" />
-		<sect1 id="error_logs"><title>Working with Message or Error-Logs</title>
-			<para>Text</para>
-		</sect1>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ErrorLogs.xml" />
 		<sect1 id="corr_data"><title>Working with Correlation Data</title>
 			<para>Text</para>
 		</sect1>
