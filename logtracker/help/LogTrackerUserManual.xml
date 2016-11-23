@@ -56,8 +56,6 @@
 		</para>
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ServiceCallStats.xml" />
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ErrorLogs.xml" />
-		<sect1 id="corr_data"><title>Working with Correlation Data</title>
-			<para>Text</para>
-		</sect1>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="CorrelationData.xml" />
 	</chapter>
 </book>

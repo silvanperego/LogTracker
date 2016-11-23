@@ -76,7 +76,7 @@
 			table, he can bring up a <emphasis>Service Call Detail</emphasis> window will pop up and show the individual service calls.
 			One by row. See <xref linkend="servDetailPanel"/>.
 		</para>
-		<figure id="servDetailPanel"><title>The service call details panel</title>
+		<figure id="servDetailPanel"><title>The service call details window</title>
 			<mediaobject>
 				<imageobject condition="fo"><imagedata fileref="ServiceCallDetails.png" format="PNG" scalefit="1" width="70%"/></imageobject>
 				<imageobject condition="html"><imagedata fileref="ServiceCallDetails.png" format="PNG"/></imageobject>

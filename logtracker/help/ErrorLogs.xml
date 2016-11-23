@@ -21,8 +21,8 @@
 	<para>&logtracker;'s can recognize "similar" messages and groups them automatically.</para>
 	<figure id="messagePanel"><title>A sample Message-Log panel</title>
 		<mediaobject>
-			<imageobject condition="fo"><imagedata fileref="MessageLogPanel.png" format="PNG" scalefit="1" width="100%"/>
-			<imageobject condition="html"><imagedata fileref="MessageLogPanel.png" format="PNG"/>
+			<imageobject condition="fo"><imagedata fileref="MessageLogPanel.png" format="PNG" scalefit="1" width="100%"/></imageobject>
+			<imageobject condition="html"><imagedata fileref="MessageLogPanel.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>
 	<para><xref linkend="messagePanel"/> shows a sample of a message panel: Grouped messages are arranged in a table, one group per row.
@@ -46,8 +46,8 @@
 	</para>
 	<figure id="messageDetail"><title>A sample Message Detail Window</title>
 		<mediaobject>
-			<imageobject condition="fo"><imagedata fileref="MessageDetailWindow.png" format="PNG" scalefit="1" width="100%"/>
-			<imageobject condition="html"><imagedata fileref="MessageDetailWindow.png" format="PNG"/>
+			<imageobject condition="fo"><imagedata fileref="MessageDetailWindow.png" format="PNG" scalefit="1" width="100%"/></imageobject>
+			<imageobject condition="html"><imagedata fileref="MessageDetailWindow.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>
 	<para>The <emphasis>message detail window</emphasis> consists of three parts:</para>
