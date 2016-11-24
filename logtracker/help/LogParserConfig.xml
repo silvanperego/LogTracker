@@ -2,12 +2,13 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
 <sect1>
-	<title id="confLogParsers">Configure Log-File Parsers</title>
+	<title id="confLogParsers"><indexterm><primary>Configure Log-File Parsers</primary></indexterm>Configure Log-File Parsers</title>
 	<para>&logtracker; can read and interpret log files of almost any formats, as long as an appropriate
-		parser configuration is provided. Parser configurations are maintained on the <emphasis>parser configuration</emphasis>
+		<indexterm><primary>parser configuration</primary></indexterm>parser configuration is provided. Parser configurations are 
+		maintained on the <emphasis>parser configuration</emphasis>
 		tab within the global <emphasis>Configuration Dialog Box</emphasis>. It can be opened by 
 	</para>
-	<itemizedlist><listitem><para>opening the Configuration Dialog Box and then</para>
+	<itemizedlist><listitem><para>opening the <indexterm><primary>Configuration Dialog Box</primary></indexterm>Configuration Dialog Box and then</para>
 		<mediaobject>
 		<imageobject><imagedata fileref="OpenConfig.png"/></imageobject></mediaobject>
 		</listitem>
@@ -15,7 +16,8 @@
 		</listitem>
 	</itemizedlist>
 	<para>Parser configuration heavily depends on Regular Expression Processing. &logtracker; uses 
-		<ulink url="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java's regular expression implementation</ulink>.
+		<ulink url="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java's 
+		<indexterm><primary>regular expressions</primary></indexterm>regular expression implementation</ulink>.
 		All processing is done on a per line basis.
 		Regex <emphasis>capturing groups</emphasis> are used to identify and extract relevant portions of the log file lines.
 	</para>
@@ -30,20 +32,23 @@
 	<para>The controls in this dialog are:
 	</para>
 	<variablelist>
-		<varlistentry><term>Log File Format Table</term><listitem><para>Lists all available Parser configurations.
+		<varlistentry><term><indexterm><primary>Log File Format Table</primary></indexterm>Log File Format Table</term><listitem>
+		<para>Lists all available Parser configurations.
 			The first three configurations in the list (which are grayed out) are standard configurations,
-			which can not be edited by the user. They can be used for standard situations or as sample configurations
-			for your own configurations.
+			which can not be edited by the user. They can be used for standard situations or as <indexterm><primary>sample configurations</primary></indexterm>
+			sample configurations for your own parser configurations.
 		</para><para>
 			Choose one of the configurations and its configuration parameters are shown in the lower half of the configuration box.
 		</para><para>The name of a parser can be edited by double clicking its in in the <emphasis>Parser Config</emphasis> column
 			of the table.
 		</para>
 		</listitem></varlistentry>
-		<varlistentry><term>Log File Type</term><listitem><para>is used to define the basic type of the log file (see <xref linkend="log_flavours"/>).
+		<varlistentry><term><indexterm><primary>Log File Type</primary></indexterm>Log File Type</term>
+			<listitem><para>is used to define the basic type of the log file (see <xref linkend="log_flavours"/>).
 			The type can only be modified when a configuration just has been created by using the <emphasis>new</emphasis>-Button.
 		</para></listitem></varlistentry>
-		<varlistentry><term>Line Inclusion Configuration</term><listitem><para>These fields can be used to specifiy which lines within the
+		<varlistentry><term><indexterm><primary>Line Inclusion Configuration</primary></indexterm>Line Inclusion Configuration</term>
+			<listitem><para>These fields can be used to specifiy which lines within the
 			log file should be considered or ignored. Lines "containing" or "matching" a specific regex-Pattern may be included or excluded.
 		</para><para>Line inclusion works slightly different, depending on the log file type. When using a <emphasis>Service Call Statistics</emphasis>
 			configuration, ignores lines are indeed completely ignored. When using "Message Logs" or "Correlation Logs", included lines
@@ -51,21 +56,23 @@
 		</para>
 		</listitem></varlistentry>
 		<varlistentry><term>Extraction Pattern</term>
-			<listitem><para>The <emphasis>Extraction Pattern</emphasis> must match all complete "included" lines. It defines capturing groups
+			<listitem><para>The <emphasis>Extraction Pattern</emphasis> must match all complete "included" lines. It defines 
+			<indexterm><primary>capturing groups</primary></indexterm>capturing groups
 				which contain the information that needs to be extracted from the log file line. The required information depends on the 
 				log file type.
 			</para></listitem>
 		</varlistentry>
-		<varlistentry><term>Sample Log Line</term><listitem><para>
+		<varlistentry><term><indexterm><primary>Sample Log Line</primary></indexterm>Sample Log Line</term><listitem><para>
 			The sample log line is not a part of the configuration but just a small utility which supports authoring correct regular expressions.
-			Enter a sample log line and the effect of the extraction pattern is visualized by highlighting text portions in the sample log line.
+			Enter a sample log line and the effect of the <indexterm><primary>extraction pattern</primary></indexterm>extraction pattern
+			is visualized by highlighting text portions in the sample log line.
 			The matched text is highlighted in yellow. Capturing groups are highlighted in green.
 		</para></listitem></varlistentry>
 		<varlistentry><term>Capture Group Configuration</term><listitem><para>Defined which capturing group (identified by its positional number)
 			contains which part of the information, and how this information must be extracted. The available capturing group parameters depend
 			on the file type. All possible values are shown in <xref linkend="captGroupConfParam"/>.
 		</para></listitem></varlistentry>
-		<varlistentry><term>Action Buttons</term>
+		<varlistentry><term><indexterm><primary>Action Buttons</primary><secondary>of the parser configuration dialog</secondary></indexterm>Action Buttons</term>
 			<listitem>
 				<para><emphasis>Load From File</emphasis> loads Log Parser Configurations from a log tracker configuration file.</para>
 				<para><emphasis>Save to File</emphasis> saves the marked Log Parser Configurations into a log tracker configuration file.
@@ -74,14 +81,16 @@
 				<para><emphasis>Create New</emphasis> creates a new, empty Log Parser Configuration.<footnote><para>It is often easier, to select,
 					copy and modify an already existing configuration.
 				</para></footnote></para>
-				<para><emphasis>Copy</emphasis> creates a copy of the selected Log Parser configuration.</para>
+				<para><emphasis>Copy</emphasis> creates a <indexterm><primary>copy the log parser configuration</primary></indexterm>
+				copy of the selected Log Parser configuration.</para>
 				<para><emphasis>Delete</emphasis> the selected Log Parser Configuration.</para>
 				<para><emphasis>OK</emphasis> applies all edits that were made in the Log Parser Configuration Dialog.</para>
 				<para><emphasis>Cancel</emphasis> discards all edits that were made within the Log Parser Configuration Dialog.</para>
 			</listitem>
 		</varlistentry>
 	</variablelist>
-	<table id="captGroupConfParam"><title>Capture Group Configuration Parameters</title>
+	<table id="captGroupConfParam"><title><indexterm><primary>Capture Group Configuration Parameters</primary></indexterm>
+		Capture Group Configuration Parameters</title>
 		<tgroup cols="5">
 			<colspec colwidth="2.2cm"/>
 			<colspec colwidth="1cm"/>
@@ -93,7 +102,7 @@
 				<entry>Msg-Log<footnoteref linkend="usageExpl"/></entry>
 				<entry>Corr.-Data<footnoteref linkend="usageExpl"/></entry><entry>Meaning</entry></row></thead>
 			<tbody><row>
-				<entry>Occurrence Time</entry><entry>M</entry><entry>M</entry><entry>M</entry>
+				<entry><indexterm><primary>Occurrence Time</primary></indexterm>Occurrence Time</entry><entry>M</entry><entry>M</entry><entry>M</entry>
 				<entry><para>The capturing group with this number contains a time stamp, which represents the occurrence time of the logged event. 
 					(It might represent the time, when the information was logged.)</para>
 					<para>The <emphasis>Time Format String</emphasis> is used to specify the format of the time stamp. The format is defined
@@ -106,13 +115,13 @@
 				</entry>
 			</row>
 			<row>
-				<entry>Correlation-ID</entry><entry>O</entry><entry>O</entry><entry>X</entry>
+				<entry><indexterm><primary>Correlation Id</primary></indexterm>Correlation-ID</entry><entry>O</entry><entry>O</entry><entry>X</entry>
 				<entry><para>The capturing group with this number contains a correlation id. The correlation id is used to correlate messages from
 					different log files. See <xref linkend="corr_data"/>.
 				</para></entry>
 			</row>
 			<row>
-				<entry>Service Name</entry><entry>M</entry><entry/><entry>O</entry>
+				<entry><indexterm><primary>Service Name</primary></indexterm>Service Name</entry><entry>M</entry><entry/><entry>O</entry>
 				<entry><para>The capturing group with this number contains a name that specifies the service that was called.</para>
 					<para>Services that should not be considered in the statistics can be excluded by specifying its names
 						in the <emphasis>Exclude Services</emphasis> field. Service names must be comma separated.
@@ -120,18 +129,18 @@
 				</entry>
 			</row>
 			<row>
-				<entry>Execution Time</entry><entry>M</entry><entry/><entry/>
+				<entry><indexterm><primary>Execution Time</primary></indexterm>Execution Time</entry><entry>M</entry><entry/><entry/>
 				<entry><para>The capturing group with this number contains the the lapse time that was used by the service execution</para>
-					<para>The floating point number that is found within this group is multiplied by <emphasis>the conversion factor</emphasis>.
+					<para>The floating point number that is found within this group is multiplied by <emphasis>the <indexterm><primary>conversion factor</primary></indexterm>conversion factor</emphasis>.
 					The resulting lapse time should be measured in seconds.</para>
 				</entry>
 			</row>
 			<row>
-				<entry>User</entry><entry>O</entry><entry>O</entry><entry>O</entry>
+				<entry><indexterm><primary>User name</primary></indexterm>User</entry><entry>O</entry><entry>O</entry><entry>O</entry>
 				<entry><para>The capturing group with this number contains a name of the user of the service call.</para></entry>
 			</row>
 			<row>
-				<entry>Return Code</entry><entry>O</entry><entry/><entry/>
+				<entry><indexterm><primary>Return Code</primary></indexterm>Return Code</entry><entry>O</entry><entry/><entry/>
 				<entry><para>The capturing group with this number contains a return of the service call. The return code is compared
 					with the value within <emphasis>Value representing "OK"</emphasis>. If it is equal, the service call is considered
 					as successful, otherwise as failed. (Successful service calls are represented by a dot within the service call scatter
@@ -139,25 +148,25 @@
 				</para></entry>
 			</row>
 			<row>
-				<entry>Substract Response Time</entry><entry>M</entry><entry/><entry/>
+				<entry><indexterm><primary>Substract Response Time</primary></indexterm>Substract Response Time</entry><entry>M</entry><entry/><entry/>
 				<entry><para>When checked, the relevant occurrence time is calculated as occurrence time minus execution time.
 					In some log files, the log entry is written, when the service ends. The user, however, might want to base
 					the service statistics on the the service start times. This options can be used for that purpose.
 				</para></entry>
 			</row>
 			<row>
-				<entry>Message Severity</entry><entry/><entry>M</entry><entry/>
+				<entry><indexterm><primary>Message Severity</primary></indexterm>Message Severity</entry><entry/><entry>M</entry><entry/>
 				<entry><para>The capturing group with this number contains a keyword that specifies the severity of the message. Typical
 					entries are <code>ERROR</code>, <code>WARNING</code>, <code>INFO</code>, etc.
 				</para></entry>
 			</row>
 			<row>
-				<entry>Message Content</entry><entry/><entry>M</entry><entry/>
+				<entry><indexterm><primary>Message Content</primary></indexterm>Message Content</entry><entry/><entry>M</entry><entry/>
 				<entry><para>The capturing group with this number contains a free format message text.
 				</para></entry>
 			</row>
 			<row>
-				<entry>Encoding</entry><entry/><entry>O</entry><entry>O</entry>
+				<entry><indexterm><primary>Encoding</primary></indexterm>Encoding</entry><entry/><entry>O</entry><entry>O</entry>
 				<entry><para>The encoding of the log file. Typical values are <code>UTF-8</code>, or <code>ISO-8859-1</code>.</para></entry>
 			</row>
 			</tbody>

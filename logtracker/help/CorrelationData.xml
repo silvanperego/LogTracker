@@ -2,39 +2,44 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">
 	]>
-<sect1 id="corr_data"><title>Working with Correlation Data</title>
+<sect1 id="corr_data"><title>Working with <indexterm><primary>Correlation Data</primary></indexterm>Correlation Data</title>
 	<para>Service calls often leave marks in multiple files: One file might records the call event, with a time stamp
-		the user and the response time. The call itself may produce one or more messages in message files. The payload of
+		the user and the response time. The call itself may produce one or more messages in message files. The 
+		<indexterm><primary>payload</primary></indexterm> payload of
 		the calls may be logged in some other files again. A service call by itself might trigger other service calls on
-		other tiers of the solution.
+		other <indexterm><primary>tiers</primary></indexterm>tiers of the solution.
 	</para>
-	<para>In many cases it is, therefore, important to correlate log entries from various log files of different types.
-		A common solution to this, is the usage of correlation ids, which allow the correlation of the log entries in
-		different files.
+	<para>In many cases it is, therefore, important to <indexterm><primary>correlate log entries</primary></indexterm>correlate log entries
+	    from various log files of different types.
+		A common solution to this, is the usage of <indexterm><primary>correlation ids</primary></indexterm>correlation ids, 
+		which allow the correlation of the log entries in different files.
 	</para>
 	<para>&logtracker; offers support for correlating messages from any file, as long as a correlation id is extracted
 		by an appropriate log parser configuration (<xref linkend="confLogParsers"/>).
 	</para>
-	<para>An individual log entry is always starting point for an correlation analysis. An individual message can be selected via:
+	<para>An individual log entry is always starting point for an <indexterm><primary>correlation analysis</primary></indexterm>correlation analysis. 
+	   An individual message can be selected via:
 	</para>
 	<itemizedlist>
 		<listitem><para>A service call dot within the service call scatter plot (<xref linkend="scatterContextMenu"/>).</para></listitem>
 		<listitem><para>An individual service call from the <emphasis>service call detail window (<xref linkend="servDetailPanel"/>).</emphasis></para></listitem>
 		<listitem><para>An individual log message from the <emphasis>message detail window</emphasis> (<xref linkend="messageDetail"/>).</para></listitem>
 	</itemizedlist>
-	<para>The correlation analysis is always invoked, by opening a context menu on the selected item (right-click with the mouse) and choosing
+	<para>The correlation analysis is always invoked, by opening a <indexterm><primary>context menu</primary></indexterm>context menu 
+	    on the selected item (right-click with the mouse) and choosing
 		<emphasis>Show correlated messages</emphasis>. A typical context menu is shown in <xref linkend="scatterContextMenu"/>. When this option is chosen,
 		a <emphasis>correlated messages</emphasis> window pops up. Such a window is shown in <xref linkend="correlatedMessages"/>.
 		It lists all log entries with the same correlation id and sorts them by their occurrence time stamp. When the users selects an
 		individual entry, its details are displays on the detail pane.
 	</para>
-	<figure id="correlatedMessages"><title>A sample Correlated Messages Window</title>
+	<figure id="correlatedMessages"><title>A sample <indexterm><primary>Correlated Messages Window</primary></indexterm>Correlated Messages Window</title>
 		<mediaobject>
 			<imageobject condition="fo"><imagedata fileref="CorrelatedMessagesWindow.png" format="PNG" scalefit="1" width="100%"/></imageobject>
 			<imageobject condition="html"><imagedata fileref="CorrelatedMessagesWindow.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>
-	<para>&logtracker; also supports a <emphasis>Correlated Log File</emphasis> log file type. This type is designed for log files
+	<para>&logtracker; also supports a <emphasis><indexterm><primary>Correlated Log File</primary></indexterm>Correlated Log File</emphasis> 
+		log file type. This type is designed for log files
 		that contain interesting data that can be correlated to other data by a correlation id but are not typical representatives
 		of the other two types. They, for example, may lack service names, users, occurrence times, response times, etc.
 		&logtracker; is not applying any specific evaluation to this type of files but it still gathers information from them

@@ -2,7 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
 <chapter>
-	<title>Install and Run</title>
+	<title><indexterm><primary>Installation</primary></indexterm>Install and <indexterm><primary>Run LogTracker</primary></indexterm>Run</title>
 	<sect1><title>Prerequisites</title>
 	<para>&logtracker; requires a Java Run Time Environment of at least version 1.8. If your system does not yet have it, you can download
 		it from the <ulink url="http://www.java.com/de/download/">http://www.java.com/de/download/</ulink> Site.
@@ -10,26 +10,32 @@
 	</sect1>
 	<sect1>
 	<title id="runLogTracker">Install and Run</title>
-	<para>&logtracker; basically consists of one single executable jar-file "<code>logtracker.jar</code>". Normally it's sufficient
-		copy it onto a computer that has physical access to the log files that need to be investigated. On most platforms <code>logtracker.jar</code> can
-		be launched by the normal procedure as you would use for any program.
+	<para>&logtracker; basically consists of one single <indexterm><primary>executable jar-file</primary></indexterm>executable 
+		jar-file "<code>logtracker.jar</code>". Normally it's sufficient
+		copy it onto a computer that has physical <indexterm><primary>access to the log files</primary></indexterm>access to the log files
+		that need to be investigated. On most platforms <code>logtracker.jar</code> can
+		be launched by the normal procedure that you would use for any application.
 	</para>
-	<para>If double-clicking that file does not work for some reason, you can launch it "manually" with:</para>
+	<para>If double-clicking that file does not work, you can <indexterm><primary>launch logtracker manually</primary></indexterm>launch it "manually" with:</para>
 	<programlisting>java -jar logtracker.jar [&lt;logtracker-config-file&gt;]</programlisting>
-	<para>The parameter <code>log-tracker-config-file</code> is optional. As an alternative you could pass list of log files as parameters.</para>
+	<para>The <indexterm><primary>logtracker launch parameters</primary></indexterm>parameter <code>log-tracker-config-file</code> is optional. 
+		As an alternative you could pass list of log files as parameters.</para>
 	<para>There are special versions of the program for <emphasis>Windows</emphasis> and <emphasis>Mac OS</emphasis>:</para>
-	<para>For <emphasis>Windows</emphasis>, there is a file called <code>logtracker.exe</code>. The main advantage of this file over the executable jar
+	<para>For <emphasis><indexterm><primary>Windows</primary></indexterm>Windows</emphasis>, there is a file called <code>logtracker.exe</code>. 
+		The main advantage of this file over the executable jar
 		is the fact, that it comes with a nice icon and that it can be associated with file extensions, such as <code>.ltc</code> (Log-Tracker Configuration 
 		Files) or <code>.log</code>. <code>logtracker.exe</code> only works, if a Java 8 Runtime Environment is installed on your machine.
 	</para>
-	<para>For <emphasis>Mac OS</emphasis>, there is a <code>logtracker.zip</code>-file, which contains a LogTracker application bundle. Unzip the file
+	<para>For <emphasis><indexterm><primary>Mac OS</primary></indexterm>Mac OS</emphasis>, there is a <code>logtracker.zip</code>-file, 
+		which contains a <indexterm><primary>LogTracker application bundle</primary></indexterm>LogTracker <indexterm><primary>application bundle</primary></indexterm>application bundle. Unzip the file
 		to the the directory, where you want to place the application bundle and launch it by double clicking it. The application bundle automatically
-		assigns itself to the <code>.ltc</code> file extension.
+		assigns itself to the <indexterm><primary>.ltc file extension</primary></indexterm><code>.ltc</code> file extension.
 	</para>
 	</sect1>
-	<sect1><title>Memory considerations</title>
+	<sect1><title><indexterm><primary>Memory</primary></indexterm>Memory considerations</title>
 		<para>&logtracker; keeps important parts of the investigated log files in its memory. Depending on the size of the file
-			the memory that is needed can raise substantially. If there is not enough heap memory available, the application becomes slow and may output
+			the memory that is needed can raise substantially. If there is not enough <indexterm><primary>heap memory</primary></indexterm>heap memory
+			available, the application becomes slow and may output
 			"OutOfMemoryException"s. You can increase the heap memory size at startup by using:
 		</para>
 		<programlisting>java -Xmx2G -jar logtracker.jar</programlisting>

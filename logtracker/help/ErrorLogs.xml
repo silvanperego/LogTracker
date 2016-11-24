@@ -2,10 +2,12 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">
 	]>
-<sect1 id="error_logs"><title>Working with Message or Error-Logs</title>
+<sect1 id="error_logs"><title>Working with <indexterm><primary>Message Logs</primary><secondary>work with</secondary>
+	</indexterm>Message or <indexterm><primary>Error Logs</primary><secondary>work with</secondary></indexterm>Error-Logs</title>
 	<para>Message log files contain information about events that occur within a system. Their main scope is not performance, but rather
-		health state of the system and possible problems.
-		Message log records typically have a severity level such as ERROR, WARNING, or INFO.
+		<indexterm><primary>health</primary></indexterm><indexterm><primary>system health</primary></indexterm>health state of
+		the system and possible problems.
+		Message log records typically have a <indexterm><primary>severity</primary></indexterm>severity level such as ERROR, WARNING, or INFO.
 		Message Log File evaluation can be initiated by
 	</para>
 	<itemizedlist>
@@ -13,19 +15,21 @@
 		(see <xref linkend="confLogSources"/>)</para>. Such log files typically contain one or more log lines
 		per message.
 		</listitem>
-		<listitem><para>choosing a log parser configuration with a <emphasis>Error Log File</emphasis>
+		<listitem><para>choosing a log parser configuration with a <indexterm><primary>Error Log File
+			Parser Type.</primary></indexterm><emphasis>Error Log File</emphasis>
 			Parser Type.
 		</para></listitem>
-		<listitem><para>pressing the <emphasis>Apply</emphasis> button</para></listitem>.
+		<listitem><para>pressing the <emphasis>Apply</emphasis> <indexterm><primary> Apply button</primary></indexterm>button</para></listitem>.
 	</itemizedlist>
 	<para>&logtracker;'s can recognize "similar" messages and groups them automatically.</para>
-	<figure id="messagePanel"><title>A sample Message-Log panel</title>
+	<figure id="messagePanel"><title>A sample <indexterm><primary>Message-Log panel</primary></indexterm>Message-Log panel</title>
 		<mediaobject>
 			<imageobject condition="fo"><imagedata fileref="MessageLogPanel.png" format="PNG" scalefit="1" width="100%"/></imageobject>
 			<imageobject condition="html"><imagedata fileref="MessageLogPanel.png" format="PNG"/></imageobject>
 		</mediaobject>
 	</figure>
-	<para><xref linkend="messagePanel"/> shows a sample of a message panel: Grouped messages are arranged in a table, one group per row.
+	<para><xref linkend="messagePanel"/> shows a sample of a message panel: <indexterm><primary>Grouped messages</primary></indexterm>Grouped messages 
+	    are arranged in a table, one group per row.
 		The table is sorted by the descending message severity.
 		The columns show:
 	</para>
@@ -35,16 +39,20 @@
 		<listitem><para>The number of messages in this group.</para></listitem>
 		<listitem><para>The message content of the last message of the group.</para></listitem>
 	</itemizedlist>
-	<para>Message groups that contain messages that occurred within the last ten minutes are colored: Recent errors have a red, recent
+	<para>Message groups that contain messages that occurred within the last ten minutes are <indexterm><primary>colored messages</primary></indexterm>
+		colored: Recent errors have a red, recent
 		warnings, a yellow and other recent messages have a green background.
 	</para>
-	<para>The column with of the table can be adjusted with the mouse. Click and drag the right border of a column header cell for that purpose.
+	<para>The <indexterm><primary>column width</primary><secondary>adjust</secondary></indexterm>column width
+	of the table can be adjusted with the mouse. Click and drag the right border of a column header cell for that purpose.
 		Table columns can be sorted by left-clicking the column header cell.
 	</para>
-	<para>When the user clicks within the row of the table, a <emphasis>log message detail window</emphasis> will pop up and show the individual members of
-		a message group, i.e. all similar messages. A sample message detail window is shown in <xref linkend="messageDetail"/>.
+	<para>When the user clicks within the row of the table, a <emphasis>log message 
+	    detail window</emphasis> will pop up and show the individual members of
+		a message group, i.e. all <indexterm><primary>similar messages</primary></indexterm>similar messages. A sample message detail window 
+		is shown in <xref linkend="messageDetail"/>.
 	</para>
-	<figure id="messageDetail"><title>A sample Message Detail Window</title>
+	<figure id="messageDetail"><title>A sample <indexterm><primary>Message Detail Window</primary></indexterm>Message Detail Window</title>
 		<mediaobject>
 			<imageobject condition="fo"><imagedata fileref="MessageDetailWindow.png" format="PNG" scalefit="1" width="100%"/></imageobject>
 			<imageobject condition="html"><imagedata fileref="MessageDetailWindow.png" format="PNG"/></imageobject>
@@ -52,26 +60,29 @@
 	</figure>
 	<para>The <emphasis>message detail window</emphasis> consists of three parts:</para>
 	<variablelist>
-		<varlistentry><term>The message distribution plot</term>
+		<varlistentry><term>The <indexterm><primary>message distribution plot</primary></indexterm>message distribution plot</term>
 			<listitem><para>shows the temporal distribution of the member messages of this group. Messages are automatically
-				clustered based on their occurrence time and based on the scale of the plot. The position on the horizontal axis
+				<indexterm><primary>clustered messages</primary></indexterm>clustered based on their occurrence time 
+				and based on the scale of the plot. The position on the horizontal axis
 				of the bars indicates the occurrence time, the height of the bars indicate the number of messages within a specific
-				group. The zoom in can be done by selecting a rectangle with the mouse. A zoom out can be achieved by the use
-				of the context menu, that can be brought up by right clicking in the plot.
+				group. The <indexterm><primary>zoom</primary></indexterm>zoom in can be done by selecting a rectangle 
+				with the mouse. A zoom out can be achieved by the use
+				of the <indexterm><primary>context menu</primary></indexterm>context menu, that can be brought up by right clicking in the 
+				plot.
 			</para></listitem>
 		</varlistentry>
-		<varlistentry><term>The message table</term>
+		<varlistentry><term>The <indexterm><primary>message table</primary></indexterm>message table</term>
 			<listitem><para>shows the individual messages with their occurrence time, the calling user, the log source and the message
 				content.
 			</para></listitem>
 		</varlistentry>
-		<varlistentry><term>The message pane</term>
+		<varlistentry><term>The <indexterm><primary>message pane</primary></indexterm>message pane</term>
 			<listitem><para>Select a single message within the <emphasis>message table</emphasis> and its full details are displayed
 				in the message pane. The message pane is especially useful, when a message spans over multiple lines.<footnote><para>&logtracker;
 					only keeps pointers to the messages in its memory. The full message content is only read from the log file when a user selects
 					it. This behavior can lead to unexpected results, when a server uses log file rotation, since the message pointer in memory
 					may point to a location that doesn't exist anymore or contains content that has no relation to the log line. Future
-					versions of &logtracker; may include support for log-file rotation.
+					versions of &logtracker; may include support for <indexterm><primary>log-file rotation</primary></indexterm>log-file rotation.
 				</para></footnote>
 			</para></listitem>
 		</varlistentry>

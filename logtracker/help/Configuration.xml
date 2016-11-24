@@ -2,7 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
 <chapter id="globalConfig">
-	<title>Configuration</title>
+	<title>Configuration<indexterm><primary>Configuration</primary></indexterm></title>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="LogParserConfig.xml" />
 	<sect1>
 		<title id="confLogSources">Configure Log-Sources</title>
@@ -12,18 +12,18 @@
 				<imageobject condition="html"><imagedata fileref="LogFileSources.png" format="PNG"/></imageobject>
 			</mediaobject>
 		</figure>
-		<para>Log files that are to monitored are specified using the <emphasis>Log File Selection Dialog</emphasis>(see <xref linkend="logFileSelDialog"/>)</para>
+		<para>Log files that are to monitored are specified using the <emphasis><indexterm><primary>Log File Selection Dialog</primary></indexterm>Log File Selection Dialog</emphasis>(see <xref linkend="logFileSelDialog"/>)</para>
 		<variablelist>
 			<varlistentry><term>Add new File Selection Dialog</term>
 				<listitem><para>Press this button to create a new Log File Selection Dialog panel.
 				</para></listitem>
 			</varlistentry>
-			<varlistentry><term>Close File Selection Dialog</term>
+			<varlistentry><term>Close <indexterm><primary>File Selection Dialog</primary></indexterm>File Selection Dialog</term>
 				<listitem><para>Close the Log File Selection Dialog panel with this button. All dependent panels will be closed, as well and
 					the processing of the files is stopped.
 				</para></listitem>
 			</varlistentry>
-			<varlistentry><term>Add new Log File Line</term>
+			<varlistentry><term>Add new <indexterm><primary>Log File</primary></indexterm>Log File Line</term>
 				<listitem><para>Open an "open File" dialog box and let the user choose one ore more log files. The selected log files will be
 					added to the log file table.
 				</para></listitem>
@@ -39,15 +39,16 @@
 			<varlistentry><term>Remove Log File</term>
 				<listitem><para>Remove a single log file from the list.</para></listitem>
 			</varlistentry>
-			<varlistentry><term>Log File Format</term>
-				<listitem><para>Specify the log parser configuration that should be used for interpreting the log files. Log parser configurations
+			<varlistentry><term><indexterm><primary>Log File Format</primary></indexterm>Log File Format</term>
+				<listitem><para>Specify the <indexterm><primary>log parser configuration</primary></indexterm>log parser configuration
+				    that should be used for interpreting the log files. Log parser configurations
 					are specified in the Log Parser Configuration Dialog. See <xref linkend="confLogParsers"/>. 
 				</para></listitem>
 			</varlistentry>
 			<varlistentry><term>Limit Data</term>
 				<listitem><para>Filter the data that is processed by &logtracker;. Only consider lines with an occurrence time that is more recent
 					than the configured amount of time. This feature is useful when processing very large files, while only events that happened
-					recently are considered.
+					recently are considered.<indexterm><primary>filtering</primary><secondary>for recent events</secondary></indexterm>
 				</para></listitem>
 			</varlistentry>
 			<varlistentry><term>Start Processing</term>
@@ -55,13 +56,14 @@
 					it is stopped and restarted based on the new configuration.
 				</para></listitem>
 			</varlistentry>
-			<varlistentry><term>Activity Status</term>
+			<varlistentry><term><indexterm><primary>Activity Status</primary></indexterm>Activity Status</term>
 				<listitem><para>Shows processing of the files is active, inactive, or sleeping.</para></listitem>
 			</varlistentry>
 		</variablelist>
 	</sect1>
 	<sect1><title>Global Configuration Parameters</title>
-		<para>Global configuration parameters are configured by opening the global configuration panel. Press the <emphasis>Open Configuration
+		<para><indexterm><primary>Global configuration parameters</primary></indexterm>Global configuration parameters
+			are configured by opening the global configuration panel. Press the <emphasis>Open Configuration
 			 Dialog Box</emphasis> button for this purpose (<xref linkend="userInterface"/>).</para>
 		<figure id="globalConfigPanel"><title>Global Configuration Parameters</title>
 			<mediaobject>
@@ -71,24 +73,24 @@
 		</figure>
 		<para>The configuration parameters and their meaning are:</para>
 		<variablelist>
-			<varlistentry><term>Window Title</term>
+			<varlistentry><term><indexterm><primary>Window Title</primary></indexterm>Window Title</term>
 				<listitem><para>Set the title of the main &logtracker; application window. This is especially useful, when multiple &logtracker;
 					instances are running.
 				</para></listitem>
 			</varlistentry>
-			<varlistentry><term>Time Stamp Format String</term>
+			<varlistentry><term><indexterm><primary>Time Stamp Format String</primary></indexterm>Time Stamp Format String</term>
 				<listitem><para>Set the display format of time stamps throughout the application. The Java 
-					<ulink url="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</ulink>
+					<ulink url="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html"><indexterm><primary>SimpleDateFormat</primary></indexterm>SimpleDateFormat</ulink>
 					notation is used.
 				</para></listitem>
 			</varlistentry>
-			<varlistentry><term>Initial Time Range Max</term>
+			<varlistentry><term>Initial <indexterm><primary>Time Range Max</primary><secondary>Initial</secondary></indexterm>Time Range Max</term>
 				<listitem><para>Is used as the maximum value for the time range for new scatter plots (see <xref linkend="call_stats"/>). </para></listitem>
 			</varlistentry>
 		</variablelist>
 	</sect1>
 	<sect1>
-		<title id="confFiles">Configuration Files</title>
+		<title id="confFiles"><indexterm><primary>Configuration Files</primary></indexterm>Configuration Files</title>
 		<para>&logtracker; configurations can be stored in configuration files. It supports two basic forms:</para>
 		<itemizedlist>
 			<listitem><para><emphasis>Complete configuration files</emphasis> contain information about all configurable parameters of a running
@@ -98,7 +100,8 @@
 			<listitem><para><emphasis>Log Parser configuration files</emphasis> contain only log parser configuration data.</para></listitem>
 		</itemizedlist>
 		<para>Both types store their information in XML format<footnote><para>&logtracker; versions prior to 2.0 have used a binary format for the
-			configuration files. The actual version is still able to read and understand those binary files, but it can only store configuration
+			<indexterm><primary>Configuration files</primary><secondary>binary</secondary></indexterm>configuration files. The actual 
+			version is still able to read and understand those binary files, but it can only store configuration
 			in the new XML-based format. Migration old config-files is easy: just open and store them with &logtracker;.
 		    </para></footnote> as an "*.ltc"-file (ltc = LogTracker Configuration). A <emphasis>complete</emphasis>
 			configuration file is created, when a user presses the <emphasis>Save LogTracker Configuration</emphasis> button at the top of the main 

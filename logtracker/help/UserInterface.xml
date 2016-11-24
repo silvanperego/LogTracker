@@ -2,7 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">	]>
 <sect1>
-	<title>The User Interface</title>
+	<title>The <indexterm><primary>User Interface</primary></indexterm>User Interface</title>
 	<figure id="userInterface"><title>&logtracker;'s user interface</title>
 		<mediaobject>
 			<imageobject condition="fo"><imagedata fileref="UserInterface.svg" format="SVG" width="100%" scalefit="1"/></imageobject>
@@ -10,26 +10,25 @@
 		</mediaobject>
 	</figure>
 	<para>&logtracker; is a stand alone application which requires file system access to the log files that
-		it analyzes. When the application is started (see <xref linkend="runLogTracker"/>) a window with some dockable 
-		sub-windows is displayed.
+		it analyzes. When the application is started (see <xref linkend="runLogTracker"/>) a window with some <indexterm><primary>dockable panels</primary></indexterm>dockable panels is displayed.
 	</para>
 	<para>A typical view of the application is shown in <xref linkend="userInterface"/>: At the top of the application frame there
 		is a toolbar with some action buttons:
 	</para>
 	<variablelist>
-		<varlistentry><term>Load Configuration files</term>
+		<varlistentry><term><indexterm><primary>Load Configuration files</primary></indexterm>Load Configuration files</term>
 			<listitem><para>Loads a configuration file. Configuration files either contain a fully 
-				configured &logtracker; instance (see <xref linkend="confFiles"/>),
+				configured <indexterm><primary>&logtracker; instance </primary></indexterm>&logtracker; instance (see <xref linkend="confFiles"/>),
 				or a collection of configured log file parsers (see <xref linkend="confLogParsers"/>).
 			</para></listitem>
 		</varlistentry>
-		<varlistentry><term>Save LogTracker Configuration</term>
+		<varlistentry><term><indexterm><primary>Save LogTracker Configuration</primary></indexterm>Save LogTracker Configuration</term>
 			<listitem><para>Saves the actual configuration of the application to a configuration file
 				(see <xref linkend="confFiles"/>).
 			</para>
 			</listitem>
 		</varlistentry>
-		<varlistentry><term>Add new file configuration window</term>
+		<varlistentry><term><indexterm><primary>Add new file configuration window</primary></indexterm>Add new file configuration window</term>
 			<listitem><para>Adds a new dockable file selection window to the application. This special window serves as
 				a starting point for new data pipelines.
 			</para><para>The view in <xref linkend="userInterface"/> was created by starting &logtracker; and pressing
@@ -37,25 +36,27 @@
 			</para>
 			</listitem>
 		</varlistentry>
-		<varlistentry><term>Open Configuration Dialog Box</term>
+		<varlistentry><term><indexterm><primary>Open Configuration Dialog Box</primary></indexterm>Open Configuration Dialog Box</term>
 			<listitem><para>Opens the dialog box for application wide configuration (see <xref linkend="globalConfig"/>).</para></listitem>
 		</varlistentry>
-		<varlistentry><term>Show Help window</term>
-			<listitem><para>Open the help window and show this document.
+		<varlistentry><term><indexterm><primary>Show Help window</primary></indexterm>Show Help window</term>
+			<listitem><para>Open the <indexterm><primary>help window</primary></indexterm>help window and show this document.
 			</para></listitem>
 		</varlistentry>
 	</variablelist>
-	<para>All other content is organized in dockable windows. Dockable windows
+	<para>All other content is organized in dockable panels. Dockable panels
 		can be resized and moved around by the user by clicking onto their header and dragging them. Some special buttons allow
-		window operations such as minimizing, maximizing, detaching, those windows. A comprehensive description of the possible
-		interactions can be found on the <ulink url="http://www.docking-frames.org/">Docking Frames Website</ulink>.
-	</para><para><xref linkend="userInterface"/> shows two sample dockable windows:
+		window operations such as <indexterm><primary>minimize panel</primary></indexterm>minimizing, 
+		<indexterm><primary>maximize panel</primary></indexterm>maximizing, detaching. A comprehensive description of the possible
+		interactions can be found on the <ulink url="http://www.docking-frames.org/"><indexterm><primary>Docking Frames</primary></indexterm>
+		Docking Frames Website</ulink>.
+	</para><para><xref linkend="userInterface"/> shows two sample dockable panel:
 	</para>
 	<variablelist>
-		<varlistentry><term>The "Log File Reading Errors" Window</term>
+		<varlistentry><term>The "Log File Reading Errors" panel</term>
 			<listitem><para>Lists problems that may have occurred during the processing of the log files.</para></listitem>
 		</varlistentry>
-		<varlistentry><term>A "File Selection" dockable Window</term>
+		<varlistentry><term>A "File Selection" dockable panel</term>
 			<listitem><para>Serves as a starting point for setting up a new data pipeline. Within this window, log files
 				that are going to be processed and monitored and their log files format are being configured. The processing
 				is launched by pressing the <emphasis>Apply</emphasis>-button.

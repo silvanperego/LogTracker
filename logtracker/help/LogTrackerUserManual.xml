@@ -14,7 +14,7 @@
 	
 	<chapter id="chap_Overview">
 		<title id="log_flavours">Overview</title>
-		<para>&logtracker; is an easy to use tool for ad-hoc analysis and monitoring of application server log files. 
+		<para>&logtracker; is an easy to use tool for ad-hoc analysis and monitoring of <indexterm><primary>application server log files</primary></indexterm>application server log files. 
 		Logtracker consists of a single executable (which requires a Java 8 runtime) and can be applied easily and 
 		straightforward as long as you have physical access to your log files.
 		</para>
@@ -58,4 +58,5 @@
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ErrorLogs.xml" />
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="CorrelationData.xml" />
 	</chapter>
+	<index/>
 </book>
