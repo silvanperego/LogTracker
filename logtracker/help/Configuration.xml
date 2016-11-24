@@ -12,7 +12,8 @@
 				<imageobject condition="html"><imagedata fileref="LogFileSources.png" format="PNG"/></imageobject>
 			</mediaobject>
 		</figure>
-		<para>Log files that are to monitored are specified using the <emphasis><indexterm><primary>Log File Selection Dialog</primary></indexterm>Log File Selection Dialog</emphasis>(see <xref linkend="logFileSelDialog"/>)</para>
+		<para>Log files that are to be monitored, are specified using the <emphasis><indexterm><primary>Log File Selection Dialog</primary></indexterm>
+			Log File Selection Dialog</emphasis> (see <xref linkend="logFileSelDialog"/>).</para>
 		<variablelist>
 			<varlistentry><term>Add new File Selection Dialog</term>
 				<listitem><para>Press this button to create a new Log File Selection Dialog panel.
@@ -32,7 +33,7 @@
 				<listitem><para>Click onto a Log file path in order to modify the log file.</para></listitem>
 			</varlistentry>
 			<varlistentry><term>Edit Log File Name</term>
-				<listitem><para>Double Click to edit the Log File Name. The Log File Name is used through the application for specifying the
+				<listitem><para>Double click to edit the Log File Name. The Log File Name is used through the application for specifying the
 					source of a data item. A part of the log file path is used as default name.
 				</para></listitem>
 			</varlistentry>
@@ -48,7 +49,7 @@
 			<varlistentry><term>Limit Data</term>
 				<listitem><para>Filter the data that is processed by &logtracker;. Only consider lines with an occurrence time that is more recent
 					than the configured amount of time. This feature is useful when processing very large files, while only events that happened
-					recently are considered.<indexterm><primary>filtering</primary><secondary>for recent events</secondary></indexterm>
+					recently are of interest.<indexterm><primary>filtering</primary><secondary>for recent events</secondary></indexterm>
 				</para></listitem>
 			</varlistentry>
 			<varlistentry><term>Start Processing</term>
@@ -57,7 +58,7 @@
 				</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>Activity Status</primary></indexterm>Activity Status</term>
-				<listitem><para>Shows processing of the files is active, inactive, or sleeping.</para></listitem>
+				<listitem><para>Shows if, processing of the files is active, inactive, or sleeping.</para></listitem>
 			</varlistentry>
 		</variablelist>
 	</sect1>
@@ -95,14 +96,14 @@
 		<itemizedlist>
 			<listitem><para><emphasis>Complete configuration files</emphasis> contain information about all configurable parameters of a running
 				&logtracker; instance.<footnote><para>In the present version, the layout of the &logtracker;'s main window and its panels is 
-				not part of the configuration.</para></footnote>
+				not part of the configuration and can not be persisted.</para></footnote>
 			</para></listitem>
 			<listitem><para><emphasis>Log Parser configuration files</emphasis> contain only log parser configuration data.</para></listitem>
 		</itemizedlist>
 		<para>Both types store their information in XML format<footnote><para>&logtracker; versions prior to 2.0 have used a binary format for the
 			<indexterm><primary>Configuration files</primary><secondary>binary</secondary></indexterm>configuration files. The actual 
 			version is still able to read and understand those binary files, but it can only store configuration
-			in the new XML-based format. Migration old config-files is easy: just open and store them with &logtracker;.
+			in the new XML-based format. Migrating old config-files is easy: just open and store them with &logtracker;.
 		    </para></footnote> as an "*.ltc"-file (ltc = LogTracker Configuration). A <emphasis>complete</emphasis>
 			configuration file is created, when a user presses the <emphasis>Save LogTracker Configuration</emphasis> button at the top of the main 
 			application window (see <xref linkend="userInterface"/>). A <emphasis>Log Parser configuration file is created</emphasis> when a user 
@@ -111,9 +112,9 @@
 			selected by Shift-Clicking multiple lines.
 		</para>
 		<para>The according <emphasis>Load Configuration Files</emphasis> and <emphasis>Load from File</emphasis> buttons have a corresponding effect.
-			The first, loads a full configuration. The second loads only parser configurations. When loading, the existing application configuration
+			The first, loads a complete configuration; the second only parser configurations. When loading, the existing application configuration
 			is not overwritten. The new configuration is rather added as additional information: New log parser configurations are added to the existing
-			ones. Additional log sources are added to new instances of <emphasis>Log file selection dialogs</emphasis>.
+			ones. Additional log sources create new instances of <emphasis>Log file selection dialogs</emphasis>.
 		</para>
 	</sect1>
 </chapter>

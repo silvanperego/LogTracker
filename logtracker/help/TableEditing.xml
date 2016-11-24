@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
+<!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">
+	]>
+<para>The <indexterm><primary>column width</primary></indexterm>column width of the table can be adjusted with the mouse. Click and drag the 
+	right border of a column header cell for that purpose.
+	Table columns can be sorted by left-clicking the column header cell. They can be repositioned by draging their header cell with the mouse.
+</para>

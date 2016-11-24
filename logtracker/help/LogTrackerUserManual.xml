@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "dtd/docbookx.dtd" [
 <!ENTITY logtracker "<emphasis>Instant Log Tracker</emphasis>">
 	]>
 <?altova_sps http://www.altova.com/sps/Template/Publishing/docbook.sps?>
@@ -14,33 +14,35 @@
 	
 	<chapter id="chap_Overview">
 		<title id="log_flavours">Overview</title>
-		<para>&logtracker; is an easy to use tool for ad-hoc analysis and monitoring of <indexterm><primary>application server log files</primary></indexterm>application server log files. 
-		Logtracker consists of a single executable (which requires a Java 8 runtime) and can be applied easily and 
+		<para>&logtracker; is an easy to use tool for ad-hoc analysis and monitoring of 
+		<indexterm><primary>application log files</primary></indexterm><indexterm><primary>system log files</primary></indexterm>
+		application or system log files. 
+		&logtracker; consists of a single executable (which requires a Java 8 runtime) and can be applied easily and 
 		straightforward as long as you have physical access to your log files.
 		</para>
 		<para>Special features are:</para>
 		<itemizedlist>
-			<listitem><para>Log-File formats are configurable by the use of regex expression. Almost any log-file format, therefore can be monitored after 
+			<listitem><para>Log-File formats are configurable by the use of regex expressions. Almost any log-file format, therefore can be monitored after 
 					having specified its format.</para></listitem>
 			<listitem><para>Log-Files are constantly monitored. New data is processed immediately.</para></listitem>
-			<listitem><para>All processing is done in memory. While this imposes some limits onto the amount of data that can be analyzed, it leads to 
+			<listitem><para>All processing is done in memory. While this imposes some limits onto the amount of data that can be analyzed, it allows 
 					highly efficient processing.</para></listitem>
 		</itemizedlist>
 		<para>&logtracker; supports the following flavors of log files:</para>
 		<variablelist>
-			<varlistentry><term><indexterm><primary>Service Call Statistics</primary></indexterm>Service Call Statistics Files</term>
-			<listitem><para>typically contain one or more lines per service call. The contain information about who called which service when and how 
-			long the server took to response. This file type may also contain a response code that indicates, if a service call was successful or not. 
-			&logtracker; calculates service call statistics and creates service scatter plots for the analysis of this type of data.</para></listitem>
+			<varlistentry><term><indexterm><primary>Service Call Statistics</primary></indexterm>Service call or execution logs</term>
+			<listitem><para>typically contain one or more lines per service call. They contain information about who called which service when and how 
+			long the server took to response. File of this type may also contain response codes that indicate, if service calls have been successful or not. 
+			&logtracker; calculates creates call statistics and service scatter plots for the analysis of this type of data.</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>Message Logs</primary></indexterm>Message Logs</term>
-				<listitem><para>typically contain messages about events that occurred within the server. They typically have an occurrence time stamp, a 
-				severity and a message text. &logtracker; uses some fuzzy logic to recognize "similar" messages and put them into the same categories. 
+				<listitem><para>typically contain messages about events that occurred within the system. They normally have an occurrence time stamp, a 
+				severity and a message text. &logtracker; uses some fuzzy logic to recognize "similar" messages and group them into categories. 
 				A special chart show the frequency of a certain type of messages.</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>Correlation Logs</primary></indexterm>Correlation Logs</term>
-				<listitem><para>contain some additional information that is bound to a service call via a correlation-ID. Payload-Logs normally are of this type.
-				&logtracker; allows the correlation of log entries that are spread over various files and file types by correlation-ID.</para></listitem>
+				<listitem><para>contain some additional information that is bound to a service call via a correlation Id. Payload-Logs normally are of this type.
+				&logtracker; allows the correlation of log entries that are spread over various files and file types by correlation Id.</para></listitem>
 			</varlistentry>
 		</variablelist>
 	</chapter>

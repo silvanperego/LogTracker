@@ -5,18 +5,18 @@
 	<title><indexterm><primary>Installation</primary></indexterm>Install and <indexterm><primary>Run LogTracker</primary></indexterm>Run</title>
 	<sect1><title>Prerequisites</title>
 	<para>&logtracker; requires a Java Run Time Environment of at least version 1.8. If your system does not yet have it, you can download
-		it from the <ulink url="http://www.java.com/de/download/">http://www.java.com/de/download/</ulink> Site.
+		it from the <ulink url="http://www.java.com/download/">http://www.java.com/download/</ulink> Site.
 	</para>
 	</sect1>
 	<sect1>
 	<title id="runLogTracker">Install and Run</title>
 	<para>&logtracker; basically consists of one single <indexterm><primary>executable jar-file</primary></indexterm>executable 
-		jar-file "<code>logtracker.jar</code>". Normally it's sufficient
-		copy it onto a computer that has physical <indexterm><primary>access to the log files</primary></indexterm>access to the log files
-		that need to be investigated. On most platforms <code>logtracker.jar</code> can
-		be launched by the normal procedure that you would use for any application.
+		jar-file "<code>logtracker.jar</code>". Normally it's sufficient to
+		copy that file onto a computer that has physical <indexterm><primary>access to the log files</primary></indexterm>access to the log files. 
+		On most platforms <code>logtracker.jar</code> can
+		be launched by the same procedure that is used for any application.
 	</para>
-	<para>If double-clicking that file does not work, you can <indexterm><primary>launch logtracker manually</primary></indexterm>launch it "manually" with:</para>
+	<para>If the standard procedure does not work, <indexterm><primary>launch logtracker</primary></indexterm>&logtracker; can be launched via command line:</para>
 	<programlisting>java -jar logtracker.jar [&lt;logtracker-config-file&gt;]</programlisting>
 	<para>The <indexterm><primary>logtracker launch parameters</primary></indexterm>parameter <code>log-tracker-config-file</code> is optional. 
 		As an alternative you could pass list of log files as parameters.</para>
@@ -24,7 +24,8 @@
 	<para>For <emphasis><indexterm><primary>Windows</primary></indexterm>Windows</emphasis>, there is a file called <code>logtracker.exe</code>. 
 		The main advantage of this file over the executable jar
 		is the fact, that it comes with a nice icon and that it can be associated with file extensions, such as <code>.ltc</code> (Log-Tracker Configuration 
-		Files) or <code>.log</code>. <code>logtracker.exe</code> only works, if a Java 8 Runtime Environment is installed on your machine.
+		Files) or <code>.log</code>. <code>logtracker.exe</code> only works, if a Java 8 Runtime Environment (or higher) is installed on your machine, and
+		configured as default Java runtime.
 	</para>
 	<para>For <emphasis><indexterm><primary>Mac OS</primary></indexterm>Mac OS</emphasis>, there is a <code>logtracker.zip</code>-file, 
 		which contains a <indexterm><primary>LogTracker application bundle</primary></indexterm>LogTracker <indexterm><primary>application bundle</primary></indexterm>application bundle. Unzip the file
@@ -33,15 +34,15 @@
 	</para>
 	</sect1>
 	<sect1><title><indexterm><primary>Memory</primary></indexterm>Memory considerations</title>
-		<para>&logtracker; keeps important parts of the investigated log files in its memory. Depending on the size of the file
-			the memory that is needed can raise substantially. If there is not enough <indexterm><primary>heap memory</primary></indexterm>heap memory
+		<para>&logtracker; keeps important parts of the investigated log files in its memory. Depending on the size of the file,
+			the memory consumption can raise substantially. If there is not enough <indexterm><primary>heap memory</primary></indexterm>heap memory
 			available, the application becomes slow and may output
-			"OutOfMemoryException"s. You can increase the heap memory size at startup by using:
+			"OutOfMemoryException"s. <indexterm><primary>Out of memory</primary></indexterm>You can increase the heap memory size at startup by using:
 		</para>
 		<programlisting>java -Xmx2G -jar logtracker.jar</programlisting>
 		<para>or</para>
 		<programlisting>java -Xmx2G -jar logtracker.exe<footnote><para><code>logtracker.exe</code> uses a default size of 1 GB as the java max heap.</para>
 		</footnote></programlisting>
-		<para>The java documentation explains all available memory options.</para>
+		<para>The java documentation explains all available Java runtime options.</para>
 	</sect1>
 </chapter>

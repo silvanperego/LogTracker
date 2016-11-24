@@ -6,12 +6,12 @@
 	<para>Service call Statistics typically deals with questions such as:
 	</para>
 	<itemizedlist>
-		<listitem><para>What was/is the <indexterm><primary>total load</primary></indexterm>total load on our system?</para></listitem>
+		<listitem><para>What was/is the <indexterm><primary>total load</primary></indexterm>total load on the system?</para></listitem>
 		<listitem><para>What services were called when, how often, by whom?</para></listitem>
 		<listitem><para>What was the <indexterm><primary>system performance</primary></indexterm>
 		<indexterm><primary>performance</primary></indexterm>performance of the system,
 		i.e. the response time to these services?</para></listitem>
-		<listitem><para>Have the been errors while processing the service calls? How many? When?</para></listitem>
+		<listitem><para>Have there been errors while processing the service calls? How many? When?</para></listitem>
 	</itemizedlist>
 	<para>The <emphasis>Service Call Statistics</emphasis> flavor is ideally suited for answering those questions. It can 
 		be initiated by
@@ -23,14 +23,14 @@
 		the user who invoked the service and a return code.
 		</listitem>
 		<listitem><para>choosing a log parser configuration with a <emphasis>Service Calls and Response Times</emphasis>
-			Parser Type.
+			File Type.
 		</para></listitem>
 		<listitem><para>pressing the <emphasis><indexterm><primary>Apply</primary></indexterm>Apply</emphasis> button</para></listitem>.
 	</itemizedlist>
 	<sect2><title>The <indexterm><primary>service call statistics panel</primary></indexterm>service call statistics panel</title>
 		<para>A <emphasis>service statistics panel</emphasis> will appear. An example is schon in <xref linkend="servStatPanel"/>.
-			The panel lists all the services that have been called together with some important statistical numbers. All these
-			numbers consider the full observation time period of all monitored log files. 
+			The panel lists all the services that have been called and some important statistical figures. All these
+			figures consider the full observation time period of all monitored log files. 
 			They are:
 		</para>
 		<variablelist>
@@ -38,14 +38,14 @@
 				<listitem><para>Shows how many times a specific service was called in total.</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>number of errors</primary></indexterm>Errors</term>
-				<listitem><para>Show the number of service calls of a specific service that returned with an error code.
+				<listitem><para>Show the number of service calls that returned with an error code.
 					<footnote><para>This column is only displayed if the active log parser configuration contains a
 						<emphasis><indexterm><primary>Value representing OK</primary></indexterm>Value representing "OK"</emphasis>. See <xref linkend="captGroupConfParam"/>.
 					</para></footnote>
 				</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>Calls per Minute</primary></indexterm>Calls per Minute</term>
-				<listitem><para>The number of service calls, divided by the observation period, i.e. the mean number of
+				<listitem><para>The number of service calls, divided by the observation period, i.e. the average number of
 					service calls per minute.
 				</para></listitem>
 			</varlistentry>
@@ -62,13 +62,12 @@
 				</para></listitem>
 			</varlistentry>
 			<varlistentry><term>90% <indexterm><primary>percentile</primary></indexterm>percentile</term>
-				<listitem><para>The 90% percentile of the response times. 10% of all service calls took shorter than this value to respond.
+				<listitem><para>The 90% percentile of the response times. 10% of all service calls took longer than this value to respond.
 				</para></listitem>
 			</varlistentry>
 		</variablelist>
-		<para>The row named "<indexterm><primary>total</primary></indexterm>total" considers all service calls. 
-			The rows that are labeled with a service name represent 
-			the statistics of a specific service.</para>
+		<para>The row named <indexterm><primary>total</primary></indexterm>"total" considers all service calls. 
+			The rows that are labeled with a service name represent	the figures of a specific service.</para>
 		<figure id="servStatPanel"><title>The <indexterm><primary>service call statistics panel</primary></indexterm>service call statistics panel</title>
 			<mediaobject>
 				<imageobject condition="fo"><imagedata fileref="ServiceStatWindow.svg" format="SVG" scalefit="1" width="100%"/></imageobject>
@@ -76,8 +75,8 @@
 			</mediaobject>
 		</figure>
 		<para>A user can interact with the <emphasis>service call statistics panel</emphasis> in various ways. By clicking a row in the service
-			table, he can bring up a <emphasis>Service Call Detail</emphasis> window will pop up and show the individual service calls.
-			One by row. See <xref linkend="servDetailPanel"/>.
+			table, he can bring up a <emphasis>Service Call Detail</emphasis> window that shows the individual service calls,
+			one by row. See <xref linkend="servDetailPanel"/>.
 		</para>
 		<figure id="servDetailPanel"><title>The <indexterm><primary>service call details window</primary></indexterm>service call details window</title>
 			<mediaobject>
@@ -90,7 +89,8 @@
 		</para>
 		<variablelist>
 			<varlistentry><term><indexterm><primary>Scatter</primary></indexterm>Scatter</term>
-				<listitem><para>When enabled, every service single service call of a specific service is represented by a dot.</para></listitem>
+				<listitem><para>When enabled, every service single service call of a specific service is represented by a dot or 
+				a small cross.</para></listitem>
 			</varlistentry>
 			<varlistentry><term><indexterm><primary>perSecond</primary></indexterm>perSecond</term>
 				<listitem><para>When enabled, a line which represents the number of service calls per second is displayed. This average
@@ -104,21 +104,18 @@
 				<listitem><para>When enabled, a line representing the median response times (evaluated once per minute) is displayed.</para></listitem>
 			</varlistentry>
 		</variablelist>
-		<para>The color column allows the assignment of specific colors to specific services. When clicked, a color chooser dialog is brought up.
+		<para>The color column allows the assignment of specific colors to specific services. When clicked, a color chooser is brought up.
 			The <emphasis><indexterm><primary>Statistics Magnification Factors</primary></indexterm>Statistics Magnification Factors</emphasis> 
 			allows an artificial steepening of the "Mean" and "Median" lines by multiplying
-			the according values with a factor. This can be useful, when those lines are hard to see behind the dots of the scatter plots.
+			their values by a factor. This can be useful, when those lines are hard to see behind the dots of the scatter plots.
 		</para>
-		<para>The <indexterm><primary>column width</primary></indexterm>column width of the table can be adjusted with the mouse. Click and drag the 
-			right border of a column header cell for that purpose.
-			Table columns can be sorted by left-clicking the column header cell.
-		</para>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="TableEditing.xml" />
 	</sect2>
 	<sect2><title>The <indexterm><primary>user panel</primary></indexterm>user panel</title>
 		<para>When the configured log parser is specifying a user field, an additional panel, the "user panel" (<xref linkend="userStatPanel"/>) 
 		    is created by &logtracker;. The
-			user panel has similar fields as the service call statistics panel, but it organizes the numbers along the users instead of the services.
-			The logtracker user can choose not to consider service calls from specific tracked users in the service call scatter plot by unchecking the checkboxes
+			user panel has similar fields as the service call statistics panel, but it organizes the figures along the users instead of the services.
+			The &logtracker; user can choose not to consider service calls from specific users by unchecking the checkboxes
 			in the user panel.
 		</para>
 		<figure id="userStatPanel"><title>The <indexterm><primary>service call statistics panel</primary></indexterm>service call statistics panel</title>
@@ -128,10 +125,10 @@
 			</mediaobject>
 		</figure>
 	</sect2>
-	<sect2><title>The <indexterm><primary>Service Call Scatter Plot</primary></indexterm>Service Call <indexterm>
+	<sect2><title id="scatterPlot">The <indexterm><primary>Service Call Scatter Plot</primary></indexterm>Service Call <indexterm>
 		<primary>Scatter Plot</primary></indexterm>Scatter Plot</title>
 		<para>When the user presses the Apply button of either the <emphasis>service call statistics panel</emphasis> or the
-			<emphasis>user panel</emphasis> the service call scatter plot will be displayed. An example of such a plot is shown in
+			<emphasis>user panel</emphasis> a service call scatter plot will be displayed. An example of such a plot is shown in
 			<xref linkend="scatterMouseOver"/>. Service call of various services are indicated as <indexterm><primary>colored dots</primary></indexterm>
 			colored dots. The position
 			of the dot on the horizontal axis indicates the time of the <indexterm><primary>occurrence time</primary></indexterm>
@@ -140,8 +137,8 @@
 			<indexterm><primary>Erroneous calls</primary></indexterm>Erroneous calls are represented by a small cross sign.
 			Statistical values, such as mean, median and number of calls per minute are shown as colored lines.
 		</para>
-		<para>In order to get more information about a specific data point just hover the mouse close to it. As a consequence <indexterm><primary>cross hairs</primary></indexterm>cross hairs
-			will focus  the <indexterm><primary>closest data point</primary></indexterm>closest data point and a tool tip will show some information about it.
+		<para>In order to get more information about a specific data point just hover the mouse close to it. <indexterm><primary>cross hairs</primary></indexterm>Cross hairs
+			will focus the <indexterm><primary>closest data point</primary></indexterm>closest data point and a tool tip will show some information.
 		</para>
 		<figure id="scatterMouseOver"><title>A sample service scatter plot</title>
 			<mediaobject>
@@ -149,8 +146,8 @@
 				<imageobject condition="html"><imagedata fileref="ScatterPlotMouseOver.png" format="PNG"/></imageobject>
 			</mediaobject>
 		</figure>
-		<para>The user can zoom to to any section he likes. To <indexterm><primary>zoom</primary></indexterm>zoom in, 
-			just use the mouse to select a rectangle. (<xref linkend="scatterZoom"/>)</para>
+		<para>The user can <indexterm><primary>zoom</primary></indexterm>zoom in to any section of the plot. Just use the mouse to select 
+		a rectangle. (<xref linkend="scatterZoom"/>)</para>
 		<figure id="scatterZoom"><title>Zoom into a selected area</title>
 			<mediaobject>
 				<imageobject condition="fo"><imagedata fileref="ScatterPlotZoom.png" format="PNG" scalefit="1" width="100%"/></imageobject>

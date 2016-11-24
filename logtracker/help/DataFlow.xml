@@ -17,8 +17,10 @@
 	<variablelist>
 		<varlistentry><term><indexterm><primary>Read</primary><secondary>log files</secondary></indexterm>Read</term>
 			<listitem><para>Log files are opened and read on a per line basis.
-				&logtracker; automatically continues to monitor all configured log files: Whenever new data is appended, that new data is read
-				and sent through the processing pipeline. As a consequence, many tables and graphs are updated automatically as soon as new
+				&logtracker; automatically monitors all configured log files: Whenever new data is appended, that new data is read
+				and sent through the processing pipeline.<footnote><para>&logtracker; 
+					checks for new data every 30 seconds.
+				</para></footnote> As a consequence, many tables and graphs are updated as soon as new
 				data becomes available.
 			</para></listitem>
 		</varlistentry>
@@ -28,19 +30,19 @@
 			&logtracker;s memory.</para></listitem>
 		</varlistentry>
 		<varlistentry><term><indexterm><primary>Combine</primary><secondary>log files</secondary></indexterm>Combine</term>
-			<listitem><para>If more than one file is monitored within one data line, the data from the two sources are combined and ordered
+			<listitem><para>If more than one file is monitored within one data pipeline, the data from the two sources are combined and ordered
 				by the occurrence time. The <emphasis>combine</emphasis>-Element may produce some delay, because it tries to make sure
-				that data is delivered in the right order.  
+				that data is delivered in temporal order.  
 			</para></listitem>
 		</varlistentry>
 		<varlistentry><term>Evaluate and <indexterm><primary>visualize</primary></indexterm>visualize</term>
-			<listitem><para>The data is evaluated and visualized in the next stage, eventually by showing up some additional panels. The
-			kind of panels depends on the flavor of the log files that are analyzed in this data line. More information can be found in
+			<listitem><para>The data is evaluated and visualized in the next stage, eventually by displaying some additional, specialized 
+			panels. The kind of panels depends on the flavor of the log files that are analyzed in this data line. More information can be found in
 				<xref linkend="call_stats"/>, <xref linkend="error_logs"/>, and <xref linkend="corr_data"/>.
 			</para></listitem>
 		</varlistentry>
 	</variablelist>
-	<para>&logtracker; configuration is organized along <emphasis><indexterm><primary>data pipelines</primary></indexterm>data pipelines</emphasis>. 
-	    One data pipeline can collect data from exactly one type of log files. The log file type is associated with a log file type.
+	<para>&logtracker;'s configuration is organized along <emphasis><indexterm><primary>data pipelines</primary></indexterm>data pipelines</emphasis>. 
+	    One data pipeline can collect data from exactly one type of log files.
 	</para>
 </sect1>

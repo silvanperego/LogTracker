@@ -28,7 +28,7 @@
 			</para>
 			</listitem>
 		</varlistentry>
-		<varlistentry><term><indexterm><primary>Add new file configuration window</primary></indexterm>Add new file configuration window</term>
+		<varlistentry><term><indexterm><primary>Add new file configuration panel</primary></indexterm>Add new file configuration window</term>
 			<listitem><para>Adds a new dockable file selection window to the application. This special window serves as
 				a starting point for new data pipelines.
 			</para><para>The view in <xref linkend="userInterface"/> was created by starting &logtracker; and pressing
@@ -41,6 +41,7 @@
 		</varlistentry>
 		<varlistentry><term><indexterm><primary>Show Help window</primary></indexterm>Show Help window</term>
 			<listitem><para>Open the <indexterm><primary>help window</primary></indexterm>help window and show this document.
+				The help window also offers full text search on the help content.
 			</para></listitem>
 		</varlistentry>
 	</variablelist>
@@ -48,17 +49,17 @@
 		can be resized and moved around by the user by clicking onto their header and dragging them. Some special buttons allow
 		window operations such as <indexterm><primary>minimize panel</primary></indexterm>minimizing, 
 		<indexterm><primary>maximize panel</primary></indexterm>maximizing, detaching. A comprehensive description of the possible
-		interactions can be found on the <ulink url="http://www.docking-frames.org/"><indexterm><primary>Docking Frames</primary></indexterm>
+		interactions can be found at the <ulink url="http://www.docking-frames.org/"><indexterm><primary>Docking Frames</primary></indexterm>
 		Docking Frames Website</ulink>.
-	</para><para><xref linkend="userInterface"/> shows two sample dockable panel:
+	</para><para><xref linkend="userInterface"/> shows two sample dockable panels:
 	</para>
 	<variablelist>
 		<varlistentry><term>The "Log File Reading Errors" panel</term>
-			<listitem><para>Lists problems that may have occurred during the processing of the log files.</para></listitem>
+			<listitem><para>lists problems that may have occurred during the processing of the log files.</para></listitem>
 		</varlistentry>
 		<varlistentry><term>A "File Selection" dockable panel</term>
-			<listitem><para>Serves as a starting point for setting up a new data pipeline. Within this window, log files
-				that are going to be processed and monitored and their log files format are being configured. The processing
+			<listitem><para>serves as a starting point for setting up a new data pipeline. Within this panel, log files
+				that are going to be processed and monitored are being configured. The processing
 				is launched by pressing the <emphasis>Apply</emphasis>-button.
 			</para></listitem>
 		</varlistentry>

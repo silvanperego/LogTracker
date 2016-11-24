@@ -5,7 +5,7 @@
 	<title id="confLogParsers"><indexterm><primary>Configure Log-File Parsers</primary></indexterm>Configure Log-File Parsers</title>
 	<para>&logtracker; can read and interpret log files of almost any formats, as long as an appropriate
 		<indexterm><primary>parser configuration</primary></indexterm>parser configuration is provided. Parser configurations are 
-		maintained on the <emphasis>parser configuration</emphasis>
+		maintained at the <emphasis>parser configuration</emphasis>
 		tab within the global <emphasis>Configuration Dialog Box</emphasis>. It can be opened by 
 	</para>
 	<itemizedlist><listitem><para>opening the <indexterm><primary>Configuration Dialog Box</primary></indexterm>Configuration Dialog Box and then</para>
@@ -15,7 +15,7 @@
 		<listitem><para>Switching to the "Parser Configuration" Tab.</para>
 		</listitem>
 	</itemizedlist>
-	<para>Parser configuration heavily depends on Regular Expression Processing. &logtracker; uses 
+	<para>Parser configuration heavily depends on regular expression processing. &logtracker; uses 
 		<ulink url="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java's 
 		<indexterm><primary>regular expressions</primary></indexterm>regular expression implementation</ulink>.
 		All processing is done on a per line basis.
@@ -36,16 +36,15 @@
 		<para>Lists all available Parser configurations.
 			The first three configurations in the list (which are grayed out) are standard configurations,
 			which can not be edited by the user. They can be used for standard situations or as <indexterm><primary>sample configurations</primary></indexterm>
-			sample configurations for your own parser configurations.
+			a starting point for your own parser configurations.
 		</para><para>
 			Choose one of the configurations and its configuration parameters are shown in the lower half of the configuration box.
-		</para><para>The name of a parser can be edited by double clicking its in in the <emphasis>Parser Config</emphasis> column
-			of the table.
+		</para><para>The name of a parser can be edited by double clicking it in the <emphasis>Parser Config</emphasis> column.
 		</para>
 		</listitem></varlistentry>
 		<varlistentry><term><indexterm><primary>Log File Type</primary></indexterm>Log File Type</term>
-			<listitem><para>is used to define the basic type of the log file (see <xref linkend="log_flavours"/>).
-			The type can only be modified when a configuration just has been created by using the <emphasis>new</emphasis>-Button.
+			<listitem><para>is used to define the flavor of the log file (see <xref linkend="log_flavours"/>).
+			The type can only be changed when a configuration just has been created by using the <emphasis>new</emphasis>-Button.
 		</para></listitem></varlistentry>
 		<varlistentry><term><indexterm><primary>Line Inclusion Configuration</primary></indexterm>Line Inclusion Configuration</term>
 			<listitem><para>These fields can be used to specifiy which lines within the
@@ -59,7 +58,7 @@
 			<listitem><para>The <emphasis>Extraction Pattern</emphasis> must match all complete "included" lines. It defines 
 			<indexterm><primary>capturing groups</primary></indexterm>capturing groups
 				which contain the information that needs to be extracted from the log file line. The required information depends on the 
-				log file type.
+				log file type (see <xref linkend="captGroupConfParam"/>).
 			</para></listitem>
 		</varlistentry>
 		<varlistentry><term><indexterm><primary>Sample Log Line</primary></indexterm>Sample Log Line</term><listitem><para>
@@ -74,7 +73,9 @@
 		</para></listitem></varlistentry>
 		<varlistentry><term><indexterm><primary>Action Buttons</primary><secondary>of the parser configuration dialog</secondary></indexterm>Action Buttons</term>
 			<listitem>
-				<para><emphasis>Load From File</emphasis> loads Log Parser Configurations from a log tracker configuration file.</para>
+				<para><emphasis>Load From File</emphasis> loads Log Parser Configurations from a log tracker configuration file
+					(see <xref linkend="confFiles"/>).
+				</para>
 				<para><emphasis>Save to File</emphasis> saves the marked Log Parser Configurations into a log tracker configuration file.
 					Use Ctrl-Click or Shift-Click to select more than one Log Parser Configuration.
 				</para>
@@ -104,7 +105,7 @@
 			<tbody><row>
 				<entry><indexterm><primary>Occurrence Time</primary></indexterm>Occurrence Time</entry><entry>M</entry><entry>M</entry><entry>M</entry>
 				<entry><para>The capturing group with this number contains a time stamp, which represents the occurrence time of the logged event. 
-					(It might represent the time, when the information was logged.)</para>
+					(Or the time, when the information was logged.)</para>
 					<para>The <emphasis>Time Format String</emphasis> is used to specify the format of the time stamp. The format is defined
 						as a <ulink url="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">Java SimpleDateFormat pattern</ulink>.
 					</para>
@@ -115,8 +116,8 @@
 				</entry>
 			</row>
 			<row>
-				<entry><indexterm><primary>Correlation Id</primary></indexterm>Correlation-ID</entry><entry>O</entry><entry>O</entry><entry>X</entry>
-				<entry><para>The capturing group with this number contains a correlation id. The correlation id is used to correlate messages from
+				<entry><indexterm><primary>Correlation Id</primary></indexterm>Correlation Id</entry><entry>O</entry><entry>O</entry><entry>X</entry>
+				<entry><para>The capturing group with this number contains a correlation Id. The correlation Id is used to correlate messages from
 					different log files. See <xref linkend="corr_data"/>.
 				</para></entry>
 			</row>
@@ -137,21 +138,21 @@
 			</row>
 			<row>
 				<entry><indexterm><primary>User name</primary></indexterm>User</entry><entry>O</entry><entry>O</entry><entry>O</entry>
-				<entry><para>The capturing group with this number contains a name of the user of the service call.</para></entry>
+				<entry><para>The capturing group with this number contains the name of the user calling the service.</para></entry>
 			</row>
 			<row>
 				<entry><indexterm><primary>Return Code</primary></indexterm>Return Code</entry><entry>O</entry><entry/><entry/>
 				<entry><para>The capturing group with this number contains a return of the service call. The return code is compared
 					with the value within <emphasis>Value representing "OK"</emphasis>. If it is equal, the service call is considered
-					as successful, otherwise as failed. (Successful service calls are represented by a dot within the service call scatter
-					plot, unsuccessful calls are represented by a cross sign.)
+					as "successful", otherwise as "failed"". (Successful service calls are represented by a dot within the service call scatter
+					plot, unsuccessful calls are represented by a cross sign. See <xref linkend="confFiles"/>)
 				</para></entry>
 			</row>
 			<row>
 				<entry><indexterm><primary>Substract Response Time</primary></indexterm>Substract Response Time</entry><entry>M</entry><entry/><entry/>
 				<entry><para>When checked, the relevant occurrence time is calculated as occurrence time minus execution time.
 					In some log files, the log entry is written, when the service ends. The user, however, might want to base
-					the service statistics on the the service start times. This options can be used for that purpose.
+					his analysis on the the service start times. This options can be used for that purpose.
 				</para></entry>
 			</row>
 			<row>
