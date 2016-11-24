@@ -191,6 +191,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+			    <groupId>com.bc.maven.plugins</groupId>
+			    <artifactId>maven-javahelp-plugin</artifactId>
+			    <version>1.1</version>
+			    <executions>
+			    	<execution>
+			    		<id>helpIndexing</id>
+			    		<phase>compile</phase>
+			    		<goals>
+			    			<goal>javahelp-indexer</goal>
+			    		</goals>
+			    		<configuration>
+			    			<sourcePath>target/help</sourcePath>
+			    			<dataBase>target/classes/JavaHelpSearch</dataBase>
+			    		</configuration>
+			    	</execution>
+			    </executions>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -217,6 +235,27 @@
 										<goals>
 											<goal>generate-javahelp</goal>
 											<goal>generate-pdf</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.bc.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-javahelp-plugin
+										</artifactId>
+										<versionRange>
+											[1.1,)
+										</versionRange>
+										<goals>
+											<goal>
+												javahelp-indexer
+											</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
