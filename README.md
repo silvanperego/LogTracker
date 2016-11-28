@@ -1,6 +1,6 @@
 # Instant Log-Tracker
 
-Instance Log-Tracker is an easy to use tool for ad-hoc analysis and monitoring of application server log files. Logtracker consists of a single executable (which requires a Java 8 runtime) and can be applied easily and straightforward as long as you have physical access to your log files.
+Instant Log-Tracker is an easy to use tool for ad-hoc log file analysis of application and system logs. It consists of a single executable (which requires a Java 8 runtime) and can be applied easily and straightforward as long as you have physical access to your log files.
 
 Special features are:
 
@@ -16,7 +16,7 @@ Instant Log-Tracker supports the following flavors of log files:
 
 ![Log Tracker Overview](LogTrackerOverview.png "Instant LogTracker's main screen")
 
-Copyright 2015, Silvan Perego
+Copyright 2015,2016, Silvan Perego
 
 Licensed under the Apache License, Version 2.0 (the "License")you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
@@ -27,6 +27,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 This program uses
 
 JFreeChart from Object Refinery
+Docking Frames
 Launch4J
 Axet Desktop
 
