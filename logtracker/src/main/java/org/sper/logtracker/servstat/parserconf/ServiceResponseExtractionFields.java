@@ -311,6 +311,7 @@ public class ServiceResponseExtractionFields extends JPanel implements Extractio
 		userGroupBox.setSelectedItem(logParser.getUserIdx());
 		returnCodeGroupBox.setSelectedItem(logParser.getReturnCodeIdx());
 		successCodeField.setText(logParser.getSuccessCode() != null ? logParser.getSuccessCode().toString() : null);
+		chckbxSubstract.setSelected(logParser.isSubstract());
 	}
 
 	/* (non-Javadoc)
