@@ -67,12 +67,12 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 				panel.setBackground((Color) value);
 				return panel;
 			}
-			else 
+			else
 				return null;
 		}
 
 	}
-	
+
 	public static class ConfData implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -80,7 +80,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		Vector<Vector<Object>> data;
 
 		Object magFact;
-		
+
 	}
 
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -92,7 +92,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		@XmlAttribute
 		Integer color;
 	}
-	
+
 	public ServiceControlPanel(final ServiceStatsDockables serviceStatsTabs) {
 		super();
 		controlTable = new JTable();
@@ -108,31 +108,31 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		controlTable.setAutoCreateRowSorter(true);
 		setLayout(new BorderLayout(0, 0));
 		controlTable.addMouseListener(
-		    serviceStatsTabs.new ShowServiceDetailAction(controlTable, "Service", 
-		        r -> (String) controlTableModel.getValueAt(r, SERVICE_NAME_COL), 
-		        f -> f.getService(), 
+		    serviceStatsTabs.new ShowServiceDetailAction(controlTable, "Service",
+		        r -> (String) controlTableModel.getValueAt(r, SERVICE_NAME_COL),
+		        f -> f.getService(),
 		        dp -> dp.svcIdx, ServiceControlTableModel.LAST_STAT_COL));
 		JLabel lblNewLabel = new JLabel("Service Call Statistics and Display Properties");
 		add(lblNewLabel, BorderLayout.NORTH);
-		
+
 		JScrollPane scrollPanel = new JScrollPane(controlTable);
 		add(scrollPanel);
-		
+
 		JPanel buttonPanel = new JPanel();
 		add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-		
+
 		btnApply = new JButton("Apply");
 		btnApply.addActionListener(serviceStatsTabs.new ApplyControlAction());
-		
+
 		JPanel statMagPanel = new JPanel();
 		FlowLayout fl_statMagPanel = (FlowLayout) statMagPanel.getLayout();
 		fl_statMagPanel.setAlignment(FlowLayout.LEFT);
 		buttonPanel.add(statMagPanel);
-		
+
 		JLabel lblStatisticsMagnificationFactor = new JLabel("Statistics Magnification Factor:");
 		statMagPanel.add(lblStatisticsMagnificationFactor);
-		
+
 		magFactSpinner = new JSpinner();
 		magFactSpinner.setModel(new SpinnerNumberModel(new Double(5), new Double(1), null, new Double(1)));
 		magFactSpinner.setPreferredSize(new Dimension(50, 20));
@@ -141,9 +141,9 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		btnApply.setHorizontalAlignment(SwingConstants.TRAILING);
 		btnApply.setEnabled(false);
 		buttonPanel.add(btnApply);
-		
+
 	}
-	
+
 	public void clearTable() {
 		if (keepConfig)
 			keepConfig = false;
@@ -201,10 +201,10 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		magFactSpinner.setValue(scd.getMagFact());
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ServiceControlData getConfig() {
 		ServiceControlData scd = new ServiceControlData();
-		for (Vector<Object> row : (Vector<Vector<Object>>) controlTableModel.getDataVector()) {
+		for (Vector<Object> row : (Vector<Vector>) controlTableModel.getDataVector()) {
 			if (rowHoldsConfig(row)) {
 				ServiceControlDataRow sdr = new ServiceControlDataRow();
 				sdr.serviceName = (String) row.get(SERVICE_NAME_COL);
@@ -239,9 +239,10 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 	 * Setzt zudem alle Zähler auf null.
 	 */
 	public void cleanTable() {
-		@SuppressWarnings("unchecked")
-		Vector<Vector<Object>> dataVector = (Vector<Vector<Object>>) controlTableModel.getDataVector();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		Vector<Vector> dataVector = (Vector<Vector>) controlTableModel.getDataVector();
 		for (int i = dataVector.size(); --i >= 0; ) {
+			@SuppressWarnings("unchecked")
 			Vector<Object> row = dataVector.get(i);
 			if (rowHoldsConfig(row))
 				for (int j = FIRST_STAT_COL; j <= LAST_STAT_COL; j++)

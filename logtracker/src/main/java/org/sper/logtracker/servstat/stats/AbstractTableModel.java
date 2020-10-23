@@ -39,10 +39,11 @@ public abstract class AbstractTableModel extends DefaultTableModel {
 
 	protected void createOrReplaceTableRow(Object[] obj) {
 		// Suche im bestehenden TableModel nach einer bereits bestehenden Row
-		@SuppressWarnings("unchecked")
-		Vector<Vector<Object>> data = getDataVector();
+		@SuppressWarnings("rawtypes")
+		Vector data = getDataVector();
 		for (int i = 0; i < data.size(); i++) {
-			Vector<Object> row = data.get(i);
+			@SuppressWarnings("unchecked")
+			Vector<Object> row = (Vector<Object>) data.get(i);
 			if (obj[0].equals(row.get(0))) {
 				for (int j = 1; j <= ServiceControlTableModel.LAST_STAT_COL; j++)
 					row.setElementAt(obj[j], j);;
