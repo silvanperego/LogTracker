@@ -1,24 +1,13 @@
 package org.sper.logtracker.config;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
 import org.sper.logtracker.validation.ConfigurationSubPanel;
 import org.sper.logtracker.validation.SimpleDateFormatVerifier;
 import org.sper.logtracker.validation.TextVerifier;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class GlobalConfigPanel extends JPanel implements ConfigurationSubPanel {
 

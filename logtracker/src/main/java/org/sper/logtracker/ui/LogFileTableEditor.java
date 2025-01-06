@@ -1,16 +1,12 @@
 package org.sper.logtracker.ui;
 
-import java.awt.Component;
-import java.io.File;
+import org.jfree.ui.FilesystemFilter;
 
-import javax.swing.AbstractCellEditor;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableCellEditor;
-
-import org.jfree.ui.FilesystemFilter;
+import java.awt.*;
+import java.io.File;
 
 class LogFileTableEditor extends AbstractCellEditor implements TableCellEditor {
 

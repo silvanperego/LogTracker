@@ -1,17 +1,5 @@
 package org.sper.logtracker.correlation.parserconf;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.nio.charset.Charset;
-
-import javax.swing.InputVerifier;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import org.sper.logtracker.correlation.CorrelationLogParser;
 import org.sper.logtracker.correlation.data.RawCorrelatedDataPoint;
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
@@ -19,6 +7,10 @@ import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.validation.TextVerifier;
+
+import javax.swing.*;
+import java.awt.*;
+import java.nio.charset.Charset;
 
 public class CorrelationDataFields extends JPanel implements ExtractionFieldHandler<CorrelationLogParser, RawCorrelatedDataPoint> {
 

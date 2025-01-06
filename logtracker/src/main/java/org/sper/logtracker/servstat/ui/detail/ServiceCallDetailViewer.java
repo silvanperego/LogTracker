@@ -1,20 +1,13 @@
 package org.sper.logtracker.servstat.ui.detail;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.ui.CorrelatedPopupMenuAction;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 public class ServiceCallDetailViewer extends JFrame {
 

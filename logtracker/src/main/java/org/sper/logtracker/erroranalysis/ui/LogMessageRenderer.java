@@ -1,12 +1,10 @@
 package org.sper.logtracker.erroranalysis.ui;
 
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 
 public class LogMessageRenderer extends DefaultTableCellRenderer {
 

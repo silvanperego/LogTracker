@@ -1,11 +1,11 @@
 package org.sper.logtracker.servstat.proc;
 
+import org.sper.logtracker.data.DataListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.sper.logtracker.data.DataListener;
 
 /**
  * Der Service-Distributor nimmt Datenpunkte entgegen und leitet diese an diejenigen Services, für welche sich die Registrierten Listener interessieren.

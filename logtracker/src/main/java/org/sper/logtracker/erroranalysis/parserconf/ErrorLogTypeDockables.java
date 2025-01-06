@@ -1,9 +1,8 @@
 package org.sper.logtracker.erroranalysis.parserconf;
 
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
@@ -20,9 +19,8 @@ import org.sper.logtracker.parserconf.TrackingDockables;
 import org.sper.logtracker.proc.PipelineHelper;
 import org.sper.logtracker.util.DockUtils;
 
-import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CLocation;
-import bibliothek.gui.dock.common.DefaultMultipleCDockable;
+import javax.swing.*;
+import java.util.List;
 
 public class ErrorLogTypeDockables implements TrackingDockables {
 

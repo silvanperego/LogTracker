@@ -1,16 +1,14 @@
 package org.sper.logtracker.servstat.stats;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JTable;
-
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.data.NewCategoryListener;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.PublishingSemaphore;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Klassifiziert alle Services eines Data-Frames und erstellt Statistiken für alle Services.

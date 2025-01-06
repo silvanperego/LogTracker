@@ -1,14 +1,13 @@
 package org.sper.logtracker.correlation.ui;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
-
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
+
+import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class CorrelatedMessagesTableModel extends AbstractTableModel {
 

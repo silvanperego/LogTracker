@@ -1,5 +1,7 @@
 package org.sper.logtracker.servstat.parserconf;
 
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
@@ -9,9 +11,6 @@ import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.servstat.ui.ServiceStatsDockables;
-
-import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CLocation;
 
 public class ServiceResponseFileTypeDescriptor implements FileTypeDescriptor<ServiceResponseLogParser, RawStatsDataPoint> {
 

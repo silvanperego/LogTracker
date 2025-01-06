@@ -1,17 +1,11 @@
 package org.sper.logtracker.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UnsupportedLookAndFeelException;
-
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.DefaultMultipleCDockable;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import bibliothek.gui.dock.common.event.CVetoClosingEvent;
+import bibliothek.gui.dock.common.event.CVetoClosingListener;
 import org.sper.logtracker.config.FileControl;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.LogTrackerConfig;
@@ -22,12 +16,12 @@ import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
-import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CLocation;
-import bibliothek.gui.dock.common.DefaultMultipleCDockable;
-import bibliothek.gui.dock.common.DefaultSingleCDockable;
-import bibliothek.gui.dock.common.event.CVetoClosingEvent;
-import bibliothek.gui.dock.common.event.CVetoClosingListener;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LogTracker extends JFrame {
 

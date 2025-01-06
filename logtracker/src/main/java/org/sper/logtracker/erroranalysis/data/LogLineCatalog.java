@@ -1,15 +1,14 @@
 package org.sper.logtracker.erroranalysis.data;
 
+import org.sper.logtracker.config.GlobalConfig;
+import org.sper.logtracker.data.DataListener;
+
+import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import javax.swing.table.DefaultTableModel;
-
-import org.sper.logtracker.config.GlobalConfig;
-import org.sper.logtracker.data.DataListener;
 
 /**
  * Ein Katalog aller gefundenen Log-Line-Kategorien.

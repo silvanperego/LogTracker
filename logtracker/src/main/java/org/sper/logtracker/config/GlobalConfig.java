@@ -1,16 +1,15 @@
 package org.sper.logtracker.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElements;
 import org.sper.logtracker.correlation.CorrelationLogParser;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

@@ -1,11 +1,11 @@
 package org.sper.logtracker.servstat.proc;
 
+import org.sper.logtracker.data.AbstractDataListener;
+import org.sper.logtracker.data.DataListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.sper.logtracker.data.AbstractDataListener;
-import org.sper.logtracker.data.DataListener;
 
 /**
  * Extrahiert die neuen Punkte in einem Data-Frame.

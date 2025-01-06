@@ -1,11 +1,9 @@
 package org.sper.logtracker.erroranalysis.ui;
 
-import java.awt.Color;
-import java.awt.Component;
+import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 
 import javax.swing.table.DefaultTableModel;
-
-import org.sper.logtracker.erroranalysis.data.ErrorCategory;
+import java.awt.*;
 
 public final class LogLineTableModel extends DefaultTableModel {
 

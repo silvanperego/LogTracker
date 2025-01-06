@@ -1,7 +1,6 @@
 package org.sper.logtracker.parserconf;
 
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
+import javax.swing.*;
 
 public class VerifyingPart {
 	private JComponent component;

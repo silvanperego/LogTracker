@@ -1,14 +1,5 @@
 package org.sper.logtracker.servstat;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
@@ -24,6 +15,12 @@ import org.sper.logtracker.servstat.proc.NewPointExtractor;
 import org.sper.logtracker.servstat.proc.ServiceRouter;
 import org.sper.logtracker.servstat.proc.TimeBasedCollector;
 import org.sper.logtracker.servstat.proc.XYDataSeriesListener;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Erstellt Pipeline-Element und verknüpft sie mit Parent-Elementen. Parent-Elemente werden automatisch wiedererkannt. D.h.

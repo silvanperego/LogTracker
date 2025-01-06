@@ -1,17 +1,13 @@
 package org.sper.logtracker.config.compat;
 
-import java.awt.Component;
+import org.jfree.ui.FilesystemFilter;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.filechooser.FileFilter;
-
-import org.jfree.ui.FilesystemFilter;
 
 public class ConfigFileOpenButton extends JButton {
 

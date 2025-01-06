@@ -1,20 +1,5 @@
 package org.sper.logtracker.servstat.parserconf;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.regex.Pattern;
-
-import javax.swing.Box;
-import javax.swing.InputVerifier;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import org.sper.logtracker.parserconf.CommonFieldsHelper;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FieldIdxComboBoxModel;
@@ -23,7 +8,9 @@ import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
 import org.sper.logtracker.validation.TextVerifier;
 
-import javax.swing.JCheckBox;
+import javax.swing.*;
+import java.awt.*;
+import java.util.regex.Pattern;
 
 public class ServiceResponseExtractionFields extends JPanel implements ExtractionFieldHandler<ServiceResponseLogParser, RawStatsDataPoint> {
 

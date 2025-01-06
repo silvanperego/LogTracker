@@ -1,18 +1,11 @@
 package org.sper.logtracker.ui;
 
-import java.awt.BorderLayout;
+import org.sper.logtracker.data.Console.MessageListener;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
-import org.sper.logtracker.data.Console.MessageListener;
 
 public class LogFilePanel extends JPanel implements MessageListener {
 

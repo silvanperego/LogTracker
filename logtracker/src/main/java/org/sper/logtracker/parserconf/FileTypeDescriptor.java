@@ -1,12 +1,11 @@
 package org.sper.logtracker.parserconf;
 
-import javax.swing.JPanel;
-
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 
-import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CLocation;
+import javax.swing.*;
 
 /**
  * Eine Beschreibung einer spezifischen Log-File-Typs, wie z.B. ServiceResponseTime-Logs oder Error-Logs.

@@ -1,21 +1,5 @@
 package org.sper.logtracker.servstat.scatter;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.geom.Rectangle2D;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
@@ -37,6 +21,13 @@ import org.sper.logtracker.logreader.LogSource;
 import org.sper.logtracker.logreader.LogSource.DataPointSelectionAction;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.ui.ServiceStatsDockables;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class ServiceScatterPlot implements DataListener<DataPoint>, DataPointSelectionAction {
 

@@ -1,10 +1,9 @@
 package org.sper.logtracker.servstat.stats;
 
-import java.util.Vector;
+import org.sper.logtracker.servstat.ui.ServiceControlTableModel;
 
 import javax.swing.table.DefaultTableModel;
-
-import org.sper.logtracker.servstat.ui.ServiceControlTableModel;
+import java.util.Vector;
 
 public abstract class AbstractTableModel extends DefaultTableModel {
 

@@ -1,5 +1,7 @@
 package org.sper.logtracker.correlation.parserconf;
 
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.CorrelationLogParser;
@@ -8,9 +10,6 @@ import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.ExtractionFieldHandler;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
-
-import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CLocation;
 
 /**
  * Beschreibt einen File-Typ mit Daten, welche nur über Correlation geladen

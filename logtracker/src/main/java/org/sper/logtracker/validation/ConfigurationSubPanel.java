@@ -1,6 +1,6 @@
 package org.sper.logtracker.validation;
 
-import javax.swing.JButton;
+import javax.swing.*;
 
 /**
  * Definiert alle Methode, die von einem Konfigurations-Subpanel erwartet werden.

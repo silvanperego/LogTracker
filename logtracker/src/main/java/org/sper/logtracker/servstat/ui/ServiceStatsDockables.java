@@ -1,20 +1,10 @@
 package org.sper.logtracker.servstat.ui;
 
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.event.MouseInputAdapter;
-
+import bibliothek.gui.dock.common.CControl;
+import bibliothek.gui.dock.common.CLocation;
+import bibliothek.gui.dock.common.DefaultMultipleCDockable;
+import bibliothek.gui.dock.common.event.CVetoClosingEvent;
+import bibliothek.gui.dock.common.event.CVetoClosingListener;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.compat.Configuration;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
@@ -38,11 +28,17 @@ import org.sper.logtracker.servstat.stats.StatsCalculator.CategoryExtractor;
 import org.sper.logtracker.servstat.ui.detail.ServiceCallDetailViewer;
 import org.sper.logtracker.util.DockUtils;
 
-import bibliothek.gui.dock.common.CControl;
-import bibliothek.gui.dock.common.CLocation;
-import bibliothek.gui.dock.common.DefaultMultipleCDockable;
-import bibliothek.gui.dock.common.event.CVetoClosingEvent;
-import bibliothek.gui.dock.common.event.CVetoClosingListener;
+import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ServiceStatsDockables implements TrackingDockables {
 	private ServiceScatterPlot plot;

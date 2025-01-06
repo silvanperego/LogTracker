@@ -1,13 +1,11 @@
 package org.sper.logtracker.parserconf;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.AbstractListModel;
-import javax.swing.ComboBoxModel;
-
 import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.parserconf.ParserConfigList.ChangeListener;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Führt eine Liste aller Verfügbaren Log-File-Parser und ihrer Eigenschaften.

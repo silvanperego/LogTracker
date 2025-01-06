@@ -1,10 +1,9 @@
 package org.sper.logtracker.logreader;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JLabel;
 
 /**
  * Führt Buch darüber, welche Reader im Moment aktiv sind oder nicht und markiert den Zustand auf dem User-Interface.

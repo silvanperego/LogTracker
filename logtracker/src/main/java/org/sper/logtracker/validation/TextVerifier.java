@@ -1,12 +1,10 @@
 package org.sper.logtracker.validation;
 
-import java.awt.Color;
-
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.text.JTextComponent;
-
 import org.sper.logtracker.parserconf.ParserConfigPanel;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 
 /**
  * Verifiziert ein Textfeld. Zeigt die Meldung an und färbt das Feld Orange, falls ein Fehler aufgetreten ist.

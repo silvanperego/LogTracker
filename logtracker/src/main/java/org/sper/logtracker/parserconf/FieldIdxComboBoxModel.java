@@ -1,6 +1,6 @@
 package org.sper.logtracker.parserconf;
 
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.*;
 
 public class FieldIdxComboBoxModel extends DefaultComboBoxModel<Integer> {
 

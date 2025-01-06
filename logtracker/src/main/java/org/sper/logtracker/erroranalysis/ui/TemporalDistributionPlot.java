@@ -1,7 +1,5 @@
 package org.sper.logtracker.erroranalysis.ui;
 
-import java.awt.Color;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -16,6 +14,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
+
+import java.awt.*;
 
 class TemporalDistributionPlot {
 	

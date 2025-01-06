@@ -1,18 +1,13 @@
 package org.sper.logtracker.erroranalysis.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
-
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.erroranalysis.data.ErrorCategory;
+
+import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LogLinePanel extends JPanel {
 	

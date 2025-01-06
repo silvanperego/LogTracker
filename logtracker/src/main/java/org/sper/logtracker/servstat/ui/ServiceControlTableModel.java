@@ -1,8 +1,5 @@
 package org.sper.logtracker.servstat.ui;
 
-import java.awt.Color;
-import java.util.Vector;
-
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -13,6 +10,9 @@ import org.sper.logtracker.servstat.proc.CategoryCollection;
 import org.sper.logtracker.servstat.proc.NewPointExtractor;
 import org.sper.logtracker.servstat.stats.AbstractTableModel;
 import org.sper.logtracker.servstat.stats.ServiceStats;
+
+import java.awt.*;
+import java.util.Vector;
 
 public class ServiceControlTableModel extends AbstractTableModel {
 

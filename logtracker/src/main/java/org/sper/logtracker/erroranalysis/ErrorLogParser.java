@@ -1,15 +1,14 @@
 package org.sper.logtracker.erroranalysis;
 
-import java.text.ParseException;
-import java.util.regex.Matcher;
-
-import javax.xml.bind.annotation.XmlAttribute;
-
+import jakarta.xml.bind.annotation.XmlAttribute;
 import org.sper.logtracker.erroranalysis.data.RawErrorDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
+
+import java.text.ParseException;
+import java.util.regex.Matcher;
 
 public class ErrorLogParser extends ConfiguredLogParser<ErrorLogParser, RawErrorDataPoint> {
 

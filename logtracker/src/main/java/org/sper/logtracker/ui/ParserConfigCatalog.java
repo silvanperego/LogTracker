@@ -1,18 +1,18 @@
 package org.sper.logtracker.ui;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.sper.logtracker.correlation.CorrelationLogParser;
 import org.sper.logtracker.correlation.parserconf.CorrelationDataTypeDescriptor;
 import org.sper.logtracker.erroranalysis.ErrorLogParser;
 import org.sper.logtracker.erroranalysis.parserconf.ErrorLogTypeDescriptor;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
-import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.parserconf.ParserConfigList;
+import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.servstat.ServiceResponseLogParser;
 import org.sper.logtracker.servstat.parserconf.ServiceResponseFileTypeDescriptor;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class ParserConfigCatalog extends ParserConfigList {

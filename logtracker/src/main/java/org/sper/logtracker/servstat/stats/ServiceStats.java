@@ -1,5 +1,12 @@
 package org.sper.logtracker.servstat.stats;
 
+import org.sper.logtracker.servstat.proc.DataPoint;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.CALLS_PER_MINUTE_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEAN_RESPONSE_TIME_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEDIAN_COL;
@@ -7,13 +14,6 @@ import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.NUMBER_OF
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.NUMBER_OF_ERRORS_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.PERCENTILE_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.SERVICE_NAME_COL;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.sper.logtracker.servstat.proc.DataPoint;
 
 /**
  * Repräsentiert die Statistiken für einen einzelnen Service. 

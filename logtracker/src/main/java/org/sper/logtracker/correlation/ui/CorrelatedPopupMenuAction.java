@@ -1,14 +1,11 @@
 package org.sper.logtracker.correlation.ui;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JTable;
-
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.data.CorrelatedMessage;
+
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CorrelatedPopupMenuAction extends MouseAdapter {
 

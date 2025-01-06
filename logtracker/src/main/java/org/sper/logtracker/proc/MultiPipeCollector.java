@@ -1,17 +1,17 @@
 package org.sper.logtracker.proc;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import org.sper.logtracker.data.AbstractDataListener;
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.KeepAliveElement;
 import org.sper.logtracker.logreader.KeepAliveLogReader;
 import org.sper.logtracker.logreader.LogLineParser;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Fügt Ereignisse aus mehreren "Pipes" zu einer einzelnen Pipe zusammen. Der MultiPipeCollector geht davon aus,

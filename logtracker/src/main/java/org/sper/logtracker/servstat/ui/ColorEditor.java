@@ -1,18 +1,12 @@
 package org.sper.logtracker.servstat.ui;
 
-import java.awt.Color;
-import java.awt.Component;
+import org.sper.logtracker.servstat.proc.PublishingSemaphore;
+
+import javax.swing.*;
+import javax.swing.table.TableCellEditor;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.AbstractCellEditor;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JDialog;
-import javax.swing.JTable;
-import javax.swing.table.TableCellEditor;
-
-import org.sper.logtracker.servstat.proc.PublishingSemaphore;
 
 public class ColorEditor extends AbstractCellEditor
                          implements TableCellEditor,

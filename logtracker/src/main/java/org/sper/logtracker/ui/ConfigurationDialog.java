@@ -1,20 +1,17 @@
 package org.sper.logtracker.ui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.config.GlobalConfigPanel;
 import org.sper.logtracker.parserconf.ParserConfigList;
 import org.sper.logtracker.parserconf.ParserConfigPanel;
 import org.sper.logtracker.validation.ConfigurationSubPanel;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ConfigurationDialog extends JDialog {
 	private static final long serialVersionUID = 1L;

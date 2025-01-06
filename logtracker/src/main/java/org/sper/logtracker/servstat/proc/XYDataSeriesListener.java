@@ -1,7 +1,6 @@
 package org.sper.logtracker.servstat.proc;
 
 import org.jfree.data.xy.XYSeries;
-
 import org.sper.logtracker.data.DataListener;
 
 public class XYDataSeriesListener implements DataListener<DataPoint> {

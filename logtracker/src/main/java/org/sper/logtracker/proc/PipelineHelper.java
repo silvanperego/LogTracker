@@ -1,9 +1,5 @@
 package org.sper.logtracker.proc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
-
 import org.sper.logtracker.data.DataListener;
 import org.sper.logtracker.data.RawDataPoint;
 import org.sper.logtracker.logreader.ActivityMonitor;
@@ -12,6 +8,10 @@ import org.sper.logtracker.logreader.KeepAliveLogReader;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.logreader.LogParser;
 import org.sper.logtracker.logreader.LogSource;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 public class PipelineHelper {
 

@@ -1,12 +1,11 @@
 package org.sper.logtracker.servstat.ui;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import org.sper.logtracker.servstat.ui.ServiceControlPanel.ServiceControlDataRow;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-
-import org.sper.logtracker.servstat.ui.ServiceControlPanel.ServiceControlDataRow;
 
 public class ServiceControlData {
 	private List<ServiceControlDataRow> controlData = new ArrayList<>();

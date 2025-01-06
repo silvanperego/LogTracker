@@ -1,10 +1,10 @@
 package org.sper.logtracker.logreader;
 
+import org.sper.logtracker.data.Console;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
-import org.sper.logtracker.data.Console;
 
 /**
  * Beschreibt eine einen Ausschnitt aus einem File deren Startposition und erste Zeile. 

@@ -1,18 +1,17 @@
 package org.sper.logtracker.servstat;
 
-import java.text.ParseException;
-import java.util.regex.Matcher;
-
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
 import org.sper.logtracker.data.Console;
 import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 import org.sper.logtracker.servstat.data.RawStatsDataPoint;
+
+import java.text.ParseException;
+import java.util.regex.Matcher;
 
 @XmlType(name = "ServiceResponseLogParser")
 public class ServiceResponseLogParser extends ConfiguredLogParser<ServiceResponseLogParser, RawStatsDataPoint> {

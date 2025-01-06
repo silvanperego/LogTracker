@@ -1,22 +1,12 @@
 package org.sper.logtracker.parserconf;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.Arrays;
-import java.util.TimeZone;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.InputVerifier;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import org.sper.logtracker.validation.SimpleDateFormatVerifier;
 import org.sper.logtracker.validation.TextVerifier;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.TimeZone;
 
 /**
  * Hilfsklasse für die Darstellung der Felder zur Konfiguration der Konfigurationsfelder, die in allen Detail-Konfigurationen vorkommen..

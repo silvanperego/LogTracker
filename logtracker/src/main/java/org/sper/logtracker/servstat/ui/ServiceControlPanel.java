@@ -1,5 +1,22 @@
 package org.sper.logtracker.servstat.ui;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlValue;
+import org.jfree.chart.plot.XYPlot;
+import org.sper.logtracker.config.compat.ConfigurationAware;
+import org.sper.logtracker.data.Factor;
+import org.sper.logtracker.servstat.proc.CategoryCollection;
+import org.sper.logtracker.servstat.proc.NewPointExtractor;
+import org.sper.logtracker.servstat.proc.PublishingSemaphore;
+
+import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.Vector;
+
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.CALLS_PER_MINUTE_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.COLOR_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.DO_MEAN_TIME_COL;
@@ -14,37 +31,6 @@ import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEAN_RESP
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.MEDIAN_COL;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.NCOLS;
 import static org.sper.logtracker.servstat.ui.ServiceControlTableModel.SERVICE_NAME_COL;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.io.Serializable;
-import java.util.Vector;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
-import javax.swing.table.TableCellRenderer;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
-
-import org.jfree.chart.plot.XYPlot;
-import org.sper.logtracker.config.compat.ConfigurationAware;
-import org.sper.logtracker.data.Factor;
-import org.sper.logtracker.servstat.proc.CategoryCollection;
-import org.sper.logtracker.servstat.proc.NewPointExtractor;
-import org.sper.logtracker.servstat.proc.PublishingSemaphore;
 
 public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 
@@ -134,7 +120,7 @@ public class ServiceControlPanel extends JPanel implements ConfigurationAware {
 		statMagPanel.add(lblStatisticsMagnificationFactor);
 
 		magFactSpinner = new JSpinner();
-		magFactSpinner.setModel(new SpinnerNumberModel(new Double(5), new Double(1), null, new Double(1)));
+		magFactSpinner.setModel(new SpinnerNumberModel(5.0, 1.0, null, 1.0));
 		magFactSpinner.setPreferredSize(new Dimension(50, 20));
 		statMagPanel.add(magFactSpinner);
 		btnApply.setAlignmentX(Component.RIGHT_ALIGNMENT);

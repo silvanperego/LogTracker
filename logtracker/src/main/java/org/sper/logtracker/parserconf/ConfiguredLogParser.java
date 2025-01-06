@@ -1,5 +1,14 @@
 package org.sper.logtracker.parserconf;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import org.sper.logtracker.data.Console;
+import org.sper.logtracker.logreader.FileSnippet;
+import org.sper.logtracker.logreader.LogLineParser;
+import org.sper.logtracker.logreader.LogParser;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,16 +16,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-
-import org.sper.logtracker.data.Console;
-import org.sper.logtracker.logreader.FileSnippet;
-import org.sper.logtracker.logreader.LogLineParser;
-import org.sper.logtracker.logreader.LogParser;
 
 /**
  * Ein generischer Log-Parser, welcher über Konfigurationsparameter auf eine Vielzahl von Log-File-Formaten eingestellt werden kann.

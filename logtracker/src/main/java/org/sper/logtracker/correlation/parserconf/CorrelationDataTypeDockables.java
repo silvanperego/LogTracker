@@ -1,9 +1,6 @@
 package org.sper.logtracker.correlation.parserconf;
 
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
+import bibliothek.gui.dock.common.CControl;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.correlation.data.CorrelatedDataPoint;
 import org.sper.logtracker.correlation.data.CorrelationCatalog;
@@ -17,7 +14,8 @@ import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.TrackingDockables;
 import org.sper.logtracker.proc.PipelineHelper;
 
-import bibliothek.gui.dock.common.CControl;
+import javax.swing.*;
+import java.util.List;
 
 public class CorrelationDataTypeDockables implements TrackingDockables {
 

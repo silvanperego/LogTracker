@@ -1,15 +1,14 @@
 package org.sper.logtracker.correlation;
 
-import java.text.ParseException;
-import java.util.regex.Matcher;
-
-import javax.xml.bind.annotation.XmlAttribute;
-
+import jakarta.xml.bind.annotation.XmlAttribute;
 import org.sper.logtracker.correlation.data.RawCorrelatedDataPoint;
 import org.sper.logtracker.logreader.FileSnippet;
 import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
+
+import java.text.ParseException;
+import java.util.regex.Matcher;
 
 public class CorrelationLogParser extends ConfiguredLogParser<CorrelationLogParser, RawCorrelatedDataPoint> {
 

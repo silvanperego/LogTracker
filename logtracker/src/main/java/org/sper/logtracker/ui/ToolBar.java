@@ -1,28 +1,19 @@
 package org.sper.logtracker.ui;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URL;
-
-import javax.help.HelpSet;
-import javax.help.HelpSetException;
-import javax.help.JHelp;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
-
 import org.sper.logtracker.config.XMLConfigSupport;
 import org.sper.logtracker.config.compat.ConfigFileAction;
 import org.sper.logtracker.config.compat.ConfigFileOpenButton;
 import org.sper.logtracker.config.compat.ConfigFileSaveButton;
+
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
+import javax.help.JHelp;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.URL;
 
 public class ToolBar extends JToolBar {
 	

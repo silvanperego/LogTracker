@@ -1,12 +1,11 @@
 package org.sper.logtracker.parserconf;
 
-import java.util.List;
-
+import bibliothek.gui.dock.common.CControl;
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.logreader.ActivityMonitor;
 import org.sper.logtracker.logreader.LogSource;
 
-import bibliothek.gui.dock.common.CControl;
+import java.util.List;
 
 /**
  * Beschreibt die erstellten Dockables und mögliche Operationen darauf.

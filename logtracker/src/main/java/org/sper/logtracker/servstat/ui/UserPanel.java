@@ -1,23 +1,14 @@
 package org.sper.logtracker.servstat.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-
 import org.sper.logtracker.config.compat.ConfigurationAware;
 import org.sper.logtracker.data.Factor;
 import org.sper.logtracker.servstat.proc.CategoryCollection;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class UserPanel extends JPanel implements ConfigurationAware {
 

@@ -1,12 +1,11 @@
 package org.sper.logtracker.logreader;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import org.sper.logtracker.correlation.data.CorrelatedMessage;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.xml.bind.annotation.XmlAttribute;
-
-import org.sper.logtracker.correlation.data.CorrelatedMessage;
 
 /**
  * Repräsentiert eine Log-File-Quelle

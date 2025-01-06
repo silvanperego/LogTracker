@@ -1,12 +1,12 @@
 package org.sper.logtracker.correlation.data;
 
+import org.sper.logtracker.data.DataListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.sper.logtracker.data.DataListener;
 
 /**
  * Der Correlation-Catalog erfasst alle Meldungen, welche

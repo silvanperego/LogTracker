@@ -1,9 +1,9 @@
 package org.sper.logtracker.logreader;
 
+import org.sper.logtracker.data.DataListener;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.sper.logtracker.data.DataListener;
 
 /**
  * Verwendet einen Log-Parser zum einlesen einzelner Log-Zeilen. Leitet jede gelesene Zeile dann an alle

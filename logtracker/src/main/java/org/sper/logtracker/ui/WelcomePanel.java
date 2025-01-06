@@ -1,12 +1,10 @@
 package org.sper.logtracker.ui;
 
-import java.awt.Desktop;
-import java.awt.Dimension;
-
-import javax.swing.JEditorPane;
+import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.event.HyperlinkListener;
+import java.awt.*;
 
 public class WelcomePanel extends JEditorPane {
 

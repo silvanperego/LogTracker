@@ -1,14 +1,13 @@
 package org.sper.logtracker.servstat.ui.detail;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
-
 import org.sper.logtracker.config.GlobalConfig;
 import org.sper.logtracker.servstat.proc.DataPoint;
 import org.sper.logtracker.servstat.proc.StatsDataPointFactorizer;
+
+import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class ServiceCallDetailTableModel extends AbstractTableModel {
 
