@@ -328,17 +328,17 @@
 	<profiles>
 		<profile>
 			<id>windows</id>
-<!--			<activation>-->
-<!--				<os>-->
-<!--					<family>windows</family>-->
-<!--				</os>-->
-<!--			</activation>-->
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
-						<artifactId>launch4j-plugin</artifactId>
-						<version>1.5.0.0</version>
+						<groupId>com.akathist.maven.plugins.launch4j</groupId>
+						<artifactId>launch4j-maven-plugin</artifactId>
+						<version>2.5.2</version>
 						<executions>
 							<execution>
 								<id>l4j-gui</id>
@@ -353,8 +353,8 @@
 									</jar>
 									<errTitle>logtracker.exe Error</errTitle>
 									<jre>
-										<minVersion>1.8.0</minVersion>
-										<maxVersion>1.9.0</maxVersion>
+										<minVersion>21</minVersion>
+										<maxVersion>24</maxVersion>
 										<initialHeapSize>128</initialHeapSize>
 										<maxHeapSize>1024</maxHeapSize>
 									</jre>
