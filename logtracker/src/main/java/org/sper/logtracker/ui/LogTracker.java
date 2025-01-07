@@ -18,16 +18,21 @@ import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LogTracker extends JFrame {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private static String cfgFile;
-	private static List<LogSource> fnameList = new ArrayList<LogSource>();
+	private static final List<LogSource> fnameList = new ArrayList<LogSource>();
+	private static final LastAppState lastState = new LastAppState();
 	private ToolBar toolBar;
 	private CControl control;
 	private LogFilePanel logFilePanel;
@@ -38,13 +43,12 @@ public class LogTracker extends JFrame {
 
 	/**
 	 * Launch the application.
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
 	 */
 	public static void main(final String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		try {
+			if (args.length == 0) {
+				cfgFile = lastState.getLastFileName();
+			}
 			for (String arg : args) {
 				if (arg.endsWith(".ltc")) {
 					if (cfgFile != null) {
@@ -84,7 +88,6 @@ public class LogTracker extends JFrame {
 	/**
 	 * Create the application.
 	 * 
-	 * @param fname
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
@@ -95,12 +98,10 @@ public class LogTracker extends JFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 * 
-	 * @param fname
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private void initialize() throws IOException,
-			InterruptedException {
+	private void initialize() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogTracker.class.getResource("/LogTrackerLogo.png")));
 		setBounds(100, 100, 1400, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,6 +118,14 @@ public class LogTracker extends JFrame {
 		DefaultSingleCDockable logFileDockable = new DefaultSingleCDockable("OwnLogs", "Log File Reading Errors", logFilePanel);
 		control.addDockable(logFileDockable);
 		logFileDockable.setLocation(fileControlPanelList.isEmpty() ? CLocation.base().normal() : fileControlPanelList.get(0).getDockableLocation());
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (cfgFile != null) {
+					lastState.storeLastFileName(cfgFile);
+				}
+			}
+		});
 		logFileDockable.setVisible(true);
 	}
 
@@ -137,6 +146,7 @@ public class LogTracker extends JFrame {
 			
 			@Override
 			public void closing(CVetoClosingEvent event) {
+				// No special action needed here.
 			}
 			
 			@Override

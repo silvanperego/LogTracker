@@ -26,6 +26,7 @@ public class ToolBar extends JToolBar {
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
 				logTracker.applyConfigurationFile(selectedFile);
+				LogTracker.setCfgFile(selectedFile.getAbsolutePath());
 			}
 		});
 		btnLoadConfig.setToolTipText("Open Config File");
@@ -36,17 +37,14 @@ public class ToolBar extends JToolBar {
 			@Override
 			public void execConfigFileOperation(File selectedFile) throws Exception {
 				new XMLConfigSupport().saveXMLConfig(selectedFile, logTracker.createConfigurationTree());
+				LogTracker.setCfgFile(selectedFile.getAbsolutePath());
 			}
 		});
 		btnSaveConfig.setToolTipText("Save Config File");
 		add(btnSaveConfig);
 		
 		JButton newFileControlBtn = new JButton(new ImageIcon(ToolBar.class.getResource("/newFileConfig.png")));
-		newFileControlBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent paramActionEvent) {
-				logTracker.addNewFileControl(0.3);
-			}
-		});
+		newFileControlBtn.addActionListener(paramActionEvent -> logTracker.addNewFileControl(0.3));
 		newFileControlBtn.setToolTipText("Add new Log-File Source Config Box");
 		add(newFileControlBtn);
 		

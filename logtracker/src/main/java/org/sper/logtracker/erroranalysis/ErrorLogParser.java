@@ -7,23 +7,25 @@ import org.sper.logtracker.logreader.LogLineParser;
 import org.sper.logtracker.parserconf.ConfiguredLogParser;
 import org.sper.logtracker.parserconf.FileTypeDescriptor;
 
+import java.io.Serial;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 
 public class ErrorLogParser extends ConfiguredLogParser<ErrorLogParser, RawErrorDataPoint> {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 	public static final String LOG_FILE_TYPE_NAME = "Error Log File";
 	private static FileTypeDescriptor<ErrorLogParser, RawErrorDataPoint> fileTypeDescriptor;
 	private Integer severityIdx;
 	private Integer userIdIdx;
 	private Integer msgIdx;
-	private transient ThreadLocal<FileSnippet> lastLineInFile = new ThreadLocal<FileSnippet>();
+	private transient ThreadLocal<FileSnippet> lastLineInFile = new ThreadLocal<>();
 	private String encoding;
 
 	public ErrorLogParser() {
 	}
-	
+
 	public ErrorLogParser(String parserName) {
 		super(parserName);
 	}
@@ -77,13 +79,13 @@ public class ErrorLogParser extends ConfiguredLogParser<ErrorLogParser, RawError
 	@Override
 	protected void extractData(LogLineParser<RawErrorDataPoint> logLineParser, Long obsStart, Matcher m, FileSnippet fileSnippet) throws ParseException {
 		Long time = getOccTime().getFieldIdx() != null ? getOccTime(m) : null;
-		if (time == null || obsStart == null || time.longValue() > obsStart.longValue()) {
+		if (time == null || obsStart == null || time > obsStart) {
 			String msg = m.group(msgIdx);
 			String severity = severityIdx != null && m.group(severityIdx) != null ? m.group(severityIdx).toUpperCase() : null;
 			String user = userIdIdx != null ? m.group(userIdIdx) : null;
 			logLineParser.receiveData(new RawErrorDataPoint(time, user, severity, msg, logLineParser.getLogSource(), fileSnippet, getCorrelationId(m)));
 			if (lastLineInFile == null)
-				lastLineInFile = new ThreadLocal<FileSnippet>();
+				lastLineInFile = new ThreadLocal<>();
 			if (lastLineInFile.get() != null)
 				lastLineInFile.get().setEndPos(fileSnippet);
 			lastLineInFile.set(fileSnippet);
